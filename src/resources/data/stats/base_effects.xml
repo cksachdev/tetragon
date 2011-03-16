@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stats>
+	<baseEffects>
+		
+		<effect id="effectAim">
+			<meta>
+				<notes><![CDATA[]]></notes>
+				<author><![CDATA[]]></author>
+				<tags><![CDATA[]]></tags>
+			</meta>
+			<definition type="modify" target="self">
+				<duration rounds="1" time="" formula="" permanent="false"/>
+				<delay rounds="1" time="" formula=""/>
+				<property type="skill" id="skillRangedAccuracy" value="+80"/>
+			</definition>
+			<art>
+				<visualEffect id=""/>
+				<sound id=""/>
+			</art>
+		</effect>
+		
+		<effect id="effectConfusionShot">
+			<meta>
+				<notes><![CDATA[]]></notes>
+				<author><![CDATA[]]></author>
+				<tags><![CDATA[]]></tags>
+			</meta>
+			<definition type="attack" target="mobSingle">
+				<duration rounds="" time="" formula="" permanent="false"/>
+				<delay rounds="" time="" formula=""/>
+				<attack damagePool="health" bodyPart="torso" magnitude="50"/>
+			</definition>
+			<definition type="apply" target="mobSingle">
+				<duration rounds="" time="6000" formula="" permanent="false" oneshot="false"/>
+				<delay rounds="" time="" formula=""/>
+				<property type="statusEffect" id="statusEffectDizzy" value=""/>
+				<property type="statusEffect" id="statusEffectKD" value=""/>
+			</definition>
+		</effect>
+		
+		<effect id="effectTorsoShot">
+			<meta>
+				<notes><![CDATA[]]></notes>
+				<author><![CDATA[]]></author>
+				<tags><![CDATA[]]></tags>
+			</meta>
+			<definition type="attack" target="mobSingle">
+				<duration rounds="" time="" formula="" permanent="false"/>
+				<delay rounds="" time="" formula=""/>
+				<attack damagePool="health" bodyPart="torso" magnitude="50"/>
+			</definition>
+			<definition type="apply" target="mobSingle">
+				<duration rounds="" time="4000" formula="" permanent="false" oneshot="false"/>
+				<delay rounds="" time="" formula=""/>
+				<property type="statusEffect" id="dotBleeding" value=""/>
+			</definition>
+		</effect>
+		
+		<effect id="effectBuffEndorphineInjection">
+			<meta>
+				<notes><![CDATA[]]></notes>
+				<author><![CDATA[]]></author>
+				<tags><![CDATA[]]></tags>
+			</meta>
+			<definition type="apply" target="friendlySingle|self">
+				<duration rounds="" time="12000" formula="" permanent="false"/>
+				<delay rounds="0" time="" formula=""/>
+				<property type="statusEffect" id="buffEndorphineInjection" value=""/>
+			</definition>
+			<art>
+				<visualEffect id=""/>
+				<sound id=""/>
+			</art>
+		</effect>
+		
+	</baseEffects>
+</stats>

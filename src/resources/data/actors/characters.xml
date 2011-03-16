@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actors>
+	<characters>
+	
+		<character id="charGerryKing" nameID="nameGerryKing" scriptID="">
+			<meta>
+				<notes><![CDATA[]]></notes>
+				<author><![CDATA[]]></author>
+				<tags><![CDATA[]]></tags>
+			</meta>
+			
+			<!--
+			=======================================================================================
+			TRAITS
+			
+			gender			The character's gender, either "m" or "f".
+			age				Age of the character.
+			height			Character height.
+			weight			Character weight.
+			alignmentID		ID for the character's alignment.
+			raceID			ID for the character's race.
+			biographyID		Text ID for the character's biographic text.
+			=======================================================================================
+			-->
+			<traits
+				gender="m"
+				age=""
+				height=""
+				weight=""
+				alignmentID=""
+				raceID="raceHuman"
+				biographyID="biographyGerryKing">
+				<advantages>
+					<advantage id=""/>
+				</advantages>
+				<disadvantages>
+					<disadvantage id=""/>
+				</disadvantages>
+			</traits>
+			
+			<!--
+			=======================================================================================
+			STATS
+			
+			level.value					The actual value of the actor's level.
+			level.autoLevel				If true, the actor is auto-leveled, i.e. it's level is
+										calculated with an offset to the player's level.
+			level.autoLevelMin			If autoLevel is true this determines the absolute minimum
+										level that the actor can be.
+			level.autoLevelMax			If autoLevel is true this determines the absolute maximum
+										level that the actor can be.
+			attributes.*				Determines values for the actor's attributes.
+			damagePool.maximum			The max. value of the specific damage pool for the actor.
+										This is the value the actor has if he is fully healthy in
+										this damage pool.
+			damagePool.value			The actual value of the specific damage pool for the actor.
+			damagePool.wounds			The current wounds value of the specific damage pool.
+			damagePool.incapThreshold	The incapaciation threshold of the actor in this dmg pool.
+			fatigue.value				The actor's current fatigue (percentage value).
+			=======================================================================================
+			-->
+			<stats>
+				<level value="" autoLevel="false" autoLevelMin="" autoLevelMax=""/>
+				<attributes>
+					<attribute id="attributeStr" value=""/>
+					<attribute id="attributeCon" value=""/>
+					<attribute id="attributeAgi" value=""/>
+					<attribute id="attributePre" value=""/>
+					<attribute id="attributeInt" value=""/>
+					<attribute id="attributeWis" value=""/>
+					<attribute id="attributeCha" value=""/>
+					<attribute id="attributeLuc" value=""/>
+				</attributes>
+				<damagePools>
+					<health maximum="" value="" wounds="" incapThreshold=""/>
+					<action maximum="" value="" wounds="" incapThreshold=""/>
+					<mind maximum="" value="" wounds="" incapThreshold=""/>
+				</damagePools>
+				<fatigue value="0"/>
+			</stats>
+			
+			<!--
+			=======================================================================================
+			PROFESSIONS
+			
+			id			The ID of the profession.
+			xpBase		XP value that the actor currently has in the base tier of the profession.
+			xpBranchX	XP value that the actor currently has in any branch of the profession.
+			xpMaster	XP value that the actor currently has in the master tier of the profession.
+			=======================================================================================
+			-->
+			<professions>
+				<profession id="" xpBase="" xpBranch1="" xpBranch2="" xpBranch3="" xpBranch4="" xpMaster=""/>
+				<profession id="" xpBase="" xpBranch1="" xpBranch2="" xpBranch3="" xpBranch4="" xpMaster=""/>
+			</professions>
+			
+			<!--
+			=======================================================================================
+			SKILLS
+			
+			skill.id		ID of the specific skill. If a skill is not listed for the character it
+							means that the character has 0 points in that skill.
+			skill.value		The character's current points value in the skill.
+			=======================================================================================
+			-->
+			<skills>
+				<skill id="skillMeleeDefense" value="0"/>
+				<skill id="skillMeleeSpeed" value="0"/>
+				<skill id="skillMeleeAccuracy" value="0"/>
+				<skill id="skillMeleeDamage" value="0"/>
+			</skills>
+			
+			<!--
+			=======================================================================================
+			FACTIONS
+			
+			faction.id		ID of the faction that the actor is a member of.
+			faction.rank	The rank of the actor in that faction. This is a number starting from
+							0, lowest rank in the faction up to the value that represents the
+							highest rank in the faction.
+			=======================================================================================
+			-->
+			<factions>
+				<faction id="" rank=""/>
+				<faction id="" rank=""/>
+			</factions>
+			
+			<!--
+			=======================================================================================
+			DISPOSITIONS
+			
+			disposition.targetID	The ID of the target entity that the actor has a disposition for.
+									The target can be either a faction, a race or another actor.
+			disposition.modifier	The modifier value for the disposition, a value from -100 (least
+									liked) to 100 (most liked).
+			=======================================================================================
+			-->
+			<dispositions>
+					<disposition targetID="" modifier=""/>
+					<disposition targetID="" modifier=""/>
+			</dispositions>
+			
+			<!--
+			=======================================================================================
+			APPEARANCE
+			=======================================================================================
+			-->
+			<appearance>
+				<portrait id=""/>
+				<sprite id="spriteGerryKing"/>
+			</appearance>
+			
+			<!--
+			=======================================================================================
+			INVENTORY
+			
+			slots					These are wearable slots that specify what the actor is wearing.
+									Creatures might have different slots and some races might have
+									different slots than humans.
+			items.item.id			ID of the item that the actor carries in his inventory.
+			items.item.count		How many of the specified item the actor carries. Whether an
+									item is stacking or not depends on the item's stackable property.
+			deathItems.item.id		ID of an item that the actor contains (drops) after he is
+									killed. deathItems only appear in the actor's inventory after
+									he has been killed so they are not reachable before, e.g. if
+									the player tries to pick-pocket from this actor.
+			deathItems.item.count	How many of the specified deathItem the actor carries.
+			=======================================================================================
+			-->
+			<inventory>
+				<slots>
+					<head id=""/>
+					<eyes id=""/>
+					<face id=""/>
+					<neck id=""/>
+					<torso id=""/>
+					<hands id=""/>
+					<legs id=""/>
+					<feet id=""/>
+					<belt id=""/>
+					<cloak id=""/>
+					<wristLeft id=""/>
+					<wristRight id=""/>
+					<ringLeft id=""/>
+					<ringRight id=""/>
+					<carryingLeft id=""/>
+					<carryingRight id=""/>
+				</slots>
+				<items>
+					<item id="" count=""/>
+					<item id="" count=""/>
+				</items>
+				<deathItems>
+					<item id="" count=""/>
+					<item id="" count=""/>
+				</deathItems>
+			</inventory>
+			
+			<!--
+			=======================================================================================
+			AI
+			
+			combatStyleID		The ID of the combat syle associated with this actor.
+			aggressionLevel		If the actor's disposition toward another actor falls below this
+								level, he will initiate combat (Though in the case of 0 confidence
+								actors, they will flee instead).
+			assistanceLevel		Governs whether the actor will assist Allies and Friends in combat.
+								0: Helps Nobody (will not help anyone),
+								1: Helps Allies (will only help Allies),
+								2: Helps Friends (will help Friends and Allies),
+								3: Helps Anyone (will help anyone).
+			confidenceLevel		Governs how likely the actor will avoid or flee from threats.
+								0: Foolhardy (will never flee or avoid anyone),
+								1: Brave (will avoid/flee from threats only if severely outmatched),
+								2: Average (will avoid/flee from threats that are stronger than him),
+								3: Cautious (will avoid/flee from threats unless he's stronger),
+								4: Cowardly (will always avoid/flee. Cowardly actors NEVER engage
+								in combat under any circumstances).
+			energy				Determines how often the actor moves to a new location when executing
+								AI packages, and may or may not modify the distance it will allow to
+								accumulate between itself and the actor it is following. This is a
+								percentual value from 0 to 100.
+			responsibility		Determines how willing the actor is to commit a crime and whether or
+								not it will report crimes.
+			mood				Defines the actor's default facial expression, where applicable.
+								Possible choices are: 0: Neutral, 1: Afraid, 2: Angry, 3: Annoyed,
+								4: Cocky, 5: Drugged, 6: Pleasant, 7: Sad.
+			useAggroRadius		Check to enable. When a Neutral/Enemy enters the Aggro radius, the
+								actor stops whatever he was doing and goes into Warn behavior, until
+								the target leaves the radius or the actor goes into combat against
+								the target. If the target remains in the radius too long, the
+								creature will initiate combat. If the target moves to within half
+								the aggro radius, the creature initiates combat immediately.
+			aggroRadius			Distance value. Almost exactly like the Guard Radius on a Guard
+								Package - the actor will warn and then attack any Neutral or Enemy
+								that comes within the Aggro Radius.
+			packages			This is the list of packages this actor will run. See Packages for
+								more information. the order the packages are listed is the order
+								of priority in that packages are executed.
+			=======================================================================================
+			-->
+			<ai
+				combatStyleID=""
+				aggressionLevel=""
+				assistanceLevel=""
+				confidenceLevel=""
+				energy=""
+				responsibility=""
+				mood=""
+				aggroRadius="">
+				<packages>
+					<package id="aipkg1"/>
+					<package id="aipkg2"/>
+				</packages>
+			</ai>
+			
+			<!--
+			=======================================================================================
+			FLAGS
+			
+			essential				Determines if the actor is essential to the game, i.e he cannot
+									be killed and is only incapacitated when lossing all health.
+			questRelated			Determines if the actor is important for a quest. When set to
+									true the actor updates more frequently and it's dead body isn't
+									removed when the cell regenerates.
+			lowLevelProcessing		if true (default) The NPC will update its AI regardless he's in
+									the same cell as the player or not. If disabled the actor will
+									not update it's AI unless he's in the same cell as the player.
+			respawn					If the NPC is killed, he or she will be recreated after x days.
+			canCorpseCheck			Allows the NPC to examine any corpses that it can see.
+			noPersuasion			If checked, this NPC cannot be persuaded in dialogue.
+			noDoorOpen				If checked, this actor cannot open any doors.
+			noCellTravel			If checked, this actor cannot travel to different cells and
+									always stays in the cell it currently is.
+			invulnerable			The actor is not affected by combat.
+			=======================================================================================
+			-->
+			<flags
+				essential="false"
+				questRelated="false"
+				lowLevelProcessing="true"
+				respawn="false"
+				canCorpseCheck="true"
+				noPersuasion="false"
+				noDoorOpen="false"
+				noCellTravel="false"
+				invulnerable="false"/>
+			
+		</character>
+	
+	</characters>
+</actors>

@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+***************************************************************************************************
+	
+	tetragon - Game Engine for web- & desktop-based Flash projects.
+	  ____
+	 /   / TETRAGON
+	/___/  ENGINE
+ 	
+	Licensed under the MIT License
+	
+***************************************************************************************************
+-->
+<project default=".Init" basedir=".." name="tetragon">
+	
+	<property file="bld/build.properties"/>
+	<taskdef resource="flexTasks.tasks" classpath="${sdk}/ant/lib/flexTasks.jar"/>
+	
+	
+	<!-- == DEFAULT TARGETS =================================================================== -->
+	
+	<target name=".Init" description="">
+		<echoproperties/>
+	</target>
+	
+	<target name=".Clean" description="Cleans the output folder.">
+		<clean/>
+		<refresh/>
+	</target>
+	
+	<target name=".Pack" description="Creates a zipped version of the whole project.">
+		<cleanAll/>
+		<zip destfile="${path.pub}/${app.publishname}_project.zip"
+			basedir=""
+			excludes="**/.svn,.settings/**.*,.settings,.project,**/**.~$lock"
+			update="false"
+			compress="true"/>
+		<refresh/>
+	</target>
+	
+	<target name=".Publish" description="Publishes both Web and Desktop release versions.">
+		<cleanAll/>
+		<buildWeb debug="false"/>
+		<publishWeb/>
+		<buildDesktop debug="false"/>
+		<publishDesktop/>
+		<generateAIRUpdateFile/>
+		<clean/>
+		<refresh/>
+	</target>
+	
+	
+	<!-- == WEB TARGETS ======================================================================= -->
+	
+	<target name="Web Build Debug" description="Clean build the project as a web debug version.">
+		<buildWeb debug="true"/>
+		<launchWebDebug/>
+		<refresh/>
+	</target>
+	
+	<target name="Web Build Release" description="Clean build the project as a web release version.">
+		<buildWeb debug="false"/>
+		<launchWebRelease/>
+		<refresh/>
+	</target>
+	
+	<target name="Web Compile" description="Compiles the application as a web debug version.">
+		<compileWeb debug="true"/>
+		<launchWebDebug/>
+		<refresh/>
+	</target>
+	
+	<target name="Web Publish" description="Clean build and publish a web version for release.">
+		<buildWeb debug="false"/>
+		<publishWeb/>
+		<refresh/>
+	</target>
+	
+	
+	<!-- == DESKTOP TARGETS =================================================================== -->
+	
+	<target name="Desktop Build Debug" description="Clean build the project as a desktop debug version.">
+		<buildDesktop debug="true"/>
+		<LaunchDesktop/>
+		<refresh/>
+	</target>
+	
+	<target name="Desktop Build Release" description="Clean build the project as a desktop release version.">
+		<buildDesktop debug="false"/>
+		<LaunchDesktop/>
+		<refresh/>
+	</target>
+	
+	<target name="Desktop Compile" description="Compiles the application as a desktop Debug version.">
+		<compileDesktop debug="true"/>
+		<LaunchDesktop/>
+		<refresh/>
+	</target>
+	
+	<target name="Desktop Publish" description="Clean build and publish a desktop version for release.">
+		<buildDesktop debug="false"/>
+		<publishDesktop/>
+		<generateAIRUpdateFile/>
+		<refresh/>
+	</target>
+	
+	
+	<!-- == MACRODEFS ========================================================================= -->
+	
+	<macrodef name="buildWeb">
+		<attribute name="debug"/>
+		<sequential>
+			<clean/>
+			<prepare releasetype="web" debug="@{debug}" appclasstemplate="appclass.as"/>
+			<generateHTMLWrapper/>
+			<copyWebFiles/>
+			<copyResources/>
+			<compile debug="@{debug}" config="flex-config.xml" isair="false" libpath="player/${fpv.version}"/>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="compileWeb">
+		<attribute name="debug"/>
+		<sequential>
+			<prepare releasetype="web" debug="@{debug}" appclasstemplate="appclass.as"/>
+			<compile debug="@{debug}" config="flex-config.xml" isair="false" libpath="player/${fpv.version}"/>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="buildDesktop">
+		<attribute name="debug"/>
+		<sequential>
+			<clean/>
+			<prepare releasetype="desktop" debug="@{debug}" appclasstemplate="appairclass.as"/>
+			<generateAIRDescriptor/>
+			<copyDesktopFiles/>
+			<packResources/>
+			<compile debug="@{debug}" config="air-config.xml" isair="true" libpath="air"/>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="compileDesktop">
+		<attribute name="debug"/>
+		<sequential>
+			<prepare releasetype="desktop" debug="@{debug}" appclasstemplate="appairclass.as"/>
+			<compile debug="@{debug}" config="air-config.xml" isair="true" libpath="air"/>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="clean">
+		<sequential>
+			<delete includeemptydirs="true">
+				<fileset dir="${path.bin}" includes="**/*" excludes="**/.svn"/>
+			</delete>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="cleanAll">
+		<sequential>
+			<delete includeemptydirs="true">
+				<fileset dir="${path.bin}" includes="**/*" excludes="**/.svn"/>
+			</delete>
+			<delete includeemptydirs="true">
+				<fileset dir="${path.pub}" includes="**/*" excludes="**/.svn"/>
+			</delete>
+		</sequential>
+	</macrodef>
+	
+	<macrodef name="prepare">
+		<attribute name="releasetype"/>
+		<attribute name="debug"/>
+		<attribute name="appclasstemplate"/>
+		<sequential>
+			<buildnumber file="bld/build.number"/>
+			<tstamp>
+				<format property="build.date" pattern="dd-MMMM-yyyy HH:mm" unit="minute" locale="en"/>
+			</tstamp>
+			<echo message="*** ${project.name} version: ${app.version} build #${build.number} (@{releasetype}), ${build.date} ***" level="info"/>
+			<generateAppInfoClass releasetype="@{releasetype}" debug="@{debug}"/>
+			<generateAppClass appclasstemplate="@{appclasstemplate}"/>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="generateAppInfoClass">
+		<attribute name="releasetype"/>
+		<attribute name="debug"/>
+		<sequential>
+			<echo message="Generating AppInfo.as ..." level="info"/>
+			<copy file="${templates.classes}/appinfoclass.as" tofile="${path.src.code}/${top.package}/AppInfo.as" overwrite="true">
+				<filterchain>
+					<replacetokens>
+						<token key="top_package"		value="${top.package}"/>
+						<token key="app_id"				value="${app.id}"/>
+						<token key="app_name"			value="${app.name}"/>
+						<token key="app_description"	value="${app.description}"/>
+						<token key="app_version"		value="${app.version}"/>
+						<token key="build_nr"			value="${build.number}"/>
+						<token key="build_date"			value="${build.date}"/>
+						<token key="app_releasestage"	value="${app.releasestage}"/>
+						<token key="release_type"		value="@{releasetype}"/>
+						<token key="app_copyright"		value="${app.copyright}"/>
+						<token key="meta_publisher"		value="${meta.publisher}"/>
+						<token key="meta_creator"		value="${meta.creator}"/>
+						<token key="meta_contributor"	value="${meta.contributor}"/>
+						<token key="app_year"			value="${app.year}"/>
+						<token key="app_website"		value="${app.website}"/>
+						<token key="app_language"		value="${app.language}"/>
+						<token key="file_name"			value="${swf.targetname}"/>
+						<token key="default_width"		value="${swf.width}"/>
+						<token key="default_height"		value="${swf.height}"/>
+						<token key="is_debug"			value="@{debug}"/>
+					</replacetokens>
+				</filterchain>
+			</copy>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="generateAppClass">
+		<attribute name="appclasstemplate"/>
+		<sequential>
+			<echo message="Generating App.as ..." level="info"/>
+			<copy file="${templates.classes}/@{appclasstemplate}" tofile="${path.src.code}/${top.package}/App.as" overwrite="true">
+				<filterchain>
+					<replacetokens>
+						<token key="top_package"		value="${top.package}"/>
+						<token key="swf_width"			value="${swf.width}"/>
+						<token key="swf_height"			value="${swf.height}"/>
+						<token key="swf_bgcolor"		value="${swf.bgcolor}"/>
+						<token key="swf_framerate"		value="${swf.framerate}"/>
+					</replacetokens>
+				</filterchain>
+			</copy>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="generateHTMLWrapper">
+		<sequential>
+			<echo message="Generating ${swf.htmlwrapper} ..." level="info"/>
+			<copy file="${templates.web}/indextemplate.html" tofile="${path.bin}/${swf.htmlwrapper}" overwrite="true">
+				<filterchain>
+					<replacetokens>
+						<token key="app_name"				value="${app.name}"/>
+						<token key="app_language"			value="${app.language}"/>
+						<token key="app_copyright"			value="${app.copyright}"/>
+						<token key="swf_targetname"			value="${swf.targetname.full}"/>
+						<token key="swf_width"				value="${swf.width}"/>
+						<token key="swf_height"				value="${swf.height}"/>
+						<token key="swf_bgcolor"			value="${swf.bgcolor}"/>
+						<token key="swf_allowfullscreen"	value="${swf.allowfullscreen}"/>
+						<token key="swf_wmode"				value="${swf.wmode}"/>
+						<token key="fpv_version"			value="${fpv.version}"/>
+					</replacetokens>
+				</filterchain>
+			</copy>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="generateAIRDescriptor">
+		<sequential>
+			<echo message="Generating AIR descriptor file ..." level="info"/>
+			<copy file="${templates.air}/airdescriptor.xml" tofile="${path.bin}/${air.descriptor}" overwrite="true">
+				<filterchain>
+					<replacetokens>
+						<token key="air_version"		value="${air.version}"/>
+						<token key="app_id"				value="${app.id}"/>
+						<token key="air_filename"		value="${air.filename}"/>
+						<token key="app_name"			value="${app.name}"/>
+						<token key="app_version"		value="${app.version}"/>
+						<token key="build_nr"			value="${build.number}"/>
+						<token key="app_description"	value="${app.description}"/>
+						<token key="app_copyright"		value="${app.copyright}"/>
+						<token key="swf_targetname"		value="${swf.targetname.full}"/>
+						<token key="air_windowtitle"	value="${air.windowtitle}"/>
+						<token key="air_systemChrome"	value="${air.systemChrome}"/>
+						<token key="air_transparent"	value="${air.transparent}"/>
+						<token key="air_visible"		value="${air.visible}"/>
+						<token key="air_minimizable"	value="${air.minimizable}"/>
+						<token key="air_maximizable"	value="${air.maximizable}"/>
+						<token key="air_resizable"		value="${air.resizable}"/>
+						<token key="swf_width"			value="${swf.width}"/>
+						<token key="swf_height"			value="${swf.height}"/>
+						<token key="air_minsize"		value="${air.minsize}"/>
+						<token key="air_maxsize"		value="${air.maxsize}"/>
+						<token key="meta_publisher"		value="${meta.publisher}"/>
+					</replacetokens>
+				</filterchain>
+			</copy>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="generateAIRUpdateFile">
+		<sequential>
+			<echo message="Generating AIR update file ..." level="info"/>
+			<copy file="${templates.air}/airupdate.xml" tofile="${path.pub}/update.xml" overwrite="true">
+				<filterchain>
+					<replacetokens>
+						<token key="app_version"		value="${app.version}"/>
+						<token key="build_nr"			value="${build.number}"/>
+						<token key="air_updateurl"		value="${air.updateurl}"/>
+						<token key="air_updatenotes"	value="${air.updatenotes}"/>
+					</replacetokens>
+				</filterchain>
+			</copy>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="compile">
+		<attribute name="debug"/>
+		<attribute name="config"/>
+		<attribute name="isair"/>
+		<attribute name="libpath"/>
+		<sequential>
+			<echo message="Compiling ${swf.targetname.full} for runtime v${fpv.version} ..." level="info"/>
+			<mxmlc
+				file="${path.src.code}/${top.package}/${entry.class}.as"
+				output="${path.bin}/${swf.targetname.full}"
+				incremental="false"
+				locale="${app.localestring}"
+				default-frame-rate="${swf.framerate}"
+				default-background-color="0x${swf.bgcolor}"
+				defaults-css-url="${path.theme}/theme.css"
+				target-player="${fpv.version}"
+				debug="@{debug}"
+				accessible="${accessible}"
+				benchmark="${benchmark}"
+				optimize="true"
+				strict="true"
+				show-unused-type-selector-warnings="false">
+				
+				<load-config filename="${FLEX_HOME}/frameworks/@{config}"/>
+				<default-size width="${swf.width}" height="${swf.height}"/>
+				
+				<default-script-limits
+					max-recursion-depth="${max.recursiondepth}"
+					max-execution-time="${max.executiontime}"/>
+				
+				<!--These Meta Tags are required for the Resource Manager -->
+				<keep-as3-metadata name="TypeHint"/>
+				<keep-as3-metadata name="Resource"/>
+				<keep-as3-metadata name="Embed"/>
+				
+				<metadata
+					title="${meta.title}"
+					description="${meta.description}"
+					date="${build.date}">
+					<language code="${app.language}"/>
+					<publisher name="${meta.publisher}"/>
+					<creator name="${meta.creator}"/>
+					<contributor name="${meta.contributor}"/>
+				</metadata>
+				
+				<!-- Conditional Compilation Constant Definitions -->
+				<define name="CONFIG::IS_AIR" value="@{isair}"/>
+				<define name="CONFIG::EXTRA_GAME" value="${extra.game}"/>
+				<define name="CONFIG::EXTRA_RPG" value="${extra.rpg}"/>
+				<define name="CONFIG::USE_EMBEDDED_RESOURCES" value="${resource.useEmbed}"/>
+				
+				<!-- Project Source Path -->
+				<source-path path-element="${path.src.code}"/>
+				
+				<!-- Additional Source Paths should only be used during development! -->
+				<source-path path-element="${path.src.hexagonlib}"/>
+				
+				<!-- Flex Framework Libraries should not be appended! -->
+				<compiler.library-path dir="${FLEX_HOME}/frameworks/libs/@{libpath}" append="false">
+					<include name="*.swc"/>
+				</compiler.library-path>
+				<compiler.library-path dir="${FLEX_HOME}/frameworks/libs" append="false">
+					<include name="flex.swc"/>
+				</compiler.library-path>
+				<compiler.library-path dir="${FLEX_HOME}/frameworks/locale/en_US" append="false">
+					<include name="*.swc"/>
+				</compiler.library-path>
+				
+				<!-- Project SWCs -->
+				<compiler.library-path dir="${path.swc}" append="false">
+					<include name="*.swc"/>
+				</compiler.library-path>
+				
+			</mxmlc>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="copyWebFiles">
+		<sequential>
+			<echo message="Copying web files ..." level="info"/>
+			<copy todir="${path.bin}/js" verbose="off">
+				<fileset dir="bld/templates/pub_web/js" excludes="**/.svn"/>
+			</copy>
+			<copy file="${templates.web}/app_web.ini" tofile="${path.bin}/${swf.targetname}.ini" overwrite="true"/>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="copyDesktopFiles">
+		<sequential>
+			<echo message="Copying desktop files ..." level="info"/>
+			<copy todir="${path.bin}/icons" verbose="off">
+				<fileset dir="${templates.air}/icons" excludes="**/.svn"/>
+			</copy>
+			<copy file="${templates.air}/app_air.ini" tofile="${path.bin}/${swf.targetname}.ini" overwrite="true"/>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="copyResources">
+		<sequential>
+			<echo message="Copying resources ..." level="info"/>
+			<mkdir dir="${path.resources.target}"/>
+			<copy todir="${path.resources.target}" verbose="off">
+				<fileset dir="${path.resources.source}" excludes="**/.svn"/>
+			</copy>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="packResources">
+		<sequential>
+			<echo message="Packing resources ..." level="info"/>
+			<mkdir dir="${path.resources.target}"/>
+			<zip destfile="${path.resources.target}/resources.pak"
+				basedir="${path.resources.source}"
+				excludes="**/.svn,${resource.index.file}"
+				update="false"
+				compress="true"/>
+			<zip destfile="${path.resources.target}/resources.tem"
+				basedir="${path.resources.source}"
+				includes="${resource.index.file}"
+				update="false"
+				compress="true"/>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="publishWeb">
+		<sequential>
+			<echo message="Publishing web application of ${app.name} ${app.version} ..." level="info"/>
+			<zip destfile="${path.pub}/${app.publishname}_web.zip"
+				basedir="${path.bin}"
+				excludes="**/.svn"
+				update="false"
+				compress="true"/>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="publishDesktop">
+		<sequential>
+			<echo message="Publishing desktop application of ${app.name} ${app.version} ..." level="info"/>
+				<java jar="${air.developertool}" fork="true" failonerror="true">
+					<arg value="-package"/>
+					<arg value="-storetype"/>
+					<arg value="pkcs12"/>
+					<arg value="-keystore"/>
+					<arg value="${air.certificate.path}"/>
+					<arg value="-storepass"/>
+					<arg value="${air.certificate.password}"/>
+					<arg value="${path.pub}/${app.publishname}.air"/>
+					<arg value="/${path.bin}/${air.descriptor}"/>
+					<arg value="-C"/>
+					<arg value="${path.bin}"/>
+					<arg value="${swf.targetname.full}"/>
+					<arg value="-C"/>
+					<arg value="${path.bin}"/>
+					<arg value="${swf.targetname}.ini"/>
+					<arg value="-C"/>
+					<arg value="${path.bin}"/>
+					<arg value="icons"/>
+					<arg value="-C"/>
+					<arg value="${path.bin}"/>
+					<arg value="${resource.folder}"/>
+				</java>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="launchWebDebug">
+		<sequential>
+			<echo message="Opening ${swf.targetname.full} in Flash Player (Debug) ..." level="info"/>
+			<exec executable="${flash.player.debug}" spawn="true">
+				<arg value="${path.bin.fp}${swf.targetname.full}"/>
+			</exec>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="launchWebRelease">
+		<sequential>
+			<echo message="Opening ${swf.targetname.full} in Web Browser ..." level="info"/>
+			<exec executable="${web.browser}" dir=".." spawn="true">
+				<arg value="file://${path.bin}/${swf.htmlwrapper}"/>
+			</exec>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="LaunchDesktop">
+		<sequential>
+			<echo message="Opening ${swf.targetname.full} in AIR Debug Launcher ..." level="info"/>
+			<exec executable="${air.debuglauncher}" spawn="true">
+				<arg value="${path.bin}\${air.descriptor}"/>
+				<arg value="${path.bin}"/>
+			</exec>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="refresh">
+		<sequential>
+			<eclipse.refreshLocal resource="${basedir}" depth="infinite"/>
+		</sequential>
+	</macrodef>
+	
+</project>

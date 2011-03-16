@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	=====================================================================================
+	WORLDSPACE DEFINITION
+	Defines a World Space.
+	=====================================================================================
+	id					The unique resource ID of the world space.
+	parentID			ID of the parent worldspace if this wordspace has a parent.
+	mapImageID			The ID of the map image that is used for this wordspace.
+						Worldspace map images give the player an overview of the area.
+	=====================================================================================
+-->
+<worldspaces>
+	
+	<worldspace id="" parentID="" mapImageID="">
+		<name><![CDATA[]]></name>
+	</worldspace>
+	
+</worldspaces>

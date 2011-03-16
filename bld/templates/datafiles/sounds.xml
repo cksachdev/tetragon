@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	=====================================================================================
+	SOUND DEFINITION FILE
+	Defines sound and sound group resources.
+	=====================================================================================
+	Sounds:
+	id					Unique resource ID of the sound.
+	audioType			The type of the ausio file, stream or sequenced.
+	volume				Volume of the sound, a value from 0.0 to 1.0.
+	pan					Panning of the sound, a value from -1.0 to 1.0.
+	startOffset			Start offset in ms.
+	loops				Nr. of times to loop the sound. 0 is one-shot, -1 is endless.
+	loopStartOffset		Start offset in ms. at which the loop starts.
+	loopEndOffset		End offset in ms. at which the loop ends.
+	fadeInDuration		Duration in seconds that the sound takes to reach full volume.
+	fadeOutDuration		Duration in seconds that the sound takes to reach muted volume.
+	audioID				ID of the audio file resource that is associated with the sound.
+	=====================================================================================
+	name				Only for music definitions, an optional name for the music for
+						displaying in-game.
+	=====================================================================================
+	Sound Groups:
+	id					Unique resource ID of the sound group.
+	loops				The number of times the whole sound group should loop.
+	playMode			Playback mode of the sound group. One of the following:
+						"forward", "backward", "pingpong", "random" or "triggered".
+						Sounds in the group are played according to the order that they
+						are placed in the group and the specified play mode.
+	noRandomRepeats		If playmode is "random" this value can be set to true to
+						prevent a sound from being played twice successively.
+	pauseMinDuration	
+	pauseMaxDuration	These can be used to determine a pause between sounds played
+						in the group. If both min and max are 0, no pause occurs, if
+						both values are different a random value will be calculated
+						between min and max duration.
+	=====================================================================================
+-->
+<soundDefinitions>
+	
+	<sounds>
+		<sound
+			id="sound1"
+			audioType="stream"
+			volume="1.0"
+			pan="0.0"
+			startOffset="0"
+			loops="-1"
+			loopStartOffset="0"
+			loopEndOffset="0"
+			fadeInDuration="0.0"
+			fadeOutDuration="0.0"
+			audioID=""/>
+		<sound
+			id="sound2"
+			audioType="sequenced"
+			volume="1.0"
+			pan="0.0"
+			startOffset="0"
+			loops="-1"
+			loopStartOffset="0"
+			loopEndOffset="0"
+			fadeInDuration="0.0"
+			fadeOutDuration="0.0"
+			audioID=""/>
+	</sounds>
+	
+	<music>
+		<sound
+			id="sound1"
+			audioType="stream"
+			volume="1.0"
+			pan="0.0"
+			startOffset="0"
+			loops="-1"
+			loopStartOffset="0"
+			loopEndOffset="0"
+			fadeInDuration="0.0"
+			fadeOutDuration="0.0"
+			audioID="">
+			<name><![CDATA[]]></name>
+		</sound>
+	</music>
+	
+	<soundGroups>
+		<soundGroup
+			id="soundGroup"
+			loops="-1"
+			playMode="forward"
+			noRandomRepeats="false"
+			pauseMinDuration="0"
+			pauseMaxDuration="0">
+			<sound id="sound1"/>
+			<sound id="sound2"/>
+		</soundGroup>
+	</soundGroups>
+	
+</soundDefinitions>

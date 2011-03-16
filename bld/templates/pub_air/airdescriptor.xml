@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<application xmlns="http://ns.adobe.com/air/application/@air_version@">
+
+	<id>@app_id@</id>
+	<filename>@air_filename@</filename>
+	<name>@app_name@</name>
+	<versionNumber>@app_version@</versionNumber>
+	<versionLabel>v@app_version@.@build_nr@</versionLabel>
+	<description>@app_description@</description>
+	<copyright>@app_copyright@</copyright>
+	
+	<initialWindow>
+		<content>@swf_targetname@</content>
+		<title>@air_windowtitle@</title>
+		<systemChrome>@air_systemChrome@</systemChrome>
+		<transparent>@air_transparent@</transparent>
+		<visible>@air_visible@</visible>
+		<minimizable>@air_minimizable@</minimizable>
+		<maximizable>@air_maximizable@</maximizable>
+		<resizable>@air_resizable@</resizable>
+		<width>@swf_width@</width>
+		<height>@swf_height@</height>
+		<minSize>@air_minsize@</minSize>
+		<!-- <maxSize></maxSize> -->
+		<!-- <x></x> -->
+		<!-- <y></y> -->
+	</initialWindow>
+	
+	<!-- <supportedProfiles>desktop extendedDesktop mobileDevice extendedMobileDevice</supportedProfiles> -->
+	
+	<installFolder>@meta_publisher@</installFolder>
+	<programMenuFolder>@meta_publisher@</programMenuFolder>
+	
+	<icon>
+		<image16x16>icons/icon_016.png</image16x16>
+		<image32x32>icons/icon_032.png</image32x32>
+		<!-- <image36x36>icons/icon_036.png</image36x36> -->
+		<image48x48>icons/icon_048.png</image48x48>
+		<!-- <image72x72>icons/icon_072.png</image72x72> -->
+		<image128x128>icons/icon_128.png</image128x128>
+	</icon>
+	
+	<!-- <customUpdateUI></customUpdateUI> -->
+	<!-- <allowBrowserInvocation></allowBrowserInvocation> -->
+	
+	<!-- <fileTypes> -->
+		<!-- <fileType> -->
+			<!-- <name></name> -->
+			<!-- <extension></extension> -->
+			<!-- <description></description> -->
+			<!-- <contentType></contentType> -->
+			<!-- <icon>
+				<image16x16></image16x16>
+				<image32x32></image32x32>
+				<image48x48></image48x48>
+				<image128x128></image128x128>
+			</icon> -->
+		<!-- </fileType> -->
+	<!-- </fileTypes> -->
+	
+	<!--<android> 
+		<manifestAdditions>
+		<![CDATA[
+			<manifest android:installLocation="auto">
+				<uses-permission android:name="android.permission.INTERNET"/>
+				<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+				<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+				<uses-configuration android:reqFiveWayNav="true"/>
+				<supports-screens android:normalScreens="true"/>
+				<uses-feature android:required="true" android:name="android.hardware.touchscreen.multitouch"/>
+				<application android:enabled="true">
+					<activity android:excludeFromRecents="false">
+						<intent-filter>
+							<action android:name="android.intent.action.MAIN"/>
+							<category android:name="android.intent.category.LAUNCHER"/>
+						</intent-filter>
+					</activity>
+				</application>
+			</manifest>
+		]]>
+		</manifestAdditions> 
+	</android> -->
+	
+</application>

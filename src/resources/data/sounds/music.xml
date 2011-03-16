@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soundDefinitions>
+	
+	<music>
+		<sound
+			id="musicWachet"
+			audioType="stream"
+			volume="1.0"
+			pan="0.0"
+			startOffset="0"
+			loops="-1"
+			loopStartOffset="0"
+			loopEndOffset="0"
+			fadeInDuration="0.0"
+			fadeOutDuration="0.0"
+			audioID="audioWachet">
+			<name><![CDATA[Wachet auf, uns rufet die Stimme]]></name>
+		</sound>
+		
+		<sound
+			id="musicHochzeit"
+			audioType="stream"
+			volume="1.0"
+			pan="0.0"
+			startOffset="0"
+			loops="-1"
+			loopStartOffset="0"
+			loopEndOffset="0"
+			fadeInDuration="0.0"
+			fadeOutDuration="0.0"
+			audioID="audioHochzeit">
+			<name><![CDATA[Hochzeitsmarsch]]></name>
+		</sound>
+		<sound
+			id="musicToccata"
+			audioType="stream"
+			volume="1.0"
+			pan="0.0"
+			startOffset="0"
+			loops="-1"
+			loopStartOffset="0"
+			loopEndOffset="0"
+			fadeInDuration="0.0"
+			fadeOutDuration="0.0"
+			audioID="audioToccata">
+			<name><![CDATA[Toccata]]></name>
+		</sound>
+		<sound
+			id="musicFuge"
+			audioType="stream"
+			volume="1.0"
+			pan="0.0"
+			startOffset="0"
+			loops="-1"
+			loopStartOffset="0"
+			loopEndOffset="0"
+			fadeInDuration="0.0"
+			fadeOutDuration="0.0"
+			audioID="audioFuge">
+			<name><![CDATA[Fuge in d-Moll]]></name>
+		</sound>
+		<sound
+			id="musicPicnic"
+			audioType="stream"
+			volume="1.0"
+			pan="0.0"
+			startOffset="0"
+			loops="-1"
+			loopStartOffset="0"
+			loopEndOffset="0"
+			fadeInDuration="0.0"
+			fadeOutDuration="0.0"
+			audioID="audioPicnic">
+			<name><![CDATA[Teddy Bears' Picnic]]></name>
+		</sound>
+		<sound
+			id="musicRobinHood"
+			audioType="stream"
+			volume="1.0"
+			pan="0.0"
+			startOffset="0"
+			loops="-1"
+			loopStartOffset="0"
+			loopEndOffset="0"
+			fadeInDuration="0.0"
+			fadeOutDuration="0.0"
+			audioID="audioRobinHood">
+			<name><![CDATA[The Adventures of Robin Hood]]></name>
+		</sound>
+		<sound
+			id="musicTrauermarsch"
+			audioType="stream"
+			volume="1.0"
+			pan="0.0"
+			startOffset="0"
+			loops="-1"
+			loopStartOffset="0"
+			loopEndOffset="0"
+			fadeInDuration="0.0"
+			fadeOutDuration="0.0"
+			audioID="audioTrauermarsch">
+			<name><![CDATA[Trauermarsch]]></name>
+		</sound>
+		<sound
+			id="musicMcDonald"
+			audioType="stream"
+			volume="1.0"
+			pan="0.0"
+			startOffset="0"
+			loops="-1"
+			loopStartOffset="0"
+			loopEndOffset="0"
+			fadeInDuration="0.0"
+			fadeOutDuration="0.0"
+			audioID="audioMcDonald">
+			<name><![CDATA[Old McDonald Had A Farm]]></name>
+		</sound>
+	</music>
+	
+	<soundGroups>
+		<soundGroup
+			id="musicGroup"
+			loops="-1"
+			playMode="triggered"
+			noRandomRepeats="false"
+			pauseMinDuration="0"
+			pauseMaxDuration="0">
+			<sound id="musicWachet"/>
+			<sound id="musicHochzeit"/>
+			<sound id="musicToccata"/>
+			<sound id="musicFuge"/>
+			<sound id="musicPicnic"/>
+			<sound id="musicRobinHood"/>
+			<sound id="musicTrauermarsch"/>
+			<sound id="musicMcDonald"/>
+		</soundGroup>
+	</soundGroups>
+	
+</soundDefinitions>

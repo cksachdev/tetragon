@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stats>
+	<skills>
+		
+		<skill
+			id="skillMeleeDefense"
+			nameID="skillMeleeDefenseName"
+			descriptionID="skillMeleeDefenseDescription"
+			keyAttribute1ID="str"
+			keyAttribute2ID="agi"/>
+		
+		<skill
+			id="skillMeleeSpeed"
+			nameID="skillMeleeSpeedName"
+			descriptionID="skillMeleeSpeedDescription"
+			keyAttribute1ID="agi"
+			keyAttribute2ID="str"/>
+		
+		<skill
+			id="skillMeleeAccuracy"
+			nameID="skillMeleeAccuracyName"
+			descriptionID="skillMeleeAccuracyDescription"
+			keyAttribute1ID="pre"
+			keyAttribute2ID="agi"/>
+		
+		<skill
+			id="skillMeleeDamage"
+			nameID="skillMeleeDamageName"
+			descriptionID="skillMeleeDamageDescription"
+			keyAttribute1ID="str"
+			keyAttribute2ID="agi"/>
+		
+		<skill
+			id="skillRangedAccuracy"
+			nameID="skillRangedAccuracyName"
+			descriptionID="skillRangedAccuracyDescription"
+			keyAttribute1ID="pre"
+			keyAttribute2ID="agi"/>
+		
+	</skills>
+</stats>

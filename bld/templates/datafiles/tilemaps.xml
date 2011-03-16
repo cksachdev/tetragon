@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	=====================================================================================
+	DECADENCE TILEMAPS FILE
+	Defines one or more tilemaps for use with the Decadence tile scrolling engine.
+	=====================================================================================
+	id					The unique resource ID of the tilemap.
+	type				The type of the tilemap which is one of "orthogonal",
+						"hexagonal" or "isometric". Only orthogonal is supported yet.
+	layerCount			How many tile layers the tilemap is comprising of.
+	width				The total width of the tilemap, in pixels.
+	height				The total height of the tilemap, in pixels.
+	=====================================================================================
+	mapProperties		These are a list of general properties which are supported
+						by a tilemap, e.g. 'backgroundColor' and 'backgroundGradient'
+						which affects the background of the whole map or soundID which
+						can be used to set a sound ID of a loop that plays while the
+						tilemap is displayed.
+	=====================================================================================
+-->
+<tilemaps>
+	
+	<tilemap
+		id="testTtilemap"
+		type="orthogonal"
+		layerCount="1"
+		width="0"
+		height="0"
+		groupCount="0"
+		margin="0"
+		edgeMode="halt">
+	
+		<meta>
+			<notes><![CDATA[]]></notes>
+			<author><![CDATA[]]></author>
+			<tags><![CDATA[]]></tags>
+		</meta>
+		
+		<mapProperties>
+			<property name="backgroundColor" value="0xFF000000"/>
+			<property name="backgroundGradient" value="[-90,0x022B13,0x2C7328,0x09562E,0x65C153,0xCAFF61,0xFFFFB2]"/>
+		</mapProperties>
+		
+		<layers>
+			<layer
+				index="0"
+				name="Layer 0"
+				tileSetID="testTileSet"
+				tileAnimFPS="4"
+				transparent="false"
+				fillColor="0x000000"
+				autoScroll="hv"
+				autoScrollSpeed="1">
+				<properties>
+					<property name="dropShadow" value="[8,40,0x000000,1.0,6,6,0.8,1,false]"/>
+				</properties>
+				<layout>
+					<group id="1" x="14" y="245"/>
+					<group id="2" x="144" y="27"/>
+				</layout>
+			</layer>
+			
+		</layers>
+	</tilemap>
+	
+</tilemaps>

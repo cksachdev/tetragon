@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	=====================================================================================
+	RPG CHARACTER DEFINITION
+	Defines a Role-playing Game Character.
+	=====================================================================================
+	id					The unique resource ID of the character.
+	scriptID			The ID of the script used for this character (optional).
+	=====================================================================================
+	meta.notes			Optional notes for the resource.
+	meta.author			Optional author name of the resource.
+	meta.tags			List of optional keywords, separated by comma, that the
+						resource can be associated with.
+	=====================================================================================
+	name				Name of the character.
+	=====================================================================================
+	traits.gender		Gender of the character, either "m" or "f".
+	traits.age			Age of the character.
+	traits.height		Height of character, in CM.
+	traits.weight		Weight of character, in Kg.
+	traits.raceID		ID of the race the character belongs to.
+	traits.moodID		ID of the default mood of the character.
+	traits.alignmentID	The ID of the aligment associated with the character.
+	traits.biographyID	An ID to a text definition that is used as the biography.
+	=====================================================================================
+-->
+<characters>
+	<character id="" scriptID="">
+		<meta>
+			<notes><![CDATA[]]></notes>
+			<author><![CDATA[]]></author>
+			<tags><![CDATA[]]></tags>
+		</meta>
+		
+		<name><![CDATA[]]></name>
+		
+		<traits gender="" age="" height="" weight="" raceID="" moodID="" alignmentID="" biographyID="">
+			<advantages>
+				<advantage id=""/>
+			</advantages>
+			<disadvantages>
+				<disadvantage id=""/>
+			</disadvantages>
+			<languages>
+				<language id=""/>
+			</languages>
+		</traits>
+		
+		<stats>
+			<base health="" action="" mind="" wounds=""/>
+			<attributes str="" con="" agi="" pre="" int="" wis="" cha="" luc=""/>
+			<level value="" dynamicMult="" dynamicCalcMin="" dynamicCalcMax=""/>
+		</stats>
+		
+		<classes>
+			<class id=""/>
+		</classes>
+		
+		<factions>
+			<faction id="" rank=""/>
+		</factions>
+		
+		<dispositions>
+			<races>
+				<disposition targetID="" modifier=""/>
+			</races>
+			<characters>
+				<disposition targetID="" modifier=""/>
+			</characters>
+			<creatures>
+				<disposition targetID="" modifier=""/>
+			</creatures>
+			<factions>
+				<disposition targetID="" modifier=""/>
+			</factions>
+		</dispositions>
+		
+		<appearance>
+		</appearance>
+		
+		<inventory>
+			<items>
+				<item id="" count=""/>
+			</items>
+			<deathItems>
+				<item id="" count=""/>
+			</deathItems>
+		</inventory>
+		
+		<ai
+			combatStyleID=""
+			aggressionLevel=""
+			assistanceLevel=""
+			confidenceLevel=""
+			energy=""
+			responsibility=""
+			aggroRadius="">
+			<packages>
+				<package id="" priority=""/>
+			</packages>
+		</ai>
+		
+		<flags
+			questEntity="false"
+			lowLevelProcessing="true"
+			essential="false"
+			respawn="false"
+			summonable="false"
+			dynamicLevel="false"/>
+	</character>
+	
+</characters>

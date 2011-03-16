@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sprites>
+	
+	<sprite
+		id="spriteGerryKing"
+		frameWidth="32"
+		frameHeight="32"
+		startFrame="0"
+		frameGap="0"
+		transparent="false"
+		bgColor="0xFF00FF"
+		imageID=imageSpritesheet>
+		<meta>
+			<notes><![CDATA[]]></notes>
+			<author><![CDATA[]]></author>
+			<tags><![CDATA[]]></tags>
+		</meta>
+		<sequences>
+			<sequence
+				name="idle"
+				startFrame="1"
+				endFrame="10"
+				loops="0"
+				playMode="forward"
+				followSequence=""
+				followDelay="0"/>
+			<sequence
+				name="walk"
+				startFrame="11"
+				endFrame="24"
+				loops="0"
+				playMode="forward"
+				followSequence=""
+				followDelay="0"/>
+			<sequence
+				name="fall"
+				startFrame="25"
+				endFrame="32"
+				loops="0"
+				playMode="forward"
+				followSequence="idle"
+				followDelay="1000"/>
+		</sequences>
+	</sprite>
+	
+</sprites>	
