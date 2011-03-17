@@ -19,6 +19,7 @@ CONTENTS
 	3. Requirements
 	4. Project Setup
 	5. Project Structure
+	6. Resource Management
 
 
 -----------------------------------------------------------------------------------------
@@ -63,6 +64,7 @@ Current features:
 - Preloader structure (web-based Flash only).
 - Window bounds management. Stores window position and size (AIR only).
 - Integrated Update Manager (Air only).
+- Multi-locale support. Application text is defined as multi-language text resources.
 - Modular design. Organized in base package, game package etc.
 - Error-free source code! (Yes, it's a feature ;) ).
 
@@ -141,3 +143,36 @@ The tetragon project folder structure is organized as follows:
 		(SWC) that are used for compilation and it may contain theme files too
 		(currently theme.css is only included to supress a warning output by the
 		Flex compiler).
+
+
+-----------------------------------------------------------------------------------------
+
+6. RESOURCE MANAGEMENT
+
+Resources are data-, media- and text-files that are required for your game/application.
+These files can be image files, audio files, shaders, 3D models, custom (XML) data files
+(like tileset- or tilemap definitions) or text data resources. tetragon manages these file
+with it's resource manager by loading them if they are requested or unloading them if
+they are not required anymore.
+
+All resource files are stored in a directory structure in the folder "src/resources". When
+the project is built all resources are being copied to the bin folder for testing or
+distribution packaging. Depending on the runtime target the resources are prepared
+differently: For the web-based Flash build the resources are copied as they are inclusive
+their directory structure. This assures that resource files can quickly be loaded from
+a web server. For the AIR build however the resources are all packed into a zip file
+which is named "resources.pak". The tetragon AIR application then efficiently loads
+resources from this zipped resource pack using random access, i.e. it reads a resource
+directly from the zipped pack without the need to load the whole zip file into memory
+first.
+
+The Resource Index File
+-----------------------
+When a tetragon game/application is launched it executes an application init procedure.
+Among other things during this procedure it loads the resource index file
+(src/resources/resources.xml) and parses entries from it into the application's resource
+index. This resource index file acts as a table of contents for all resource files that
+should be available to your application. Basically it maps resource files to IDs so that
+they can easily be requested later with the resource manager. All resource files that
+are going to be in your game/application need to be indexed in this file. For the AIR
+build the resource index file is also being zipped and named "resources.tem".
