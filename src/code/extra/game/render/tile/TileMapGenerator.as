@@ -237,20 +237,23 @@ package extra.game.render.tile
 			var y:int;
 			var fw:int = (w * 1) - 1;
 			var fh:int = (h * 1) + 1;
+			var tw:int = _tileset.tileImageGridWidth;
+			var th:int = _tileset.tileImageGridHeight;
+			var tc:int = _tileset.tileDefCount - 1;
 			
 			/* Generate upper and lower border for the tilemap. */
 			for (i = 0; i < w; i++)
 			{
-				x = 16 * i;
+				x = tw * i;
 				_tilemap.addTileGroup(_tileset.createGroup(23, x, 0));
-				_tilemap.addTileGroup(_tileset.createGroup(23, x, (16 * h) + 16));
+				_tilemap.addTileGroup(_tileset.createGroup(23, x, (th * h) + th));
 			}
 			/* Generate left and right border for the tilemap. */
 			for (i = 0; i < h; i++)
 			{
-				y = (16 * i) + 16;
+				y = (th * i) + th;
 				_tilemap.addTileGroup(_tileset.createGroup(23, 0, y));
-				_tilemap.addTileGroup(_tileset.createGroup(23, (16 * w) - 16, y));
+				_tilemap.addTileGroup(_tileset.createGroup(23, (tw * w) - tw, y));
 			}
 			
 			/* Fill the map with random tilegroups. */
@@ -258,10 +261,10 @@ package extra.game.render.tile
 			{
 				for (x = 1; x < fw; x++)
 				{
-					var gx:int = 16 * x;
-					var gy:int = 16 * y;
+					var gx:int = tw * x;
+					var gy:int = th * y;
 					var tg:TileGroup;
-					var rnd:int = NumberGenerator.random(0, 57);
+					var rnd:int = NumberGenerator.random(0, tc);
 					tg = _tileset.createGroup(rnd, gx, gy);
 					_tilemap.addTileGroup(tg);
 				}
@@ -272,8 +275,62 @@ package extra.game.render.tile
 		/**
 		 * @private
 		 */
-		private function generateType3Map(sizeRange:int):void
+		private function generateType3Map(sr:int):void
 		{
+			var w:int = 200;
+			var h:int = 120;
+			var i:int;
+			
+			_tilemap = new TileMap();
+			
+			/* Determine random map margin. */
+			if (Dice.chance(33)) _tilemap.margin = 0;
+			else _tilemap.margin = NumberGenerator.random(20, 200);
+			
+			/* Random bg color */
+			_tilemap.backgroundColor = 0x333333;
+			_tilemap.edgeMode = TileScroller.EDGE_MODE_HALT;
+			
+			var vod:TileGroupDefinition = _tileset.getGroupDefinitionByID("void");
+			var wall:TileGroupDefinition = _tileset.getGroupDefinitionByID("wall");
+			var ground:TileGroupDefinition = _tileset.getGroupDefinitionByID("ground");
+			
+			var x:int;
+			var y:int;
+			var fw:int = (w * 1) - 1;
+			var fh:int = (h * 1) + 1;
+			var tw:int = _tileset.tileImageGridWidth;
+			var th:int = _tileset.tileImageGridHeight;
+			var tc:int = _tileset.tileDefCount - 1;
+			
+			/* Generate upper and lower border for the tilemap. */
+			for (i = 0; i < w; i++)
+			{
+				x = tw * i;
+				_tilemap.addTileGroup(_tileset.createGroup(wall.nr, x, 0));
+				_tilemap.addTileGroup(_tileset.createGroup(wall.nr, x, (th * h) + th));
+			}
+			/* Generate left and right border for the tilemap. */
+			for (i = 0; i < h; i++)
+			{
+				y = (th * i) + th;
+				_tilemap.addTileGroup(_tileset.createGroup(wall.nr, 0, y));
+				_tilemap.addTileGroup(_tileset.createGroup(wall.nr, (tw * w) - tw, y));
+			}
+			
+			/* Fill the map with random tilegroups. */
+//			for (y = 1; y < fh; y++)
+//			{
+//				for (x = 1; x < fw; x++)
+//				{
+//					var gx:int = tw * x;
+//					var gy:int = th * y;
+//					var tg:TileGroup;
+//					var rnd:int = NumberGenerator.random(0, tc);
+//					tg = _tileset.createGroup(rnd, gx, gy);
+//					_tilemap.addTileGroup(tg);
+//				}
+//			}
 		}
 		
 		

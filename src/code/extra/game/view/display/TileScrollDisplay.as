@@ -250,10 +250,10 @@ package extra.game.view.display
 					else createTilemap(2, 0);
 					break;
 				case 51:
-//					if (e.ctrlKey && e.shiftKey) createTilemap(3, 2);
-//					else if (e.ctrlKey) createTilemap(3, 1);
-//					else if (e.shiftKey) createTilemap(3, 3);
-//					else createTilemap(3, 0);
+					if (e.ctrlKey && e.shiftKey) createTilemap(3, 2);
+					else if (e.ctrlKey) createTilemap(3, 1);
+					else if (e.shiftKey) createTilemap(3, 3);
+					else createTilemap(3, 0);
 					break;
 				case 52:
 //					if (e.ctrlKey && e.shiftKey) createTilemap(4, 2);
@@ -304,9 +304,12 @@ package extra.game.view.display
 			addResource("tileSet1Image");
 			addResource("tileSet2Image");
 			addResource("tileSet3Image");
+			addResource("fontDina08x16Image");
+			
 			addResource("testTileSet");
 			addResource("bdTileSet");
 			addResource("hnTileSet");
+			addResource("tileSetDina08x16");
 			
 			addResource("testTileMap");
 		}
@@ -334,6 +337,7 @@ package extra.game.view.display
 			
 			if (mapType == 1) _tileset = getResource("bdTileSet");
 			else if (mapType == 2) _tileset = getResource("hnTileSet");
+			else if (mapType == 3) _tileset = getResource("tileSetDina08x16");
 			_tileset.init();
 			
 			_tilemap = new TileMapGenerator().generate(_tileset, mapType, sizeRange);

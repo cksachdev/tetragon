@@ -113,9 +113,25 @@ package extra.game.render.tile
 		 * Adds a tilegroup to the tilemap.
 		 * 
 		 * @param group
+		 * @param overwrite
 		 */
-		public function addTileGroup(group:TileGroup):void
+		public function addTileGroup(group:TileGroup, overwrite:Boolean = false):void
 		{
+			if (overwrite)
+			{
+				var len:uint = _groups.length;
+				for (var i:uint = 0; i < len; i++)
+				{
+					var g:TileGroup = _groups[i];
+					if (group.x == g.x && group.y == g.y)
+					{
+						group.id = i;
+						_groups[i] = group;
+						return;
+					}
+				}
+			}
+			
 			group.id = _groupCount;
 			if (_fixedGroupCount > 0) _groups[_groupCount] = group;
 			else _groups.push(group);

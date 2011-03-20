@@ -26,6 +26,7 @@
 		
 		<file id="tileSet1File" path="data/tilesets/tilesets1.xml" packageID="resourcePackage"/>
 		<file id="tileSet2File" path="data/tilesets/tilesets2.xml" packageID="resourcePackage"/>
+		<file id="fontTileSetFile" path="data/tilesets/font_tilesets.xml" packageID="resourcePackage"/>
 		<file id="tileMap1File" path="data/tilemaps/tilemaps1.xml" packageID="resourcePackage"/>
 		
 		<file id="spritesetsFile" path="data/sprites/sprites.xml" packageID="resourcePackage"/>
@@ -51,6 +52,7 @@
 				<resource id="tileSet1Image" path="images/tilesets/tileset_test.png" packageID="resourcePackage"/>
 				<resource id="tileSet2Image" path="images/tilesets/tileset_bd.png" packageID="resourcePackage"/>
 				<resource id="tileSet3Image" path="images/tilesets/tileset_hn.png" packageID="resourcePackage"/>
+				<resource id="fontDina08x16Image" path="images/fonts/font_dina_08x16.png" packageID="resourcePackage"/>
 			</opaque>
 		</image>
 		
@@ -117,6 +119,7 @@
 			<resource id="testTileSet" fileID="tileSet1File"/>
 			<resource id="bdTileSet" fileID="tileSet1File"/>
 			<resource id="hnTileSet" fileID="tileSet2File"/>
+			<resource id="tileSetDina08x16" fileID="fontTileSetFile"/>
 		</group>
 		
 		<group type="Sprite">

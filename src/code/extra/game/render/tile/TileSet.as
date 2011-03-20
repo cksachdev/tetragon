@@ -34,6 +34,7 @@ package extra.game.render.tile
 	import base.data.DataObject;
 	import base.io.resource.ResourceManager;
 	import base.util.Log;
+
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -229,6 +230,7 @@ package extra.game.render.tile
 			}
 			for each (var d:TileGroupDefinition in _groupDefinitions)
 			{
+				if (!d.properties) continue;
 				var p:TileProperty = d.properties[_defEditorID];
 				if (p && p.value == editorID) return d;
 			}
