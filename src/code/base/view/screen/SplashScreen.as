@@ -122,6 +122,15 @@ package base.view.screen
 		/**
 		 * @inheritDoc
 		 */
+		override public function get showLoadProgress():Boolean
+		{
+			return false;
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
 		override public function set enabled(v:Boolean):void
 		{
 			super.enabled = v;

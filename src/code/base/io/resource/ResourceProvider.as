@@ -182,6 +182,16 @@ package base.io.resource
 		/**
 		 * @private
 		 */
+		protected function onBulkFileProgress(e:FileIOEvent):void
+		{
+			dispatchEvent(new ResourceEvent(ResourceEvent.BULK_PROGRESS,
+				_bulkFiles[e.file.id], null, e.bytesLoaded, e.bytesTotal, e.percentLoaded));
+		}
+		
+		
+		/**
+		 * @private
+		 */
 		protected function onResourceInit(e:ResourceEvent):void
 		{
 			var bf:ResourceBulkFile = e.bulkFile;
@@ -347,8 +357,8 @@ package base.io.resource
 			_bulkFiles[bulkFile.id] = null;
 			delete _bulkFiles[bulkFile.id];
 			
-			var bulk:ResourceBulk = bulkFile.bulk;
-			if (bulk.completeCount == bulk.fileCount)
+			var bulk:ResourceBulk = bulkFile._bulk;
+			if (bulk._completeCount == bulk._fileCount)
 			{
 				_bulkComplete = true;
 				if (_loaderComplete) reset();
@@ -367,7 +377,7 @@ package base.io.resource
 			{
 				bulkFile.items[i].resource.setStatus(ResourceStatus.FAILED);
 			}
-			bulkFile.bulk.fileCount--;
+			bulkFile._bulk._fileCount--;
 			dispatchEvent(new ResourceEvent(ResourceEvent.FILE_FAILED, bulkFile, message));
 			checkComplete(bulkFile);
 		}
@@ -378,7 +388,7 @@ package base.io.resource
 		 */
 		protected function increaseCompleteCount(bulkFile:ResourceBulkFile):void
 		{
-			bulkFile.bulk.completeCount++;
+			bulkFile._bulk._completeCount++;
 		}
 	}
 }

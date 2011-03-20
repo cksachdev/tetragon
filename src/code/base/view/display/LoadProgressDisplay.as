@@ -25,27 +25,28 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.io.resource
+package base.view.display
 {
-	import base.io.resource.wrappers.ResourceWrapper;
+	import flash.display.Sprite;
 	
 	
 	/**
-	 * A value object used by the resource manager to load resource files.
+	 * A simple progress bar that displays the load progress of resources being loaded
+	 * for the displays of a screen. The LoadProgressDisplay itself is not of type Display
+	 * and cannot load resources for itself. It's only purpose is to show load progress.
 	 */
-	public class ResourceBulkFile
+	public class LoadProgressDisplay extends Sprite
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		public var id:String;
-		public var path:String;
-		public var resourceType:String;
-		
-		internal var _bulk:ResourceBulk;
-		private var _wrapper:ResourceWrapper;
-		private var _items:Vector.<ResourceBulkItem>;
+		/** @private */
+		protected var _loadProgressBar:LoadProgressBar;
+		/** @private */
+		protected var _factor:Number;
+		/** @private */
+		protected var _percentage:Number;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -54,14 +55,15 @@ package base.io.resource
 		
 		/**
 		 * Creates a new instance of the class.
-		 * 
-		 * @param id ID of the data file.
 		 */
-		public function ResourceBulkFile(id:String, bulk:ResourceBulk)
+		public function LoadProgressDisplay()
 		{
-			this.id = id;
-			_bulk = bulk;
-			_items = new Vector.<ResourceBulkItem>();
+			super();
+			
+			_loadProgressBar = new LoadProgressBar();
+			addChild(_loadProgressBar);
+			
+			reset();
 		}
 		
 		
@@ -70,69 +72,26 @@ package base.io.resource
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Adds a resource bulk item for loading to the bulk.
+		 * Resets the load progress bar.
 		 */
-		internal function addItem(item:ResourceBulkItem):void
+		public function reset():void
 		{
-			if (path == null) path = item.resource.path;
-			if (resourceType == null) resourceType = item.resource.dataType;
-			
-			item.bulkFile = this;
-			_items.push(item);
+			_factor = _loadProgressBar.bar.width / 100;
+			_percentage = 0;
+			_loadProgressBar.bar.width = 1;
 		}
 		
 		
 		/**
-		 * Returns a String Representation of the class.
+		 * Updates the load progress bar.
 		 * 
-		 * @return A String Representation of the class.
+		 * @param loaded Value of data that has already been loaded.
+		 * @param total Value of total data to be loaded.
 		 */
-		internal function toString():String
+		public function update(loaded:uint , total:uint):void
 		{
-			return "[ResourceBulkFile, id=" + id + ", items=" + items.length + "]";
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Returns the resource bulk item of the bulk file. If this bulk file contains
-		 * more than one item, the first item is returned.
-		 */
-		public function get item():ResourceBulkItem
-		{
-			return items[0];
-		}
-		
-		
-		/**
-		 * The resource bulk that this bulk item is part of.
-		 */
-		public function get bulk():ResourceBulk
-		{
-			return _bulk;
-		}
-		
-		
-		/**
-		 * A vector with the ResourceBulkItems of the bulk file.
-		 */
-		public function get items():Vector.<ResourceBulkItem>
-		{
-			return _items;
-		}
-		
-		
-		internal function get wrapper():ResourceWrapper
-		{
-			return _wrapper;
-		}
-		internal function set wrapper(v:ResourceWrapper):void
-		{
-			_wrapper = v;
-			_wrapper.setup(this);
+			_percentage = loaded / total * 100;
+			_loadProgressBar.bar.width = _percentage * _factor;
 		}
 	}
 }

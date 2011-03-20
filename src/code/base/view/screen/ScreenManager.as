@@ -28,10 +28,13 @@
 package base.view.screen
 {
 	import base.Main;
+	import base.event.ResourceEvent;
 	import base.event.ScreenEvent;
 	import base.util.Log;
+	import base.view.display.LoadProgressDisplay;
 
 	import com.greensock.TweenLite;
+	import com.hexagonstar.display.StageReference;
 	import com.hexagonstar.display.text.ColumnText;
 
 	import flash.display.DisplayObject;
@@ -53,6 +56,8 @@ package base.view.screen
 		private var _main:Main;
 		/** @private */
 		private var _screenParent:DisplayObjectContainer;
+		/** @private */
+		private var _loadProgressDisplay:LoadProgressDisplay;
 		/** @private */
 		private var _screenClasses:Object;
 		/** @private */
@@ -81,6 +86,8 @@ package base.view.screen
 		private var _isLoading:Boolean = false;
 		/** @private */
 		private var _isAutoStart:Boolean = false;
+		/** @private */
+		private var _showLoadProgress:Boolean = false;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -176,12 +183,15 @@ package base.view.screen
 			var screen:DisplayObject = new screenClass();
 			if (screen is BaseScreen)
 			{
+				var bs:BaseScreen = BaseScreen(screen);
+				
 				_isLoading = true;
 				_isAutoStart = autoStart;
 				_openScreenClass = screenClass;
-				_nextScreen = screen;
-				BaseScreen(_nextScreen).main = _main;
-				BaseScreen(_nextScreen).init();
+				_showLoadProgress = bs.showLoadProgress;
+				_nextScreen = bs;
+				bs.main = _main;
+				bs.init();
 				
 				if (fastTransition)
 				{
@@ -329,6 +339,19 @@ package base.view.screen
 		/**
 		 * @private
 		 */
+		private function onScreenProgress(e:ResourceEvent):void
+		{
+			if (!_loadProgressDisplay) return;
+			/* If we got more than four resources use file count rather than bytes. Not really
+			 * a good indicator but does the job for now. Besides bytesLoaded is still buggy. */
+			if (e.totalCount > 3) _loadProgressDisplay.update(e.currentCount, e.totalCount);
+			else _loadProgressDisplay.update(e.bytesLoaded, e.bytesTotal);
+		}
+		
+		
+		/**
+		 * @private
+		 */
 		private function onScreenLoaded(e:ScreenEvent):void
 		{
 			if (!_screen)
@@ -338,7 +361,9 @@ package base.view.screen
 				return;
 			}
 			
+			_screen.removeEventListener(ResourceEvent.BULK_PROGRESS, onScreenProgress);
 			_screen.removeEventListener(ScreenEvent.CREATED, onScreenLoaded);
+			
 			
 			/* Disable screen display objects while fading in. */
 			_screen.enabled = false;
@@ -349,6 +374,7 @@ package base.view.screen
 			
 			_isLoading = false;
 			
+			removeLoadProgressDisplay();
 			if (_tweenDuration > 0)
 			{
 				TweenLite.to(_screen, _tweenDuration, {alpha: 1.0, onComplete: onTweenInComplete});
@@ -453,13 +479,45 @@ package base.view.screen
 		{
 			if (_nextScreen)
 			{
+				addLoadProgressDisplay();
 				setTimeout(function():void
 				{
 					_screen = BaseScreen(_nextScreen);
+					_screen.addEventListener(ResourceEvent.BULK_PROGRESS, onScreenProgress);
 					_screen.addEventListener(ScreenEvent.CREATED, onScreenLoaded);
 					_screen.load();
 				}, _screenOpenDelay * 1000);
 			}
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		private function addLoadProgressDisplay():void
+		{
+			if (!_showLoadProgress) return;
+			_loadProgressDisplay = new LoadProgressDisplay();
+			_loadProgressDisplay.x = StageReference.hCenter - (_loadProgressDisplay.width * 0.5);
+			_loadProgressDisplay.y = StageReference.vCenter - (_loadProgressDisplay.height * 0.5);
+			_loadProgressDisplay.alpha = 0;
+			_screenParent.addChild(_loadProgressDisplay);
+			TweenLite.to(_loadProgressDisplay, 0.6, {alpha: 1.0});
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		private function removeLoadProgressDisplay():void
+		{
+			if (!_loadProgressDisplay) return;
+			_screenParent.swapChildren(_screen, _loadProgressDisplay);
+			TweenLite.to(_loadProgressDisplay, 1.0, {alpha: 0.0, onComplete: function():void
+			{
+				_screenParent.removeChild(_loadProgressDisplay);
+				_loadProgressDisplay = null;
+			}});
 		}
 	}
 }

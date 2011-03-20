@@ -27,6 +27,10 @@
  */
 package base.io.resource
 {
+	/**
+	 * Contains constants for the resource index loader to determine of what basic type
+	 * a resource is.
+	 */
 	public class ResourceGroup
 	{
 		//-----------------------------------------------------------------------------------------

@@ -86,6 +86,7 @@ package base.io.resource
 				Registry.config.ioUseAbsoluteFilePath, Registry.config.ioPreventFileCaching);
 			_loader.addEventListener(FileIOEvent.IO_ERROR, onBulkFileError);
 			_loader.addEventListener(FileIOEvent.SECURITY_ERROR, onBulkFileError);
+			_loader.addEventListener(FileIOEvent.PROGRESS, onBulkFileProgress);
 			_loader.addEventListener(FileIOEvent.FILE_COMPLETE, onBulkFileLoaded);
 			_loader.addEventListener(FileIOEvent.COMPLETE, onLoaderComplete);
 			return true;
@@ -109,6 +110,7 @@ package base.io.resource
 		{
 			_loader.removeEventListener(FileIOEvent.IO_ERROR, onBulkFileError);
 			_loader.removeEventListener(FileIOEvent.SECURITY_ERROR, onBulkFileError);
+			_loader.removeEventListener(FileIOEvent.PROGRESS, onBulkFileProgress);
 			_loader.removeEventListener(FileIOEvent.FILE_COMPLETE, onBulkFileLoaded);
 			_loader.removeEventListener(FileIOEvent.COMPLETE, onLoaderComplete);
 			_loader.dispose();

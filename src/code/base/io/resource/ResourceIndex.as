@@ -28,11 +28,11 @@
 package base.io.resource
 {
 	import base.data.DataObject;
+
 	import com.hexagonstar.display.text.ColumnText;
+
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-
-
 	
 	
 	/**
@@ -326,15 +326,5 @@ package base.io.resource
 		{
 			return "[ResourceIndex, size=" + _size + "]";
 		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
 	}
 }

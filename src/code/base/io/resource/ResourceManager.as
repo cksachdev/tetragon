@@ -126,7 +126,7 @@ package base.io.resource
 		 */
 		public function load(resourceIDs:*, completeHandler:Function = null,
 			loadedHandler:Function = null, failedHandler:Function = null,
-			forceReload:Boolean = false):void
+			progressHandler:Function = null, forceReload:Boolean = false):void
 		{
 			if (resourceIDs == null) return;
 			
@@ -209,7 +209,8 @@ package base.io.resource
 				if (r.status == ResourceStatus.LOADING)
 				{
 					Log.debug("Resource \"" + r.id + "\" is already loading.", this);
-					var vo:HandlerVO = new HandlerVO(completeHandler, loadedHandler, failedHandler);
+					var vo:HandlerVO = new HandlerVO(completeHandler, loadedHandler, failedHandler,
+						progressHandler);
 					if (_waitingHandlers[r.id] == null) _waitingHandlers[r.id] = [];
 					(_waitingHandlers[r.id] as Array).push(vo);
 					continue;
@@ -226,7 +227,7 @@ package base.io.resource
 						{
 							bulk1 = new ResourceBulk(createBulkID(), getResourceProvider(
 								EmbeddedResourceProvider.ID), loadedHandler, failedHandler,
-								completeHandler);
+								completeHandler, progressHandler);
 						}
 						bulk1.addItem(item);
 					}
@@ -237,7 +238,8 @@ package base.io.resource
 							if (!bulk2)
 							{
 								bulk2 = new ResourceBulk(createBulkID(), getResourceProvider(
-									r.packageID), loadedHandler, failedHandler, completeHandler);
+									r.packageID), loadedHandler, failedHandler, completeHandler,
+										progressHandler);
 							}
 							bulk2.addItem(item);
 						}
@@ -247,7 +249,7 @@ package base.io.resource
 							{
 								bulk3 = new ResourceBulk(createBulkID(), getResourceProvider(
 									LoadedResourceProvider.ID), loadedHandler, failedHandler,
-									completeHandler);
+									completeHandler, progressHandler);
 							}
 							bulk3.addItem(item);
 						}
@@ -456,7 +458,7 @@ package base.io.resource
 				var item:ResourceBulkItem = bf.items[i];
 				var r:Resource = item.resource;
 				r.increaseReferenceCount();
-				notifyLoaded(item, bf.bulk.loadedHandler);
+				notifyLoaded(item, bf._bulk.loadedHandler);
 				
 				/* Call any waiting handlers that might have been
 				 * added while the resource was loading. */
@@ -482,7 +484,7 @@ package base.io.resource
 			{
 				var item:ResourceBulkItem = bf.items[i];
 				var r:Resource = item.resource;
-				notifyFailed(item, bf.bulk.failedHandler, e.text);
+				notifyFailed(item, bf._bulk.failedHandler, e.text);
 				
 				/* Call any waiting handlers that might have been
 				 * added while the resource was loading. */
@@ -501,10 +503,37 @@ package base.io.resource
 		/**
 		 * @private
 		 */
+		private function onResourceBulkProgress(e:ResourceEvent):void
+		{
+			var bf:ResourceBulkFile = e.bulkFile;
+			if (!bf) return;
+			for (var i:int = 0; i < bf.items.length; i++)
+			{
+				var item:ResourceBulkItem = bf.items[i];
+				var r:Resource = item.resource;
+				notifyProgress(bf._bulk.progressHandler, e);
+				
+				/* Call any waiting handlers that might have been
+				 * added while the resource was loading. */
+				if (_waitingHandlers[r.id])
+				{
+					var a:Array = _waitingHandlers[r.id];
+					for (var j:int = 0; j < a.length; j++)
+					{
+						notifyProgress(HandlerVO(a[j]).progressHandler, e);
+					}
+				}
+			}
+		}
+		
+		
+		/**
+		 * @private
+		 */
 		private function onResourceBulkLoaded(e:ResourceEvent):void
 		{
 			var bf:ResourceBulkFile = e.bulkFile;
-			notifyComplete(bf.bulk.completeHandler);
+			notifyComplete(bf._bulk.completeHandler);
 			
 			/* We still need to check if any of the bulk file's resource items has any
 			 * waiting handlers assigned, call them and then remove the handlers. */
@@ -571,6 +600,7 @@ package base.io.resource
 				p.addEventListener(ResourceEvent.FILE_FAILED, onResourceFileFailed);
 				p.addEventListener(ResourceEvent.FILE_LOADED, onResourceFileLoaded);
 				p.addEventListener(ResourceEvent.BULK_LOADED, onResourceBulkLoaded);
+				p.addEventListener(ResourceEvent.BULK_PROGRESS, onResourceBulkProgress);
 			}
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
@@ -598,6 +628,15 @@ package base.io.resource
 		private function getResourceProvider(id:String):IResourceProvider
 		{
 			return _resourceProviders[id];
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		private function notifyProgress(progressHandler:Function, e:ResourceEvent):void
+		{
+			if (progressHandler != null) progressHandler(e);
 		}
 		
 		
@@ -638,16 +677,18 @@ package base.io.resource
  * VO used for waiting handlers.
  * @private
  */
-class HandlerVO
+final class HandlerVO
 {
 	public var completeHandler:Function;
 	public var loadedHandler:Function;
 	public var failedHandler:Function;
+	public var progressHandler:Function;
 	
-	public function HandlerVO(ch:Function, lh:Function, fh:Function)
+	public function HandlerVO(ch:Function, lh:Function, fh:Function, ph:Function)
 	{
 		completeHandler = ch;
 		loadedHandler = lh;
 		failedHandler = fh;
+		progressHandler = ph;
 	}
 }

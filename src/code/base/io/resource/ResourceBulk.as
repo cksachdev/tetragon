@@ -42,11 +42,13 @@ package base.io.resource
 		internal var id:String;
 		internal var bulkFiles:Object;
 		internal var provider:IResourceProvider;
-		internal var fileCount:int;
-		internal var completeCount:int;
 		internal var loadedHandler:Function;
 		internal var failedHandler:Function;
 		internal var completeHandler:Function;
+		internal var progressHandler:Function;
+		
+		internal var _fileCount:int;
+		internal var _completeCount:int;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -56,16 +58,18 @@ package base.io.resource
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function ResourceBulk(id:String, p:IResourceProvider, lh:Function, fh:Function, ch:Function)
+		public function ResourceBulk(id:String, p:IResourceProvider, lh:Function, fh:Function,
+			ch:Function, ph:Function)
 		{
 			this.id = id;
 			provider = p;
 			loadedHandler = lh;
 			failedHandler = fh;
 			completeHandler = ch;
-			fileCount = 0;
-			completeCount = 0;
+			progressHandler = ph;
 			bulkFiles = {};
+			_fileCount = 0;
+			_completeCount = 0;
 		}
 		
 		
@@ -89,7 +93,7 @@ package base.io.resource
 			if (f == null)
 			{
 				f = bulkFiles[fileID] = new ResourceBulkFile(fileID, this);
-				fileCount++;
+				_fileCount++;
 			}
 			
 			/* Store the item in the file object. */
@@ -113,8 +117,21 @@ package base.io.resource
 		 */
 		internal function toString():String
 		{
-			return "[ResourceBulk, id=" + id + ", completeCount=" + completeCount
-				+ ", fileCount=" + fileCount + "]";
+			return "[ResourceBulk, id=" + id + ", completeCount=" + _completeCount + ", fileCount=" + _fileCount + "]";
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Getters & Setters
+		//-----------------------------------------------------------------------------------------
+		
+		public function get fileCount():int
+		{
+			return _fileCount;
+		}
+		public function get completeCount():int
+		{
+			return _completeCount + 1;
 		}
 	}
 }

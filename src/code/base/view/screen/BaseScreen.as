@@ -28,6 +28,7 @@
 package base.view.screen
 {
 	import base.event.DisplayEvent;
+	import base.event.ResourceEvent;
 	import base.event.ScreenEvent;
 	import base.view.display.Display;
 
@@ -92,10 +93,29 @@ package base.view.screen
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * Determines whether this screen shows a load progress display while it's resources
+		 * are loaded. The default is true. You can override this getter and set it to false
+		 * for screen where you don't want to shows the load progress display.
+		 */
+		public function get showLoadProgress():Boolean
+		{
+			return true;
+		}
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @private
+		 */
+		private function onDisplayProgress(e:ResourceEvent):void
+		{
+			dispatchEvent(e);
+		}
+		
 		
 		/**
 		 * @private
@@ -112,6 +132,7 @@ package base.view.screen
 				if (!d.loaded) return;
 				/* If we reach this point, all displays have been loaded.
 				 * Remove event listeners from displays. */
+				d.removeEventListener(ResourceEvent.BULK_PROGRESS, onDisplayProgress);
 				d.removeEventListener(DisplayEvent.LOADED, onDisplayLoaded);
 			}
 			setup();
@@ -151,6 +172,7 @@ package base.view.screen
 		{
 			display.main = main;
 			display.screen = this;
+			display.addEventListener(ResourceEvent.BULK_PROGRESS, onDisplayProgress);
 			display.addEventListener(DisplayEvent.LOADED, onDisplayLoaded);
 			_displays.push(display);
 		}

@@ -29,6 +29,7 @@ package base.view.display
 {
 	import base.Main;
 	import base.event.DisplayEvent;
+	import base.event.ResourceEvent;
 	import base.io.resource.Resource;
 	import base.io.resource.ResourceIndex;
 	import base.io.resource.ResourceManager;
@@ -126,7 +127,8 @@ package base.view.display
 				return;
 			}
 			var rm:ResourceManager = ResourceManager.instance;
-			rm.load(_resourceIDs, onResourceLoadComplete, onResourceLoaded, onResourceLoadError);
+			rm.load(_resourceIDs, onResourceLoadComplete, onResourceLoaded, onResourceLoadError,
+				onResourceProgress);
 		}
 		
 		
@@ -322,6 +324,15 @@ package base.view.display
 		 */
 		public function onResourceLoadError(resource:Resource):void
 		{
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		public function onResourceProgress(e:ResourceEvent):void
+		{
+			dispatchEvent(e);
 		}
 		
 		

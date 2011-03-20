@@ -27,15 +27,10 @@
  */
 package base.core.preload
 {
-	import base.view.shape.RectangleShape;
-
 	import com.hexagonstar.data.constants.Alignment;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.text.TextField;
-	import flash.text.TextFormat;
-	import flash.text.TextFormatAlign;
 
 	
 	/**
@@ -82,13 +77,7 @@ package base.core.preload
 		protected var _padding:int = 20;
 		
 		/** @private */
-		protected var _bar:RectangleShape;
-		/** @private */
-		protected var _frame:RectangleShape;
-		/** @private */
-		protected var _textFormat:TextFormat;
-		/** @private */
-		protected var _text:TextField;
+		protected var _bar:LoadProgressBar;
 		
 		/** @private */
 		protected var _factor:Number;
@@ -272,8 +261,7 @@ package base.core.preload
 		 */
 		protected function updateDisplay():void
 		{
-			_text.text = "loading ... " + Math.ceil(_percentage) + "%";
-			_bar.width = _percentage * _factor;
+			_bar.bar.width = _percentage * _factor;
 		}
 		
 		
@@ -283,31 +271,14 @@ package base.core.preload
 		 */
 		protected function draw():void
 		{
-			_frame = new RectangleShape(121, 7, _color, 0.0, 1.0, _color, 1.0);
-			_bar = new RectangleShape(118, 4, _color, 1.0, 0.0, _color, 0.0);
-			_bar.x = 2;
-			_bar.y = 2;
-			
-			_textFormat = new TextFormat("Arial, Helvetica, sans-serif", 10, _color, true);
-			
-			_text = new TextField();
-			_text.width = _frame.width;
-			_text.height = 20;
-			_text.y = 8;
-			_text.selectable = false;
-			_text.border = false;
-			
-			_factor = _bar.width / 100;
-			_bar.width = 1;
-			
-			addChild(_frame);
+			_bar = new LoadProgressBar();
+			_factor = _bar.bar.width / 100;
+			_bar.bar.width = 1;
 			addChild(_bar);
-			addChild(_text);
 			
 			if (_hAlignment == Alignment.LEFT)
 			{
 				x = _padding;
-				_textFormat.align = TextFormatAlign.LEFT;
 			}
 			else if (_hAlignment == Alignment.RIGHT)
 			{
@@ -316,7 +287,6 @@ package base.core.preload
 			else
 			{
 				x = Math.floor((_preloader.stage.stageWidth / 2) - (width / 2));
-				_textFormat.align = TextFormatAlign.CENTER;
 			}
 			
 			if (_vAlignment == Alignment.TOP)
@@ -331,8 +301,6 @@ package base.core.preload
 			{
 				y = Math.floor((_preloader.stage.stageHeight / 2) - (height / 2));
 			}
-			
-			_text.defaultTextFormat = _textFormat;
 		}
 	}
 }
