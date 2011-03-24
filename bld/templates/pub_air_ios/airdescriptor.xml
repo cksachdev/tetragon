@@ -18,20 +18,20 @@
 		<minimizable>@air_minimizable@</minimizable>
 		<maximizable>@air_maximizable@</maximizable>
 		<resizable>@air_resizable@</resizable>
-		<autoOrients>false</autoOrients>
-		<fullScreen>false</fullScreen>
 		<width>@swf_width@</width>
 		<height>@swf_height@</height>
 		<minSize>@air_minsize@</minSize>
 		<!-- <maxSize></maxSize> -->
 		<!-- <x></x> -->
 		<!-- <y></y> -->
-		<!-- <aspectRatio></aspectRatio> -->
-		<!-- <renderMode></renderMode> -->
-		<!-- <softKeyboardBehavior></softKeyboardBehavior> -->
+		<fullScreen>@air_mobile_fullscreen@</fullScreen>
+		<autoOrients>@air_mobile_autoOrients@</autoOrients>
+		<aspectRatio>@air_mobile_aspectRatio@</aspectRatio>
+		<renderMode>@air_mobile_renderMode@</renderMode>
+		<softKeyboardBehavior>@air_mobile_softKeyboardBehavior@</softKeyboardBehavior>
 	</initialWindow>
 	
-	<!-- <supportedProfiles>desktop extendedDesktop mobileDevice extendedMobileDevice</supportedProfiles> -->
+	<supportedProfiles>mobileDevice extendedMobileDevice</supportedProfiles>
 	
 	<installFolder>@meta_publisher@</installFolder>
 	<programMenuFolder>@meta_publisher@</programMenuFolder>
@@ -66,7 +66,6 @@
 	</fileTypes>
 	-->
 	
-	<!--
 	<iPhone>
 		<InfoAdditions>
 			<![CDATA[
@@ -81,33 +80,7 @@
 				<string>YES</string>
 			]]>
 		</InfoAdditions>
-		<requestedDisplayResolution></requestedDisplayResolution>
+		<requestedDisplayResolution>high</requestedDisplayResolution>
 	</iPhone>
-	-->
-	
-	<!--
-	<android> 
-		<manifestAdditions>
-			<![CDATA[
-				<manifest android:installLocation="auto">
-					<uses-permission android:name="android.permission.INTERNET"/>
-					<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-					<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-					<uses-configuration android:reqFiveWayNav="true"/>
-					<supports-screens android:normalScreens="true"/>
-					<uses-feature android:required="true" android:name="android.hardware.touchscreen.multitouch"/>
-					<application android:enabled="true">
-						<activity android:excludeFromRecents="false">
-							<intent-filter>
-								<action android:name="android.intent.action.MAIN"/>
-								<category android:name="android.intent.category.LAUNCHER"/>
-							</intent-filter>
-						</activity>
-					</application>
-				</manifest>
-			]]>
-		</manifestAdditions> 
-	</android>
-	-->
 
 </application>
