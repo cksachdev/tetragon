@@ -25,22 +25,39 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.command.env
+package base.setup
 {
-	import base.command.Command;
-	import base.core.desktop.*;
+	import base.Main;
+	import base.core.cli.CLICommandRegistryMobile;
 
-	import com.hexagonstar.display.StageReference;
-
-	import flash.display.Stage;
-	import flash.display.StageDisplayState;
-
+	import flash.desktop.NativeApplication;
+	
 	
 	/**
-	 * CLI command to toggle fullscreen mode.
+	 * AIRAndroidSetup contains setup instructions exclusively for android-based applications.
 	 */
-	public class ToggleFullscreenCommand extends Command
+	public class AIRAndroidSetup implements ISetup
 	{
+		//-----------------------------------------------------------------------------------------
+		// Properties
+		//-----------------------------------------------------------------------------------------
+		
+		private var _main:Main;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Constructor
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Constructs a new instance.
+		 */
+		public function AIRAndroidSetup(main:Main)
+		{
+			_main = main;
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
@@ -48,56 +65,39 @@ package base.command.env
 		/**
 		 * @inheritDoc
 		 */
-		override public function execute():void
+		public function initialSetup():void
 		{
-			super.execute();
-			
-			var stage:Stage = StageReference.stage;
-			var state:String = stage.displayState;
-			var interactive:String = StageDisplayState["FULL_SCREEN_INTERACTIVE"];
-			/* We have fs interactive support! */
-			if (interactive != null)
+			/* set this to false, when we close the application we first do an update. */
+			NativeApplication.nativeApplication.autoExit = false;
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function postConfigSetup():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function postUISetup():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function finalSetup():void
+		{
+			/* Register mobile-specific CLI commands if we have the Console available. */
+			if (_main.console && _main.console.cli)
 			{
-				if (state == StageDisplayState["FULL_SCREEN_INTERACTIVE"]
-					|| state == StageDisplayState.FULL_SCREEN)
-				{
-					state = StageDisplayState.NORMAL;
-					// TODO To be changed! Fullscreen state should not be stored in app.ini
-					// but in user settings file!
-					//_main.config.useFullscreen = false;
-				}
-				else
-				{
-					CONFIG::IS_DESKTOP_BUILD
-					{
-						WindowBoundsManager.instance.storeWindowBounds(_main.baseWindow, "base");
-					}
-					state = StageDisplayState["FULL_SCREEN_INTERACTIVE"];
-					// TODO To be changed! Fullscreen state should not be stored in app.ini
-					// but in user settings file!
-					//_main.config.useFullscreen = true;
-				}
+				new CLICommandRegistryMobile(_main);
 			}
-			else
-			{
-				if (state == StageDisplayState.FULL_SCREEN)
-				{
-					state = StageDisplayState.NORMAL;
-					// TODO To be changed! Fullscreen state should not be stored in app.ini
-					// but in user settings file!
-					//_main.config.useFullscreen = false;
-				}
-				else
-				{
-					state = StageDisplayState.FULL_SCREEN;
-					// TODO To be changed! Fullscreen state should not be stored in app.ini
-					// but in user settings file!
-					//_main.config.useFullscreen = true;
-				}
-			}
-			
-			stage.displayState = state;
-			complete();
 		}
 		
 		
@@ -108,9 +108,14 @@ package base.command.env
 		/**
 		 * @inheritDoc
 		 */
-		override public function get name():String 
+		public function get name():String
 		{
-			return "toggleFullscreen";
+			return "android";
 		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Event Handlers
+		//-----------------------------------------------------------------------------------------
 	}
 }

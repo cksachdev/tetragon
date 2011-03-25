@@ -28,19 +28,19 @@
 package base.setup
 {
 	import base.Main;
-	import base.core.cli.CLICommandRegisterAIR;
+	import base.core.cli.CLICommandRegistryDesktop;
 	import base.core.desktop.WindowBoundsManager;
 	import base.data.Registry;
 	import base.event.UpdateManagerEvent;
 
 	import flash.desktop.NativeApplication;
-
-
+	import flash.display.NativeWindow;
+	
 	
 	/**
-	 * AIRSetup contains setup instructions exclusively for desktop-based applications.
+	 * AIRDesktopSetup contains setup instructions exclusively for desktop-based applications.
 	 */
-	public class AIRSetup implements ISetup
+	public class AIRDesktopSetup implements ISetup
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -57,7 +57,7 @@ package base.setup
 		/**
 		 * Constructs a new AIRSetup instance.
 		 */
-		public function AIRSetup(main:Main)
+		public function AIRDesktopSetup(main:Main)
 		{
 			_main = main;
 		}
@@ -97,8 +97,8 @@ package base.setup
 		 */
 		public function postUISetup():void
 		{
-			/* Only create new AIR extras if it's not already existing! */
-			if (!_main.airExtras) _main.airExtras = new AIRHelper(_main);
+			/* Only create new setup helper if it's not already existing! */
+			if (!_main.setupHelper) _main.setupHelper = new AIRDesktopHelper(_main);
 		}
 		
 		
@@ -107,9 +107,12 @@ package base.setup
 		 */
 		public function finalSetup():void
 		{
-			/* Make application visible. */
-			_main.view.stage.nativeWindow.visible = true;
-			_main.view.stage.nativeWindow.activate();
+			if (NativeWindow.isSupported)
+			{
+				/* Make application visible. */
+				_main.view.stage.nativeWindow.visible = true;
+				_main.view.stage.nativeWindow.activate();
+			}
 			
 			// TODO Updates disabled temporarily! We need to place the update
 			// process to another time since it interferes with the initial UI
@@ -128,10 +131,10 @@ package base.setup
 			{
 			}
 			
-			/* Register AIR-specific CLI commands if we have the Console available. */
+			/* Register desktop-specific CLI commands if we have the Console available. */
 			if (_main.console && _main.console.cli)
 			{
-				new CLICommandRegisterAIR(_main);
+				new CLICommandRegistryDesktop(_main);
 			}
 		}
 		
@@ -145,7 +148,7 @@ package base.setup
 		 */
 		public function get name():String
 		{
-			return "air";
+			return "desktop";
 		}
 		
 		

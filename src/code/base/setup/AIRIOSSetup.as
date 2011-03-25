@@ -25,43 +25,97 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.core.cli
+package base.setup
 {
 	import base.Main;
-	import base.command.env.*;
+	import base.core.cli.CLICommandRegistryMobile;
+
+	import flash.desktop.NativeApplication;
 	
 	
 	/**
-	 * Special class where all AIR-related command registrations for the CLI are placed.
-	 * Register any commands here that you want to have usable in the CLI. This class is
-	 * for registering commands that refer to AIR-only classes which are not available
-	 * for web-base Flash.
+	 * AIRIOSSetup contains setup instructions exclusively for iOS-based applications.
 	 */
-	public class CLICommandRegisterAIR
+	public class AIRIOSSetup implements ISetup
 	{
+		//-----------------------------------------------------------------------------------------
+		// Properties
+		//-----------------------------------------------------------------------------------------
+		
+		private var _main:Main;
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Creates a new instance of the class.
+		 * Constructs a new instance.
 		 */
-		public function CLICommandRegisterAIR(main:Main)
+		public function AIRIOSSetup(main:Main)
 		{
-			registerCommands(main.console.cli);
+			_main = main;
 		}
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Private Methods
+		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @private
+		 * @inheritDoc
 		 */
-		private function registerCommands(cli:CLI):void
+		public function initialSetup():void
 		{
-			cli.registerCommand("resetwinbounds", ResetWinBoundsCommand, "Resets the window size and position.", "env");
+			/* set this to false, when we close the application we first do an update. */
+			NativeApplication.nativeApplication.autoExit = false;
 		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function postConfigSetup():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function postUISetup():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function finalSetup():void
+		{
+			/* Register mobile-specific CLI commands if we have the Console available. */
+			if (_main.console && _main.console.cli)
+			{
+				new CLICommandRegistryMobile(_main);
+			}
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Getters & Setters
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get name():String
+		{
+			return "ios";
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Event Handlers
+		//-----------------------------------------------------------------------------------------
 	}
 }

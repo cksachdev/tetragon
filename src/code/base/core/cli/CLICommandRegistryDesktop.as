@@ -25,32 +25,41 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package @top_package@
+package base.core.cli
 {
+	import base.Main;
+	import base.command.env.*;
+	
+	
 	/**
-	 * AppInfo
-	 * Ant auto-generated application information class. Do not edit!
+	 * Registry for CLI commands that are available only for desktop builds. You can register
+	 * any commands here that you want to have usable in the CLI for desktop builds only.
 	 */
-	public final class AppInfo
+	public class CLICommandRegistryDesktop
 	{
-		public static const ID:String				= "@app_id@";
-		public static const NAME:String				= "@app_name@";
-		public static const DESCRIPTION:String		= "@app_description@";
-		public static const VERSION:String			= "@app_version@";
-		public static const BUILD:String			= "@build_nr@";
-		public static const BUILD_DATE:String		= "@build_date@";
-		public static const BUILD_TYPE:String		= "@build_type@";
-		public static const RELEASE_STAGE:String	= "@app_releasestage@";
-		public static const COPYRIGHT:String		= "@app_copyright@";
-		public static const PUBLISHER:String		= "@meta_publisher@";
-		public static const CREATOR:String			= "@meta_creator@";
-		public static const CONTRIBUTOR:String		= "@meta_contributor@";
-		public static const YEAR:String				= "@app_year@";
-		public static const WEBSITE:String			= "@app_website@";
-		public static const LANGUAGE:String			= "@app_language@";
-		public static const FILENAME:String			= "@file_name@";
-		public static const DEFAULT_WIDTH:int		= @default_width@;
-		public static const DEFAULT_HEIGHT:int		= @default_height@;
-		public static const IS_DEBUG:Boolean		= @is_debug@;
+		//-----------------------------------------------------------------------------------------
+		// Constructor
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Creates a new instance of the class.
+		 */
+		public function CLICommandRegistryDesktop(main:Main)
+		{
+			registerCommands(main.console.cli);
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Private Methods
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @private
+		 */
+		private function registerCommands(cli:CLI):void
+		{
+			cli.registerCommand("env", "resetwinbounds", ResetWinBoundsCommand, "Resets the window size and position.");
+		}
 	}
 }

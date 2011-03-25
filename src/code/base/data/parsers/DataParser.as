@@ -58,7 +58,7 @@ package base.data.parsers
 		 */
 		public function dispose():void
 		{
-			CONFIG::IS_AIR
+			CONFIG::IS_AIR_BUILD
 			{
 				System.disposeXML(_xml);
 			}

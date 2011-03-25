@@ -159,17 +159,19 @@
 	</target>
 	
 	
-	<!-- == MACRODEFS ========================================================================= -->
+	<!-- == MACRODEFS: WEB BUILD ============================================================== -->
 	
 	<macrodef name="buildWeb">
 		<attribute name="debug"/>
 		<sequential>
 			<clean/>
-			<prepare releasetype="web" debug="@{debug}" appclasstemplate="appclass.as"/>
+			<prepare buildType="web" debug="@{debug}" appclasstemplate="appclass.as"/>
 			<generateHTMLWrapper/>
 			<copyWebFiles/>
 			<copyResources/>
-			<compile debug="@{debug}" config="flex-config.xml" isair="false" libpath="player/${fpv.version}"/>
+			<compile debug="@{debug}" config="flex-config.xml" isWebBuild="true" isAIRBuild="false"
+				isDesktopBuild="false" isMobileBuild="false" isAndroidBuild="false" isIOSBuild="false"
+				libpath="player/${fpv.version}"/>
 		</sequential>
 	</macrodef>
 	
@@ -177,21 +179,27 @@
 	<macrodef name="compileWeb">
 		<attribute name="debug"/>
 		<sequential>
-			<prepare releasetype="web" debug="@{debug}" appclasstemplate="appclass.as"/>
-			<compile debug="@{debug}" config="flex-config.xml" isair="false" libpath="player/${fpv.version}"/>
+			<prepare buildType="web" debug="@{debug}" appclasstemplate="appclass.as"/>
+			<compile debug="@{debug}" config="flex-config.xml" isWebBuild="true" isAIRBuild="false"
+				isDesktopBuild="false" isMobileBuild="false" isAndroidBuild="false" isIOSBuild="false"
+				libpath="player/${fpv.version}"/>
 		</sequential>
 	</macrodef>
 	
+	
+	<!-- == MACRODEFS: DESKTOP BUILD ========================================================== -->
 	
 	<macrodef name="buildDesktop">
 		<attribute name="debug"/>
 		<sequential>
 			<clean/>
-			<prepare releasetype="desktop" debug="@{debug}" appclasstemplate="appairclass.as"/>
+			<prepare buildType="desktop" debug="@{debug}" appclasstemplate="appairclass.as"/>
 			<generateAIRDescriptor templatesfolder="${templates.air.desktop}"/>
 			<copyDesktopFiles/>
 			<packResources/>
-			<compile debug="@{debug}" config="air-config.xml" isair="true" libpath="air"/>
+			<compile debug="@{debug}" config="air-config.xml" isWebBuild="false" isAIRBuild="true"
+				isDesktopBuild="true" isMobileBuild="false" isAndroidBuild="false" isIOSBuild="false"
+				libpath="air"/>
 		</sequential>
 	</macrodef>
 	
@@ -199,21 +207,27 @@
 	<macrodef name="compileDesktop">
 		<attribute name="debug"/>
 		<sequential>
-			<prepare releasetype="desktop" debug="@{debug}" appclasstemplate="appairclass.as"/>
-			<compile debug="@{debug}" config="air-config.xml" isair="true" libpath="air"/>
+			<prepare buildType="desktop" debug="@{debug}" appclasstemplate="appairclass.as"/>
+			<compile debug="@{debug}" config="air-config.xml" isWebBuild="false" isAIRBuild="true"
+				isDesktopBuild="true" isMobileBuild="false" isAndroidBuild="false" isIOSBuild="false"
+				libpath="air"/>
 		</sequential>
 	</macrodef>
 	
 	
+	<!-- == MACRODEFS: ANDROID BUILD ========================================================== -->
+		
 	<macrodef name="buildAndroid">
 		<attribute name="debug"/>
 		<sequential>
 			<clean/>
-			<prepare releasetype="android" debug="@{debug}" appclasstemplate="appairclass.as"/>
+			<prepare buildType="android" debug="@{debug}" appclasstemplate="appairclass.as"/>
 			<generateAIRDescriptor templatesfolder="${templates.air.android}"/>
 			<copyAndroidFiles/>
 			<packResources/>
-			<compile debug="@{debug}" config="air-config.xml" isair="true" libpath="air"/>
+			<compile debug="@{debug}" config="air-config.xml" isWebBuild="false" isAIRBuild="true"
+				isDesktopBuild="false" isMobileBuild="true" isAndroidBuild="true" isIOSBuild="false"
+				libpath="air"/>
 		</sequential>
 	</macrodef>
 	
@@ -221,21 +235,27 @@
 	<macrodef name="compileAndroid">
 		<attribute name="debug"/>
 		<sequential>
-			<prepare releasetype="android" debug="@{debug}" appclasstemplate="appairclass.as"/>
-			<compile debug="@{debug}" config="air-config.xml" isair="true" libpath="air"/>
+			<prepare buildType="android" debug="@{debug}" appclasstemplate="appairclass.as"/>
+			<compile debug="@{debug}" config="air-config.xml" isWebBuild="false" isAIRBuild="true"
+				isDesktopBuild="false" isMobileBuild="true" isAndroidBuild="true" isIOSBuild="false"
+				libpath="air"/>
 		</sequential>
 	</macrodef>
 	
+	
+	<!-- == MACRODEFS: IOS BUILD ============================================================== -->
 	
 	<macrodef name="buildIOS">
 		<attribute name="debug"/>
 		<sequential>
 			<clean/>
-			<prepare releasetype="ios" debug="@{debug}" appclasstemplate="appairclass.as"/>
+			<prepare buildType="ios" debug="@{debug}" appclasstemplate="appairclass.as"/>
 			<generateAIRDescriptor templatesfolder="${templates.air.ios}"/>
 			<copyIOSFiles/>
 			<packResources/>
-			<compile debug="@{debug}" config="air-config.xml" isair="true" libpath="air"/>
+			<compile debug="@{debug}" config="air-config.xml" isWebBuild="false" isAIRBuild="true"
+				isDesktopBuild="false" isMobileBuild="true" isAndroidBuild="false" isIOSBuild="true"
+				libpath="air"/>
 		</sequential>
 	</macrodef>
 	
@@ -243,11 +263,15 @@
 	<macrodef name="compileIOS">
 		<attribute name="debug"/>
 		<sequential>
-			<prepare releasetype="ios" debug="@{debug}" appclasstemplate="appairclass.as"/>
-			<compile debug="@{debug}" config="air-config.xml" isair="true" libpath="air"/>
+			<prepare buildType="ios" debug="@{debug}" appclasstemplate="appairclass.as"/>
+			<compile debug="@{debug}" config="air-config.xml" isWebBuild="false" isAIRBuild="true"
+				isDesktopBuild="false" isMobileBuild="true" isAndroidBuild="false" isIOSBuild="true"
+				libpath="air"/>
 		</sequential>
 	</macrodef>
 	
+	
+	<!-- == MACRODEFS: GENERAL ================================================================ -->
 	
 	<macrodef name="clean">
 		<sequential>
@@ -269,8 +293,9 @@
 		</sequential>
 	</macrodef>
 	
+	
 	<macrodef name="prepare">
-		<attribute name="releasetype"/>
+		<attribute name="buildType"/>
 		<attribute name="debug"/>
 		<attribute name="appclasstemplate"/>
 		<sequential>
@@ -278,15 +303,15 @@
 			<tstamp>
 				<format property="build.date" pattern="dd-MMMM-yyyy HH:mm" unit="minute" locale="en"/>
 			</tstamp>
-			<echo message="*** ${project.name} version: ${app.version} build #${build.number} (@{releasetype}), ${build.date} ***" level="info"/>
-			<generateAppInfoClass releasetype="@{releasetype}" debug="@{debug}"/>
+			<echo message="*** ${project.name} version: ${app.version} build #${build.number} (@{buildType}), ${build.date} ***" level="info"/>
+			<generateAppInfoClass buildType="@{buildType}" debug="@{debug}"/>
 			<generateAppClass appclasstemplate="@{appclasstemplate}"/>
 		</sequential>
 	</macrodef>
 	
 	
 	<macrodef name="generateAppInfoClass">
-		<attribute name="releasetype"/>
+		<attribute name="buildType"/>
 		<attribute name="debug"/>
 		<sequential>
 			<echo message="Generating AppInfo.as ..." level="info"/>
@@ -301,7 +326,7 @@
 						<token key="build_nr"			value="${build.number}"/>
 						<token key="build_date"			value="${build.date}"/>
 						<token key="app_releasestage"	value="${app.releasestage}"/>
-						<token key="release_type"		value="@{releasetype}"/>
+						<token key="build_type"			value="@{buildType}"/>
 						<token key="app_copyright"		value="${app.copyright}"/>
 						<token key="meta_publisher"		value="${meta.publisher}"/>
 						<token key="meta_creator"		value="${meta.creator}"/>
@@ -422,7 +447,12 @@
 	<macrodef name="compile">
 		<attribute name="debug"/>
 		<attribute name="config"/>
-		<attribute name="isair"/>
+		<attribute name="isWebBuild"/>
+		<attribute name="isAIRBuild"/>
+		<attribute name="isDesktopBuild"/>
+		<attribute name="isMobileBuild"/>
+		<attribute name="isAndroidBuild"/>
+		<attribute name="isIOSBuild"/>
 		<attribute name="libpath"/>
 		<sequential>
 			<echo message="Compiling ${swf.targetname.full} ..." level="info"/>
@@ -465,7 +495,12 @@
 				</metadata>
 				
 				<!-- Conditional Compilation Constant Definitions -->
-				<define name="CONFIG::IS_AIR" value="@{isair}"/>
+				<define name="CONFIG::IS_WEB_BUILD" value="@{isWebBuild}"/>
+				<define name="CONFIG::IS_AIR_BUILD" value="@{isAIRBuild}"/>
+				<define name="CONFIG::IS_DESKTOP_BUILD" value="@{isDesktopBuild}"/>
+				<define name="CONFIG::IS_MOBILE_BUILD" value="@{isMobileBuild}"/>
+				<define name="CONFIG::IS_ANDROID_BUILD" value="@{isAndroidBuild}"/>
+				<define name="CONFIG::IS_IOS_BUILD" value="@{isIOSBuild}"/>
 				<define name="CONFIG::EXTRA_GAME" value="${extra.game}"/>
 				<define name="CONFIG::EXTRA_RPG" value="${extra.rpg}"/>
 				<define name="CONFIG::USE_EMBEDDED_RESOURCES" value="${resource.useEmbed}"/>

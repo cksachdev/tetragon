@@ -231,7 +231,7 @@ package base.io.file.loaders
 			parseData(xml);
 			parseText(xml);
 			
-			CONFIG::IS_AIR
+			CONFIG::IS_AIR_BUILD
 			{
 				System.disposeXML(xml);
 			}

@@ -108,7 +108,7 @@ package base.io.resource
 		 */
 		private function onPackedResourceProviderEvent(e:Event):void
 		{
-			CONFIG::IS_AIR
+			CONFIG::IS_AIR_BUILD
 			{
 				if (e)
 				{
@@ -242,7 +242,7 @@ package base.io.resource
 		 */
 		private function preparePackageFiles():void
 		{
-			CONFIG::IS_AIR
+			CONFIG::IS_AIR_BUILD
 			{
 				_packedResourceProviderCount = 0;
 				_usePackages = true;

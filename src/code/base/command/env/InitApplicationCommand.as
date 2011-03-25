@@ -171,11 +171,22 @@ package base.command.env
 		 */
 		private function addSetups():void
 		{
-			/* Add AIR-specific setup if we're on an AIR application. */
-			CONFIG::IS_AIR
+			/* Add Desktop-specific setup if this is an AIR Desktop build. */
+			CONFIG::IS_DESKTOP_BUILD
 			{
-				_setups.push(new AIRSetup(_main));
+				_setups.push(new AIRDesktopSetup(_main));
 			}
+			/* Add Android-specific setup if this is an AIR Android build. */
+			CONFIG::IS_ANDROID_BUILD
+			{
+				_setups.push(new AIRAndroidSetup(_main));
+			}
+			/* Add iOS-specific setup if this is an AIR iOS build. */
+			CONFIG::IS_IOS_BUILD
+			{
+				_setups.push(new AIRIOSSetup(_main));
+			}
+			
 			/* You can add setups for extra code branches here if needed. */
  			CONFIG::EXTRA_GAME
 			{
@@ -269,7 +280,7 @@ package base.command.env
 			Log.info("^^" + AppInfo.NAME + " v" + AppInfo.VERSION
 				+ " " + AppInfo.RELEASE_STAGE
 				+ " build #" + AppInfo.BUILD
-				+ " (" + AppInfo.RELEASE_TYPE
+				+ " (" + AppInfo.BUILD_TYPE
 				+ (AppInfo.IS_DEBUG ? " debug" : "") + ")^^");
 			if (_main.console) _main.console.welcome();
 			complete();
