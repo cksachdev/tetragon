@@ -33,12 +33,12 @@ package base
 	 */
 	public final class AppInfo
 	{
-		public static const ID:String				= "com.hexagonstar.tetragonapplication";
+		public static const ID:String				= "com.hexagonstar.tetragon";
 		public static const NAME:String				= "Tetragon Application";
 		public static const DESCRIPTION:String		= "Tetragon Application Test Build";
 		public static const VERSION:String			= "1.0.0";
-		public static const BUILD:String			= "3845";
-		public static const BUILD_DATE:String		= "25-March-2011 16:28";
+		public static const BUILD:String			= "3968";
+		public static const BUILD_DATE:String		= "25-March-2011 23:24";
 		public static const BUILD_TYPE:String		= "desktop";
 		public static const RELEASE_STAGE:String	= "beta";
 		public static const COPYRIGHT:String		= "Hexagon Star Softworks";

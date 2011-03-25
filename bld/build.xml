@@ -14,6 +14,7 @@
 <project default=".Init" basedir=".." name="tetragon">
 	
 	<property file="bld/build.properties"/>
+	<property file="${password.properties}"/>
 	<taskdef resource="flexTasks.tasks" classpath="${sdk}/ant/lib/flexTasks.jar"/>
 	
 	
@@ -32,7 +33,7 @@
 		<cleanAll/>
 		<zip destfile="${path.pub}/${app.publishname}_project.zip"
 			basedir=""
-			excludes="**/.svn,.settings/**,.settings/**.*,.settings,.git/**,.git/**.*,.git,.project,README,**/**.~$lock"
+			excludes="**/.svn,.settings/**,.settings/**.*,.settings,.git/**,.git/**.*,.git,doc/tetragon/**,.project,README,**/**.~$lock"
 			update="false"
 			compress="true"/>
 		<refresh/>
@@ -536,7 +537,7 @@
 		<sequential>
 			<echo message="Copying web files ..." level="info"/>
 			<copy todir="${path.bin}/js" verbose="off">
-				<fileset dir="bld/templates/pub_web/js" excludes="**/.svn"/>
+				<fileset dir="${templates.web}/js" excludes="**/.svn"/>
 			</copy>
 			<copy file="${templates.web}/app_web.ini" tofile="${path.bin}/${swf.targetname}.ini" overwrite="true"/>
 		</sequential>
@@ -620,29 +621,31 @@
 	<macrodef name="publishDesktop">
 		<sequential>
 			<echo message="Publishing desktop application of ${app.name} ${app.version} ..." level="info"/>
-				<java jar="${air.developertool}" fork="true" failonerror="true">
-					<arg value="-package"/>
-					<arg value="-storetype"/>
-					<arg value="pkcs12"/>
-					<arg value="-keystore"/>
-					<arg value="${air.desktop.certificate.path}"/>
-					<arg value="-storepass"/>
-					<arg value="${air.desktop.certificate.password}"/>
-					<arg value="${path.pub}/${app.publishname}_desktop.air"/>
-					<arg value="/${path.bin}/${air.descriptor}"/>
-					<arg value="-C"/>
-					<arg value="${path.bin}"/>
-					<arg value="${swf.targetname.full}"/>
-					<arg value="-C"/>
-					<arg value="${path.bin}"/>
-					<arg value="${swf.targetname}.ini"/>
-					<arg value="-C"/>
-					<arg value="${path.bin}"/>
-					<arg value="icons"/>
-					<arg value="-C"/>
-					<arg value="${path.bin}"/>
-					<arg value="${resource.folder}"/>
-				</java>
+			<java jar="${air.developertool}" fork="true" failonerror="true">
+				<arg value="-package"/>
+				<arg value="-storetype"/>
+				<arg value="pkcs12"/>
+				<arg value="-keystore"/>
+				<arg value="${air.desktop.certificate.path}"/>
+				<arg value="-storepass"/>
+				<arg value="${air.desktop.certificate.password}"/>
+				<arg value="-target"/>
+				<arg value="air"/>
+				<arg value="${path.pub}/${app.publishname}_desktop.air"/>
+				<arg value="/${path.bin}/${air.descriptor}"/>
+				<arg value="-C"/>
+				<arg value="${path.bin}"/>
+				<arg value="${swf.targetname.full}"/>
+				<arg value="-C"/>
+				<arg value="${path.bin}"/>
+				<arg value="${swf.targetname}.ini"/>
+				<arg value="-C"/>
+				<arg value="${path.bin}"/>
+				<arg value="icons"/>
+				<arg value="-C"/>
+				<arg value="${path.bin}"/>
+				<arg value="${resource.folder}"/>
+			</java>
 		</sequential>
 	</macrodef>
 	
@@ -650,29 +653,44 @@
 	<macrodef name="publishAndroid">
 		<sequential>
 			<echo message="Publishing android application of ${app.name} ${app.version} ..." level="info"/>
-				<java jar="${air.developertool}" fork="true" failonerror="true">
-					<arg value="-package"/>
-					<arg value="-storetype"/>
-					<arg value="pkcs12"/>
-					<arg value="-keystore"/>
-					<arg value="${air.android.certificate.path}"/>
-					<arg value="-storepass"/>
-					<arg value="${air.android.certificate.password}"/>
-					<arg value="${path.pub}/${app.publishname}_android.air"/>
-					<arg value="/${path.bin}/${air.descriptor}"/>
-					<arg value="-C"/>
-					<arg value="${path.bin}"/>
-					<arg value="${swf.targetname.full}"/>
-					<arg value="-C"/>
-					<arg value="${path.bin}"/>
-					<arg value="${swf.targetname}.ini"/>
-					<arg value="-C"/>
-					<arg value="${path.bin}"/>
-					<arg value="icons"/>
-					<arg value="-C"/>
-					<arg value="${path.bin}"/>
-					<arg value="${resource.folder}"/>
-				</java>
+			<java jar="${air.developertool}" fork="true" failonerror="true">
+				<arg value="-package"/>
+				<arg value="-storetype"/>
+				<arg value="pkcs12"/>
+				<arg value="-keystore"/>
+				<arg value="${air.android.certificate.path}"/>
+				<arg value="-storepass"/>
+				<arg value="${air.android.certificate.password}"/>
+				<arg value="${path.pub}/${app.publishname}_android.tmp"/>
+				<arg value="/${path.bin}/${air.descriptor}"/>
+				<arg value="-C"/>
+				<arg value="${path.bin}"/>
+				<arg value="${swf.targetname.full}"/>
+				<arg value="-C"/>
+				<arg value="${path.bin}"/>
+				<arg value="${swf.targetname}.ini"/>
+				<arg value="-C"/>
+				<arg value="${path.bin}"/>
+				<arg value="icons"/>
+				<arg value="-C"/>
+				<arg value="${path.bin}"/>
+				<arg value="${resource.folder}"/>
+			</java>
+			<echo message="Packaging Android APK file of ${app.name} ${app.version} ..." level="info"/>
+			<java jar="${air.developertool}" fork="true" failonerror="true">
+				<arg value="-package"/>
+				<arg value="-target"/>
+				<arg value="apk"/>
+				<arg value="-storetype"/>
+				<arg value="pkcs12"/>
+				<arg value="-keystore"/>
+				<arg value="${air.android.certificate.path}"/>
+				<arg value="-storepass"/>
+				<arg value="${air.android.certificate.password}"/>
+				<arg value="${path.pub}/${app.publishname}_android.apk"/>
+				<arg value="${path.pub}/${app.publishname}_android.tmp"/>
+			</java>
+			<delete file="${path.pub}/${app.publishname}_android.tmp"/>
 		</sequential>
 	</macrodef>
 	
@@ -680,29 +698,44 @@
 	<macrodef name="publishIOS">
 		<sequential>
 			<echo message="Publishing iOS application of ${app.name} ${app.version} ..." level="info"/>
-				<java jar="${air.developertool}" fork="true" failonerror="true">
-					<arg value="-package"/>
-					<arg value="-storetype"/>
-					<arg value="pkcs12"/>
-					<arg value="-keystore"/>
-					<arg value="${air.ios.certificate.path}"/>
-					<arg value="-storepass"/>
-					<arg value="${air.ios.certificate.password}"/>
-					<arg value="${path.pub}/${app.publishname}_ios.air"/>
-					<arg value="/${path.bin}/${air.descriptor}"/>
-					<arg value="-C"/>
-					<arg value="${path.bin}"/>
-					<arg value="${swf.targetname.full}"/>
-					<arg value="-C"/>
-					<arg value="${path.bin}"/>
-					<arg value="${swf.targetname}.ini"/>
-					<arg value="-C"/>
-					<arg value="${path.bin}"/>
-					<arg value="icons"/>
-					<arg value="-C"/>
-					<arg value="${path.bin}"/>
-					<arg value="${resource.folder}"/>
-				</java>
+			<java jar="${air.developertool}" fork="true" failonerror="true">
+				<arg value="-package"/>
+				<arg value="-storetype"/>
+				<arg value="pkcs12"/>
+				<arg value="-keystore"/>
+				<arg value="${air.ios.certificate.path}"/>
+				<arg value="-storepass"/>
+				<arg value="${air.ios.certificate.password}"/>
+				<arg value="${path.pub}/${app.publishname}_ios.tmp"/>
+				<arg value="/${path.bin}/${air.descriptor}"/>
+				<arg value="-C"/>
+				<arg value="${path.bin}"/>
+				<arg value="${swf.targetname.full}"/>
+				<arg value="-C"/>
+				<arg value="${path.bin}"/>
+				<arg value="${swf.targetname}.ini"/>
+				<arg value="-C"/>
+				<arg value="${path.bin}"/>
+				<arg value="icons"/>
+				<arg value="-C"/>
+				<arg value="${path.bin}"/>
+				<arg value="${resource.folder}"/>
+			</java>
+			<echo message="Creating iOS IPA generation batch file ..." level="info"/>
+			<copy file="${templates.air.ios}/ios_create.bat" tofile="${path.pub}/${app.publishname}_ios_create.bat" overwrite="true">
+				<filterchain>
+					<replacetokens>
+						<token key="java_32bit"						value="${java.32bit}"/>
+						<token key="air_developertool"				value="${air.developertool}"/>
+						<token key="air_ios_certificate_path"		value="${air.ios.certificate.path}"/>
+						<token key="air_ios_certificate_password"	value="${air.ios.certificate.password}"/>
+						<token key="air_ios_provprofile_path"		value="${air.ios.provprofile.path}"/>
+						<token key="path_pub"						value="${path.pub}"/>
+						<token key="app_publishname"				value="${app.publishname}"/>
+					</replacetokens>
+				</filterchain>
+			</copy>
+			<echo message="Finished! Now open a command prompt in the pub folder and execute ${app.publishname}_ios_create.bat to create the IPA file." level="info"/>
 		</sequential>
 	</macrodef>
 	
