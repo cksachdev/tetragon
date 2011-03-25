@@ -32,7 +32,7 @@ package @top_package@
 	import flash.display.StageScaleMode;
 	
 	
-	[SWF(width="@swf_width@", height="@swf_height@", backgroundColor="#@swf_bgcolor@", frameRate="@swf_framerate@")]
+	[SWF(width="@app_width@", height="@app_height@", backgroundColor="#@app_bgcolor@", frameRate="@app_framerate@")]
 	
 	/**
 	 * The App class acts as the 'front door' of your application. This is the class

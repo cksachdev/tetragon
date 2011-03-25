@@ -31,7 +31,7 @@
 	
 	<target name=".Pack" description="Creates a zipped version of the whole project.">
 		<cleanAll/>
-		<zip destfile="${path.pub}/${app.publishname}_project.zip"
+		<zip destfile="${path.pub}/${app.shortname}_project.zip"
 			basedir=""
 			excludes="**/.svn,.settings/**,.settings/**.*,.settings,.git/**,.git/**.*,.git,doc/tetragon/**,.project,README,**/**.~$lock"
 			update="false"
@@ -335,9 +335,9 @@
 						<token key="app_year"			value="${app.year}"/>
 						<token key="app_website"		value="${app.website}"/>
 						<token key="app_language"		value="${app.language}"/>
-						<token key="file_name"			value="${swf.targetname}"/>
-						<token key="default_width"		value="${swf.width}"/>
-						<token key="default_height"		value="${swf.height}"/>
+						<token key="file_name"			value="${app.swfname}"/>
+						<token key="default_width"		value="${app.width}"/>
+						<token key="default_height"		value="${app.height}"/>
 						<token key="is_debug"			value="@{debug}"/>
 					</replacetokens>
 				</filterchain>
@@ -354,10 +354,10 @@
 				<filterchain>
 					<replacetokens>
 						<token key="top_package"		value="${top.package}"/>
-						<token key="swf_width"			value="${swf.width}"/>
-						<token key="swf_height"			value="${swf.height}"/>
-						<token key="swf_bgcolor"		value="${swf.bgcolor}"/>
-						<token key="swf_framerate"		value="${swf.framerate}"/>
+						<token key="app_width"			value="${app.width}"/>
+						<token key="app_height"			value="${app.height}"/>
+						<token key="app_bgcolor"		value="${app.bgcolor}"/>
+						<token key="app_framerate"		value="${app.framerate}"/>
 					</replacetokens>
 				</filterchain>
 			</copy>
@@ -367,19 +367,19 @@
 	
 	<macrodef name="generateHTMLWrapper">
 		<sequential>
-			<echo message="Generating ${swf.htmlwrapper} ..." level="info"/>
-			<copy file="${templates.web}/indextemplate.html" tofile="${path.bin}/${swf.htmlwrapper}" overwrite="true">
+			<echo message="Generating ${web.htmlwrapper} ..." level="info"/>
+			<copy file="${templates.web}/indextemplate.html" tofile="${path.bin}/${web.htmlwrapper}" overwrite="true">
 				<filterchain>
 					<replacetokens>
 						<token key="app_name"				value="${app.name}"/>
 						<token key="app_language"			value="${app.language}"/>
 						<token key="app_copyright"			value="${app.copyright}"/>
-						<token key="swf_targetname"			value="${swf.targetname.full}"/>
-						<token key="swf_width"				value="${swf.width}"/>
-						<token key="swf_height"				value="${swf.height}"/>
-						<token key="swf_bgcolor"			value="${swf.bgcolor}"/>
-						<token key="swf_allowfullscreen"	value="${swf.allowfullscreen}"/>
-						<token key="swf_wmode"				value="${swf.wmode}"/>
+						<token key="app_swfname"			value="${app.swfname.full}"/>
+						<token key="app_width"				value="${app.width}"/>
+						<token key="app_height"				value="${app.height}"/>
+						<token key="app_bgcolor"			value="${app.bgcolor}"/>
+						<token key="web_allowfullscreen"	value="${web.allowfullscreen}"/>
+						<token key="web_wmode"				value="${web.wmode}"/>
 						<token key="fpv_version"			value="${fpv.version}"/>
 					</replacetokens>
 				</filterchain>
@@ -403,7 +403,7 @@
 						<token key="build_nr"							value="${build.number}"/>
 						<token key="app_description"					value="${app.description}"/>
 						<token key="app_copyright"						value="${app.copyright}"/>
-						<token key="swf_targetname"						value="${swf.targetname.full}"/>
+						<token key="app_swfname"						value="${app.swfname.full}"/>
 						<token key="air_windowtitle"					value="${air.windowtitle}"/>
 						<token key="air_systemChrome"					value="${air.systemChrome}"/>
 						<token key="air_transparent"					value="${air.transparent}"/>
@@ -411,8 +411,8 @@
 						<token key="air_minimizable"					value="${air.minimizable}"/>
 						<token key="air_maximizable"					value="${air.maximizable}"/>
 						<token key="air_resizable"						value="${air.resizable}"/>
-						<token key="swf_width"							value="${swf.width}"/>
-						<token key="swf_height"							value="${swf.height}"/>
+						<token key="app_width"							value="${app.width}"/>
+						<token key="app_height"							value="${app.height}"/>
 						<token key="air_minsize"						value="${air.minsize}"/>
 						<token key="air_maxsize"						value="${air.maxsize}"/>
 						<token key="meta_publisher"						value="${meta.publisher}"/>
@@ -431,13 +431,13 @@
 	<macrodef name="generateAIRUpdateFile">
 		<sequential>
 			<echo message="Generating AIR update file ..." level="info"/>
-			<copy file="${templates.air.desktop}/airupdate.xml" tofile="${path.pub}/${app.publishname}_desktop_update.xml" overwrite="true">
+			<copy file="${templates.air.desktop}/airupdate.xml" tofile="${path.pub}/${air.desktop.publishname}_update.xml" overwrite="true">
 				<filterchain>
 					<replacetokens>
-						<token key="app_version"		value="${app.version}"/>
-						<token key="build_nr"			value="${build.number}"/>
-						<token key="air_updateurl"		value="${air.updateurl}"/>
-						<token key="air_updatenotes"	value="${air.updatenotes}"/>
+						<token key="app_version"				value="${app.version}"/>
+						<token key="build_nr"					value="${build.number}"/>
+						<token key="air_desktop_updateurl"		value="${air.desktop.updateurl}"/>
+						<token key="air_desktop_updatenotes"	value="${air.desktop.updatenotes}"/>
 					</replacetokens>
 				</filterchain>
 			</copy>
@@ -456,14 +456,14 @@
 		<attribute name="isIOSBuild"/>
 		<attribute name="libpath"/>
 		<sequential>
-			<echo message="Compiling ${swf.targetname.full} ..." level="info"/>
+			<echo message="Compiling ${app.swfname.full} ..." level="info"/>
 			<mxmlc
 				file="${path.src.code}/${top.package}/${entry.class}.as"
-				output="${path.bin}/${swf.targetname.full}"
+				output="${path.bin}/${app.swfname.full}"
 				incremental="false"
 				locale="${app.localestring}"
-				default-frame-rate="${swf.framerate}"
-				default-background-color="0x${swf.bgcolor}"
+				default-frame-rate="${app.framerate}"
+				default-background-color="0x${app.bgcolor}"
 				defaults-css-url="${path.theme}/theme.css"
 				target-player="${fpv.version}"
 				debug="@{debug}"
@@ -474,7 +474,7 @@
 				show-unused-type-selector-warnings="false">
 				
 				<load-config filename="${FLEX_HOME}/frameworks/@{config}"/>
-				<default-size width="${swf.width}" height="${swf.height}"/>
+				<default-size width="${app.width}" height="${app.height}"/>
 				
 				<default-script-limits
 					max-recursion-depth="${max.recursiondepth}"
@@ -539,7 +539,7 @@
 			<copy todir="${path.bin}/js" verbose="off">
 				<fileset dir="${templates.web}/js" excludes="**/.svn"/>
 			</copy>
-			<copy file="${templates.web}/app_web.ini" tofile="${path.bin}/${swf.targetname}.ini" overwrite="true"/>
+			<copy file="${templates.web}/app_web.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true"/>
 		</sequential>
 	</macrodef>
 	
@@ -550,7 +550,7 @@
 			<copy todir="${path.bin}/icons" verbose="off">
 				<fileset dir="${templates.air.shared}/icons" excludes="**/.svn"/>
 			</copy>
-			<copy file="${templates.air.shared}/app_air.ini" tofile="${path.bin}/${swf.targetname}.ini" overwrite="true"/>
+			<copy file="${templates.air.shared}/app_air.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true"/>
 		</sequential>
 	</macrodef>
 	
@@ -561,7 +561,7 @@
 			<copy todir="${path.bin}/icons" verbose="off">
 				<fileset dir="${templates.air.shared}/icons" excludes="**/.svn"/>
 			</copy>
-			<copy file="${templates.air.shared}/app_air.ini" tofile="${path.bin}/${swf.targetname}.ini" overwrite="true"/>
+			<copy file="${templates.air.shared}/app_air.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true"/>
 		</sequential>
 	</macrodef>
 	
@@ -572,7 +572,7 @@
 			<copy todir="${path.bin}/icons" verbose="off">
 				<fileset dir="${templates.air.shared}/icons" excludes="**/.svn"/>
 			</copy>
-			<copy file="${templates.air.shared}/app_air.ini" tofile="${path.bin}/${swf.targetname}.ini" overwrite="true"/>
+			<copy file="${templates.air.shared}/app_air.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true"/>
 		</sequential>
 	</macrodef>
 	
@@ -609,7 +609,7 @@
 	<macrodef name="publishWeb">
 		<sequential>
 			<echo message="Publishing web application of ${app.name} ${app.version} ..." level="info"/>
-			<zip destfile="${path.pub}/${app.publishname}_web.zip"
+			<zip destfile="${path.pub}/${web.publishname}.zip"
 				basedir="${path.bin}"
 				excludes="**/.svn"
 				update="false"
@@ -630,15 +630,15 @@
 				<arg value="-storepass"/>
 				<arg value="${air.desktop.certificate.password}"/>
 				<arg value="-target"/>
-				<arg value="air"/>
-				<arg value="${path.pub}/${app.publishname}_desktop.air"/>
+				<arg value="${air.desktop.target}"/>
+				<arg value="${path.pub}/${air.desktop.publishname}"/>
 				<arg value="/${path.bin}/${air.descriptor}"/>
 				<arg value="-C"/>
 				<arg value="${path.bin}"/>
-				<arg value="${swf.targetname.full}"/>
+				<arg value="${app.swfname.full}"/>
 				<arg value="-C"/>
 				<arg value="${path.bin}"/>
-				<arg value="${swf.targetname}.ini"/>
+				<arg value="${app.swfname}.ini"/>
 				<arg value="-C"/>
 				<arg value="${path.bin}"/>
 				<arg value="icons"/>
@@ -661,14 +661,14 @@
 				<arg value="${air.android.certificate.path}"/>
 				<arg value="-storepass"/>
 				<arg value="${air.android.certificate.password}"/>
-				<arg value="${path.pub}/${app.publishname}_android.tmp"/>
+				<arg value="${path.pub}/${air.mobile.android.publishname}.tmp"/>
 				<arg value="/${path.bin}/${air.descriptor}"/>
 				<arg value="-C"/>
 				<arg value="${path.bin}"/>
-				<arg value="${swf.targetname.full}"/>
+				<arg value="${app.swfname.full}"/>
 				<arg value="-C"/>
 				<arg value="${path.bin}"/>
-				<arg value="${swf.targetname}.ini"/>
+				<arg value="${app.swfname}.ini"/>
 				<arg value="-C"/>
 				<arg value="${path.bin}"/>
 				<arg value="icons"/>
@@ -687,10 +687,10 @@
 				<arg value="${air.android.certificate.path}"/>
 				<arg value="-storepass"/>
 				<arg value="${air.android.certificate.password}"/>
-				<arg value="${path.pub}/${app.publishname}_android.apk"/>
-				<arg value="${path.pub}/${app.publishname}_android.tmp"/>
+				<arg value="${path.pub}/${air.mobile.android.publishname}"/>
+				<arg value="${path.pub}/${air.mobile.android.publishname}.tmp"/>
 			</java>
-			<delete file="${path.pub}/${app.publishname}_android.tmp"/>
+			<delete file="${path.pub}/${air.mobile.android.publishname}.tmp"/>
 		</sequential>
 	</macrodef>
 	
@@ -706,14 +706,14 @@
 				<arg value="${air.ios.certificate.path}"/>
 				<arg value="-storepass"/>
 				<arg value="${air.ios.certificate.password}"/>
-				<arg value="${path.pub}/${app.publishname}_ios.tmp"/>
+				<arg value="${path.pub}/${air.mobile.ios.publishname}.tmp"/>
 				<arg value="/${path.bin}/${air.descriptor}"/>
 				<arg value="-C"/>
 				<arg value="${path.bin}"/>
-				<arg value="${swf.targetname.full}"/>
+				<arg value="${app.swfname.full}"/>
 				<arg value="-C"/>
 				<arg value="${path.bin}"/>
-				<arg value="${swf.targetname}.ini"/>
+				<arg value="${app.swfname}.ini"/>
 				<arg value="-C"/>
 				<arg value="${path.bin}"/>
 				<arg value="icons"/>
@@ -722,7 +722,7 @@
 				<arg value="${resource.folder}"/>
 			</java>
 			<echo message="Creating iOS IPA generation batch file ..." level="info"/>
-			<copy file="${templates.air.ios}/ios_create.bat" tofile="${path.pub}/${app.publishname}_ios_create.bat" overwrite="true">
+			<copy file="${templates.air.ios}/ios_create.bat" tofile="${path.pub}/${air.mobile.ios.publishname}_create.bat" overwrite="true">
 				<filterchain>
 					<replacetokens>
 						<token key="java_32bit"						value="${java.32bit}"/>
@@ -731,20 +731,20 @@
 						<token key="air_ios_certificate_password"	value="${air.ios.certificate.password}"/>
 						<token key="air_ios_provprofile_path"		value="${air.ios.provprofile.path}"/>
 						<token key="path_pub"						value="${path.pub}"/>
-						<token key="app_publishname"				value="${app.publishname}"/>
+						<token key="app_publishname"				value="${app.shortname}"/>
 					</replacetokens>
 				</filterchain>
 			</copy>
-			<echo message="Finished! Now open a command prompt in the pub folder and execute ${app.publishname}_ios_create.bat to create the IPA file." level="info"/>
+			<echo message="Finished! Now open a command prompt in the pub folder and execute ${air.mobile.ios.publishname}_create.bat to create the IPA file." level="info"/>
 		</sequential>
 	</macrodef>
 	
 	
 	<macrodef name="launchWebDebug">
 		<sequential>
-			<echo message="Opening ${swf.targetname.full} in Flash Player (Debug) ..." level="info"/>
+			<echo message="Opening ${app.swfname.full} in Flash Player (Debug) ..." level="info"/>
 			<exec executable="${flash.player.debug}" spawn="true">
-				<arg value="${path.bin.fp}${swf.targetname.full}"/>
+				<arg value="${path.bin.fp}${app.swfname.full}"/>
 			</exec>
 		</sequential>
 	</macrodef>
@@ -752,9 +752,9 @@
 	
 	<macrodef name="launchWebRelease">
 		<sequential>
-			<echo message="Opening ${swf.targetname.full} in Web Browser ..." level="info"/>
+			<echo message="Opening ${app.swfname.full} in Web Browser ..." level="info"/>
 			<exec executable="${web.browser}" dir=".." spawn="true">
-				<arg value="file://${path.bin}/${swf.htmlwrapper}"/>
+				<arg value="file://${path.bin}/${web.htmlwrapper}"/>
 			</exec>
 		</sequential>
 	</macrodef>
@@ -762,7 +762,7 @@
 	
 	<macrodef name="LaunchDesktop">
 		<sequential>
-			<echo message="Opening ${swf.targetname.full} in AIR Debug Launcher ..." level="info"/>
+			<echo message="Opening ${app.swfname.full} in AIR Debug Launcher ..." level="info"/>
 			<exec executable="${air.debuglauncher}" spawn="true">
 				<arg value="${path.bin}\${air.descriptor}"/>
 				<arg value="${path.bin}"/>
@@ -773,7 +773,7 @@
 	
 	<macrodef name="LaunchAndroid">
 		<sequential>
-			<echo message="Opening ${swf.targetname.full} in Android Debug Launcher ..." level="info"/>
+			<echo message="Opening ${app.swfname.full} in Android Debug Launcher ..." level="info"/>
 			<exec executable="${air.debuglauncher}" spawn="true">
 				<arg value="${path.bin}\${air.descriptor}"/>
 				<arg value="${path.bin}"/>
@@ -784,7 +784,7 @@
 	
 	<macrodef name="LaunchIOS">
 		<sequential>
-			<echo message="Opening ${swf.targetname.full} in iOS Debug Launcher ..." level="info"/>
+			<echo message="Opening ${app.swfname.full} in iOS Debug Launcher ..." level="info"/>
 			<exec executable="${air.debuglauncher}" spawn="true">
 				<arg value="${path.bin}\${air.descriptor}"/>
 				<arg value="${path.bin}"/>

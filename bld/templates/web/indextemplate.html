@@ -22,21 +22,21 @@
 			var params =
 			{
 				allowScriptAccess: "sameDomain",
-				allowFullScreen: "@swf_allowfullscreen@",
-				wmode: "@swf_wmode@"
+				allowFullScreen: "@web_allowfullscreen@",
+				wmode: "@web_wmode@"
 			};
 			var attributes =
 			{
 			};
 			attributes.id = "app";
-			swfobject.embedSWF("@swf_targetname@", "content", "@swf_width@", "@swf_height@", "@fpv_version@", false, flashvars, params, attributes);
+			swfobject.embedSWF("@app_swfname@", "content", "@app_width@", "@app_height@", "@fpv_version@", false, flashvars, params, attributes);
 		</script>
 		
 		<style type="text/css" media="screen">
-			body {background: #@swf_bgcolor@; text-align: center; margin-top: 40px;}
+			body {background: #@app_bgcolor@; text-align: center; margin-top: 40px;}
 			div#content {text-align: left; padding: 2px;}
 			object#content {display: block; margin: 0 auto;}
-			#border {border: solid 1px #333333; padding: 2px; width: @swf_width@px; height: @swf_height@px; margin: 0 auto;}
+			#border {border: solid 1px #333333; padding: 2px; width: @app_width@px; height: @app_height@px; margin: 0 auto;}
 		</style>
 		
 	</head>

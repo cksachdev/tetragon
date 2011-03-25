@@ -10,7 +10,7 @@
 	<copyright>@app_copyright@</copyright>
 	
 	<initialWindow>
-		<content>@swf_targetname@</content>
+		<content>@app_swfname@</content>
 		<title>@air_windowtitle@</title>
 		<systemChrome>@air_systemChrome@</systemChrome>
 		<transparent>@air_transparent@</transparent>
@@ -18,8 +18,8 @@
 		<minimizable>@air_minimizable@</minimizable>
 		<maximizable>@air_maximizable@</maximizable>
 		<resizable>@air_resizable@</resizable>
-		<width>@swf_width@</width>
-		<height>@swf_height@</height>
+		<width>@app_width@</width>
+		<height>@app_height@</height>
 		<minSize>@air_minsize@</minSize>
 		<!-- <maxSize></maxSize> -->
 		<!-- <x></x> -->
