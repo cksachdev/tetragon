@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+	<head>
+		<title>@app_name@</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="robots" content="index, follow" />
+		<meta name="keywords" content="@app_tags@" />
+		<meta name="description" lang="@app_language@" content="@app_description@" />
+		<meta name="copyright" content="@app_copyright@" />
+		<meta name="google" content="notranslate" />
+		<style type="text/css" media="screen">
+			body {height: 100%; margin-top: 100px; padding: 0; overflow: auto; text-align: center; background-color: #@app_bgcolor@;}
+			object:focus {outline: none;}
+			#flashContent {display: none;}
+			#border {border: solid 1px #222222; padding: 2px; width: @app_width@px; height: @app_height@px; margin: 0 auto;}
+		</style>
+		<script type="text/javascript" src="js/swfobject.js"></script>
+		<script type="text/javascript">
+			var focusRef;
+			var flashvars =
+			{
+				skipPreloader: "@web_skippreloader@",
+				ignoreIniFile: "@web_ignoreinifile@",
+				ignoreLocaleFile: "@web_ignorelocalefile@"
+			};
+			var params =
+			{
+				allowScriptAccess: "@web_allowscriptaccess@",
+				allowFullScreen: "@web_allowfullscreen@",
+				wmode: "@web_wmode@",
+				quality: "@web_quality@",
+				bgcolor: "@app_bgcolor@"
+			};
+			var attributes =
+			{
+				id: "@app_id@",
+				name: "@app_shortname@",
+				align: "middle"
+			};
+			function onFlashContentEmbedded(e)
+			{
+				focusRef = e.ref;
+			}
+			function onFlashContentLoaded()
+			{
+				focusRef.focus();
+			}
+			swfobject.embedSWF("@app_swfname@", "flashContent", "@app_width@", "@app_height@", "@fpv_version@", false, flashvars, params, attributes, onFlashContentEmbedded);
+			swfobject.createCSS("#flashContent", "display: block; text-align: left;");
+        </script>
+	</head>
+	<body>
+		<div id="border">
+			<div id="flashContent">
+				<p>To view this page ensure that Adobe Flash Player version @fpv_version@ or greater is installed.</p>
+				<script type="text/javascript">
+					var pageHost = ((document.location.protocol == "https:") ? "https://" : "http://");
+					document.write("<a href='http://www.adobe.com/go/getflashplayer'><img src='" + pageHost + "www.adobe.com/images/shared/download_buttons/get_flash_player.gif' alt='Get Adobe Flash Player' /></a>");
+				</script>
+				<noscript>
+					<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="@app_width@" height="@app_height@" id="@app_id@">
+						<param name="movie" value="@app_swfname@" />
+						<param name="wmode" value="@web_wmode@" />
+						<param name="quality" value="@web_quality@" />
+						<param name="bgcolor" value="@app_bgcolor@" />
+						<param name="allowScriptAccess" value="@web_allowscriptaccess@" />
+						<param name="allowFullScreen" value="@web_allowfullscreen@" />
+					<!--[if !IE]>-->
+						<object type="application/x-shockwave-flash" data="@app_swfname@" width="@app_width@" height="@app_height@">
+						<param name="wmode" value="@web_wmode@" />
+						<param name="quality" value="@web_quality@" />
+						<param name="bgcolor" value="@app_bgcolor@" />
+						<param name="allowScriptAccess" value="@web_allowscriptaccess@" />
+						<param name="allowFullScreen" value="@web_allowfullscreen@" />
+					<!--<![endif]-->
+					<!--[if gte IE 6]>-->
+						<p>Either scripts and active content are not permitted to run or Adobe Flash Player version @fpv_version@ or greater is not installed.</p>
+					<!--<![endif]-->
+						<a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash Player" /></a>
+					<!--[if !IE]>-->
+						</object>
+					<!--<![endif]-->
+					</object>
+				</noscript>
+			</div>
+		</div>
+	</body>
+</html>

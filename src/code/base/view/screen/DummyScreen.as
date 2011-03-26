@@ -27,25 +27,18 @@
  */
 package base.view.screen
 {
-	import base.view.display.SplashDisplay;
-
-	import com.hexagonstar.display.StageReference;
-
-	import flash.events.Event;
-	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
-
+	import base.core.console.Console;
+	import base.core.console.FPSMonitor;
 	
-	public class SplashScreen extends BaseScreen
+	
+	/**
+	 * A screen that does nothing.
+	 */
+	public class DummyScreen extends BaseScreen
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
-		
-		private var _display:SplashDisplay;
-		private var _timer:Timer;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -55,7 +48,7 @@ package base.view.screen
 		/**
 		 * Creates a new instance.
 		 */
-		public function SplashScreen()
+		public function DummyScreen()
 		{
 			super();
 		}
@@ -71,8 +64,12 @@ package base.view.screen
 		override public function start():void
 		{
 			super.start();
-			_display.start();
-			_timer.start();
+			
+			var c:Console = main.console;
+			if (c) c.toggle();
+			
+			var f:FPSMonitor = main.fpsMonitor;
+			if (f) f.toggle();
 		}
 		
 		
@@ -82,7 +79,6 @@ package base.view.screen
 		override public function stop():void
 		{
 			super.stop();
-			_display.stop();
 		}
 		
 		
@@ -91,7 +87,6 @@ package base.view.screen
 		 */
 		override public function reset():void
 		{
-			_display.reset();
 		}
 		
 		
@@ -100,7 +95,6 @@ package base.view.screen
 		 */
 		override public function update():void
 		{
-			_display.update();
 			super.update();
 		}
 		
@@ -110,7 +104,6 @@ package base.view.screen
 		 */
 		override public function dispose():void
 		{
-			_display.dispose();
 			super.dispose();
 		}
 		
@@ -134,7 +127,6 @@ package base.view.screen
 		override public function set enabled(v:Boolean):void
 		{
 			super.enabled = v;
-			_display.enabled = v;
 		}
 		
 		
@@ -144,34 +136,12 @@ package base.view.screen
 		override public function set paused(v:Boolean):void
 		{
 			super.paused = v;
-			_display.paused = v;
 		}
 		
 		
 		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @private
-		 */
-		private function onUserInput(e:Event):void
-		{
-			_timer.stop();
-			main.screenManager.openScreen("dummyScreen", true, true);
-		}
-		
-		
-		/**
-		 * @private
-		 */
-		private function onTimerComplete(e:TimerEvent):void
-		{
-			/* Once the screen fades out, the user should not be able to interrupt, otherwise
-			 * we might hang up somewhere so remove event listeners now. */
-			removeEventListeners();
-			main.screenManager.openScreen("dummyScreen");
-		}
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -183,9 +153,6 @@ package base.view.screen
 		 */
 		override protected function createChildren():void
 		{
-			_timer = new Timer(6000, 1);
-			_display = new SplashDisplay();
-			addLoadDisplay(_display);
 		}
 		
 		
@@ -194,7 +161,6 @@ package base.view.screen
 		 */
 		override protected function addChildren():void 
 		{
-			addChild(_display);
 		}
 		
 		
@@ -203,9 +169,6 @@ package base.view.screen
 		 */
 		override protected function addEventListeners():void
 		{
-			StageReference.stage.addEventListener(MouseEvent.CLICK, onUserInput);
-			StageReference.stage.addEventListener(KeyboardEvent.KEY_DOWN, onUserInput);
-			_timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
 		}
 		
 		
@@ -214,9 +177,6 @@ package base.view.screen
 		 */
 		override protected function removeEventListeners():void
 		{
-			StageReference.stage.removeEventListener(MouseEvent.CLICK, onUserInput);
-			StageReference.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onUserInput);
-			_timer.removeEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
 		}
 		
 		
@@ -225,8 +185,6 @@ package base.view.screen
 		 */
 		override protected function layoutChildren():void
 		{
-			_display.x = getHorizontalCenter(_display);
-			_display.y = getVerticalCenter(_display);
 		}
 		
 		

@@ -29,6 +29,7 @@ package @top_package@
 {
 	import @top_package@.core.preload.IPreloadable;
 	import @top_package@.core.preload.Preloader;
+	import flash.external.ExternalInterface;
 	
 	
 	[SWF(width="@app_width@", height="@app_height@", backgroundColor="#@app_bgcolor@", frameRate="@app_framerate@")]
@@ -54,6 +55,11 @@ package @top_package@
 		 */
 		public function onApplicationPreloaded(preloader:Preloader):void
 		{
+			if (ExternalInterface.available)
+			{
+				ExternalInterface.call("onFlashContentLoaded");
+			}
+			
 			_main = new Main(preloader);
 		}
 	}

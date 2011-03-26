@@ -368,18 +368,27 @@
 	<macrodef name="generateHTMLWrapper">
 		<sequential>
 			<echo message="Generating ${web.htmlwrapper} ..." level="info"/>
-			<copy file="${templates.web}/indextemplate.html" tofile="${path.bin}/${web.htmlwrapper}" overwrite="true">
+			<copy file="${templates.web}/indextemplate_${web.layout}.html" tofile="${path.bin}/${web.htmlwrapper}" overwrite="true">
 				<filterchain>
 					<replacetokens>
 						<token key="app_name"				value="${app.name}"/>
 						<token key="app_language"			value="${app.language}"/>
+						<token key="app_description"		value="${app.description}"/>
+						<token key="app_tags"				value="${app.tags}"/>
 						<token key="app_copyright"			value="${app.copyright}"/>
+						<token key="app_shortname"			value="${app.shortname}"/>
 						<token key="app_swfname"			value="${app.swfname.full}"/>
+						<token key="app_id"					value="${app.id}"/>
 						<token key="app_width"				value="${app.width}"/>
 						<token key="app_height"				value="${app.height}"/>
 						<token key="app_bgcolor"			value="${app.bgcolor}"/>
+						<token key="web_allowscriptaccess"	value="${web.allowscriptaccess}"/>
 						<token key="web_allowfullscreen"	value="${web.allowfullscreen}"/>
 						<token key="web_wmode"				value="${web.wmode}"/>
+						<token key="web_quality"			value="${web.quality}"/>
+						<token key="web_skippreloader"		value="${web.skippreloader}"/>
+						<token key="web_ignoreinifile"		value="${web.ignoreinifile}"/>
+						<token key="web_ignorelocalefile"	value="${web.ignorelocalefile}"/>
 						<token key="fpv_version"			value="${fpv.version}"/>
 					</replacetokens>
 				</filterchain>

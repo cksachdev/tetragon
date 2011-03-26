@@ -679,7 +679,7 @@ package base.core.console
 		 */
 		private function replaceSpecialTags(s:String):String
 		{
-			return s.replace(/\|\|(.+)\|\|/g, "<a>$1</a>").replace(/_(.+?)_/g, "<u>$1</u>");
+			return s.replace(/\|\|(.+)\|\|/g, "<a>$1</a>").replace(/__(.+?)__/g, "<u>$1</u>");
 		}
 		
 		
