@@ -27,8 +27,9 @@
  */
 package base.view.display
 {
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
+	import base.data.Registry;
+
+	import flash.geom.ColorTransform;
 	import flash.media.Sound;
 
 	
@@ -50,7 +51,7 @@ package base.view.display
 		{
 			super();
 		}
-
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
@@ -103,7 +104,6 @@ package base.view.display
 		 */
 		override protected function addResources():void
 		{
-			addResource("logoTetragon");
 			addResource("audioLogoTetragon");
 		}
 		
@@ -113,8 +113,11 @@ package base.view.display
 		 */
 		override protected function createChildren():void
 		{
-			var bd:BitmapData = getResource("logoTetragon");
-			if (bd) addChild(new Bitmap(bd));
+			var logo:TetragonLogo = new TetragonLogo();
+			var ct:ColorTransform = new ColorTransform();
+			ct.color = Registry.config.splashLogoColor;
+			logo.transform.colorTransform = ct;
+			addChild(logo);
 		}
 		
 		

@@ -46,7 +46,6 @@
 	<media>
 		<image>
 			<transparent>
-				<resource id="logoTetragon" path="images/tetragon_logo.png" packageID="resourcePackage"/>
 			</transparent>
 			<opaque>
 				<resource id="tileSet1Image" path="images/tilesets/tileset_test.png" packageID="resourcePackage"/>

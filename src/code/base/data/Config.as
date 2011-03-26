@@ -86,6 +86,9 @@ package base.data
 		
 		public var backgroundFrameRate:int;
 		
+		public var splashBackgroundColor:uint;
+		public var splashLogoColor:uint;
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Constructor
@@ -158,6 +161,9 @@ package base.data
 			updateFileUpdateVisible = true;
 			
 			backgroundFrameRate = -1;
+			
+			splashBackgroundColor = 0x015E86;
+			splashLogoColor = 0xFFBF00;
 		}
 	}
 }

@@ -27,7 +27,9 @@
  */
 package base.view.screen
 {
+	import base.data.Registry;
 	import base.view.display.SplashDisplay;
+	import base.view.shape.RectangleShape;
 
 	import com.hexagonstar.display.StageReference;
 
@@ -44,6 +46,7 @@ package base.view.screen
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
+		private var _background:RectangleShape;
 		private var _display:SplashDisplay;
 		private var _timer:Timer;
 		
@@ -155,6 +158,15 @@ package base.view.screen
 		/**
 		 * @private
 		 */
+		private function onStageResize(e:Event):void
+		{
+			layoutChildren();
+		}
+		
+		
+		/**
+		 * @private
+		 */
 		private function onUserInput(e:Event):void
 		{
 			_timer.stop();
@@ -184,6 +196,8 @@ package base.view.screen
 		override protected function createChildren():void
 		{
 			_timer = new Timer(6000, 1);
+			
+			_background = new RectangleShape();
 			_display = new SplashDisplay();
 			addLoadDisplay(_display);
 		}
@@ -194,6 +208,7 @@ package base.view.screen
 		 */
 		override protected function addChildren():void 
 		{
+			addChild(_background);
 			addChild(_display);
 		}
 		
@@ -203,6 +218,7 @@ package base.view.screen
 		 */
 		override protected function addEventListeners():void
 		{
+			StageReference.stage.addEventListener(Event.RESIZE, onStageResize);
 			StageReference.stage.addEventListener(MouseEvent.CLICK, onUserInput);
 			StageReference.stage.addEventListener(KeyboardEvent.KEY_DOWN, onUserInput);
 			_timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
@@ -214,6 +230,7 @@ package base.view.screen
 		 */
 		override protected function removeEventListeners():void
 		{
+			StageReference.stage.removeEventListener(Event.RESIZE, onStageResize);
 			StageReference.stage.removeEventListener(MouseEvent.CLICK, onUserInput);
 			StageReference.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onUserInput);
 			_timer.removeEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
@@ -225,6 +242,8 @@ package base.view.screen
 		 */
 		override protected function layoutChildren():void
 		{
+			_background.draw(StageReference.stageWidth, StageReference.stageHeight,
+				Registry.config.splashBackgroundColor);
 			_display.x = getHorizontalCenter(_display);
 			_display.y = getVerticalCenter(_display);
 		}

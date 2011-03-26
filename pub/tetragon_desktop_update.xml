@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-	<version>1.0.0.4070</version>
+	<version>1.0.0.4093</version>
 	<url>http://files.hexagonstar.com/updates/tetragon/tetragon.air</url>
 	<description><![CDATA[v1.0.0 - Initial public release.
 v1.1.0 - Bug fixes.]]></description>
