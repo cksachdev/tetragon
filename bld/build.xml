@@ -26,7 +26,6 @@
 	
 	<target name=".Clean" description="Cleans the output folder.">
 		<clean/>
-		<refresh/>
 	</target>
 	
 	<target name=".Pack" description="Creates a zipped version of the whole project.">
@@ -36,7 +35,6 @@
 			excludes="**/.svn,.settings/**,.settings/**.*,.settings,.git/**,.git/**.*,.git,doc/tetragon/**,.project,README,**/**.~$lock"
 			update="false"
 			compress="true"/>
-		<refresh/>
 	</target>
 	
 	<target name=".Publish" description="Publishes release versions of web and desktop targets.">
@@ -47,7 +45,6 @@
 		<publishDesktop/>
 		<generateAIRUpdateFile/>
 		<clean/>
-		<refresh/>
 	</target>
 	
 	
@@ -56,25 +53,21 @@
 	<target name="Web Build Debug" description="Clean build the project as a web debug version.">
 		<buildWeb debug="true"/>
 		<launchWebDebug/>
-		<refresh/>
 	</target>
 	
 	<target name="Web Build Release" description="Clean build the project as a web release version.">
 		<buildWeb debug="false"/>
 		<launchWebRelease/>
-		<refresh/>
 	</target>
 	
 	<target name="Web Compile" description="Compiles the application as a web debug version.">
 		<compileWeb debug="true"/>
 		<launchWebDebug/>
-		<refresh/>
 	</target>
 	
 	<target name="Web Publish" description="Clean build and publish a web version for release.">
 		<buildWeb debug="false"/>
 		<publishWeb/>
-		<refresh/>
 	</target>
 	
 	
@@ -83,26 +76,22 @@
 	<target name="Desktop Build Debug" description="Clean build the project as a desktop debug version.">
 		<buildDesktop debug="true"/>
 		<LaunchDesktop/>
-		<refresh/>
 	</target>
 	
 	<target name="Desktop Build Release" description="Clean build the project as a desktop release version.">
 		<buildDesktop debug="false"/>
 		<LaunchDesktop/>
-		<refresh/>
 	</target>
 	
 	<target name="Desktop Compile" description="Compiles the application as a desktop Debug version.">
 		<compileDesktop debug="true"/>
 		<LaunchDesktop/>
-		<refresh/>
 	</target>
 	
 	<target name="Desktop Publish" description="Clean build and publish a desktop version for release.">
 		<buildDesktop debug="false"/>
 		<publishDesktop/>
 		<generateAIRUpdateFile/>
-		<refresh/>
 	</target>
 	
 	
@@ -111,25 +100,21 @@
 	<target name="Android Build Debug" description="Clean build the project as a Android debug version.">
 		<buildAndroid debug="true"/>
 		<LaunchAndroid/>
-		<refresh/>
 	</target>
 	
 	<target name="Android Build Release" description="Clean build the project as a Android release version.">
 		<buildAndroid debug="false"/>
 		<LaunchAndroid/>
-		<refresh/>
 	</target>
 	
 	<target name="Android Compile" description="Compiles the application as a Android Debug version.">
 		<compileAndroid debug="true"/>
 		<LaunchAndroid/>
-		<refresh/>
 	</target>
 	
 	<target name="Android Publish" description="Clean build and publish a Android version for release.">
 		<buildAndroid debug="false"/>
 		<publishAndroid/>
-		<refresh/>
 	</target>
 	
 	
@@ -138,25 +123,21 @@
 	<target name="iOS Build Debug" description="Clean build the project as a iOS debug version.">
 		<buildIOS debug="true"/>
 		<LaunchIOS/>
-		<refresh/>
 	</target>
 	
 	<target name="iOS Build Release" description="Clean build the project as a iOS release version.">
 		<buildIOS debug="false"/>
 		<LaunchIOS/>
-		<refresh/>
 	</target>
 	
 	<target name="iOS Compile" description="Compiles the application as a iOS Debug version.">
 		<compileIOS debug="true"/>
 		<LaunchIOS/>
-		<refresh/>
 	</target>
 	
 	<target name="iOS Publish" description="Clean build and publish a iOS version for release.">
 		<buildIOS debug="false"/>
 		<publishIOS/>
-		<refresh/>
 	</target>
 	
 	
@@ -798,13 +779,6 @@
 				<arg value="${path.bin}\${air.descriptor}"/>
 				<arg value="${path.bin}"/>
 			</exec>
-		</sequential>
-	</macrodef>
-	
-	
-	<macrodef name="refresh">
-		<sequential>
-			<eclipse.refreshLocal resource="${basedir}" depth="infinite"/>
 		</sequential>
 	</macrodef>
 	
