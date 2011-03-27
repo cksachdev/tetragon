@@ -29,7 +29,7 @@ package base.view.screen
 {
 	import base.data.Registry;
 	import base.view.display.SplashDisplay;
-	import base.view.shape.RectangleShape;
+	import base.view.shape.RectangleGradientShape;
 
 	import com.hexagonstar.display.StageReference;
 
@@ -46,7 +46,7 @@ package base.view.screen
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _background:RectangleShape;
+		private var _background:RectangleGradientShape;
 		private var _display:SplashDisplay;
 		private var _timer:Timer;
 		
@@ -195,9 +195,9 @@ package base.view.screen
 		 */
 		override protected function createChildren():void
 		{
-			_timer = new Timer(6000, 1);
+			_timer = new Timer(8000, 1);
 			
-			_background = new RectangleShape();
+			_background = new RectangleGradientShape();
 			_display = new SplashDisplay();
 			addLoadDisplay(_display);
 		}
@@ -242,8 +242,8 @@ package base.view.screen
 		 */
 		override protected function layoutChildren():void
 		{
-			_background.draw(StageReference.stageWidth, StageReference.stageHeight,
-				Registry.config.splashBackgroundColor);
+			_background.draw(StageReference.stageWidth, StageReference.stageHeight, -90,
+				Registry.config.splashBackgroundColors);
 			_display.x = getHorizontalCenter(_display);
 			_display.y = getVerticalCenter(_display);
 		}

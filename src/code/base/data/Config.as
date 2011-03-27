@@ -86,7 +86,7 @@ package base.data
 		
 		public var backgroundFrameRate:int;
 		
-		public var splashBackgroundColor:uint;
+		public var splashBackgroundColors:Array;
 		public var splashLogoColor:uint;
 		
 		
@@ -162,7 +162,7 @@ package base.data
 			
 			backgroundFrameRate = -1;
 			
-			splashBackgroundColor = 0x015E86;
+			splashBackgroundColors = [0x002c3f, 0x0181b8];
 			splashLogoColor = 0xFFBF00;
 		}
 	}

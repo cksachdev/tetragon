@@ -20,30 +20,45 @@
 	
 	<!-- == DEFAULT TARGETS =================================================================== -->
 	
-	<target name=".Init" description="">
+	<target name=".Init" description="Prints build properties to the output console.">
 		<echoproperties/>
 	</target>
 	
-	<target name=".Clean" description="Cleans the output folder.">
+	<target name=".Clean" description="Cleans the bin folder.">
 		<clean/>
 	</target>
 	
-	<target name=".Pack" description="Creates a zipped version of the whole project.">
+	<target name=".Pack Project" description="Creates a zipped version of the whole project.">
 		<cleanAll/>
 		<zip destfile="${path.pub}/${app.shortname}_project.zip"
 			basedir=""
-			excludes="**/.svn,.settings/**,.settings/**.*,.settings,.git/**,.git/**.*,.git,doc/tetragon/**,.project,README,**/**.~$lock"
+			includes="art/**/**,bin/,bld/**/**,doc/,pub/,src/**/**,README"
+			excludes="doc/tetragon/,**/.svn,bld/build.number,**/**.~$lock"
 			update="false"
 			compress="true"/>
 	</target>
 	
-	<target name=".Publish" description="Publishes release versions of web and desktop targets.">
+	<target name=".Publish Web+Desktop" description="Publishes release versions of web and desktop targets.">
 		<cleanAll/>
 		<buildWeb debug="false"/>
 		<publishWeb/>
 		<buildDesktop debug="false"/>
 		<publishDesktop/>
 		<generateAIRUpdateFile/>
+		<clean/>
+	</target>
+	
+	<target name=".Publish All" description="Publishes release versions of all build targets.">
+		<cleanAll/>
+		<buildWeb debug="false"/>
+		<publishWeb/>
+		<buildDesktop debug="false"/>
+		<publishDesktop/>
+		<generateAIRUpdateFile/>
+		<buildAndroid debug="false"/>
+		<publishAndroid target="apk"/>
+		<buildIOS debug="false"/>
+		<publishIOS target="ipa-app-store"/>
 		<clean/>
 	</target>
 	
@@ -112,9 +127,19 @@
 		<LaunchAndroid/>
 	</target>
 	
-	<target name="Android Publish" description="Clean build and publish a Android version for release.">
+	<target name="Android Publish (APK)" description="Clean build and publish an Android APK version for release.">
 		<buildAndroid debug="false"/>
-		<publishAndroid/>
+		<publishAndroid target="apk"/>
+	</target>
+	
+	<target name="Android Publish (Debug)" description="Clean build and publish an Android APK-Debug version for release.">
+		<buildAndroid debug="true"/>
+		<publishAndroid target="apk-debug"/>
+	</target>
+	
+	<target name="Android Publish (Emulator)" description="Clean build and publish an Android APK-Emulator version for release.">
+		<buildAndroid debug="false"/>
+		<publishAndroid target="apk-emulator"/>
 	</target>
 	
 	
@@ -135,9 +160,24 @@
 		<LaunchIOS/>
 	</target>
 	
-	<target name="iOS Publish" description="Clean build and publish a iOS version for release.">
+	<target name="iOS Publish (App Store)" description="Clean build and publish a iOS version for App Store release.">
 		<buildIOS debug="false"/>
-		<publishIOS/>
+		<publishIOS target="ipa-app-store"/>
+	</target>
+	
+	<target name="iOS Publish (Debug)" description="Clean build and publish a iOS debug version.">
+		<buildIOS debug="false"/>
+		<publishIOS target="ipa-debug"/>
+	</target>
+	
+	<target name="iOS Publish (Test)" description="Clean build and publish a iOS test version.">
+		<buildIOS debug="false"/>
+		<publishIOS target="ipa-test"/>
+	</target>
+	
+	<target name="iOS Publish (Ad-Hoc)" description="Clean build and publish a iOS ad-hoc version.">
+		<buildIOS debug="false"/>
+		<publishIOS target="ipa-ad-hoc"/>
 	</target>
 	
 	
@@ -598,7 +638,7 @@
 	
 	<macrodef name="publishWeb">
 		<sequential>
-			<echo message="Publishing web application of ${app.name} ${app.version} ..." level="info"/>
+			<echo message="Publishing Web application of ${app.name} ${app.version} ..." level="info"/>
 			<zip destfile="${path.pub}/${web.publishname}.zip"
 				basedir="${path.bin}"
 				excludes="**/.svn"
@@ -610,7 +650,7 @@
 	
 	<macrodef name="publishDesktop">
 		<sequential>
-			<echo message="Publishing desktop application of ${app.name} ${app.version} ..." level="info"/>
+			<echo message="Publishing Desktop application of ${app.name} ${app.version} ..." level="info"/>
 			<java jar="${air.developertool}" fork="true" failonerror="true">
 				<arg value="-package"/>
 				<arg value="-storetype"/>
@@ -641,8 +681,9 @@
 	
 	
 	<macrodef name="publishAndroid">
+		<attribute name="target"/>
 		<sequential>
-			<echo message="Publishing android application of ${app.name} ${app.version} ..." level="info"/>
+			<echo message="Publishing Android application of ${app.name} ${app.version} ..." level="info"/>
 			<java jar="${air.developertool}" fork="true" failonerror="true">
 				<arg value="-package"/>
 				<arg value="-storetype"/>
@@ -666,11 +707,11 @@
 				<arg value="${path.bin}"/>
 				<arg value="${resource.folder}"/>
 			</java>
-			<echo message="Packaging Android APK file of ${app.name} ${app.version} ..." level="info"/>
+			<echo message="Packaging Android @{target} file of ${app.name} ${app.version} ..." level="info"/>
 			<java jar="${air.developertool}" fork="true" failonerror="true">
 				<arg value="-package"/>
 				<arg value="-target"/>
-				<arg value="apk"/>
+				<arg value="@{target}"/>
 				<arg value="-storetype"/>
 				<arg value="pkcs12"/>
 				<arg value="-keystore"/>
@@ -686,6 +727,7 @@
 	
 	
 	<macrodef name="publishIOS">
+		<attribute name="target"/>
 		<sequential>
 			<echo message="Publishing iOS application of ${app.name} ${app.version} ..." level="info"/>
 			<java jar="${air.developertool}" fork="true" failonerror="true">
@@ -711,12 +753,13 @@
 				<arg value="${path.bin}"/>
 				<arg value="${resource.folder}"/>
 			</java>
-			<echo message="Creating iOS IPA generation batch file ..." level="info"/>
+			<echo message="Creating iOS @{target} generation batch file ..." level="info"/>
 			<copy file="${templates.air.ios}/ios_create.bat" tofile="${path.pub}/${air.mobile.ios.publishname}_create.bat" overwrite="true">
 				<filterchain>
 					<replacetokens>
 						<token key="java_32bit"						value="${java.32bit}"/>
 						<token key="air_developertool"				value="${air.developertool}"/>
+						<token key="target"							value="@{target}"/>
 						<token key="air_ios_certificate_path"		value="${air.ios.certificate.path}"/>
 						<token key="air_ios_certificate_password"	value="${air.ios.certificate.password}"/>
 						<token key="air_ios_provprofile_path"		value="${air.ios.provprofile.path}"/>

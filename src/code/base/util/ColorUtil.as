@@ -43,5 +43,22 @@ package base.util
 		{
 			return colors[int(Math.random() * colors.length)];
 		}
+		
+		
+		/**
+		 * Converts a hexadecimal color value of the format 0x000000 to an array which
+		 * contains the three color channel values as a percentual value from 0.0 to 1.0.
+		 * 
+		 * @param rgb A hexadecimal color value, e.g. 0xFF2266.
+		 * @return An array containng three values ranging from 0.0 to 1.0.
+		 */
+		public static function rgbToPercent(rgb:uint):Array
+		{
+			var a:Array = new Array(3);
+			a[0] = Number((rgb >> 16) / 255);
+			a[1] = Number((rgb >> 8 & 0xFF) / 255);
+			a[2] = Number((rgb & 0xFF) / 255);
+			return a;
+		}
 	}
 }
