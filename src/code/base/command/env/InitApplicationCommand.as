@@ -278,8 +278,9 @@ package base.command.env
 			executeSetup("final");
 			Log.info("Initialization complete.");
 			Log.info("^^" + AppInfo.NAME + " v" + AppInfo.VERSION
-				+ " " + AppInfo.RELEASE_STAGE
 				+ " build #" + AppInfo.BUILD
+				+ (AppInfo.MILESTONE.length > 0 ? " \"" + AppInfo.MILESTONE + "\"" : "")
+				+ " " + AppInfo.RELEASE_STAGE
 				+ " (" + AppInfo.BUILD_TYPE
 				+ (AppInfo.IS_DEBUG ? " debug" : "") + ")^^");
 			if (_main.console) _main.console.welcome();

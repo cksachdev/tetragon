@@ -39,6 +39,7 @@ package @top_package@
 		public static const VERSION:String			= "@app_version@";
 		public static const BUILD:String			= "@build_nr@";
 		public static const BUILD_DATE:String		= "@build_date@";
+		public static const MILESTONE:String		= "@app_milestone@";
 		public static const BUILD_TYPE:String		= "@build_type@";
 		public static const RELEASE_STAGE:String	= "@app_releasestage@";
 		public static const COPYRIGHT:String		= "@app_copyright@";

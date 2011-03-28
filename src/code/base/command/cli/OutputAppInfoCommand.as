@@ -48,8 +48,9 @@ package base.command.cli
 			
 			_main.console.log(AppInfo.NAME
 				+ " v" + AppInfo.VERSION
-				+ " " + AppInfo.RELEASE_STAGE
 				+ " build #" + AppInfo.BUILD
+				+ (AppInfo.MILESTONE.length > 0 ? " \"" + AppInfo.MILESTONE + "\"" : "")
+				+ " " + AppInfo.RELEASE_STAGE
 				+ " (" + AppInfo.BUILD_DATE
 				+ ") -- copyright (c) " + AppInfo.COPYRIGHT
 				+ " " + AppInfo.YEAR, LogLevel.INFO);

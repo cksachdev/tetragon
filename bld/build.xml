@@ -30,7 +30,7 @@
 	
 	<target name=".Pack Project" description="Creates a zipped version of the whole project.">
 		<cleanAll/>
-		<zip destfile="${path.pub}/${app.shortname}_project.zip"
+		<zip destfile="dst/${app.shortname}_${app.version}.zip"
 			basedir=""
 			includes="art/**/**,bin/,bld/**/**,doc/,pub/,src/**/**,README"
 			excludes="doc/tetragon/,**/.svn,bld/build.number,**/**.~$lock"
@@ -347,6 +347,7 @@
 						<token key="app_version"		value="${app.version}"/>
 						<token key="build_nr"			value="${build.number}"/>
 						<token key="build_date"			value="${build.date}"/>
+						<token key="app_milestone"		value="${app.milestone}"/>
 						<token key="app_releasestage"	value="${app.releasestage}"/>
 						<token key="build_type"			value="@{buildType}"/>
 						<token key="app_copyright"		value="${app.copyright}"/>
@@ -466,7 +467,7 @@
 					<replacetokens>
 						<token key="app_version"				value="${app.version}"/>
 						<token key="build_nr"					value="${build.number}"/>
-						<token key="air_desktop_updateurl"		value="${air.desktop.updateurl}"/>
+						<token key="air_desktop_updateurl"		value="${air.desktop.updateurl}/${air.desktop.publishname}.air"/>
 						<token key="air_desktop_updatenotes"	value="${air.desktop.updatenotes}"/>
 					</replacetokens>
 				</filterchain>
@@ -639,7 +640,7 @@
 	<macrodef name="publishWeb">
 		<sequential>
 			<echo message="Publishing Web application of ${app.name} ${app.version} ..." level="info"/>
-			<zip destfile="${path.pub}/${web.publishname}.zip"
+			<zip destfile="${path.pub}/${web.publishname}"
 				basedir="${path.bin}"
 				excludes="**/.svn"
 				update="false"
@@ -738,7 +739,7 @@
 				<arg value="${air.ios.certificate.path}"/>
 				<arg value="-storepass"/>
 				<arg value="${air.ios.certificate.password}"/>
-				<arg value="${path.pub}/${air.mobile.ios.publishname}.tmp"/>
+				<arg value="${path.pub}/${air.mobile.ios.publishname}_ios.tmp"/>
 				<arg value="/${path.bin}/${air.descriptor}"/>
 				<arg value="-C"/>
 				<arg value="${path.bin}"/>
@@ -754,7 +755,7 @@
 				<arg value="${resource.folder}"/>
 			</java>
 			<echo message="Creating iOS @{target} generation batch file ..." level="info"/>
-			<copy file="${templates.air.ios}/ios_create.bat" tofile="${path.pub}/${air.mobile.ios.publishname}_create.bat" overwrite="true">
+			<copy file="${templates.air.ios}/ios_create.bat" tofile="${path.pub}/${air.mobile.ios.publishname}_ios_create.bat" overwrite="true">
 				<filterchain>
 					<replacetokens>
 						<token key="java_32bit"						value="${java.32bit}"/>
@@ -764,7 +765,7 @@
 						<token key="air_ios_certificate_password"	value="${air.ios.certificate.password}"/>
 						<token key="air_ios_provprofile_path"		value="${air.ios.provprofile.path}"/>
 						<token key="path_pub"						value="${path.pub}"/>
-						<token key="app_publishname"				value="${app.shortname}"/>
+						<token key="app_publishname"				value="${air.mobile.ios.publishname}"/>
 					</replacetokens>
 				</filterchain>
 			</copy>
