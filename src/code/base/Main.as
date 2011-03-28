@@ -25,18 +25,16 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package @top_package@
+package base
 {
-	import @top_package@.command.CommandManager;
-	import @top_package@.command.env.InitApplicationCommand;
-	import @top_package@.core.console.Console;
-	import @top_package@.core.console.FPSMonitor;
-	import @top_package@.core.preload.IPreloadable;
-	import @top_package@.core.preload.Preloader;
-	import @top_package@.data.Registry;
-	import @top_package@.util.Log;
-	import @top_package@.view.ApplicationView;
-	import @top_package@.view.screen.ScreenManager;
+	import base.command.CommandManager;
+	import base.command.env.InitApplicationCommand;
+	import base.core.console.Console;
+	import base.core.console.FPSMonitor;
+	import base.data.Registry;
+	import base.util.Log;
+	import base.view.ApplicationView;
+	import base.view.screen.ScreenManager;
 
 	import com.hexagonstar.debug.HLog;
 	import com.hexagonstar.display.StageReference;
@@ -44,10 +42,9 @@ package @top_package@
 
 	import flash.display.*;
 	import flash.events.UncaughtErrorEvent;
-	import flash.external.ExternalInterface;
 	
 	
-	[SWF(width="@app_width@", height="@app_height@", backgroundColor="#@app_bgcolor@", frameRate="@app_framerate@")]
+	[SWF(width="1024", height="640", backgroundColor="#000000", frameRate="60")]
 	
 	/**
 	 * Main acts as the entry point for the application. This is the class that the compiler
@@ -55,8 +52,7 @@ package @top_package@
 	 * 
 	 * Ant auto-generated file. Do not edit!
 	 */
-	[Frame(factoryClass="@top_package@.AppPreloader")]
-	public class Main implements IPreloadable
+	public class Main extends Sprite
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -73,17 +69,17 @@ package @top_package@
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Public Methods
+		// Constructor
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Invoked by the preloader after the application has been fully preloaded.
-		 * 
-		 * @param preloader a reference to the preloader.
+		 * Constructs a new App instance.
 		 */
-		public function onApplicationPreloaded(preloader:Preloader):void
+		public function Main()
 		{
-			_view = preloader;
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
+			_view = this;
 			_instance = this;
 			
 			setup();
@@ -232,12 +228,6 @@ package @top_package@
 		 */
 		private function setup():void
 		{
-			/* Call JavaScript function to give keyboard focus to Flash content. */
-			if (ExternalInterface.available)
-			{
-				ExternalInterface.call("onFlashContentLoaded");
-			}
-			
 			/* Set up global error listener if this is a release version. */
 			if (!AppInfo.IS_DEBUG)
 			{

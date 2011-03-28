@@ -47,9 +47,8 @@ package @top_package@
 	[SWF(width="@app_width@", height="@app_height@", backgroundColor="#@app_bgcolor@", frameRate="@app_framerate@")]
 	
 	/**
-	 * The Main class acts as the 'front door' of the application. This is the class
-	 * that the compiler is being told to compile and from which all other application
-	 * logic is being initiated.
+	 * Main acts as the entry point for the application. This is the class that the compiler
+	 * is being told to compile and from which all other application logic is being initiated.
 	 * 
 	 * Ant auto-generated file. Do not edit!
 	 */
@@ -62,7 +61,7 @@ package @top_package@
 		/** @private */
 		private static var _instance:Main;
 		/** @private */
-		private var _view:Sprite;
+		private var _view:DisplayObjectContainer;
 		/** @private */
 		private var _applicationView:ApplicationView;
 		/** @private */
@@ -92,7 +91,7 @@ package @top_package@
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Returns the instance of Main.
+		 * The instance of Main.
 		 */
 		public static function get instance():Main
 		{
@@ -101,9 +100,9 @@ package @top_package@
 		
 		
 		/**
-		 * The main view.
+		 * A reference to the base display object container.
 		 */
-		public function get view():Sprite
+		public function get view():DisplayObjectContainer
 		{
 			return _view;
 		}
@@ -115,18 +114,29 @@ package @top_package@
 		}
 		
 		
+		/**
+		 * A reference to the console. Will return <code>null</code> if the console has
+		 * been disabled.
+		 */
 		public function get console():Console
 		{
 			return _applicationView.console;
 		}
 		
 		
+		/**
+		 * A reference to the FPS monitor. Will return <code>null</code> if the FPS monitor
+		 * has been disabled.
+		 */
 		public function get fpsMonitor():FPSMonitor
 		{
 			return _applicationView.fpsMonitor;
 		}
 		
 		
+		/**
+		 * A reference to the screen manager.
+		 */
 		public function get screenManager():ScreenManager
 		{
 			return _applicationView.screenManager;
@@ -134,8 +144,8 @@ package @top_package@
 		
 		
 		/**
-		 * Returns the base nativeWindow of the application if it is supported by the build
-		 * type, otherwise it returns the base display object (Sprite) instead.
+		 * A reference to the base nativeWindow of the application if it is supported by the
+		 * build type. Otherwise it returns the base display object container instead.
 		 */
 		public function get baseWindow():*
 		{
@@ -143,17 +153,20 @@ package @top_package@
 			{
 				if (NativeWindow.isSupported) return _view.stage.nativeWindow;
 			}
-			return this;
+			return _view;
 		}
 		
 		
 		/**
-		 * @private
+		 * A reference to the setup helper if the build type uses any. Read-only access!
 		 */
 		public function get setupHelper():*
 		{
 			return _setupHelper;
 		}
+		/**
+		 * @private
+		 */
 		public function set setupHelper(v:*):void
 		{
 			if (_setupHelper) return;

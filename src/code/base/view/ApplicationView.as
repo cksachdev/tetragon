@@ -39,9 +39,9 @@ package base.view
 	
 	
 	/**
-	 * ApplicationView is the main wrapper for all other display objects in a Flash-based
-	 * application. It contains the console, the fps monitor and the screen container
-	 * which in turn acts as a wrapper for any screens.
+	 * ApplicationView is the main wrapper for all other display objects in the application.
+	 * It contains the console, the FPS monitor and the screen container which in turn acts
+	 * as a wrapper for any screens and their display children.
 	 */
 	public class ApplicationView extends Sprite
 	{
@@ -49,11 +49,17 @@ package base.view
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
+		/** @private */
 		private var _main:Main;
+		/** @private */
 		private var _console:Console;
+		/** @private */
 		private var _fpsMonitor:FPSMonitor;
+		/** @private */
 		private var _screenContainer:Sprite;
-		private var _consoleContainer:Sprite;
+		/** @private */
+		private var _utilityContainer:Sprite;
+		/** @private */
 		private var _screenManager:ScreenManager;
 		
 		
@@ -62,12 +68,11 @@ package base.view
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Creates a new ApplicationUI instance.
+		 * Creates a new ApplicationView instance.
 		 */
 		public function ApplicationView(main:Main)
 		{
 			_main = main;
-			
 			super();
 			setup();
 		}
@@ -78,7 +83,7 @@ package base.view
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Start
+		 * Starts the application view and the currently opened screen.
 		 */
 		public function start():void
 		{
@@ -87,6 +92,7 @@ package base.view
 		
 		
 		/**
+		 * Creates Console and FPSMonior, Called automatically by base setup.
 		 * @private
 		 */
 		public function createUtilityViews():void
@@ -97,7 +103,7 @@ package base.view
 		
 		
 		/**
-		 * @inheritDoc
+		 * Updates the application view and the currently opened screen.
 		 */
 		public function update():void
 		{
@@ -106,7 +112,7 @@ package base.view
 		
 		
 		/**
-		 * @inheritDoc
+		 * Disposes the application view.
 		 */
 		public function dispose():void
 		{
@@ -115,7 +121,9 @@ package base.view
 		
 		
 		/**
-		 * @inheritDoc
+		 * Returns a String Representation of the class.
+		 * 
+		 * @return A String Representation of the class.
 		 */
 		override public function toString():String
 		{
@@ -136,12 +144,20 @@ package base.view
 		}
 		
 		
+		/**
+		 * A reference to the console. Will return <code>null</code> if the console has
+		 * been disabled.
+		 */
 		public function get console():Console
 		{
 			return _console;
 		}
 		
 		
+		/**
+		 * A reference to the FPS monitor. Will return <code>null</code> if the FPS monitor
+		 * has been disabled.
+		 */
 		public function get fpsMonitor():FPSMonitor
 		{
 			return _fpsMonitor;
@@ -149,7 +165,8 @@ package base.view
 		
 		
 		/**
-		 * Returns true if the application is in fullscreen mode.
+		 * Returns <code>true</code> if the application is in fullscreen mode, otherwise
+		 * <code>false</code>.
 		 */
 		public function get isFullscreen():Boolean
 		{
@@ -200,7 +217,6 @@ package base.view
 		{
 			_screenContainer = new Sprite();
 			addChild(_screenContainer);
-			
 			_screenManager = new ScreenManager(_main, _screenContainer);
 		}
 		
@@ -212,13 +228,12 @@ package base.view
 		{
 			if (!_console && Registry.config.consoleEnabled)
 			{
-				if (!_consoleContainer)
+				if (!_utilityContainer)
 				{
-					_consoleContainer = new Sprite();
-					addChild(_consoleContainer);
+					_utilityContainer = new Sprite();
+					addChild(_utilityContainer);
 				}
-				
-				_console = new Console(_main, _consoleContainer);
+				_console = new Console(_main, _utilityContainer);
 				_console.init();
 			}
 		}
@@ -231,13 +246,12 @@ package base.view
 		{
 			if (!_fpsMonitor && Registry.config.fpsMonitorEnabled)
 			{
-				if (!_consoleContainer)
+				if (!_utilityContainer)
 				{
-					_consoleContainer = new Sprite();
-					addChild(_consoleContainer);
+					_utilityContainer = new Sprite();
+					addChild(_utilityContainer);
 				}
-				
-				_fpsMonitor = new FPSMonitor(_main, _consoleContainer);
+				_fpsMonitor = new FPSMonitor(_main, _utilityContainer);
 			}
 		}
 		
