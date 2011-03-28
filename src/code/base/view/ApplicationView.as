@@ -50,7 +50,6 @@ package base.view
 		//-----------------------------------------------------------------------------------------
 		
 		private var _main:Main;
-		private var _view:Sprite;
 		private var _console:Console;
 		private var _fpsMonitor:FPSMonitor;
 		private var _screenContainer:Sprite;
@@ -68,7 +67,6 @@ package base.view
 		public function ApplicationView(main:Main)
 		{
 			_main = main;
-			_view = _main.view;
 			
 			super();
 			setup();
@@ -155,8 +153,8 @@ package base.view
 		 */
 		public function get isFullscreen():Boolean
 		{
-			return (_view.stage.displayState == StageDisplayState["FULL_SCREEN_INTERACTIVE"]
-				|| _view.stage.displayState == StageDisplayState.FULL_SCREEN);
+			return (_main.view.stage.displayState == StageDisplayState["FULL_SCREEN_INTERACTIVE"]
+				|| _main.view.stage.displayState == StageDisplayState.FULL_SCREEN);
 		}
 		
 		
