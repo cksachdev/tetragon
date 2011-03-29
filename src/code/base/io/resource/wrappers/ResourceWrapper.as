@@ -27,18 +27,18 @@
  */
 package base.io.resource.wrappers
 {
+	import base.core.debug.Log;
 	import base.event.ResourceEvent;
 	import base.io.resource.ResourceBulkFile;
-	import base.util.Log;
-
 	import com.hexagonstar.data.constants.Status;
 	import com.hexagonstar.exception.IllegalArgumentException;
 	import com.hexagonstar.io.file.types.IFile;
-
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.ByteArray;
 	import flash.utils.getQualifiedClassName;
+
+
 	
 	
 	/**

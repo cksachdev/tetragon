@@ -28,16 +28,16 @@
 package base.io.resource
 {
 	import base.Main;
+	import base.core.debug.Log;
 	import base.event.ResourceEvent;
-	import base.util.Log;
-
 	import com.hexagonstar.data.structures.IIterator;
 	import com.hexagonstar.data.structures.queues.Queue;
 	import com.hexagonstar.exception.SingletonException;
-
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
+
+
 	
 	
 	public class ResourceManager extends EventDispatcher

@@ -29,10 +29,10 @@ package @top_package@
 {
 	import @top_package@.command.CommandManager;
 	import @top_package@.command.env.InitApplicationCommand;
-	import @top_package@.core.console.Console;
-	import @top_package@.core.console.FPSMonitor;
+	import @top_package@.core.debug.Console;
+	import @top_package@.core.debug.FPSMonitor;
+	import @top_package@.core.debug.Log;
 	import @top_package@.data.Registry;
-	import @top_package@.util.Log;
 	import @top_package@.view.ApplicationView;
 	import @top_package@.view.screen.ScreenManager;
 

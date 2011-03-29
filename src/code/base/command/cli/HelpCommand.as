@@ -29,11 +29,11 @@ package base.command.cli
 {
 	import base.command.Command;
 	import base.core.cli.CLICommandVO;
-	import base.core.console.Console;
+	import base.core.debug.Console;
 	import base.data.Registry;
-
 	import com.hexagonstar.debug.LogLevel;
 	import com.hexagonstar.display.text.ColumnText;
+
 
 
 	

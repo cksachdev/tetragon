@@ -28,15 +28,15 @@
 package base.command.file
 {
 	import base.command.Command;
+	import base.core.debug.Log;
 	import base.io.resource.Resource;
 	import base.io.resource.ResourceManager;
-	import base.util.Log;
-
 	import com.hexagonstar.data.types.Byte;
-
 	import flash.display.BitmapData;
 	import flash.media.Sound;
 	import flash.utils.ByteArray;
+
+
 
 	
 	public class ResourceInfoCommand extends Command

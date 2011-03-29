@@ -27,12 +27,12 @@
  */
 package base.io.resource
 {
-	import base.util.Log;
-
+	import base.core.debug.Log;
 	import com.hexagonstar.exception.FatalException;
-
 	import flash.utils.describeType;
 	import flash.utils.getDefinitionByName;
+
+
 
 	
 	/**

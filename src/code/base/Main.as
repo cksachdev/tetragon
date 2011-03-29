@@ -29,10 +29,10 @@ package base
 {
 	import base.command.CommandManager;
 	import base.command.env.InitApplicationCommand;
-	import base.core.console.Console;
-	import base.core.console.FPSMonitor;
+	import base.core.debug.Console;
+	import base.core.debug.FPSMonitor;
+	import base.core.debug.Log;
 	import base.data.Registry;
-	import base.util.Log;
 	import base.view.ApplicationView;
 	import base.view.screen.ScreenManager;
 

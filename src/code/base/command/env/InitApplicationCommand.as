@@ -30,11 +30,11 @@ package base.command.env
 	import base.AppInfo;
 	import base.AppResourceBundle;
 	import base.command.Command;
+	import base.core.debug.Log;
 	import base.data.Registry;
 	import base.io.file.loaders.ConfigLoader;
 	import base.io.resource.ResourceManager;
 	import base.setup.*;
-	import base.util.Log;
 
 	import extra.game.setup.*;
 	import extra.rpg.setup.*;

@@ -28,15 +28,15 @@
 package base.io.resource
 {
 	import base.Main;
+	import base.core.debug.Log;
 	import base.data.Registry;
-	import base.util.Log;
-
 	import com.hexagonstar.event.FileIOEvent;
 	import com.hexagonstar.io.file.ZipLoader;
-
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.filesystem.File;
+
+
 	
 	
 	/**

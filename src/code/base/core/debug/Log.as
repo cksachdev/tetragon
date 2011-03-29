@@ -25,20 +25,23 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.util
+package base.core.debug
 {
 	import base.Main;
-	import base.core.console.Console;
 	import base.data.Registry;
 
 	import com.hexagonstar.debug.LogLevel;
-	import com.hexagonstar.util.debug.Debug;
 
 	import flash.display.Stage;
 	
 	
 	/**
-	 * A simple wrapper class for project-external (and internal) Logging classes.
+	 * Provides the logging mechanism for tetragon. This class is used anywhere in the
+	 * project code to send logging information to tetragon's internal console as well
+	 * as to any external loggers.
+	 * 
+	 * @see Console
+	 * @see ExternalLogAdapter
 	 */
 	public final class Log
 	{
@@ -46,11 +49,19 @@ package base.util
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
+		/** @private */
 		private static var _main:Main;
+		/** @private */
 		private static var _buffer:Array;
+		/** @private */
 		private static var _console:Console;
+		/** @private */
+		private static var _externalLog:ExternalLogAdapter;
+		/** @private */
 		private static var _enabled:Boolean = true;
+		/** @private */
 		private static var _initial:Boolean = true;
+		/** @private */
 		private static var _filterLevel:int = 0;
 		
 		
@@ -59,14 +70,16 @@ package base.util
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Sets the logger into it's initial state.
+		 * Puts the logger into it's initial state.
 		 */
 		public static function init():void 
 		{
 			_main = null;
 			_buffer = null;
 			_console = null;
+			_externalLog = null;
 			_initial = true;
+			_externalLog = new ExternalLogAdapter();
 		}
 		
 		
@@ -123,86 +136,114 @@ package base.util
 		
 		
 		/**
-		 * monitor
+		 * Tells any external logger to monitor the application.
+		 * 
+		 * @param stage Stage object required for monitoring.
 		 */
 		public static function monitor(stage:Stage):void
 		{
-			Debug.monitor(stage);
+			if (_externalLog) _externalLog.monitor(stage);
 		}
 		
 		
 		/**
-		 * trace
+		 * Sends trace data to the logger.
+		 * 
+		 * @param data The data to log.
+		 * @param caller Optional caller of the method which is used in the output string.
 		 */
 		public static function trace(data:*, caller:Object = null):void
 		{
 			if (_filterLevel > LogLevel.TRACE) return;
+			if (_externalLog) _externalLog.trace(data);
 			send(data, LogLevel.TRACE, caller);
 		}
 		
 		
 		/**
-		 * debug
+		 * Sends debug data to the logger.
+		 * 
+		 * @param data The data to log.
+		 * @param caller Optional caller of the method which is used in the output string.
 		 */
 		public static function debug(data:*, caller:Object = null):void
 		{
 			if (_filterLevel > LogLevel.DEBUG) return;
+			if (_externalLog) _externalLog.debug(data);
 			send(data, LogLevel.DEBUG, caller);
 		}
 		
 		
 		/**
-		 * info
+		 * Sends info data to the logger.
+		 * 
+		 * @param data The data to log.
+		 * @param caller Optional caller of the method which is used in the output string.
 		 */
 		public static function info(data:*, caller:Object = null):void
 		{
 			if (_filterLevel > LogLevel.INFO) return;
+			if (_externalLog) _externalLog.info(data);
 			send(data, LogLevel.INFO, caller);
 		}
 		
 		
 		/**
-		 * warn
+		 * Sends warn data to the logger.
+		 * 
+		 * @param data The data to log.
+		 * @param caller Optional caller of the method which is used in the output string.
 		 */
 		public static function warn(data:*, caller:Object = null):void
 		{
 			if (_filterLevel > LogLevel.WARN) return;
+			if (_externalLog) _externalLog.warn(data);
 			send(data, LogLevel.WARN, caller);
 		}
 		
 		
 		/**
-		 * error
+		 * Sends error data to the logger.
+		 * 
+		 * @param data The data to log.
+		 * @param caller Optional caller of the method which is used in the output string.
 		 */
 		public static function error(data:*, caller:Object = null):void
 		{
 			if (_filterLevel > LogLevel.ERROR) return;
+			if (_externalLog) _externalLog.error(data);
 			send(data, LogLevel.ERROR, caller);
 		}
 		
 		
 		/**
-		 * fatal
+		 * Sends fatal data to the logger.
+		 * 
+		 * @param data The data to log.
+		 * @param caller Optional caller of the method which is used in the output string.
 		 */
 		public static function fatal(data:*, caller:Object = null):void
 		{
 			if (_filterLevel > LogLevel.FATAL) return;
+			if (_externalLog) _externalLog.fatal(data);
 			send(data, LogLevel.FATAL, caller);
 		}
 		
 		
 		/**
-		 * delimiter
+		 * Sends a delimiter line to the console.
+		 * 
+		 * @param length Length of the line, in characters.
+		 * @param level The filter level.
 		 */
 		public static function delimiter(length:int = 20, level:int = 2):void
 		{
-			Debug.delimiter();
 			if (_console) _console.delimiter(length, level);
 		}
 		
 		
 		/**
-		 * linefeed
+		 * Sends a linefeed to the logger.
 		 */
 		public static function linefeed():void
 		{
@@ -214,6 +255,9 @@ package base.util
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * Determines wether the logger and any external loggers are enabled or not.
+		 */
 		public static function get enabled():Boolean
 		{
 			return _enabled;
@@ -228,10 +272,14 @@ package base.util
 			{
 				Log.info("Logging disabled.");
 			}
-			_enabled = Debug.enabled = v;
+			_enabled = v;
+			if (_externalLog) _externalLog.enabled = v;
 		}
 		
 		
+		/**
+		 * Determines the filter level of the logger and any external loggers.
+		 */
 		public static function get filterLevel():int
 		{
 			return _filterLevel;
@@ -247,33 +295,30 @@ package base.util
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * send
 		 * @private
 		 */
 		private static function send(data:*, level:int, caller:Object = null):void
 		{
-			if (_enabled)
+			if (!_enabled) return;
+			
+			/* Use initial buffer for any ouptut that is logged before
+			 * the Logger is initialized. */
+			if (!_main)
 			{
-				/* Use initial buffer for any ouptut that is logged before
-				 * the Logger is initialized. */
-				if (!_main)
-				{
-					if (_buffer == null) _buffer = [];
-					_buffer.push({data: data, level: level, caller: caller});
-					return;
-				}
-				
-				if (_initial) Log.flushBuffer();
-				
-				if (caller)
-				{
-					if (caller is String) data = caller + " " + data;
-					else if (caller["toString"]) data = caller["toString"]() + " " + data;
-				}
-				
-				Debug.trace(data, level);
-				if (_console) _console.log(data, level);
+				if (!_buffer) _buffer = [];
+				_buffer.push({data: data, level: level, caller: caller});
+				return;
 			}
+			
+			if (_initial) Log.flushBuffer();
+			
+			if (caller)
+			{
+				if (caller is String) data = caller + " " + data;
+				else if (caller["toString"]) data = caller["toString"]() + " " + data;
+			}
+			
+			if (_console) _console.log(data, level);
 		}
 		
 		

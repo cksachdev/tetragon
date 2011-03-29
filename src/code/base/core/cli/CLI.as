@@ -30,8 +30,8 @@ package base.core.cli
 	import base.Main;
 	import base.command.Command;
 	import base.command.CommandManager;
-	import base.core.console.Console;
-	import base.util.Log;
+	import base.core.debug.Console;
+	import base.core.debug.Log;
 
 	import com.hexagonstar.debug.LogLevel;
 	

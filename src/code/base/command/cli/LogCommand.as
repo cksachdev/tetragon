@@ -28,9 +28,9 @@
 package base.command.cli
 {
 	import base.command.Command;
-	import base.util.Log;
-
+	import base.core.debug.Log;
 	import com.hexagonstar.debug.LogLevel;
+
 
 	
 	/**

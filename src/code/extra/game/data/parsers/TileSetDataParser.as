@@ -27,11 +27,11 @@
  */
 package extra.game.data.parsers
 {
+	import base.core.debug.Log;
 	import base.data.parsers.DataParser;
 	import base.data.parsers.IDataParser;
 	import base.io.resource.ResourceIndex;
 	import base.io.resource.wrappers.XMLResourceWrapper;
-	import base.util.Log;
 
 	import extra.game.render.tile.*;
 	

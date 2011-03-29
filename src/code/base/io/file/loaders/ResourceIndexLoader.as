@@ -28,19 +28,19 @@
 package base.io.file.loaders
 {
 	import base.Main;
+	import base.core.debug.Log;
 	import base.data.Registry;
 	import base.io.resource.ResourceGroup;
 	import base.io.resource.ResourceIndex;
 	import base.io.resource.resourceTypeMap;
-	import base.util.Log;
-
 	import com.hexagonstar.event.FileIOEvent;
 	import com.hexagonstar.io.file.types.IFile;
 	import com.hexagonstar.io.file.types.XMLFile;
 	import com.hexagonstar.io.file.types.ZipFile;
-
 	import flash.events.Event;
 	import flash.system.System;
+
+
 
 	
 	/**

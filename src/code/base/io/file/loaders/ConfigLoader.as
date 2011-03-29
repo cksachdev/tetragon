@@ -28,14 +28,14 @@
 package base.io.file.loaders
 {
 	import base.Main;
+	import base.core.debug.Log;
 	import base.data.Config;
 	import base.data.Registry;
-	import base.util.Log;
-
 	import com.hexagonstar.event.FileIOEvent;
 	import com.hexagonstar.io.file.types.TextFile;
-
 	import flash.events.Event;
+
+
 	
 	
 	[Event(name="complete", type="flash.events.Event")]

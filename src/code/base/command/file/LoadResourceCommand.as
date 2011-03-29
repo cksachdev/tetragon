@@ -28,9 +28,9 @@
 package base.command.file
 {
 	import base.command.Command;
+	import base.core.debug.Log;
 	import base.io.resource.Resource;
 	import base.io.resource.ResourceManager;
-	import base.util.Log;
 
 	
 	/**

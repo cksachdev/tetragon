@@ -28,14 +28,14 @@
 package base.view
 {
 	import base.Main;
-	import base.core.console.Console;
-	import base.core.console.FPSMonitor;
+	import base.core.debug.Console;
+	import base.core.debug.FPSMonitor;
 	import base.data.Registry;
 	import base.event.ScreenEvent;
 	import base.view.screen.ScreenManager;
-
 	import flash.display.Sprite;
 	import flash.display.StageDisplayState;
+
 	
 	
 	/**

@@ -32,17 +32,15 @@ package base.core.update
 	import air.update.events.StatusUpdateErrorEvent;
 	import air.update.events.StatusUpdateEvent;
 	import air.update.events.UpdateEvent;
+
+	import base.core.debug.Log;
 	import base.data.Config;
 	import base.event.UpdateManagerEvent;
-	import base.util.Log;
+
 	import flash.events.ErrorEvent;
 	import flash.events.EventDispatcher;
 	import flash.events.ProgressEvent;
-
-
-
-
-
+	
 	
 	/**
 	 * Handles updates for AIR applications.

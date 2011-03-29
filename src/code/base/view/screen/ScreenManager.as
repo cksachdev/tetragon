@@ -28,19 +28,19 @@
 package base.view.screen
 {
 	import base.Main;
+	import base.core.debug.Log;
 	import base.event.ResourceEvent;
 	import base.event.ScreenEvent;
-	import base.util.Log;
 	import base.view.display.LoadProgressDisplay;
-
 	import com.greensock.TweenLite;
 	import com.hexagonstar.display.StageReference;
 	import com.hexagonstar.display.text.ColumnText;
-
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.EventDispatcher;
 	import flash.utils.setTimeout;
+
+
 
 	
 	/**

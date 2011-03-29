@@ -27,8 +27,8 @@
  */
 package base.view.screen
 {
-	import base.core.console.Console;
-	import base.core.console.FPSMonitor;
+	import base.core.debug.Console;
+	import base.core.debug.FPSMonitor;
 	
 	
 	/**

@@ -29,8 +29,8 @@ package base.core.desktop
 {
 	import base.AppInfo;
 	import base.Main;
+	import base.core.debug.Log;
 	import base.core.settings.LocalSettingsManager;
-	import base.util.Log;
 	import base.view.ApplicationView;
 
 	import com.hexagonstar.exception.SingletonException;

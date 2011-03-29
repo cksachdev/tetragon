@@ -27,7 +27,7 @@
  */
 package base.core.cli
 {
-	import base.util.Log;
+	import base.core.debug.Log;
 
 	
 	public class CLITokenizer

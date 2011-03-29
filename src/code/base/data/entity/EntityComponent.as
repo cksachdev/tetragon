@@ -27,7 +27,7 @@
  */
 package base.data.entity
 {
-	import base.util.Log;
+	import base.core.debug.Log;
 
 	import flash.utils.getQualifiedClassName;
 	

@@ -31,14 +31,13 @@
  */
 package extra.game.render.tile
 {
+	import base.core.debug.Log;
 	import base.data.DataObject;
 	import base.io.resource.ResourceManager;
-	import base.util.Log;
 
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
 	
 	
 	/**

@@ -28,18 +28,18 @@
 package base.io.file.loaders
 {
 	import base.Main;
+	import base.core.debug.Log;
 	import base.data.Registry;
-	import base.util.Log;
-
 	import com.hexagonstar.data.structures.queues.Queue;
 	import com.hexagonstar.event.FileIOEvent;
 	import com.hexagonstar.io.file.BulkLoader;
 	import com.hexagonstar.io.file.IFileIOEventListener;
 	import com.hexagonstar.io.file.types.XMLFile;
-
 	import flash.events.ErrorEvent;
 	import flash.events.EventDispatcher;
 	import flash.system.Capabilities;
+
+
 	
 	
 	/**
