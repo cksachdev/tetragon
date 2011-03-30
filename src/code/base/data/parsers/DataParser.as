@@ -28,6 +28,7 @@
 package base.data.parsers
 {
 	import com.hexagonstar.util.string.createStringVector;
+	import com.hexagonstar.util.string.unwrapString;
 
 	import flash.events.EventDispatcher;
 	import flash.system.System;
@@ -110,7 +111,7 @@ package base.data.parsers
 		 */
 		protected static function extractText(xml:*, name:String = null):String
 		{
-			return unwrapText(extractString(xml, name));
+			return unwrapString(extractString(xml, name));
 		}
 		
 		
@@ -138,30 +139,6 @@ package base.data.parsers
 		protected static function extractColorValue(xml:*, name:String):uint
 		{
 			return parseColorValue(extractString(xml, name));
-		}
-		
-		
-		/**
-		 * Unwraps a string that contains multiline text, usually from a XML file. Any
-		 * leading and trailing spaces or tabs are removed from each line, then the lines
-		 * are unwrapped (LFs and CRs are removed). Then the method adds a space to every
-		 * line that doesn't end with a 'br' HTML tag.
-		 * 
-		 * @private
-		 * 
-		 * @param string The string to unwrap.
-		 * @return The unwrapped string.
-		 */
-		protected static function unwrapText(string:String):String
-		{
-			if (string == null) return null;
-			var lines:Array = string.split("\n");
-			for (var i:int = 0; i < lines.length; i++)
-			{
-				lines[i] = String(lines[i]).replace(/^\s+|\s+$/g, "");
-				if (!(RegExp(/<br\/>$/).test(lines[i]))) lines[i] += " ";
-			}
-			return lines.join("");
 		}
 		
 		
