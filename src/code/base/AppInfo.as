@@ -37,10 +37,10 @@ package base
 		public static const NAME:String				= "Tetragon Application";
 		public static const DESCRIPTION:String		= "Tetragon Application Test Build";
 		public static const VERSION:String			= "1.0.0";
-		public static const BUILD:String			= "4293";
-		public static const BUILD_DATE:String		= "30-March-2011 16:05";
+		public static const BUILD:String			= "4304";
+		public static const BUILD_DATE:String		= "30-March-2011 18:37";
 		public static const MILESTONE:String		= "foundation";
-		public static const BUILD_TYPE:String		= "ios";
+		public static const BUILD_TYPE:String		= "desktop";
 		public static const RELEASE_STAGE:String	= "beta";
 		public static const COPYRIGHT:String		= "Hexagon Star Softworks";
 		public static const PUBLISHER:String		= "Hexagon Star Softworks";
