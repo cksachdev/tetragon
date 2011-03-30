@@ -32,16 +32,16 @@ package base.view.screen
 	import base.event.ResourceEvent;
 	import base.event.ScreenEvent;
 	import base.view.display.LoadProgressDisplay;
+
 	import com.greensock.TweenLite;
-	import com.hexagonstar.display.StageReference;
-	import com.hexagonstar.display.text.ColumnText;
+	import com.hexagonstar.util.display.StageReference;
+	import com.hexagonstar.util.string.TabularText;
+
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.EventDispatcher;
 	import flash.utils.setTimeout;
-
-
-
+	
 	
 	/**
 	 * Manages the creation, opening and closing as well as updating of screens.
@@ -251,7 +251,7 @@ package base.view.screen
 		 */
 		public function dumpScreenList():String
 		{
-			var t:ColumnText = new ColumnText(4, true, "  ", null, "  ", 100, ["ID", "CLASS", "OPEN", "STARTSCREEN"]);
+			var t:TabularText = new TabularText(4, true, "  ", null, "  ", 100, ["ID", "CLASS", "OPEN", "STARTSCREEN"]);
 			for (var id:String in _screenClasses)
 			{
 				var clazz:Class = _screenClasses[id];

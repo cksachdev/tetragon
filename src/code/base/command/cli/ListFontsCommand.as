@@ -29,8 +29,8 @@ package base.command.cli
 {
 	import base.command.Command;
 
-	import com.hexagonstar.debug.LogLevel;
-	import com.hexagonstar.display.text.ColumnText;
+	import com.hexagonstar.util.debug.LogLevel;
+	import com.hexagonstar.util.string.TabularText;
 
 	import flash.text.Font;
 
@@ -63,7 +63,7 @@ package base.command.cli
 			
 			if (a.length > 0)
 			{
-				var c:ColumnText = new ColumnText(4, true, "  ", null, "  ", 0,
+				var c:TabularText = new TabularText(4, true, "  ", null, "  ", 0,
 					["NR.", "NAME", "STYLE", "TYPE"]);
 				for (var i:int = 0; i < a.length; i++)
 				{

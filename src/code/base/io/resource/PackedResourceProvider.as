@@ -30,13 +30,13 @@ package base.io.resource
 	import base.Main;
 	import base.core.debug.Log;
 	import base.data.Registry;
-	import com.hexagonstar.event.FileIOEvent;
-	import com.hexagonstar.io.file.ZipLoader;
+
+	import com.hexagonstar.file.FileIOEvent;
+	import com.hexagonstar.file.ZipLoader;
+
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.filesystem.File;
-
-
 	
 	
 	/**

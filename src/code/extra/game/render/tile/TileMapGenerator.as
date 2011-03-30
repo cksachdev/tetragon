@@ -32,9 +32,10 @@
 package extra.game.render.tile
 {
 	import base.data.constants.Palettes;
-	import base.util.ColorUtil;
-	import base.util.Dice;
-	import base.util.NumberGenerator;
+
+	import com.hexagonstar.util.color.getRandomColor;
+	import com.hexagonstar.util.number.Dice;
+	import com.hexagonstar.util.number.random;
 
 	
 	public class TileMapGenerator
@@ -111,18 +112,18 @@ package extra.game.render.tile
 			/* Determine random map size. */
 			var minSize:int = (sr == 0) ? 2 : (sr == 1) ? 2 : (sr == 2) ? 20 : 100;
 			var maxSize:int = (sr == 0) ? 200 : (sr == 1) ? 10 : (sr == 2) ? 40 : 200;
-			var w:int = NumberGenerator.random(minSize, maxSize);
-			var h:int = NumberGenerator.random(minSize, maxSize);
+			var w:int = random(minSize, maxSize);
+			var h:int = random(minSize, maxSize);
 			var i:int;
 			
 			_tilemap = new TileMap();
 			
 			/* Determine random map margin. */
 			if (Dice.chance(33)) _tilemap.margin = 0;
-			else _tilemap.margin = NumberGenerator.random(20, 200);
+			else _tilemap.margin = random(20, 200);
 			
 			/* Random bg color */
-			_tilemap.backgroundColor = ColorUtil.randomColor(Palettes.C64);
+			_tilemap.backgroundColor = getRandomColor(Palettes.C64);
 			_tilemap.edgeMode = TileScroller.EDGE_MODE_HALT;
 			
 			var hBorder:TileGroupDefinition = _tileset.getGroupDefinitionByID("hBorder");
@@ -162,7 +163,7 @@ package extra.game.render.tile
 					var gx:int = 32 * x;
 					var gy:int = 32 * y;
 					var tg:TileGroup;
-					var rnd:int = NumberGenerator.random(1, 6);
+					var rnd:int = random(1, 6);
 					switch (rnd)
 					{
 						case 1:
@@ -219,18 +220,18 @@ package extra.game.render.tile
 			/* Determine random map size. */
 			var minSize:int = (sr == 0) ? 2 : (sr == 1) ? 2 : (sr == 2) ? 20 : 100;
 			var maxSize:int = (sr == 0) ? 200 : (sr == 1) ? 10 : (sr == 2) ? 40 : 200;
-			var w:int = NumberGenerator.random(minSize, maxSize);
-			var h:int = NumberGenerator.random(minSize, maxSize);
+			var w:int = random(minSize, maxSize);
+			var h:int = random(minSize, maxSize);
 			var i:int;
 			
 			_tilemap = new TileMap();
 			
 			/* Determine random map margin. */
 			if (Dice.chance(33)) _tilemap.margin = 0;
-			else _tilemap.margin = NumberGenerator.random(20, 200);
+			else _tilemap.margin = random(20, 200);
 			
 			/* Random bg color */
-			_tilemap.backgroundColor = ColorUtil.randomColor(Palettes.C64);
+			_tilemap.backgroundColor = getRandomColor(Palettes.C64);
 			_tilemap.edgeMode = TileScroller.EDGE_MODE_HALT;
 			
 			var x:int;
@@ -264,7 +265,7 @@ package extra.game.render.tile
 					var gx:int = tw * x;
 					var gy:int = th * y;
 					var tg:TileGroup;
-					var rnd:int = NumberGenerator.random(0, tc);
+					var rnd:int = random(0, tc);
 					tg = _tileset.createGroup(rnd, gx, gy);
 					_tilemap.addTileGroup(tg);
 				}
@@ -285,7 +286,7 @@ package extra.game.render.tile
 			
 			/* Determine random map margin. */
 			if (Dice.chance(33)) _tilemap.margin = 0;
-			else _tilemap.margin = NumberGenerator.random(20, 200);
+			else _tilemap.margin = random(20, 200);
 			
 			/* Random bg color */
 			_tilemap.backgroundColor = 0x333333;

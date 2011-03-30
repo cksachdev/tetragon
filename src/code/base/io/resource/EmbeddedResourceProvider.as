@@ -30,7 +30,7 @@ package base.io.resource
 	import base.Main;
 	import base.event.ResourceEvent;
 
-	import com.hexagonstar.event.FileIOEvent;
+	import com.hexagonstar.file.FileIOEvent;
 
 	
 	/**

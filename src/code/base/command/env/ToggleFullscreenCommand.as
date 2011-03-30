@@ -30,7 +30,7 @@ package base.command.env
 	import base.command.Command;
 	import base.core.desktop.*;
 
-	import com.hexagonstar.display.StageReference;
+	import com.hexagonstar.util.display.StageReference;
 
 	import flash.display.Stage;
 	import flash.display.StageDisplayState;

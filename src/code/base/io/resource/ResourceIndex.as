@@ -29,7 +29,7 @@ package base.io.resource
 {
 	import base.data.DataObject;
 
-	import com.hexagonstar.display.text.ColumnText;
+	import com.hexagonstar.util.string.TabularText;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -294,7 +294,7 @@ package base.io.resource
 		public function dump(filter:String = "all"):String
 		{
 			var rm:ResourceManager = ResourceManager.instance;
-			var t:ColumnText = new ColumnText(7, true, "  ", null, "  ", 0,
+			var t:TabularText = new TabularText(7, true, "  ", null, "  ", 0,
 				["ID", "TYPE", "RESOURCECLASS", "PACKAGE", "PATH", "EMBEDDED", "REFCOUNT"]);
 			
 			for each (var e:Resource in _resources)

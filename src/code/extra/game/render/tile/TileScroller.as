@@ -31,7 +31,7 @@
  */
 package extra.game.render.tile
 {
-	import com.hexagonstar.display.StageReference;
+	import com.hexagonstar.util.display.StageReference;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;

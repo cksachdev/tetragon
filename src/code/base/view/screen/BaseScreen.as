@@ -32,7 +32,7 @@ package base.view.screen
 	import base.event.ScreenEvent;
 	import base.view.display.Display;
 
-	import com.hexagonstar.display.StageReference;
+	import com.hexagonstar.util.display.StageReference;
 
 	import flash.display.DisplayObject;
 	import flash.events.Event;

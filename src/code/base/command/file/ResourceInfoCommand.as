@@ -31,7 +31,9 @@ package base.command.file
 	import base.core.debug.Log;
 	import base.io.resource.Resource;
 	import base.io.resource.ResourceManager;
-	import com.hexagonstar.data.types.Byte;
+
+	import com.hexagonstar.types.Byte;
+
 	import flash.display.BitmapData;
 	import flash.media.Sound;
 	import flash.utils.ByteArray;

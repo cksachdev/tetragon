@@ -27,7 +27,7 @@
  */
 package extra.rpg.data.constants
 {
-	import com.hexagonstar.data.types.EEnum;
+	import com.hexagonstar.types.EEnum;
 	
 	
 	/**

@@ -28,14 +28,12 @@
 package base.command
 {
 	import base.Main;
+	import base.event.CommandEvent;
 
-	import com.hexagonstar.event.CommandEvent;
 	import com.hexagonstar.exception.SingletonException;
-	import com.hexagonstar.pattern.cmd.BaseCommand;
-	import com.hexagonstar.pattern.cmd.ICommandListener;
-	import com.hexagonstar.pattern.cmd.PausableCommand;
 	import com.hexagonstar.util.debug.Debug;
-
+	
+	
 	/**
 	 * A Singleton that can be used to manage command execution. You call the execute
 	 * method and specify a command and any handler methods that should be notified of
@@ -376,13 +374,15 @@ package base.command
 		}
 	}
 }
+
+
 import base.command.Command;
 
 /**
  * Command Data Object
  * @private
  */
-class CommandVO
+final class CommandVO
 {
 	public var command:Command;
 	public var completeHandler:Function;

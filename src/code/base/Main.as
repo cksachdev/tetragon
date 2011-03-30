@@ -33,12 +33,12 @@ package base
 	import base.core.debug.FPSMonitor;
 	import base.core.debug.Log;
 	import base.data.Registry;
+	import base.event.CommandEvent;
 	import base.view.ApplicationView;
 	import base.view.screen.ScreenManager;
 
-	import com.hexagonstar.debug.HLog;
-	import com.hexagonstar.display.StageReference;
-	import com.hexagonstar.event.CommandEvent;
+	import com.hexagonstar.util.debug.HLog;
+	import com.hexagonstar.util.display.StageReference;
 
 	import flash.display.*;
 	import flash.events.UncaughtErrorEvent;

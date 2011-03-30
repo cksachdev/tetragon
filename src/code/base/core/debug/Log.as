@@ -30,7 +30,7 @@ package base.core.debug
 	import base.Main;
 	import base.data.Registry;
 
-	import com.hexagonstar.debug.LogLevel;
+	import com.hexagonstar.util.debug.LogLevel;
 
 	import flash.display.Stage;
 	

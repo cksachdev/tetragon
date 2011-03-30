@@ -30,7 +30,7 @@ package base.io.resource.wrappers
 	import base.io.resource.ResourceBulkFile;
 
 	import com.hexagonstar.exception.IllegalStateException;
-	import com.hexagonstar.io.file.types.SWFFile;
+	import com.hexagonstar.file.types.SWFFile;
 
 	import flash.display.Loader;
 	import flash.display.MovieClip;

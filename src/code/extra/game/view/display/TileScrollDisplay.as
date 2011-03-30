@@ -36,7 +36,7 @@ package extra.game.view.display
 	import extra.game.render.tile.TileScroller;
 	import extra.game.render.tile.TileSet;
 
-	import com.hexagonstar.display.StageReference;
+	import com.hexagonstar.util.display.StageReference;
 
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;

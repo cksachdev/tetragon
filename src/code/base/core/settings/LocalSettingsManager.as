@@ -30,7 +30,7 @@ package base.core.settings
 	import base.event.LocalSettingsEvent;
 
 	import com.hexagonstar.exception.SingletonException;
-	import com.hexagonstar.io.net.SharedObjectStatus;
+	import com.hexagonstar.net.SharedObjectStatus;
 
 	import flash.events.EventDispatcher;
 	import flash.events.NetStatusEvent;

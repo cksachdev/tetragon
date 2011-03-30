@@ -32,7 +32,7 @@ package extra.game.view.screen
 	import extra.game.view.display.TileScrollDisplay;
 	import extra.game.view.display.TileScrollInfoDisplay;
 
-	import com.hexagonstar.display.StageReference;
+	import com.hexagonstar.util.display.StageReference;
 
 	
 	public class GameScreen extends BaseScreen

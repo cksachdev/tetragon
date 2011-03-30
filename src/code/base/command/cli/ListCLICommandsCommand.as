@@ -30,10 +30,9 @@ package base.command.cli
 	import base.command.Command;
 	import base.core.cli.CLICommandVO;
 	import base.core.debug.Console;
-	import com.hexagonstar.display.text.ColumnText;
 
-
-
+	import com.hexagonstar.util.string.TabularText;
+	
 	
 	/**
 	 * CLI command that lists all available CLI commands.
@@ -53,7 +52,7 @@ package base.command.cli
 			
 			var console:Console = _main.console;
 			var cmds:Object = console.cli.commandMap;
-			var t:ColumnText = new ColumnText(3, true, "  ", null, "  ", 0,
+			var t:TabularText = new TabularText(3, true, "  ", null, "  ", 0,
 				["COMMAND", "GROUP", "DESCRIPTION"]);
 			
 			for (var c:String in cmds)

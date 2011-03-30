@@ -33,7 +33,7 @@ package base.core.cli
 	import base.core.debug.Console;
 	import base.core.debug.Log;
 
-	import com.hexagonstar.debug.LogLevel;
+	import com.hexagonstar.util.debug.LogLevel;
 	
 	
 	/**

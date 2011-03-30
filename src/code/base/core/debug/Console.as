@@ -35,7 +35,7 @@ package base.core.debug
 	import com.greensock.TweenLite;
 	import com.greensock.data.TweenLiteVars;
 	import com.greensock.easing.Cubic;
-	import com.hexagonstar.debug.LogLevel;
+	import com.hexagonstar.util.debug.LogLevel;
 
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;

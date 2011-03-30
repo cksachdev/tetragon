@@ -30,9 +30,9 @@ package base.io.resource
 	import base.Main;
 	import base.data.Registry;
 
-	import com.hexagonstar.event.FileIOEvent;
-	import com.hexagonstar.io.file.BulkLoader;
-	import com.hexagonstar.io.file.types.IFile;
+	import com.hexagonstar.file.BulkLoader;
+	import com.hexagonstar.file.FileIOEvent;
+	import com.hexagonstar.file.types.IFile;
 	
 	
 	/**

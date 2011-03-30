@@ -28,9 +28,8 @@
 package base.command
 {
 	import base.Main;
-
-	import com.hexagonstar.pattern.cmd.BaseCommand;
-
+	
+	
 	/**
 	 * Abstract Command class.
 	 */

@@ -34,7 +34,7 @@ package base.io.resource
 	import base.io.resource.wrappers.ResourceWrapper;
 	import base.io.resource.wrappers.XMLResourceWrapper;
 
-	import com.hexagonstar.event.FileIOEvent;
+	import com.hexagonstar.file.FileIOEvent;
 
 	import flash.events.EventDispatcher;
 	

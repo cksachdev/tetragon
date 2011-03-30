@@ -30,7 +30,7 @@ package base.io.resource.wrappers
 	import base.io.resource.ResourceBulkFile;
 	import base.io.resource.ResourceBulkItem;
 
-	import com.hexagonstar.io.file.types.BinaryFile;
+	import com.hexagonstar.file.types.BinaryFile;
 
 	import flash.utils.ByteArray;
 	

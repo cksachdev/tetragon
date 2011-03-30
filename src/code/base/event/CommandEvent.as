@@ -25,26 +25,79 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.io.resource.wrappers
+package base.event
 {
-	import base.io.resource.ResourceBulkFile;
+	import base.command.BaseCommand;
 
-	import com.hexagonstar.exception.IllegalArgumentException;
-	import com.hexagonstar.file.types.SoundFile;
+	import flash.events.Event;
 
-	import flash.media.Sound;
 	
-	
-	public class SoundResourceWrapper extends ResourceWrapper
+	/**
+	 * An event that is used to be broadcast from commands to indicate the state of the
+	 * command.
+	 */
+	public class CommandEvent extends Event
 	{
+		//-----------------------------------------------------------------------------------------
+		// Constants
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * A constant for command events which signals that the command has completed
+		 * execution.
+		 */
+		public static const COMPLETE:String = "commandComplete";
+		
+		/**
+		 * A constant for command events which signals that the command is progressing.
+		 */
+		public static const PROGRESS:String = "commandProgress";
+		
+		/**
+		 * A constant for command events which signals that the command has been aborted.
+		 */
+		public static const ABORT:String = "commandAbort";
+		
+		/**
+		 * A constant for command events which signals that an error occured during the the
+		 * command execution.
+		 */
+		public static const ERROR:String = "commandError";
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
+		/** @private */
+		protected var _command:BaseCommand;
+		/** @private */
+		protected var _message:String;
+		/** @private */
+		protected var _progress:int;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Constructor
+		//-----------------------------------------------------------------------------------------
+		
 		/**
-		 * @private
+		 * Creates a new CommandEvent instance.
+		 * 
+		 * @param type The type string for the event.
+		 * @param command The command this event is fired from.
+		 * @param message The progress message of the command.
+		 * @param progress The progress value of the command.
 		 */
-		protected var _sound:Sound;
+		public function CommandEvent(type:String, command:BaseCommand, message:String = null,
+			progress:int = -1)
+		{
+			super(type);
+			
+			_command = command;
+			_message = message;
+			_progress = progress;
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -52,12 +105,11 @@ package base.io.resource.wrappers
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @inheritDoc
+		 * Clones the event.
 		 */
-		override public function setup(bulkFile:ResourceBulkFile):void
+		override public function clone():Event
 		{
-			super.setup(bulkFile);
-			_file = new SoundFile(bulkFile.path, bulkFile.id);
+			return new CommandEvent(type, _command, _message, _progress);
 		}
 		
 		
@@ -66,55 +118,30 @@ package base.io.resource.wrappers
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Returns a Sound object.
+		 * The command that broadcasted the event.
 		 */
-		override public function get content():*
+		public function get command():BaseCommand
 		{
-			return _sound;
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Event Handlers
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function onContentReady(content:*):Boolean 
-		{
-			return _sound != null;
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function initializeFromLoaded():void
-		{
-			initializeFromEmbedded(SoundFile(_file).contentAsSound);
+			return _command;
 		}
 		
 		
 		/**
-		 * @inheritDoc
+		 * For an error event the error message and for a progress event the message string
+		 * associated with the command progress.
 		 */
-		override protected function initializeFromEmbedded(embeddedData:*):void
+		public function get message():String
 		{
-			if (!(embeddedData is Sound))
-			{
-				throw new IllegalArgumentException(toString()
-					+ " The SoundResource can only process Sound objects!");
-			}
-			else
-			{
-				_sound = embeddedData;
-				onLoadComplete();
-			}
+			return _message;
+		}
+		
+		
+		/**
+		 * The progress value of the command.
+		 */
+		public function get progress():int
+		{
+			return _progress;
 		}
 	}
 }

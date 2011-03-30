@@ -31,11 +31,10 @@ package base.command.cli
 	import base.core.cli.CLICommandVO;
 	import base.core.debug.Console;
 	import base.data.Registry;
-	import com.hexagonstar.debug.LogLevel;
-	import com.hexagonstar.display.text.ColumnText;
 
-
-
+	import com.hexagonstar.util.debug.LogLevel;
+	import com.hexagonstar.util.string.TabularText;
+	
 	
 	/**
 	 * CLI command to show console help text or help text for and provided command.
@@ -103,7 +102,7 @@ package base.command.cli
 			}
 			else
 			{
-				var keyHelp:ColumnText = new ColumnText(2, true, "  ", null, "        ");
+				var keyHelp:TabularText = new TabularText(2, true, "  ", null, "        ");
 				keyHelp.add(["<" + Registry.config.consoleKey + ">", "Toggle console"]);
 				keyHelp.add(["<TAB>", "(When out of focus) Focusses the console input field"]);
 				keyHelp.add(["<TAB>", "(When in focus) Place cursor to end of current console input"]);

@@ -28,8 +28,9 @@
 package extra.game.data.components
 {
 	import base.data.entity.EntityComponent;
-	import base.data.types.Point3D;
-	import base.data.types.SpatialSize;
+
+	import com.hexagonstar.types.Point3D;
+	import com.hexagonstar.types.SpatialSize;
 	
 	
 	/**

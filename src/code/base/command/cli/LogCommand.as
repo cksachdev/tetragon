@@ -29,9 +29,9 @@ package base.command.cli
 {
 	import base.command.Command;
 	import base.core.debug.Log;
-	import com.hexagonstar.debug.LogLevel;
 
-
+	import com.hexagonstar.util.debug.LogLevel;
+	
 	
 	/**
 	 * CLI command to send a messaage to the logger.

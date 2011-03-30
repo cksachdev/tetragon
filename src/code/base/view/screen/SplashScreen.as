@@ -31,7 +31,7 @@ package base.view.screen
 	import base.view.display.SplashDisplay;
 	import base.view.shape.RectangleGradientShape;
 
-	import com.hexagonstar.display.StageReference;
+	import com.hexagonstar.util.display.StageReference;
 
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;

@@ -28,10 +28,10 @@
 package base.view.display
 {
 	import base.data.Registry;
-	import base.util.ColorUtil;
+
+	import com.hexagonstar.util.color.colorUintToColorTransform;
 
 	import flash.filters.DropShadowFilter;
-	import flash.geom.ColorTransform;
 	import flash.media.Sound;
 
 	
@@ -116,11 +116,9 @@ package base.view.display
 		override protected function createChildren():void
 		{
 			var logo:TetragonLogo = new TetragonLogo();
-			var a:Array = ColorUtil.rgbToPercent(Registry.config.splashLogoColor);
-			var ct:ColorTransform = new ColorTransform(a[0], a[1], a[2]);
 			var ds:DropShadowFilter = new DropShadowFilter(1.0, 45, 0x000000, 0.4, 8.0, 8.0, 2);
 			logo.filters = [ds];
-			logo.transform.colorTransform = ct;
+			logo.transform.colorTransform = colorUintToColorTransform(Registry.config.splashLogoColor);
 			addChild(logo);
 		}
 		

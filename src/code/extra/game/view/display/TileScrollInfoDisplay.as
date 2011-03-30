@@ -31,7 +31,7 @@ package extra.game.view.display
 
 	import extra.game.render.tile.TileScroller;
 
-	import com.hexagonstar.display.StageReference;
+	import com.hexagonstar.util.display.StageReference;
 
 	import flash.text.TextField;
 	import flash.text.TextFormat;

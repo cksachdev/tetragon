@@ -29,9 +29,9 @@ package base.command.cli
 {
 	import base.command.Command;
 
-	import com.hexagonstar.debug.LogLevel;
-	import com.hexagonstar.display.StageReference;
-	import com.hexagonstar.display.text.ColumnText;
+	import com.hexagonstar.util.debug.LogLevel;
+	import com.hexagonstar.util.display.StageReference;
+	import com.hexagonstar.util.string.TabularText;
 
 	import flash.system.Capabilities;
 	import flash.utils.describeType;
@@ -51,7 +51,7 @@ package base.command.cli
 			super.execute();
 			
 			var xml:XML = describeType(Capabilities);
-			var c:ColumnText = new ColumnText(2, true, " ", null, "  ");
+			var c:TabularText = new TabularText(2, true, " ", null, "  ");
 			for each (var node:XML in xml.*)
 			{
 				var n:String = String(node.@name);

@@ -27,7 +27,7 @@
  */
 package base.data.parsers
 {
-	import base.util.StringUtil;
+	import com.hexagonstar.util.string.createStringVector;
 
 	import flash.events.EventDispatcher;
 	import flash.system.System;
@@ -178,7 +178,7 @@ package base.data.parsers
 		{
 			if (string == null || string.length == 0) return null;
 			string = string.split(" ").join("");
-			return StringUtil.createStringVector(string.split(","));
+			return createStringVector(string.split(","));
 		}
 		
 		

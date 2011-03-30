@@ -30,7 +30,7 @@ package base.command.file
 	import base.command.Command;
 	import base.io.resource.ResourceManager;
 
-	import com.hexagonstar.debug.LogLevel;
+	import com.hexagonstar.util.debug.LogLevel;
 
 	
 	/**

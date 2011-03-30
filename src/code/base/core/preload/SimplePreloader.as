@@ -27,7 +27,7 @@
  */
 package base.core.preload
 {
-	import com.hexagonstar.data.constants.Alignment;
+	import com.hexagonstar.constants.Alignment;
 
 	import flash.display.Sprite;
 	import flash.events.Event;

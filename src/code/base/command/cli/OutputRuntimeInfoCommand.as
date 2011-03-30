@@ -29,7 +29,7 @@ package base.command.cli
 {
 	import base.command.Command;
 
-	import com.hexagonstar.debug.LogLevel;
+	import com.hexagonstar.util.debug.LogLevel;
 
 	import flash.system.Capabilities;
 

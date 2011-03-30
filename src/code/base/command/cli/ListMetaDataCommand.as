@@ -30,8 +30,8 @@ package base.command.cli
 	import base.AppInfo;
 	import base.command.Command;
 
-	import com.hexagonstar.debug.LogLevel;
-	import com.hexagonstar.display.text.ColumnText;
+	import com.hexagonstar.util.debug.LogLevel;
+	import com.hexagonstar.util.string.TabularText;
 
 	import flash.utils.describeType;
 
@@ -53,7 +53,7 @@ package base.command.cli
 			super.execute();
 			
 			var x:XML = describeType(AppInfo);
-			var t:ColumnText = new ColumnText(2, true, " ", null, "  ");
+			var t:TabularText = new TabularText(2, true, " ", null, "  ");
 			for each (var a:XML in x.constant)
 			{
 				t.add([a.@name + ":", AppInfo[a.@name]]);

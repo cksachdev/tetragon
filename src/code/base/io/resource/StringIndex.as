@@ -27,7 +27,7 @@
  */
 package base.io.resource
 {
-	import com.hexagonstar.display.text.ColumnText;
+	import com.hexagonstar.util.string.TabularText;
 
 	
 	/**
@@ -147,7 +147,7 @@ package base.io.resource
 		 */
 		public function dump():String
 		{
-			var t:ColumnText = new ColumnText(2, true, "  ", null, "  ", 100, ["ID", "STRING"]);
+			var t:TabularText = new TabularText(2, true, "  ", null, "  ", 100, ["ID", "STRING"]);
 			for (var s:String in _strings)
 			{
 				t.add([s, _strings[s]]);

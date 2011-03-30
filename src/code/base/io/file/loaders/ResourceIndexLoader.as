@@ -33,15 +33,15 @@ package base.io.file.loaders
 	import base.io.resource.ResourceGroup;
 	import base.io.resource.ResourceIndex;
 	import base.io.resource.resourceTypeMap;
-	import com.hexagonstar.event.FileIOEvent;
-	import com.hexagonstar.io.file.types.IFile;
-	import com.hexagonstar.io.file.types.XMLFile;
-	import com.hexagonstar.io.file.types.ZipFile;
+
+	import com.hexagonstar.file.FileIOEvent;
+	import com.hexagonstar.file.types.IFile;
+	import com.hexagonstar.file.types.XMLFile;
+	import com.hexagonstar.file.types.ZipFile;
+
 	import flash.events.Event;
 	import flash.system.System;
-
-
-
+	
 	
 	/**
 	 * The ResourceIndexLoader loads the resource index file and parses it into the

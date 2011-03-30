@@ -30,7 +30,7 @@ package base.io.resource.wrappers
 	import base.io.resource.ResourceBulkFile;
 
 	import com.hexagonstar.exception.IllegalArgumentException;
-	import com.hexagonstar.io.file.types.BinaryFile;
+	import com.hexagonstar.file.types.BinaryFile;
 
 	import flash.utils.ByteArray;
 	

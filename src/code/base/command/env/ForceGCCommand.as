@@ -29,8 +29,8 @@ package base.command.env
 {
 	import base.command.Command;
 
-	import com.hexagonstar.data.types.Byte;
-	import com.hexagonstar.debug.LogLevel;
+	import com.hexagonstar.types.Byte;
+	import com.hexagonstar.util.debug.LogLevel;
 
 	import flash.system.System;
 	import flash.utils.setTimeout;

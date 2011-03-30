@@ -29,8 +29,8 @@ package base.io.resource.wrappers
 {
 	import base.io.resource.ResourceBulkFile;
 
-	import com.hexagonstar.display.StageReference;
-	import com.hexagonstar.io.file.types.ImageFile;
+	import com.hexagonstar.file.types.ImageFile;
+	import com.hexagonstar.util.display.StageReference;
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;

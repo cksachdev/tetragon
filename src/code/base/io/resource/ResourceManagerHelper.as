@@ -31,14 +31,14 @@ package base.io.resource
 	import base.core.debug.Log;
 	import base.data.Registry;
 	import base.io.file.loaders.ResourceIndexLoader;
+
 	import com.hexagonstar.exception.IllegalArgumentException;
-	import com.hexagonstar.util.EnvUtil;
+	import com.hexagonstar.util.env.isAIRApplication;
+
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.utils.Dictionary;
-
-
 	
 	
 	/**
@@ -95,7 +95,7 @@ package base.io.resource
 			else
 			{
 				/* If we're on an AIR application we want to use packed resources! */
-				if (EnvUtil.isAIRApplication) preparePackageFiles();
+				if (isAIRApplication()) preparePackageFiles();
 				else _resourceManager.completeInitialization();
 			}
 		}
