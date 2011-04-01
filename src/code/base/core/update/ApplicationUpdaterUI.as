@@ -25,18 +25,21 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.core.cli
+package base.core.update
 {
-	import base.Main;
-	import base.command.env.*;
+	import flash.display.Sprite;
 	
 	
 	/**
-	 * Registry for CLI commands that are available only for desktop builds. You can register
-	 * any commands here that you want to have usable in the CLI for desktop builds only.
+	 * ApplicationUpdaterUI class
 	 */
-	public class CLICommandRegistryDesktop
+	public class ApplicationUpdaterUI extends Sprite
 	{
+		//-----------------------------------------------------------------------------------------
+		// Properties
+		//-----------------------------------------------------------------------------------------
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------------------------------------
@@ -44,23 +47,29 @@ package base.core.cli
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function CLICommandRegistryDesktop(main:Main)
+		public function ApplicationUpdaterUI()
 		{
-			registerCommands(main.console.cli);
 		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Public Methods
+		//-----------------------------------------------------------------------------------------
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Getters & Setters
+		//-----------------------------------------------------------------------------------------
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Callback Handlers
+		//-----------------------------------------------------------------------------------------
 		
 		
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @private
-		 */
-		private function registerCommands(cli:CLI):void
-		{
-			cli.registerCommand("env", "resetwinbounds", ResetWinBoundsCommand, "Resets the window size and position.");
-			cli.registerCommand("env", "checkupdate", CheckUpdateCommand, "Checks if an update of the application is available.");
-		}
 	}
 }

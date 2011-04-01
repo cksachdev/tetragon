@@ -25,42 +25,50 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.core.cli
+package base.command.env
 {
-	import base.Main;
-	import base.command.env.*;
+	import base.command.Command;
+	import base.core.update.UpdateManager;
+
 	
-	
-	/**
-	 * Registry for CLI commands that are available only for desktop builds. You can register
-	 * any commands here that you want to have usable in the CLI for desktop builds only.
-	 */
-	public class CLICommandRegistryDesktop
+	public class CheckUpdateCommand extends Command
 	{
 		//-----------------------------------------------------------------------------------------
-		// Constructor
+		// Properties
+		//-----------------------------------------------------------------------------------------
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Creates a new instance of the class.
+		 * @inheritDoc
 		 */
-		public function CLICommandRegistryDesktop(main:Main)
+		override public function execute():void 
 		{
-			registerCommands(main.console.cli);
+			super.execute();
+			
+			UpdateManager.instance.checkForUpdate();
+			complete();
 		}
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Private Methods
+		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @private
+		 * @inheritDoc
 		 */
-		private function registerCommands(cli:CLI):void
+		override public function get name():String 
 		{
-			cli.registerCommand("env", "resetwinbounds", ResetWinBoundsCommand, "Resets the window size and position.");
-			cli.registerCommand("env", "checkupdate", CheckUpdateCommand, "Checks if an update of the application is available.");
+			return "checkUpdate";
 		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Event Handlers
+		//-----------------------------------------------------------------------------------------
 	}
 }

@@ -25,42 +25,56 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.core.cli
+package base.command.cli
 {
-	import base.Main;
-	import base.command.env.*;
+	import base.command.Command;
+	import base.data.Registry;
+
+	import com.hexagonstar.util.debug.LogLevel;
+	import com.hexagonstar.util.string.TabularText;
+
+	import flash.utils.describeType;
+
 	
-	
-	/**
-	 * Registry for CLI commands that are available only for desktop builds. You can register
-	 * any commands here that you want to have usable in the CLI for desktop builds only.
-	 */
-	public class CLICommandRegistryDesktop
+	public class ListConfigCommand extends Command
 	{
 		//-----------------------------------------------------------------------------------------
-		// Constructor
+		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Creates a new instance of the class.
+		 * @inheritDoc
 		 */
-		public function CLICommandRegistryDesktop(main:Main)
+		override public function execute():void 
 		{
-			registerCommands(main.console.cli);
+			super.execute();
+			
+			var xml:XML = describeType(Registry.config);
+			var c:TabularText = new TabularText(2, true, " ", null, "  ", 0, ["PROPERTY", "VALUE"]);
+			for each (var node:XML in xml.variable)
+			{
+				var n:String = String(node.@name);
+				if (n.length > 0)
+				{
+					c.add([n, Registry.config[n]]);
+				}
+			}
+			
+			_main.console.log("\n" + c.toString(), LogLevel.INFO);
+			complete();
 		}
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Private Methods
+		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @private
+		 * @inheritDoc
 		 */
-		private function registerCommands(cli:CLI):void
+		override public function get name():String 
 		{
-			cli.registerCommand("env", "resetwinbounds", ResetWinBoundsCommand, "Resets the window size and position.");
-			cli.registerCommand("env", "checkupdate", CheckUpdateCommand, "Checks if an update of the application is available.");
+			return "listConfig";
 		}
 	}
 }

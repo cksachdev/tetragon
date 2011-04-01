@@ -30,6 +30,7 @@ package base.setup
 	import base.Main;
 	import base.core.cli.CLICommandRegistryDesktop;
 	import base.core.desktop.WindowBoundsManager;
+	import base.core.update.UpdateManager;
 	import base.data.Registry;
 	import base.event.UpdateManagerEvent;
 
@@ -47,7 +48,7 @@ package base.setup
 		//-----------------------------------------------------------------------------------------
 		
 		private var _main:Main;
-		//private var _updateManager:UpdateManager;
+		private var _updateManager:UpdateManager;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -114,27 +115,18 @@ package base.setup
 				_main.view.stage.nativeWindow.activate();
 			}
 			
-			// TODO Updates disabled temporarily! We need to place the update
-			// process to another time since it interferes with the initial UI
-			// execution and the crappy AIR UpdateUI has no means to listen for
-			// user interaction!
-			
-			/* Only create update manager if updates are enabled */
-			if (Registry.config.updateEnabled)
-			{
-				//_updateManager = new UpdateManager(_main.config);
-				//_updateManager.addEventListener(UpdateManagerEvent.FINISHED,
-				//	onUpdateManagerFinished);
-				//_updateManager.initialize();
-			}
-			else
-			{
-			}
-			
 			/* Register desktop-specific CLI commands if we have the Console available. */
 			if (_main.console && _main.console.cli)
 			{
 				new CLICommandRegistryDesktop(_main);
+			}
+			
+			if (Registry.config.updateEnabled)
+			{
+				/* TODO UpdateManager disabled until we build a custom update manager! */
+				//_updateManager = new UpdateManager();
+				//_updateManager.addEventListener(UpdateManagerEvent.FINISHED, onUpdateManagerFinished);
+				//_updateManager.initialize();
 			}
 		}
 		
@@ -161,9 +153,9 @@ package base.setup
 		 */
 		private function onUpdateManagerFinished(e:UpdateManagerEvent):void 
 		{
-			/* All setup done! Signal that setup is finished! */
-			//_updateManager.removeEventListener(UpdateManagerEvent.FINISHED,
-			//	onUpdateManagerFinished);
+			_updateManager.removeEventListener(UpdateManagerEvent.FINISHED, onUpdateManagerFinished);
+			_updateManager.dispose();
+			_updateManager = null;
 		}
 	}
 }

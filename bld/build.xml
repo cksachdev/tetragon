@@ -187,7 +187,7 @@
 		<attribute name="debug"/>
 		<sequential>
 			<clean/>
-			<prepare buildType="web" debug="@{debug}" mainClassTemplate="MainClass.as"/>
+			<prepare buildType="web" debug="@{debug}" mainClassTemplate="MainClassWeb.as"/>
 			<generateHTMLWrapper/>
 			<copyWebFiles/>
 			<copyResources/>
@@ -201,7 +201,7 @@
 	<macrodef name="compileWeb">
 		<attribute name="debug"/>
 		<sequential>
-			<prepare buildType="web" debug="@{debug}" mainClassTemplate="MainClass.as"/>
+			<prepare buildType="web" debug="@{debug}" mainClassTemplate="MainClassWeb.as"/>
 			<compile debug="@{debug}" config="flex-config.xml" isWebBuild="true" isAIRBuild="false"
 				isDesktopBuild="false" isMobileBuild="false" isAndroidBuild="false" isIOSBuild="false"
 				libpath="player/${fpv.version}"/>
@@ -462,11 +462,10 @@
 	<macrodef name="generateAIRUpdateFile">
 		<sequential>
 			<echo message="Generating AIR update file ..." level="info"/>
-			<copy file="${templates.air.desktop}/airupdate.xml" tofile="${path.pub}/${air.desktop.publishname}_update.xml" overwrite="true">
+			<copy file="${templates.air.desktop}/airupdate.xml" tofile="${path.pub}/${app.shortname}_update.xml" overwrite="true">
 				<filterchain>
 					<replacetokens>
 						<token key="app_version"				value="${app.version}"/>
-						<token key="build_nr"					value="${build.number}"/>
 						<token key="air_desktop_updateurl"		value="${air.desktop.updateurl}/${air.desktop.publishname}.air"/>
 						<token key="air_desktop_updatenotes"	value="${air.desktop.updatenotes}"/>
 					</replacetokens>
@@ -581,7 +580,13 @@
 			<copy todir="${path.bin}/icons" verbose="off">
 				<fileset dir="${templates.air.shared}/icons" excludes="**/.svn"/>
 			</copy>
-			<copy file="${templates.air.shared}/app_air.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true"/>
+			<copy file="${templates.air.shared}/app_air.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true">
+				<filterchain>
+					<replacetokens>
+						<token key="update_url" value="${air.desktop.updateurl}/${app.shortname}_update.xml"/>
+					</replacetokens>
+				</filterchain>
+			</copy>
 		</sequential>
 	</macrodef>
 	

@@ -29,8 +29,8 @@ package base.view.screen
 {
 	import base.data.Registry;
 	import base.view.display.SplashDisplay;
-	import base.view.shape.RectangleGradientShape;
 
+	import com.hexagonstar.display.shape.RectangleGradientShape;
 	import com.hexagonstar.util.display.StageReference;
 
 	import flash.events.Event;

@@ -27,7 +27,7 @@
  */
 package base.core.update
 {
-	import air.update.ApplicationUpdaterUI;
+	import air.update.ApplicationUpdater;
 	import air.update.events.DownloadErrorEvent;
 	import air.update.events.StatusUpdateErrorEvent;
 	import air.update.events.StatusUpdateEvent;
@@ -35,7 +35,10 @@ package base.core.update
 
 	import base.core.debug.Log;
 	import base.data.Config;
+	import base.data.Registry;
 	import base.event.UpdateManagerEvent;
+
+	import com.hexagonstar.exception.SingletonException;
 
 	import flash.events.ErrorEvent;
 	import flash.events.EventDispatcher;
@@ -51,8 +54,16 @@ package base.core.update
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _updater:ApplicationUpdaterUI;
+		/** @private */
+		private static var _instance:UpdateManager;
+		/** @private */
+		private static var _singletonLock:Boolean = false;
+		/** @private */
+		private var _updater:ApplicationUpdater;
+		/** @private */
 		private var _config:Config;
+		/** @private */
+		private var _isInstallPostponed:Boolean;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -62,10 +73,11 @@ package base.core.update
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function UpdateManager(config:Config)
+		public function UpdateManager()
 		{
-			_config = config;
+			if (!_singletonLock) throw new SingletonException(this);
 			setup();
+			addEventListeners();
 		}
 		
 		
@@ -90,16 +102,26 @@ package base.core.update
 		 */
 		public function checkForUpdate():void
 		{
-			if (_updater)
-			{
-				_updater.isCheckForUpdateVisible = true;
-				_updater.checkNow();
-			}
+			if (!_updater) return;
+			_isInstallPostponed = false;
+			_updater.checkNow();
+		}
+		
+		
+		/**
+		 * Disposes the class.
+		 */
+		public function dispose():void
+		{
+			removeEventListeners();
+			_updater = null;
+			_instance = null;
 		}
 		
 		
 		/**
 		 * Returns a String Representation of UpdateManager.
+		 * 
 		 * @return A String Representation of UpdateManager.
 		 */
 		override public function toString():String
@@ -112,9 +134,18 @@ package base.core.update
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
-		public function get applicationUpdater():ApplicationUpdaterUI
+		/**
+		 * Returns the singleton instance of the class.
+		 */
+		public static function get instance():UpdateManager
 		{
-			return _updater;
+			if (_instance == null)
+			{
+				_singletonLock = true;
+				_instance = new UpdateManager();
+				_singletonLock = false;
+			}
+			return _instance;
 		}
 		
 		
@@ -130,17 +161,8 @@ package base.core.update
 			if (_updater)
 			{
 				Log.debug("Initialized. (currentVersion: " + _updater.currentVersion + ").", this);
-				//_updater.checkNow();
+				_updater.checkNow();
 			}
-		}
-		
-		
-		/**
-		 * @private
-		 */
-		private function onProgress(e:ProgressEvent):void 
-		{
-			Log.debug("progress");
 		}
 		
 		
@@ -163,20 +185,48 @@ package base.core.update
 		/**
 		 * @private
 		 */
-		private function onUpdateError(e:StatusUpdateErrorEvent):void 
+		private function onBeforeInstall(e:UpdateEvent):void
 		{
-			Log.warn("Update Error: " + e.text + " (errorID: " + e.errorID + ", subErrorID: "
-				+ e.subErrorID + ").", this);
-			dispatchEvent(e);
+			if (_isInstallPostponed)
+			{
+				e.preventDefault();
+				_isInstallPostponed = false;
+			}
 		}
 		
 		
 		/**
 		 * @private
 		 */
-		private function onError(e:ErrorEvent):void
+		private function onDownloadStarted(e:UpdateEvent):void
 		{
-			Log.warn("Update Error: " + e.text, this);
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		private function onProgress(e:ProgressEvent):void 
+		{
+			//Log.debug("Progress ...", this);
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		private function onDownloadComplete(e:UpdateEvent):void
+		{
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		private function onUpdateError(e:StatusUpdateErrorEvent):void 
+		{
+			Log.warn("Update Error: " + e.text + " (errorID: " + e.errorID + ", subErrorID: "
+				+ e.subErrorID + ").", this);
 			dispatchEvent(e);
 		}
 		
@@ -191,6 +241,16 @@ package base.core.update
 		}
 		
 		
+		/**
+		 * @private
+		 */
+		private function onError(e:ErrorEvent):void
+		{
+			Log.warn("Update Error: " + e.text, this);
+			dispatchEvent(e);
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
@@ -200,38 +260,50 @@ package base.core.update
 		 */
 		private function setup():void
 		{
+			_config = Registry.config;
+			
 			if (_config.updateURL != null && _config.updateURL.length > 0)
 			{
-				_updater = new ApplicationUpdaterUI();
+				_updater = new ApplicationUpdater();
 				_updater.updateURL = _config.updateURL;
 				_updater.delay = _config.updateCheckInterval;
-				_updater.isCheckForUpdateVisible = _config.updateCheckVisible;
-				_updater.isDownloadProgressVisible = _config.updateDownloadProgressVisible;
-				_updater.isDownloadUpdateVisible = _config.updateDownloadUpdateVisible;
-				_updater.isFileUpdateVisible = _config.updateFileUpdateVisible;
-				
-				/* Custom comparison function that takes build nr. into account.
-				 * Version string structure is major.minor.maintenance.build.
-				 * Only numbers are allowed. */
-				_updater.isNewerVersionFunction = function(cv:String, nv:String):Boolean
-				{
-					var c:Array = cv.split(".");
-					var n:Array = nv.split(".");
-					if (int(n[0]) > int(c[0])) return true;
-					if (int(n[1]) > int(c[1])) return true;
-					if (int(n[2]) > int(c[2])) return true;
-					if (int(n[3]) > int(c[3])) return true;
-					return false;
-				};
-				
-				_updater.addEventListener(UpdateEvent.INITIALIZED, onInitialized);
-				_updater.addEventListener(ProgressEvent.PROGRESS, onProgress);
-				_updater.addEventListener(StatusUpdateEvent.UPDATE_STATUS, onUpdateStatus);
-				_updater.addEventListener(StatusUpdateErrorEvent.UPDATE_ERROR,
-					onUpdateError);
-				_updater.addEventListener(ErrorEvent.ERROR, onError);
-				_updater.addEventListener(DownloadErrorEvent.DOWNLOAD_ERROR, onDownloadError);
 			}
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		private function addEventListeners():void
+		{
+			if (!_updater) return;
+			_updater.addEventListener(UpdateEvent.INITIALIZED, onInitialized);
+			_updater.addEventListener(StatusUpdateEvent.UPDATE_STATUS, onUpdateStatus);
+			_updater.addEventListener(UpdateEvent.BEFORE_INSTALL, onBeforeInstall);
+			_updater.addEventListener(StatusUpdateErrorEvent.UPDATE_ERROR, onUpdateError);
+			_updater.addEventListener(UpdateEvent.DOWNLOAD_START, onDownloadStarted);
+			_updater.addEventListener(ProgressEvent.PROGRESS, onProgress);
+			_updater.addEventListener(UpdateEvent.DOWNLOAD_COMPLETE, onDownloadComplete);
+			_updater.addEventListener(DownloadErrorEvent.DOWNLOAD_ERROR, onDownloadError);
+			_updater.addEventListener(ErrorEvent.ERROR, onError);
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		private function removeEventListeners():void
+		{
+			if (!_updater) return;
+			_updater.removeEventListener(UpdateEvent.INITIALIZED, onInitialized);
+			_updater.removeEventListener(StatusUpdateEvent.UPDATE_STATUS, onUpdateStatus);
+			_updater.removeEventListener(UpdateEvent.BEFORE_INSTALL, onBeforeInstall);
+			_updater.removeEventListener(StatusUpdateErrorEvent.UPDATE_ERROR, onUpdateError);
+			_updater.removeEventListener(UpdateEvent.DOWNLOAD_START, onDownloadStarted);
+			_updater.removeEventListener(ProgressEvent.PROGRESS, onProgress);
+			_updater.removeEventListener(UpdateEvent.DOWNLOAD_COMPLETE, onDownloadComplete);
+			_updater.removeEventListener(DownloadErrorEvent.DOWNLOAD_ERROR, onDownloadError);
+			_updater.removeEventListener(ErrorEvent.ERROR, onError);
 		}
 		
 		

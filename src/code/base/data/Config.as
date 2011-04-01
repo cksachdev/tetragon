@@ -152,7 +152,7 @@ package base.data
 			userPluginsFolder = "plugins";
 			
 			updateEnabled = true;
-			updateURL = null;
+			updateURL = "";
 			updateAutoCheck = true;
 			updateCheckInterval = 1;
 			updateCheckVisible = false;

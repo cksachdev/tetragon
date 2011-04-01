@@ -30,11 +30,11 @@ package base.core.debug
 	import base.Main;
 	import base.core.cli.CLI;
 	import base.data.Registry;
-	import base.view.shape.RectangleShape;
 
 	import com.greensock.TweenLite;
 	import com.greensock.data.TweenLiteVars;
 	import com.greensock.easing.Cubic;
+	import com.hexagonstar.display.shape.RectangleShape;
 	import com.hexagonstar.util.debug.LogLevel;
 
 	import flash.display.DisplayObjectContainer;
@@ -701,7 +701,7 @@ package base.core.debug
 }
 
 
-import base.view.shape.RectangleShape;
+import com.hexagonstar.display.shape.RectangleShape;
 
 import flash.display.Sprite;
 import flash.events.Event;

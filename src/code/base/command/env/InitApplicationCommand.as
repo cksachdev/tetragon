@@ -133,7 +133,7 @@ package base.command.env
 		{
 			if (e.type == ErrorEvent.ERROR)
 			{
-				// TODO Config failed loading!
+				Log.debug("Ini file not loaded!", this);
 			}
 			
 			_configLoader.removeEventListener(Event.COMPLETE, onConfigLoadComplete);
@@ -207,6 +207,7 @@ package base.command.env
 		 */
 		private function initialSetup():void
 		{
+			Log.debug("Initial setup ...");
 			executeSetup("initial");
 		}
 		
@@ -243,6 +244,7 @@ package base.command.env
 		 */
 		private function postConfigSetup():void
 		{
+			Log.debug("Post-Config setup ...");
 			executeSetup("postConfig");
 			initResourceManager();
 		}
@@ -265,6 +267,7 @@ package base.command.env
 		 */
 		private function postUISetup():void
 		{
+			Log.debug("Post-UI setup ...");
 			executeSetup("postUI");
 			finalSetup();
 		}
@@ -275,6 +278,7 @@ package base.command.env
 		 */
 		private function finalSetup():void
 		{
+			Log.debug("Final setup ...");
 			executeSetup("final");
 			Log.info("Initialization complete.");
 			Log.info("^^" + AppInfo.NAME + " v" + AppInfo.VERSION
@@ -284,6 +288,7 @@ package base.command.env
 				+ " (" + AppInfo.BUILD_TYPE
 				+ (AppInfo.IS_DEBUG ? " debug" : "") + ")^^");
 			if (_main.console) _main.console.welcome();
+			
 			complete();
 		}
 		
