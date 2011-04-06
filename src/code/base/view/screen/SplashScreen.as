@@ -195,7 +195,7 @@ package base.view.screen
 		 */
 		override protected function createChildren():void
 		{
-			_timer = new Timer(8000, 1);
+			_timer = new Timer(6000, 1);
 			
 			_background = new RectangleGradientShape();
 			_display = new SplashDisplay();
