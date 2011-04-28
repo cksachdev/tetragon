@@ -145,7 +145,7 @@ package base.core.preload
 			}
 			if (!_wrappedPreloader)
 			{
-				_wrappedPreloader = new SimplePreloader(this);
+				_wrappedPreloader = new TetragonPreloader(this);
 			}
 			if (_wrappedPreloader is DisplayObject)
 			{

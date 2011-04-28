@@ -27,6 +27,9 @@
  */
 package base.core.desktop
 {
+	/**
+	 * Value object that stores window bounds for use with the WindowBoundsManager.
+	 */
 	public class WindowBounds
 	{
 		//-----------------------------------------------------------------------------------------

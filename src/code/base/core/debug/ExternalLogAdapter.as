@@ -38,13 +38,13 @@ package base.core.debug
 	 * logging information to an external logger, in addition to tetragon's own logging
 	 * console.
 	 * 
-	 * <p>The logging API supports the following lof filter levels: trace, debug, info,
+	 * <p>The logging API supports the following log filter levels: trace, debug, info,
 	 * warn, error and fatal. Additionally an external monitoring mechanism can be called.
 	 * </p>
 	 * 
 	 * <p>To adapt your own logger simply add calls to your external logging API to the
 	 * calls inside this class' methods or replace the existing ones. By default Alcon
-	 * is used as an additional external Logger. You may replace, remove or add to the
+	 * is used as an additional external Logger. You can replace, remove or add to the
 	 * existing logger as your project requires it.</p>
 	 */
 	public class ExternalLogAdapter

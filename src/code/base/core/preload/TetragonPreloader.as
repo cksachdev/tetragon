@@ -34,10 +34,10 @@ package base.core.preload
 
 	
 	/**
-	 * A simple preloader implementation that displays a loading percent bar and
-	 * a pecent number on the screen.
+	 * The default Preloader implementation for tetragon which displays a simple
+	 * progress bar while the application is loaded.
 	 */
-	public class SimplePreloader extends Sprite implements IPreloader
+	public class TetragonPreloader extends Sprite implements IPreloader
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -95,7 +95,7 @@ package base.core.preload
 		 * 
 		 * @param preloader A reference to the wrapping Preloader.
 		 */
-		public function SimplePreloader(preloader:Preloader)
+		public function TetragonPreloader(preloader:Preloader)
 		{
 			super();
 			_preloader = preloader;

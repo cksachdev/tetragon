@@ -54,7 +54,7 @@ package @top_package@
 	 * Main acts as the entry point for the application. This is the class that the compiler
 	 * is being told to compile and from which all other application logic is being initiated.
 	 * 
-	 * Ant auto-generated file. Do not edit!
+	 * IMPORTANT: Auto-generated file. Do not edit!
 	 */
 	[Frame(factoryClass="@top_package@.AppPreloader")]
 	public class Main implements IPreloadable

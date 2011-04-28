@@ -27,9 +27,12 @@
  */
 package base.core.settings
 {
+	import com.hexagonstar.util.string.TabularText;
+	
+	
 	/**
 	 * A data storage object for use with the LocalSettingsManager in that key-value
-	 * pairs are stored that meant to be stored persistenly to harddisk.
+	 * pairs are stored that are meant to be stored persistenly to harddisk.
 	 * 
 	 * @see #LocalSettingsManager
 	 */
@@ -95,15 +98,53 @@ package base.core.settings
 		}
 		
 		
+		/**
+		 * Returns a string dump of all stored key-value pairs.
+		 */
+		public function dump():String
+		{
+			var t:TabularText = new TabularText(2, true, "  ", null, "  ", 100, ["KEY", "VALUE"]);
+			for (var s:String in _data)
+			{
+				var val:* = _data[s];
+				if (val is String || val is Number || val is int || val is uint || val is Boolean)
+				{
+					t.add([s, val]);
+				}
+				else
+				{
+					for (var n:String in val)
+					{
+						t.add([s + "." + n, val[n]]);
+					}
+				}
+			}
+			return toString() + "\n" + t;
+		}
+		
+		
+		/**
+		 * Returns a String Representation of the class.
+		 * 
+		 * @return A String Representation of the class.
+		 */
+		public function toString():String
+		{
+			return "[LocalSettings]";
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
 		/**
 		 * The data object in that setting key-value pairs are stored. Normally you don't
-		 * need to use this prooperty. It is used internally by the LocalSettingsManager.
+		 * need to use this property. It is used internally by the LocalSettingsManager.
+		 * 
+		 * @private
 		 */
-		public function get data():Object
+		internal function get data():Object
 		{
 			return _data;
 		}

@@ -31,8 +31,9 @@ package base.core.preload
 
 	
 	/**
-	 * The BasicPreloader only waits until the application is fully loaded and
-	 * doesn't show any indication about the load progress.
+	 * A very basic implementation of IPreloader. The BasicPreloader only waits until
+	 * the application is fully loaded and doesn't show any indication about the load
+	 * progress.
 	 */
 	public class BasicPreloader implements IPreloader
 	{
