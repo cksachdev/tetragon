@@ -38,6 +38,7 @@ package base.command.env
 
 	import extra.game.setup.*;
 	import extra.rpg.setup.*;
+	import extra.tbs.setup.*;
 
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
@@ -195,6 +196,10 @@ package base.command.env
  			CONFIG::EXTRA_RPG
 			{
 				_setups.push(new RPGSetup(_main));
+			}
+ 			CONFIG::EXTRA_TBS
+			{
+				_setups.push(new TBSSetup(_main));
 			}
 		}
 		
