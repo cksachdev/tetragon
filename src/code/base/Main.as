@@ -41,6 +41,7 @@ package base
 	import com.hexagonstar.util.display.StageReference;
 
 	import flash.display.*;
+	import flash.events.ErrorEvent;
 	import flash.events.UncaughtErrorEvent;
 	
 	
@@ -194,21 +195,27 @@ package base
 		 */
 		private function onUncaughtError(e:UncaughtErrorEvent):void 
 		{
-			var message:String;
-			if (e.error["message"])
+			e.preventDefault();
+			var msg:String;
+			
+			if (e.error is Error)
 			{
-				message = e.error["message"];
+				var e1:Error = Error(e.error);
+				msg = "Name: " + e1.name + ", ErrorID: " + e1.errorID
+					+ ", Message: \"" + e1.message + "\""
+					+ (e1.getStackTrace() ? "\n" + e1.getStackTrace() : "") + ".";
+				Log.error("Uncaught error occured - " + msg);
 			}
-			else if (e.error["text"])
+			else if (e.error is ErrorEvent)
 			{
-				message = e.error["text"];
+				var e2:ErrorEvent = ErrorEvent(e.error);
+				msg = "ErrorID: " + e2.errorID + ", Text: \"" + e2.text + "\".";
+				Log.error("Uncaught error event occured - " + msg);
 			}
 			else
 			{
-				message = e.error["toString"]();
+				Log.error("Uncaught error occured - something went abysmally wrong!");
 			}
-			
-			Log.error("Uncaught Error: " + e.text);
 		}
 		
 		
@@ -231,7 +238,7 @@ package base
 			/* Set up global error listener if this is a release version. */
 			if (!AppInfo.IS_DEBUG)
 			{
-				_view.stage.loaderInfo.uncaughtErrorEvents.addEventListener(
+				loaderInfo.uncaughtErrorEvents.addEventListener(
 					UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
 			}
 			
