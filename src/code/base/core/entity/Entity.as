@@ -25,19 +25,22 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.data.entity
+package base.core.entity
 {
-	import base.data.DataObject;
+	import flash.utils.Dictionary;
 	
 	
 	/**
 	 * Entity class
 	 */
-	public class Entity extends DataObject implements IEntity
+	public class Entity implements IEntity
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
+		
+		private static var _entityManger:EntityManager;
+		private var _id:String;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -47,8 +50,10 @@ package base.data.entity
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function Entity()
+		public function Entity(entityManger:EntityManager, id:String)
 		{
+			_entityManger = entityManger;
+			_id = id;
 		}
 		
 		
@@ -59,19 +64,45 @@ package base.data.entity
 		/**
 		 * @inheritDoc
 		 */
-		public function addComponent(component:IEntityComponent, componentID:String):Boolean
+		public function addComponent(component:Object):Boolean
 		{
-			// TODO
-			return false;
+			return _entityManger.addComponent(_id, component);
 		}
 		
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function removeComponent(component:IEntityComponent):void
+		public function getComponent(componentClass:Class):*
 		{
-			// TODO
+			return _entityManger.getComponent(_id, componentClass);
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function getComponents():Dictionary
+		{
+			return _entityManger.getComponents(_id);
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function removeComponent(componentClass:Class):void
+		{
+			_entityManger.removeComponent(_id, componentClass);
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function dispose():void
+		{
+			_entityManger.removeEntity(_id);
 		}
 		
 		
@@ -79,15 +110,12 @@ package base.data.entity
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
-		
-		//-----------------------------------------------------------------------------------------
-		// Event Handlers
-		//-----------------------------------------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
+		/**
+		 * @inheritDoc
+		 */
+		public function get id():String
+		{
+			return _id;
+		}
 	}
 }

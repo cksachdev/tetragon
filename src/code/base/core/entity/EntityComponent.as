@@ -25,19 +25,25 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.data.entity
+package base.core.entity
 {
 	/**
-	 * Allocates an instance of the hidden Entity class. This should be used anytime
-	 * an IEntity object needs to be created. Encapsulating the Entity class forces
-	 * code to use IEntity rather than Entity when dealing with entity references.
-	 * This will ensure that code is future proof as well as allow the Entity class to
-	 * be pooled in the future.
-	 * 
-	 * @return A new instance of type IEntity.
+	 * Abstract base class for entity components.
 	 */
-    public function allocateEntity():IEntity
-    {
-        return new Entity();
-    }
+	public class EntityComponent
+	{
+		//-----------------------------------------------------------------------------------------
+		// Public Methods
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Returns a String Representation of the class.
+		 * 
+		 * @return A String Representation of the class.
+		 */
+		public function toString():String
+		{
+			return "[EntityComponent]";
+		}
+	}
 }

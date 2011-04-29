@@ -25,51 +25,60 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.game.data.components
+package base.core.entity
 {
-	import base.core.entity.EntityComponent;
+	import base.core.IDisposable;
+
+	import flash.utils.Dictionary;
 	
 	
 	/**
-	 * ActorAIComponent class
+	 * 
 	 */
-	public class ActorAIComponent extends EntityComponent
+	public interface IEntity extends IDisposable
 	{
-		//-----------------------------------------------------------------------------------------
-		// Properties
-		//-----------------------------------------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Constructor
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Creates a new instance of the class.
-		 */
-		public function ActorAIComponent()
-		{
-		}
-		
-		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
-		
-		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Callback Handlers
-		//-----------------------------------------------------------------------------------------
+		/**
+		 * Registers a compoment with the entity.
+		 * 
+		 * @param component Component to be added.
+		 */
+		function addComponent(component:Object):Boolean;
 		
 		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
+		/**
+		 * Retrieves a components instance based on class name.
+		 * 
+		 * @param componentClass class name of component to be retrieved.
+		 */
+		function getComponent(componentClass:Class):*;
 		
+		
+		/**
+		 * retrieves the dictionary contaning all the entities components.
+		 * 
+		 * @return a dictionary of the entites components with the component Class as the key.
+		 * 
+		 */
+		function getComponents():Dictionary;
+		
+		
+		/**
+		 * Unregisters a component from the entity.
+		 * 
+		 * @param componentClass class def of component to be unregistered.
+		 */
+		function removeComponent(componentClass:Class):void;
+		
+		
+		/**
+		 * Gets the entities unique ID.
+		 * 
+		 * @return id unique ID.
+		 */
+		function get id():String
 	}
 }

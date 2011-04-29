@@ -27,7 +27,7 @@
  */
 package extra.game.data.components
 {
-	import base.data.entity.EntityComponent;
+	import base.core.entity.EntityComponent;
 
 	import com.hexagonstar.types.Point3D;
 	import com.hexagonstar.types.SpatialSize;
@@ -222,21 +222,6 @@ package extra.game.data.components
 		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function onAdd():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function onRemove():void
-		{
-		}
 		
 		
 		//-----------------------------------------------------------------------------------------

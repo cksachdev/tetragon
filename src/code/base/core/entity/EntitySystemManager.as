@@ -25,19 +25,27 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.game.data.components
+package base.core.entity
 {
-	import base.core.entity.EntityComponent;
+	import base.core.IDisposable;
+	import base.core.debug.Log;
+
+	import org.swiftsuspenders.Injector;
+
+	import flash.utils.Dictionary;
 	
 	
 	/**
-	 * ActorAIComponent class
+	 * Responsible for registering and unregistering systems in the entity architecture.
 	 */
-	public class ActorAIComponent extends EntityComponent
+	public class EntitySystemManager implements IDisposable
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
+		
+		private var _injector:Injector;
+		private var _systems:Dictionary;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -46,9 +54,13 @@ package extra.game.data.components
 		
 		/**
 		 * Creates a new instance of the class.
+		 * 
+		 * @param injector An Injector to use for this EntitySystemManager.
 		 */
-		public function ActorAIComponent()
+		public function EntitySystemManager(injector:Injector)
 		{
+			_injector = injector;
+			_systems = new Dictionary();
 		}
 		
 		
@@ -56,20 +68,61 @@ package extra.game.data.components
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * Registers a system.
+		 */
+		public function registerSystem(system:Class):IEntitySystem
+		{
+			if (_systems[system] != null)
+			{
+				Log.warn("System " + system + " already exists in entity system manager.", this);
+			}
+			
+			var s:IEntitySystem = _injector.instantiate(system);
+			_systems[system] = s;
+			s.onRegister();
+			return s;
+		}
 		
-		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Unregisters a system.
+		 */
+		public function unregisterSystem(system:Class):void
+		{
+			try
+			{
+				IDisposable(_systems[system]).dispose();
+				delete _systems[system];
+			}
+			catch (err:Error)
+			{
+				Log.warn("System " + system + " dosn't exist in entity system manager.", this);
+			}
+		}
 		
 		
-		//-----------------------------------------------------------------------------------------
-		// Callback Handlers
-		//-----------------------------------------------------------------------------------------
+		/**
+		 * @inheritDoc
+		 */
+		public function dispose():void
+		{
+			for each (var i:IDisposable in _systems)
+			{
+				i.dispose();
+			}
+			_systems = new Dictionary();
+		}
 		
 		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
+		/**
+		 * Returns a String Representation of the class.
+		 * 
+		 * @return A String Representation of the class.
+		 */
+		public function toString():String
+		{
+			return "[EntitySystemManager]";
+		}
 	}
 }

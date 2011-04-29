@@ -27,7 +27,7 @@
  */
 package extra.game.data.components
 {
-	import base.data.entity.EntityComponent;
+	import base.core.entity.EntityComponent;
 	
 	
 	/**

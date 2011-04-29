@@ -25,45 +25,34 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.game.data.entity
+package extra.game.data.entities
 {
-	import base.data.entity.Entity;
-
-	import extra.game.data.components.ActorAIComponent;
-	import extra.game.data.components.Spatial2DComponent;
+	import base.core.entity.Entity;
 	
 	
 	/**
-	 * Basic Actor entity.
+	 * Data Model for World Spaces.
 	 */
-	public class Actor extends Entity
+	public class WorldSpace extends Entity
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		protected var _name:String;
-		protected var _spatial:Spatial2DComponent;
-		protected var _ai:ActorAIComponent;
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Constructor
-		//-----------------------------------------------------------------------------------------
+		/**
+		 * The ID of the parent world space if this world space has a parent.
+		 */
+		public var parentID:String;
 		
 		/**
-		 * Creates a new instance of the class.
+		 * The ID of the map image that is used for this wordspace. Worldspace map images
+		 * give the player an overview of the area.
 		 */
-		public function Actor()
-		{
-			_spatial = new Spatial2DComponent();
-			_ai = new ActorAIComponent();
-		}
+		public var mapImageID:String;
 		
-		
-		//-----------------------------------------------------------------------------------------
-		// Public Methods
-		//-----------------------------------------------------------------------------------------
-		
+		/**
+		 * The name of the world space which is used for display in-game.
+		 */
+		public var name:String;
 	}
 }

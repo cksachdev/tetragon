@@ -25,34 +25,16 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.game.data.entity
+package base.core
 {
-	import base.data.entity.Entity;
-	
-	
 	/**
-	 * Data Model for World Spaces.
+	 * The IDisposable Interface can be implemented by any object that can be disposable.
 	 */
-	public class WorldSpace extends Entity
+	public interface IDisposable
 	{
-		//-----------------------------------------------------------------------------------------
-		// Properties
-		//-----------------------------------------------------------------------------------------
-		
 		/**
-		 * The ID of the parent world space if this world space has a parent.
-		 */
-		public var parentID:String;
-		
-		/**
-		 * The ID of the map image that is used for this wordspace. Worldspace map images
-		 * give the player an overview of the area.
-		 */
-		public var mapImageID:String;
-		
-		/**
-		 * The name of the world space which is used for display in-game.
-		 */
-		public var name:String;
+		 * Invoked when the instance is to be disposed.
+		 */	
+		function dispose():void;
 	}
 }

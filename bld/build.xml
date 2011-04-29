@@ -514,6 +514,8 @@
 				<keep-as3-metadata name="TypeHint"/>
 				<keep-as3-metadata name="Resource"/>
 				<keep-as3-metadata name="Embed"/>
+				<keep-as3-metadata name="Inject"/>
+				<keep-as3-metadata name="PostConstruct"/>
 				
 				<metadata
 					title="${meta.title}"

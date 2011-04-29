@@ -25,49 +25,16 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.data
+package base.core.entity
 {
 	import base.core.IDisposable;
 	
 	
 	/**
-	 * Base interface for all data objects.
+	 * IEntitySystem Interface
 	 */
-	public interface IDataObject extends IDisposable
+	public interface IEntitySystem extends IDisposable
 	{
-		//-----------------------------------------------------------------------------------------
-		// Public Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Returns a string representation of the object. Optionally a number of arguments
-		 * can be specified, typically properties that are output together with the object
-		 * name to provide additional information about the object.
-		 * 
-		 * @example
-		 * <pre>
-		 *    // overriden toString method to include a size property:
-		 *    override public function toString(...args):String
-		 *    {
-		 *        return super.toString("size=" + size);
-		 *    }
-		 * </pre>
-		 * 
-		 * @param args an optional, comma-delimited list of class properties that should be
-		 *            output together with the object name.
-		 * @return A string representation of the object.
-		 */
-		function toString(...args):String;
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * The unique ID of the data object.
-		 */
-		function get id():String;
-		function set id(v:String):void;
+		function onRegister():void;
 	}
 }

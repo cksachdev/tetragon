@@ -25,19 +25,26 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.game.data.components
+package extra.game.data.entities
 {
-	import base.core.entity.EntityComponent;
+	import base.core.entity.Entity;
+
+	import extra.game.data.components.ActorAIComponent;
+	import extra.game.data.components.Spatial2DComponent;
 	
 	
 	/**
-	 * ActorAIComponent class
+	 * Basic Actor entity.
 	 */
-	public class ActorAIComponent extends EntityComponent
+	public class Actor extends Entity
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
+		
+		protected var _name:String;
+		protected var _spatial:Spatial2DComponent;
+		protected var _ai:ActorAIComponent;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -47,28 +54,15 @@ package extra.game.data.components
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function ActorAIComponent()
+		public function Actor()
 		{
+			_spatial = new Spatial2DComponent();
+			_ai = new ActorAIComponent();
 		}
 		
 		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
-		//-----------------------------------------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Callback Handlers
-		//-----------------------------------------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
 	}
