@@ -46,7 +46,7 @@ package base.command.cli
 		{
 			super.execute();
 			
-			_main.console.log("\n" + LocalSettingsManager.instance.settings.dump(), LogLevel.INFO);
+			main.console.log("\n" + LocalSettingsManager.instance.settings.dump(), LogLevel.INFO);
 			complete();
 		}
 		

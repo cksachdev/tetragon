@@ -50,7 +50,7 @@ package base.command.cli
 		{
 			super.execute();
 			
-			_main.console.transparency = _value;
+			main.console.transparency = _value;
 			complete();
 		}
 		

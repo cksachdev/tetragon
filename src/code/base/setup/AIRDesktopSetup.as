@@ -96,8 +96,8 @@ package base.setup
 			if (NativeWindow.isSupported)
 			{
 				/* Make application visible. */
-				_main.view.stage.nativeWindow.visible = true;
-				_main.view.stage.nativeWindow.activate();
+				_main.contextView.stage.nativeWindow.visible = true;
+				_main.contextView.stage.nativeWindow.activate();
 			}
 			
 			/* Register desktop-specific CLI commands if we have the Console available. */

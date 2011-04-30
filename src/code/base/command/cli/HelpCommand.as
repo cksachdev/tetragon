@@ -59,7 +59,7 @@ package base.command.cli
 		{
 			super.execute();
 			
-			var console:Console = _main.console;
+			var console:Console = main.console;
 			var help:String;
 			
 			if (_command)

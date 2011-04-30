@@ -30,12 +30,13 @@ package base.view.screen
 	import base.Main;
 	import base.core.debug.Log;
 	import base.event.ResourceEvent;
-	import base.event.ScreenEvent;
 	import base.view.display.LoadProgressDisplay;
 
 	import com.greensock.TweenLite;
 	import com.hexagonstar.util.display.StageReference;
 	import com.hexagonstar.util.string.TabularText;
+
+	import org.osflash.signals.Signal;
 
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -89,6 +90,15 @@ package base.view.screen
 		/** @private */
 		private var _showLoadProgress:Boolean = false;
 		
+		//-----------------------------------------------------------------------------------------
+		// Signals
+		//-----------------------------------------------------------------------------------------
+		
+		/** @private */
+		public var screenOpenedSignal:Signal;
+		/** @private */
+		public var screenClosedSignal:Signal;
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Constructor
@@ -115,6 +125,9 @@ package base.view.screen
 			_backupDuration = _tweenDuration;
 			_backupOpenDelay = _screenOpenDelay;
 			_backupCloseDelay = _screenCloseDelay;
+			
+			screenOpenedSignal = new Signal();
+			screenClosedSignal = new Signal();
 		}
 		
 		
@@ -190,6 +203,7 @@ package base.view.screen
 				_openScreenClass = screenClass;
 				_showLoadProgress = bs.showLoadProgress;
 				_nextScreen = bs;
+				_main.injector.injectInto(bs);
 				bs.main = _main;
 				bs.init();
 				
@@ -342,8 +356,9 @@ package base.view.screen
 		private function onScreenProgress(e:ResourceEvent):void
 		{
 			if (!_loadProgressDisplay) return;
+			
 			/* If we got more than four resources use file count rather than bytes. Not really
-			 * a good indicator but does the job for now. Besides bytesLoaded is still buggy. */
+			 * a good indicator but does the job for now, besides bytesLoaded is still buggy. */
 			if (e.totalCount > 3) _loadProgressDisplay.update(e.currentCount, e.totalCount);
 			else _loadProgressDisplay.update(e.bytesLoaded, e.bytesTotal);
 		}
@@ -352,7 +367,7 @@ package base.view.screen
 		/**
 		 * @private
 		 */
-		private function onScreenLoaded(e:ScreenEvent):void
+		private function onScreenLoaded():void
 		{
 			if (!_screen)
 			{
@@ -360,10 +375,6 @@ package base.view.screen
 				Log.warn("onScreenLoaded: screen is null.", this);
 				return;
 			}
-			
-			_screen.removeEventListener(ResourceEvent.BULK_PROGRESS, onScreenProgress);
-			_screen.removeEventListener(ScreenEvent.CREATED, onScreenLoaded);
-			
 			
 			/* Disable screen display objects while fading in. */
 			_screen.enabled = false;
@@ -403,7 +414,7 @@ package base.view.screen
 			}
 			
 			Log.debug("Opened " + _screen.toString(), this);
-			dispatchEvent(new ScreenEvent(ScreenEvent.OPENED, _screen));
+			screenOpenedSignal.dispatch(_screen);
 			
 			/* Everythings' done, screen is faded in! Let's grant user interaction. */
 			_screen.enabled = true;
@@ -429,7 +440,7 @@ package base.view.screen
 			_screen.dispose();
 			_screen = null;
 			_openScreenClass = null;
-			dispatchEvent(new ScreenEvent(ScreenEvent.CLOSED, oldScreen));
+			screenClosedSignal.dispatch(oldScreen);
 			loadNextScreen();
 		}
 		
@@ -483,8 +494,8 @@ package base.view.screen
 				setTimeout(function():void
 				{
 					_screen = BaseScreen(_nextScreen);
-					_screen.addEventListener(ResourceEvent.BULK_PROGRESS, onScreenProgress);
-					_screen.addEventListener(ScreenEvent.CREATED, onScreenLoaded);
+					_screen.progressSignal.add(onScreenProgress);
+					_screen.createdSignal.add(onScreenLoaded);
 					_screen.load();
 				}, _screenOpenDelay * 1000);
 			}

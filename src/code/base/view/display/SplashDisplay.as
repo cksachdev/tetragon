@@ -158,7 +158,7 @@ package base.view.display
 		/**
 		 * @inheritDoc
 		 */
-		override protected function addEventListeners():void
+		override protected function addListeners():void
 		{
 		}
 		
@@ -166,7 +166,7 @@ package base.view.display
 		/**
 		 * @inheritDoc
 		 */
-		override protected function removeEventListeners():void
+		override protected function removeListeners():void
 		{
 		}
 		

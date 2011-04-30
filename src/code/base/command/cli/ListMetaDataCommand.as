@@ -59,7 +59,7 @@ package base.command.cli
 				t.add([a.@name + ":", AppInfo[a.@name]]);
 			}
 			
-			_main.console.log("\n" + t.toString(), LogLevel.INFO);
+			main.console.log("\n" + t.toString(), LogLevel.INFO);
 			complete();
 		}
 		

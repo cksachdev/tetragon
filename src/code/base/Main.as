@@ -48,6 +48,7 @@ package base
 	import flash.events.ErrorEvent;
 	import flash.events.UncaughtErrorEvent;
 	import flash.external.ExternalInterface;
+	import flash.system.ApplicationDomain;
 	
 	
 	/**
@@ -62,7 +63,7 @@ package base
 		/** @private */
 		private static var _instance:Main;
 		/** @private */
-		private var _view:DisplayObjectContainer;
+		private var _contextView:DisplayObjectContainer;
 		/** @private */
 		private var _applicationView:ApplicationView;
 		/** @private */
@@ -84,9 +85,10 @@ package base
 		 */
 		public function Main(contextView:DisplayObjectContainer)
 		{
-			_view = contextView;
+			_contextView = contextView;
 			_instance = this;
 			
+			mapInjections();
 			setup();
 		}
 		
@@ -107,14 +109,15 @@ package base
 		/**
 		 * A reference to the base display object container.
 		 */
-		public function get view():DisplayObjectContainer
+		public function get contextView():DisplayObjectContainer
 		{
-			return _view;
+			return _contextView;
 		}
 		
 		
 		public function get applicationView():ApplicationView
 		{
+			if (!_applicationView) _applicationView = new ApplicationView(this);
 			return _applicationView;
 		}
 		
@@ -125,7 +128,7 @@ package base
 		 */
 		public function get console():Console
 		{
-			return _applicationView.console;
+			return applicationView.console;
 		}
 		
 		
@@ -135,7 +138,7 @@ package base
 		 */
 		public function get fpsMonitor():FPSMonitor
 		{
-			return _applicationView.fpsMonitor;
+			return applicationView.fpsMonitor;
 		}
 		
 		
@@ -144,7 +147,7 @@ package base
 		 */
 		public function get screenManager():ScreenManager
 		{
-			return _applicationView.screenManager;
+			return applicationView.screenManager;
 		}
 		
 		
@@ -156,9 +159,9 @@ package base
 		{
 			CONFIG::IS_AIR_BUILD
 			{
-				if (NativeWindow.isSupported) return _view.stage.nativeWindow;
+				if (NativeWindow.isSupported) return contextView.stage.nativeWindow;
 			}
-			return _view;
+			return contextView;
 		}
 		
 		
@@ -180,12 +183,18 @@ package base
 		
 		
 		/**
-		 * The application's main IOC injector.
-		 * @private
+		 * The application's main IoC injector.
 		 */
 		public function get injector():Injector
 		{
-			return _injector || (_injector = new Injector());
+			if (!_injector)
+			{
+				_injector = new Injector();
+				_injector.applicationDomain = contextView && contextView.loaderInfo
+					? contextView.loaderInfo.applicationDomain
+					: ApplicationDomain.currentDomain;
+			}
+			return _injector;
 		}
 		
 		
@@ -193,7 +202,7 @@ package base
 		 * The application's entity manager, used for the entity architecture.
 		 * @private
 		 */
-		public function get entityManager():EntityManager
+		private function get entityManager():EntityManager
 		{
 			return _entityManager || (_entityManager = new EntityManager());
 		}
@@ -203,7 +212,7 @@ package base
 		 * The application's entity system manager, used for the entity architecture.
 		 * @private
 		 */
-		public function get entitySystemManager():EntitySystemManager
+		private function get entitySystemManager():EntitySystemManager
 		{
 			return _entitySystemManager || (_entitySystemManager = new EntitySystemManager(injector));
 		}
@@ -219,7 +228,7 @@ package base
 		private function onAppInitComplete(e:CommandEvent):void 
 		{
 			/* Start the UI */
-			_applicationView.start();
+			applicationView.start();
 		}
 		
 		
@@ -258,6 +267,17 @@ package base
 		//-----------------------------------------------------------------------------------------
 		
 		/**
+		 * Base injection mapping hook.
+		 * @private
+		 */
+		protected function mapInjections():void
+		{
+			injector.mapValue(EntityManager, entityManager);
+			injector.mapValue(EntitySystemManager, entitySystemManager);
+		}
+		
+		
+		/**
 		 * Executes tasks that need to be done before the application init process is being
 		 * executed. This typically includes creating the application's UI as well as
 		 * instantiating other objects that exist throught the whole application life time.
@@ -269,8 +289,6 @@ package base
 		 */
 		private function setup():void
 		{
-			//injector.mapSingleton(Main);
-			
 			CONFIG::IS_WEB_BUILD
 			{
 				/* Call JavaScript function to give keyboard focus to web-based Flash content. */
@@ -283,12 +301,12 @@ package base
 			/* Set up global error listener if this is a release version. */
 			if (!AppInfo.IS_DEBUG)
 			{
-				_view.loaderInfo.uncaughtErrorEvents.addEventListener(
+				contextView.loaderInfo.uncaughtErrorEvents.addEventListener(
 					UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
 			}
 			
 			/* Set stage reference as early as possible. */
-			StageReference.stage = _view.stage;
+			StageReference.stage = contextView.stage;
 			
 			/* CommandManager requires a reference to Main. */
 			CommandManager.instance.main = this;
@@ -301,8 +319,7 @@ package base
 			/* Init the data model registry. */
 			Registry.init();
 			
-			_applicationView = new ApplicationView(this);
-			_view.addChild(_applicationView);
+			contextView.addChild(applicationView);
 			
 			/* We make the logger available as soon as possible so that any log
 			 * messages from the hexagonLib come through even before the console

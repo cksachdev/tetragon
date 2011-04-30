@@ -54,7 +54,7 @@ package base.command.cli
 			var p:String = a.shift();
 			a = String(a[0]).split(",");
 			v = a[0] + "." + a[1] + "." + a[2] + " (" + a[3] + ")";
-			_main.console.log("runtime version: " + v + ", type: " + t + ", platform: " + p
+			main.console.log("runtime version: " + v + ", type: " + t + ", platform: " + p
 				+ ", debugger: " + d, LogLevel.INFO);
 			
 			complete();

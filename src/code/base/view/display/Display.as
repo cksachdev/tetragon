@@ -28,13 +28,14 @@
 package base.view.display
 {
 	import base.Main;
-	import base.event.DisplayEvent;
 	import base.event.ResourceEvent;
 	import base.io.resource.Resource;
 	import base.io.resource.ResourceIndex;
 	import base.io.resource.ResourceManager;
 	import base.io.resource.StringIndex;
 	import base.view.screen.BaseScreen;
+
+	import org.osflash.signals.Signal;
 
 	import flash.display.Sprite;
 	import flash.utils.getQualifiedClassName;
@@ -85,6 +86,23 @@ package base.view.display
 		
 		
 		//-----------------------------------------------------------------------------------------
+		// Signals
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Signal that is broadcasted when the display has been loaded.
+		 * @private
+		 */
+		public var loadedSignal:Signal;
+		
+		/**
+		 * Signal that is broadcasted when the display has load progress.
+		 * @private
+		 */
+		public var progressSignal:Signal;
+		
+		
+		//-----------------------------------------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------------------------------------
 		
@@ -93,6 +111,9 @@ package base.view.display
 		 */
 		public function Display()
 		{
+			loadedSignal = new Signal();
+			progressSignal = new Signal();
+			
 			addResources();
 		}
 		
@@ -191,8 +212,27 @@ package base.view.display
 		public function dispose():void
 		{
 			stop();
-			removeEventListeners();
+			removeListeners();
+			disposeSignals();
 			unload();
+		}
+		
+		
+		/**
+		 * Disposes all signals used by the instance.
+		 */
+		public function disposeSignals():void
+		{
+			if (loadedSignal)
+			{
+				loadedSignal.removeAll();
+				loadedSignal = null;
+			}
+			if (progressSignal)
+			{
+				progressSignal.removeAll();
+				progressSignal = null;
+			}
 		}
 		
 		
@@ -332,7 +372,7 @@ package base.view.display
 		 */
 		public function onResourceProgress(e:ResourceEvent):void
 		{
-			dispatchEvent(e);
+			progressSignal.dispatch(e);
 		}
 		
 		
@@ -388,8 +428,8 @@ package base.view.display
 		protected function setup():void
 		{
 			createChildren();
-			addEventListeners();
-			dispatchEvent(new DisplayEvent(DisplayEvent.LOADED, this));
+			addListeners();
+			loadedSignal.dispatch(this);
 		}
 		
 		
@@ -442,24 +482,24 @@ package base.view.display
 		
 		
 		/**
-		 * Should be used to add any required event listeners to the display and/or it's
+		 * Should be used to add any required event/signal listeners to the display and/or it's
 		 * children.
 		 * 
 		 * @private
 		 */
-		protected function addEventListeners():void
+		protected function addListeners():void
 		{
 			/* Abstract method! */
 		}
 		
 		
 		/**
-		 * Used to remove any event listeners that has been added with addEventListeners().
+		 * Used to remove any event/signal listeners that has been added with addEventListeners().
 		 * This method is automatically called by the dispose() method.
 		 * 
 		 * @private
 		 */
-		protected function removeEventListeners():void
+		protected function removeListeners():void
 		{
 			/* Abstract method! */
 		}

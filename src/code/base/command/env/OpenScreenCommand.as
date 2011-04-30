@@ -53,7 +53,7 @@ package base.command.env
 		{
 			super.execute();
 			
-			_main.screenManager.openScreen(_screenID, true);
+			main.screenManager.openScreen(_screenID, true);
 			complete();
 		}
 		

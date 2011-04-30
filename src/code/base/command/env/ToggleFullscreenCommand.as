@@ -70,7 +70,7 @@ package base.command.env
 				{
 					CONFIG::IS_DESKTOP_BUILD
 					{
-						WindowBoundsManager.instance.storeWindowBounds(_main.baseWindow, "base");
+						WindowBoundsManager.instance.storeWindowBounds(main.baseWindow, "base");
 					}
 					state = StageDisplayState["FULL_SCREEN_INTERACTIVE"];
 					// TODO To be changed! Fullscreen state should not be stored in app.ini

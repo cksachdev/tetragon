@@ -107,7 +107,6 @@ package base.command.env
 			_configLoader.dispose();
 			_configLoader = null;
 			_setups = null;
-			_main = null;
 		}
 
 		
@@ -233,7 +232,7 @@ package base.command.env
 			{
 				/* Create ini filename that uses the same first part as the SWF. This
 				 * assures that we can have several SWFs with their own ini file if needed. */
-				_configLoader = new ConfigLoader(_main);
+				_configLoader = new ConfigLoader(main);
 				_configLoader.addEventListener(Event.COMPLETE, onConfigLoadComplete);
 				_configLoader.addEventListener(ErrorEvent.ERROR, onConfigLoadComplete);
 				_configLoader.addFile(AppInfo.FILENAME + ".ini", "configFile");
@@ -264,7 +263,7 @@ package base.command.env
 		{
 			var rm:ResourceManager = ResourceManager.instance;
 			rm.addEventListener(Event.COMPLETE, onResourceManagerReady);
-			rm.init(_main, AppResourceBundle);
+			rm.init(main, AppResourceBundle);
 		}
 		
 		
@@ -293,7 +292,7 @@ package base.command.env
 				+ " " + AppInfo.RELEASE_STAGE
 				+ " (" + AppInfo.BUILD_TYPE
 				+ (AppInfo.IS_DEBUG ? " debug" : "") + ")^^");
-			if (_main.console) _main.console.welcome();
+			if (main.console) main.console.welcome();
 			
 			complete();
 		}
@@ -309,7 +308,7 @@ package base.command.env
 				switch (step)
 				{
 					case "init":
-						_setups[i].init(_main);
+						_setups[i].init(main);
 						break;
 					case "initial":
 						_setups[i].initialSetup();

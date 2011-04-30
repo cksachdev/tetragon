@@ -43,17 +43,21 @@ package base.command
 		 * Every command has a reference to main by default.
 		 * @private
 		 */
-		protected var _main:Main;
-
-
+		private var _main:Main;
+		
+		
 		// -----------------------------------------------------------------------------------------
 		// Getters & Setters
 		// -----------------------------------------------------------------------------------------
 
 		/**
-		 * Sets main, used by the CLI when executing commands.
+		 * A reference to main, used by the CLI when executing commands.
 		 * @private
 		 */
+		public function get main():Main
+		{
+			return _main;
+		}
 		public function set main(v:Main):void
 		{
 			_main = v;

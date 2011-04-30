@@ -45,7 +45,7 @@ package base.command.env
 		{
 			super.execute();
 			
-			_main.console.log(_main.screenManager.dumpScreenList(), LogLevel.INFO);
+			main.console.log(main.screenManager.dumpScreenList(), LogLevel.INFO);
 			complete();
 		}
 		

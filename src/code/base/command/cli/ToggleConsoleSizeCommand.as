@@ -46,7 +46,7 @@ package base.command.cli
 		{
 			super.execute();
 			
-			_main.console.toggleSize();
+			main.console.toggleSize();
 			complete();
 		}
 		

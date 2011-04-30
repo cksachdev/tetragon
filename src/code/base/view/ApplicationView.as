@@ -31,11 +31,11 @@ package base.view
 	import base.core.debug.Console;
 	import base.core.debug.FPSMonitor;
 	import base.data.Registry;
-	import base.event.ScreenEvent;
+	import base.view.screen.BaseScreen;
 	import base.view.screen.ScreenManager;
+
 	import flash.display.Sprite;
 	import flash.display.StageDisplayState;
-
 	
 	
 	/**
@@ -116,7 +116,7 @@ package base.view
 		 */
 		public function dispose():void
 		{
-			removeEventListeners();
+			removeListeners();
 		}
 		
 		
@@ -170,8 +170,8 @@ package base.view
 		 */
 		public function get isFullscreen():Boolean
 		{
-			return (_main.view.stage.displayState == StageDisplayState["FULL_SCREEN_INTERACTIVE"]
-				|| _main.view.stage.displayState == StageDisplayState.FULL_SCREEN);
+			return (_main.contextView.stage.displayState == StageDisplayState["FULL_SCREEN_INTERACTIVE"]
+				|| _main.contextView.stage.displayState == StageDisplayState.FULL_SCREEN);
 		}
 		
 		
@@ -182,7 +182,7 @@ package base.view
 		/**
 		 * @private
 		 */
-		private function onScreenOpened(e:ScreenEvent):void
+		private function onScreenOpened(screen:BaseScreen):void
 		{
 		}
 		
@@ -190,7 +190,7 @@ package base.view
 		/**
 		 * @private
 		 */
-		private function onScreenClosed(e:ScreenEvent):void
+		private function onScreenClosed(screen:BaseScreen):void
 		{
 		}
 		
@@ -206,7 +206,7 @@ package base.view
 		{
 			createChildren();
 			layoutChildren();
-			addEventListeners();
+			addListeners();
 		}
 		
 		
@@ -267,20 +267,20 @@ package base.view
 		/**
 		 * @private
 		 */
-		private function addEventListeners():void
+		private function addListeners():void
 		{
-			_screenManager.addEventListener(ScreenEvent.OPENED, onScreenOpened);
-			_screenManager.addEventListener(ScreenEvent.CLOSED, onScreenClosed);
+			_screenManager.screenOpenedSignal.add(onScreenOpened);
+			_screenManager.screenClosedSignal.add(onScreenClosed);
 		}
 		
 		
 		/**
 		 * @private
 		 */
-		private function removeEventListeners():void
+		private function removeListeners():void
 		{
-			_screenManager.removeEventListener(ScreenEvent.OPENED, onScreenOpened);
-			_screenManager.removeEventListener(ScreenEvent.CLOSED, onScreenClosed);
+			_screenManager.screenOpenedSignal.remove(onScreenOpened);
+			_screenManager.screenClosedSignal.remove(onScreenClosed);
 		}
 	}
 }

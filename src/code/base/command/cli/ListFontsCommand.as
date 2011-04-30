@@ -77,7 +77,7 @@ package base.command.cli
 				s = "No embedded fonts found.";
 			}
 			
-			_main.console.log(s, LogLevel.INFO);
+			main.console.log(s, LogLevel.INFO);
 			complete();
 		}
 		

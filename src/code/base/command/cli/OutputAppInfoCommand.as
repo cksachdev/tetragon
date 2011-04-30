@@ -46,7 +46,7 @@ package base.command.cli
 		{
 			super.execute();
 			
-			_main.console.log(AppInfo.NAME
+			main.console.log(AppInfo.NAME
 				+ " v" + AppInfo.VERSION
 				+ " build #" + AppInfo.BUILD
 				+ (AppInfo.MILESTONE.length > 0 ? " \"" + AppInfo.MILESTONE + "\"" : "")

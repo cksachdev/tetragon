@@ -43,7 +43,7 @@ package base.command.cli
 		{
 			super.execute();
 			
-			_main.console.clear();
+			main.console.clear();
 			complete();
 		}
 		

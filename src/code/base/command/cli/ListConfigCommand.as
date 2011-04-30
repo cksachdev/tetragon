@@ -60,7 +60,7 @@ package base.command.cli
 				}
 			}
 			
-			_main.console.log("\n" + c.toString(), LogLevel.INFO);
+			main.console.log("\n" + c.toString(), LogLevel.INFO);
 			complete();
 		}
 		

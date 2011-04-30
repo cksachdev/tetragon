@@ -382,7 +382,7 @@ package extra.game.view.display
 		/**
 		 * @inheritDoc
 		 */
-		override protected function addEventListeners():void
+		override protected function addListeners():void
 		{
 			StageReference.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			StageReference.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
@@ -392,7 +392,7 @@ package extra.game.view.display
 		/**
 		 * @inheritDoc
 		 */
-		override protected function removeEventListeners():void
+		override protected function removeListeners():void
 		{
 		}
 		

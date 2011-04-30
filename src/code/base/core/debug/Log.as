@@ -100,7 +100,7 @@ package base.core.debug
 			filterLevel = Registry.config.loggingFilterLevel;
 			enabled = Registry.config.loggingEnabled;
 			
-			Log.monitor(_main.view.stage);
+			Log.monitor(_main.contextView.stage);
 		}
 		
 		

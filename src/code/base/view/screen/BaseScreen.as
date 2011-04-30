@@ -27,12 +27,12 @@
  */
 package base.view.screen
 {
-	import base.event.DisplayEvent;
 	import base.event.ResourceEvent;
-	import base.event.ScreenEvent;
 	import base.view.display.Display;
 
 	import com.hexagonstar.util.display.StageReference;
+
+	import org.osflash.signals.Signal;
 
 	import flash.display.DisplayObject;
 	import flash.events.Event;
@@ -52,6 +52,17 @@ package base.view.screen
 		 * @private
 		 */
 		protected var _displays:Vector.<Display>;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Signals
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Signal that is broadcasted when the screen has been created.
+		 * @private
+		 */
+		public var createdSignal:Signal;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -89,6 +100,20 @@ package base.view.screen
 		}
 		
 		
+		/**
+		 * @inheritDoc
+		 */
+		override public function disposeSignals():void
+		{
+			if (createdSignal)
+			{
+				createdSignal.removeAll();
+				createdSignal = null;
+			}
+			super.disposeSignals();
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
@@ -113,28 +138,30 @@ package base.view.screen
 		 */
 		private function onDisplayProgress(e:ResourceEvent):void
 		{
-			dispatchEvent(e);
+			progressSignal.dispatch(e);
 		}
 		
 		
 		/**
 		 * @private
 		 */
-		protected function onDisplayLoaded(e:DisplayEvent):void 
+		protected function onDisplayLoaded(display:Display):void
 		{
-			e.display.init();
-			e.display.loaded = true;
+			display.init();
+			display.loaded = true;
 			
 			for (var i:int = 0; i < _displays.length; i++)
 			{
 				var d:Display = _displays[i];
+				
 				/* Check if any unloaded display is left. */
 				if (!d.loaded) return;
+				
 				/* If we reach this point, all displays have been loaded.
-				 * Remove event listeners from displays. */
-				d.removeEventListener(ResourceEvent.BULK_PROGRESS, onDisplayProgress);
-				d.removeEventListener(DisplayEvent.LOADED, onDisplayLoaded);
+				 * Remove signal listeners from displays. */
+				 d.disposeSignals();
 			}
+			
 			setup();
 		}
 		
@@ -147,7 +174,8 @@ package base.view.screen
 		private function onFramePassed(e:Event):void
 		{
 			removeEventListener(Event.ENTER_FRAME, onFramePassed);
-			dispatchEvent(new ScreenEvent(ScreenEvent.CREATED, this));
+			createdSignal.dispatch();
+			disposeSignals();
 		}
 		
 		
@@ -161,6 +189,9 @@ package base.view.screen
 		protected function prepare():void
 		{
 			_displays = new Vector.<Display>();
+			progressSignal = new Signal();
+			createdSignal = new Signal();
+			
 			createChildren();
 		}
 		
@@ -172,8 +203,8 @@ package base.view.screen
 		{
 			display.main = main;
 			display.screen = this;
-			display.addEventListener(ResourceEvent.BULK_PROGRESS, onDisplayProgress);
-			display.addEventListener(DisplayEvent.LOADED, onDisplayLoaded);
+			display.progressSignal.add(onDisplayProgress);
+			display.loadedSignal.add(onDisplayLoaded);
 			_displays.push(display);
 		}
 		
@@ -184,7 +215,7 @@ package base.view.screen
 		override protected function setup():void
 		{
 			addChildren();
-			addEventListeners();
+			addListeners();
 			
 			/* All done! Time to show the screen */
 			addEventListener(Event.ENTER_FRAME, onFramePassed);

@@ -79,7 +79,7 @@ package base.command.env
 		 */
 		private function onGCDone(a:String):void
 		{
-			_main.console.log("Garbage collection executed, mem before: " + a + ", mem after: "
+			main.console.log("Garbage collection executed, mem before: " + a + ", mem after: "
 				+ (new Byte(System.totalMemory).toString()), LogLevel.INFO);
 			
 			complete();

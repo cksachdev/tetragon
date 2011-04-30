@@ -178,7 +178,7 @@ package extra.game.view.screen
 		/**
 		 * @inheritDoc
 		 */
-		override protected function addEventListeners():void
+		override protected function addListeners():void
 		{
 		}
 		
@@ -186,7 +186,7 @@ package extra.game.view.screen
 		/**
 		 * @inheritDoc
 		 */
-		override protected function removeEventListeners():void
+		override protected function removeListeners():void
 		{
 		}
 		

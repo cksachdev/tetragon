@@ -50,7 +50,7 @@ package base.command.cli
 		{
 			super.execute();
 			
-			_main.console.bgColor = _value;
+			main.console.bgColor = _value;
 			complete();
 		}
 		

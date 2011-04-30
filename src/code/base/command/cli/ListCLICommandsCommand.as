@@ -50,7 +50,7 @@ package base.command.cli
 		{
 			super.execute();
 			
-			var console:Console = _main.console;
+			var console:Console = main.console;
 			var cmds:Object = console.cli.commandMap;
 			var t:TabularText = new TabularText(3, true, "  ", null, "  ", 0,
 				["COMMAND", "GROUP", "DESCRIPTION"]);

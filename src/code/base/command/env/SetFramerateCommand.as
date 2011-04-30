@@ -53,7 +53,7 @@ package base.command.env
 		{
 			super.execute();
 			
-			_main.view.stage.frameRate = _fps;
+			main.contextView.stage.frameRate = _fps;
 			complete();
 		}
 		

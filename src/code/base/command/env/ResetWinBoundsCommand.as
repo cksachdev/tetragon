@@ -54,7 +54,7 @@ package base.command.env
 			
 			setTimeout(function():void
 			{
-				WindowBoundsManager.instance.storeWindowBounds(_main.baseWindow, "base");
+				WindowBoundsManager.instance.storeWindowBounds(main.baseWindow, "base");
 				complete();
 			}, 200);
 		}

@@ -43,8 +43,8 @@ package base.command.cli
 		{
 			super.execute();
 			
-			_main.console.clearInput();
-			_main.console.toggle();
+			main.console.clearInput();
+			main.console.toggle();
 			complete();
 		}
 		

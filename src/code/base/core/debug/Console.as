@@ -117,7 +117,7 @@ package base.core.debug
 			
 			_main = main;
 			_container = container;
-			_stage = _main.view.stage;
+			_stage = _main.contextView.stage;
 		}
 		
 		

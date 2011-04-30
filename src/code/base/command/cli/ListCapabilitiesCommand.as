@@ -64,7 +64,7 @@ package base.command.cli
 			/* Add extra caps that are not listed in the default caps. */
 			c.add(["stage.wmodeGPU", StageReference.stage.wmodeGPU]);
 			
-			_main.console.log("\n" + c.toString(), LogLevel.INFO);
+			main.console.log("\n" + c.toString(), LogLevel.INFO);
 			complete();
 		}
 		

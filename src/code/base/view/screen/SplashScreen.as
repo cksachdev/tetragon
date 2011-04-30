@@ -181,7 +181,7 @@ package base.view.screen
 		{
 			/* Once the screen fades out, the user should not be able to interrupt, otherwise
 			 * we might hang up somewhere so remove event listeners now. */
-			removeEventListeners();
+			removeListeners();
 			main.screenManager.openScreen("dummyScreen");
 		}
 		
@@ -216,7 +216,7 @@ package base.view.screen
 		/**
 		 * @inheritDoc
 		 */
-		override protected function addEventListeners():void
+		override protected function addListeners():void
 		{
 			StageReference.stage.addEventListener(Event.RESIZE, onStageResize);
 			StageReference.stage.addEventListener(MouseEvent.CLICK, onUserInput);
@@ -228,7 +228,7 @@ package base.view.screen
 		/**
 		 * @inheritDoc
 		 */
-		override protected function removeEventListeners():void
+		override protected function removeListeners():void
 		{
 			StageReference.stage.removeEventListener(Event.RESIZE, onStageResize);
 			StageReference.stage.removeEventListener(MouseEvent.CLICK, onUserInput);

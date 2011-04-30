@@ -49,7 +49,7 @@ package base.command.file
 		{
 			super.execute();
 			
-			_main.console.log(ResourceManager.instance.dumpStringList(), LogLevel.INFO);
+			main.console.log(ResourceManager.instance.dumpStringList(), LogLevel.INFO);
 			complete();
 		}
 		
