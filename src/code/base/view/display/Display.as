@@ -35,7 +35,7 @@ package base.view.display
 	import base.io.resource.StringIndex;
 	import base.view.screen.BaseScreen;
 
-	import org.osflash.signals.Signal;
+	import com.hexagonstar.signals.Signal;
 
 	import flash.display.Sprite;
 	import flash.utils.getQualifiedClassName;

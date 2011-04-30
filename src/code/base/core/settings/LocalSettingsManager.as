@@ -29,8 +29,7 @@ package base.core.settings
 {
 	import com.hexagonstar.exception.SingletonException;
 	import com.hexagonstar.net.SharedObjectStatus;
-
-	import org.osflash.signals.Signal;
+	import com.hexagonstar.signals.Signal;
 
 	import flash.events.NetStatusEvent;
 	import flash.net.SharedObject;

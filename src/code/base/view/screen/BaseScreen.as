@@ -30,9 +30,8 @@ package base.view.screen
 	import base.event.ResourceEvent;
 	import base.view.display.Display;
 
+	import com.hexagonstar.signals.Signal;
 	import com.hexagonstar.util.display.StageReference;
-
-	import org.osflash.signals.Signal;
 
 	import flash.display.DisplayObject;
 	import flash.events.Event;

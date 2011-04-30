@@ -27,7 +27,7 @@
  */
 package base.core.entity
 {
-	import org.osflash.signals.Signal;
+	import com.hexagonstar.signals.Signal;
 	
 	
 	/**

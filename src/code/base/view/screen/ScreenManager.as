@@ -33,10 +33,9 @@ package base.view.screen
 	import base.view.display.LoadProgressDisplay;
 
 	import com.greensock.TweenLite;
+	import com.hexagonstar.signals.Signal;
 	import com.hexagonstar.util.display.StageReference;
 	import com.hexagonstar.util.string.TabularText;
-
-	import org.osflash.signals.Signal;
 
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
