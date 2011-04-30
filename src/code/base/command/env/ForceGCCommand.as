@@ -27,7 +27,7 @@
  */
 package base.command.env
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 
 	import com.hexagonstar.types.Byte;
 	import com.hexagonstar.util.debug.LogLevel;
@@ -39,7 +39,7 @@ package base.command.env
 	/**
 	 * ...
 	 */
-	public class ForceGCCommand extends Command
+	public class ForceGCCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods

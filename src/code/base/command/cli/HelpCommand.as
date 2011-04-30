@@ -27,7 +27,7 @@
  */
 package base.command.cli
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 	import base.core.cli.CLICommandVO;
 	import base.core.debug.Console;
 	import base.data.Registry;
@@ -39,7 +39,7 @@ package base.command.cli
 	/**
 	 * CLI command to show console help text or help text for and provided command.
 	 */
-	public class HelpCommand extends Command
+	public class HelpCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -64,7 +64,7 @@ package base.command.cli
 			
 			if (_command)
 			{
-				var cmd:Command;
+				var cmd:CLICommand;
 				var vo:CLICommandVO = console.cli.commandMap[_command];
 				
 				if (vo)

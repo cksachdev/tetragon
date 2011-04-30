@@ -27,11 +27,11 @@
  */
 package base.command.env
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 	import base.core.update.UpdateManager;
 
 	
-	public class CheckUpdateCommand extends Command
+	public class CheckUpdateCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

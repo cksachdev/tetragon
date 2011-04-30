@@ -27,7 +27,7 @@
  */
 package base.command.cli
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 
 	import com.hexagonstar.util.debug.LogLevel;
 	import com.hexagonstar.util.display.StageReference;
@@ -37,7 +37,7 @@ package base.command.cli
 	import flash.utils.describeType;
 
 	
-	public class ListCapabilitiesCommand extends Command
+	public class ListCapabilitiesCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods

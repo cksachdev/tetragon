@@ -27,14 +27,14 @@
  */
 package base.command.cli
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 
 	import com.hexagonstar.util.debug.LogLevel;
 
 	import flash.system.Capabilities;
 
 	
-	public class OutputRuntimeInfoCommand extends Command
+	public class OutputRuntimeInfoCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods

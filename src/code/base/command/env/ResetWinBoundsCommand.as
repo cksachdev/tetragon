@@ -27,7 +27,7 @@
  */
 package base.command.env
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 	import base.core.desktop.WindowBoundsManager;
 
 	import flash.utils.setTimeout;
@@ -37,7 +37,7 @@ package base.command.env
 	/**
 	 * CLI command to reset window boundaries.
 	 */
-	public class ResetWinBoundsCommand extends Command
+	public class ResetWinBoundsCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods

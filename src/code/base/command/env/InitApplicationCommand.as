@@ -29,7 +29,7 @@ package base.command.env
 {
 	import base.AppInfo;
 	import base.AppResourceBundle;
-	import base.command.Command;
+	import base.command.CLICommand;
 	import base.core.debug.Log;
 	import base.data.Registry;
 	import base.io.file.loaders.ConfigLoader;
@@ -57,7 +57,7 @@ package base.command.env
 	 * 5. Post-UI
 	 * 6. Final
 	 */
-	public class InitApplicationCommand extends Command
+	public class InitApplicationCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

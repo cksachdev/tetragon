@@ -27,14 +27,14 @@
  */
 package base.command.cli
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 	import base.command.env.InitApplicationCommand;
 
 	
 	/**
 	 * CLI-only command to call app initialization.
 	 */
-	public class AppInitCommand extends Command
+	public class AppInitCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods

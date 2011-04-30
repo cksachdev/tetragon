@@ -27,6 +27,7 @@
  */
 package base
 {
+	import base.command.Command;
 	import base.command.CommandManager;
 	import base.command.env.InitApplicationCommand;
 	import base.core.debug.Console;
@@ -35,7 +36,6 @@ package base
 	import base.core.entity.EntityManager;
 	import base.core.entity.EntitySystemManager;
 	import base.data.Registry;
-	import base.event.CommandEvent;
 	import base.view.ApplicationView;
 	import base.view.screen.ScreenManager;
 
@@ -204,7 +204,7 @@ package base
 		/**
 		 * @private
 		 */
-		private function onAppInitComplete(e:CommandEvent):void 
+		private function onAppInitComplete(command:Command):void 
 		{
 			/* Start the UI */
 			applicationView.start();

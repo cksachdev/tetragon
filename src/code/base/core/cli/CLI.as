@@ -28,7 +28,7 @@
 package base.core.cli
 {
 	import base.Main;
-	import base.command.Command;
+	import base.command.CLICommand;
 	import base.command.CommandManager;
 	import base.core.debug.Console;
 	import base.core.debug.Log;
@@ -93,7 +93,7 @@ package base.core.cli
 			var trigger:String = token.value;
 			var type:String = token.type;
 			var vo:CLICommandVO = _commandMap[trigger];
-			var cmd:Command;
+			var cmd:CLICommand;
 			
 			if (vo)
 			{

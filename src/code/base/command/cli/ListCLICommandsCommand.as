@@ -27,7 +27,7 @@
  */
 package base.command.cli
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 	import base.core.cli.CLICommandVO;
 	import base.core.debug.Console;
 
@@ -37,7 +37,7 @@ package base.command.cli
 	/**
 	 * CLI command that lists all available CLI commands.
 	 */
-	public class ListCLICommandsCommand extends Command
+	public class ListCLICommandsCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods

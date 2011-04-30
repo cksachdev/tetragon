@@ -27,10 +27,10 @@
  */
 package base.command.env
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 
 	
-	public class ToggleFPSMonitorPosCommand extends Command
+	public class ToggleFPSMonitorPosCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods

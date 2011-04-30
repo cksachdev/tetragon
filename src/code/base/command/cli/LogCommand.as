@@ -27,7 +27,7 @@
  */
 package base.command.cli
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 	import base.core.debug.Log;
 
 	import com.hexagonstar.util.debug.LogLevel;
@@ -36,7 +36,7 @@ package base.command.cli
 	/**
 	 * CLI command to send a messaage to the logger.
 	 */
-	public class LogCommand extends Command
+	public class LogCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

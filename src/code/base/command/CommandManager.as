@@ -28,7 +28,6 @@
 package base.command
 {
 	import base.Main;
-	import base.event.CommandEvent;
 
 	import com.hexagonstar.exception.SingletonException;
 	import com.hexagonstar.util.debug.Debug;
@@ -91,7 +90,7 @@ package base.command
 		 * @return true if the command is being executed successfully, false if not (e.g. if
 		 *         the same command instance is already in execution).
 		 */
-		public function execute(cmd:Command, completeHandler:Function = null,
+		public function execute(cmd:CLICommand, completeHandler:Function = null,
 			errorHandler:Function = null, abortHandler:Function = null,
 			progressHandler:Function = null):Boolean
 		{
@@ -138,7 +137,7 @@ package base.command
 		/**
 		 * Checks if the specified command is currently being executed.
 		 */
-		public function isExecuting(cmd:Command):Boolean
+		public function isExecuting(cmd:CLICommand):Boolean
 		{
 			for each (var c:CommandVO in _executingCommands)
 			{
@@ -220,39 +219,39 @@ package base.command
 		/**
 		 * @private
 		 */
-		public function onCommandComplete(e:CommandEvent):void
+		public function onCommandComplete(command:Command):void
 		{
-			Debug.trace(toString() + " Completed command: " + e.command.name);
+			Debug.trace(toString() + " Completed command: " + command.name);
 			/* After complete remove the command from the executing commands queue */
-			removeCommand(e.command);
+			removeCommand(command);
 		}
 		
 		
 		/**
 		 * @private
 		 */
-		public function onCommandAbort(e:CommandEvent):void
+		public function onCommandAbort(command:Command):void
 		{
-			Debug.trace(toString() + " Command aborted: " + e.command.name);
+			Debug.trace(toString() + " Command aborted: " + command.name);
 			/* After abort remove the command from the executing commands queue */
-			removeCommand(e.command);
+			removeCommand(command);
 		}
 		
 		
 		/**
 		 * @private
 		 */
-		public function onCommandError(e:CommandEvent):void
+		public function onCommandError(command:Command, message:String):void
 		{
 			/* Only used for debugging! */
-			Debug.trace(toString() + " Command error: " + e.command.name);
+			Debug.trace(toString() + " Command error: " + command.name);
 		}
 		
 		
 		/**
 		 * @private
 		 */
-		public function onCommandProgress(e:CommandEvent):void
+		public function onCommandProgress(command:Command, message:String, progress:int):void
 		{
 			/* Only used for debugging! */
 			// Log.debug(toString() + " Command progress: " + e.command.name);
@@ -264,57 +263,66 @@ package base.command
 		// -----------------------------------------------------------------------------------------
 		
 		/**
-		 * Adds event listeners for the command in the specified commandDO. If the command's
-		 * listener property has a listener object assigned this will add event listeners to
-		 * that listener object. Otherwise it will check if any of the optional event
+		 * Adds signal listeners for the command in the specified commandDO. If the command's
+		 * listener property has a listener object assigned this will add signal listeners to
+		 * that listener object. Otherwise it will check if any of the optional signal
 		 * handlers were specified with a call to CommandManager.execute() and if any of
-		 * them are assigned this method adds event listeners to these.
+		 * them are assigned this method adds signal listeners to these.
 		 * 
 		 * @private
 		 * @param cmdDO The command data object with the command that needs listeners added.
 		 */
 		private function addCommandListeners(cmdVO:CommandVO):void
 		{
-			var cmd:Command = cmdVO.command;
+			var cmd:CLICommand = cmdVO.command;
 			var l:ICommandListener = cmd.listener;
 
-			/* If the command has a listener assigned we use it to broadcast events
-			 * to. Otherwise the command must have handler methods manually assigned */
+			/* If the command has a listener assigned we use it to broadcast signals
+			 * to. Otherwise the command must have handler methods manually assigned. */
 			if (l)
 			{
-				cmd.addEventListener(CommandEvent.COMPLETE, l.onCommandComplete);
-				cmd.addEventListener(CommandEvent.ERROR, l.onCommandError);
-				cmd.addEventListener(CommandEvent.ABORT, l.onCommandAbort);
-				cmd.addEventListener(CommandEvent.PROGRESS, l.onCommandProgress);
+				cmd.completeSignal.add(l.onCommandComplete);
+				cmd.errorSignal.add(l.onCommandError);
+				cmd.abortSignal.add(l.onCommandAbort);
+				if (cmd is CompositeCommand)
+				{
+					CompositeCommand(cmd).progressSignal.add(l.onCommandProgress);
+				}
 			}
 			else
 			{
 				if (cmdVO.completeHandler != null)
 				{
-					cmd.addEventListener(CommandEvent.COMPLETE, cmdVO.completeHandler);
+					cmd.completeSignal.add(cmdVO.completeHandler);
 				}
 				if (cmdVO.errorHandler != null)
 				{
-					cmd.addEventListener(CommandEvent.ERROR, cmdVO.errorHandler);
+					cmd.errorSignal.add(cmdVO.errorHandler);
 				}
 				if (cmdVO.abortHandler != null)
 				{
-					cmd.addEventListener(CommandEvent.ABORT, cmdVO.abortHandler);
+					cmd.abortSignal.add(cmdVO.abortHandler);
 				}
 				if (cmdVO.progressHandler != null)
 				{
-					cmd.addEventListener(CommandEvent.PROGRESS, cmdVO.progressHandler);
+					if (cmd is CompositeCommand)
+					{
+						CompositeCommand(cmd).progressSignal.add(cmdVO.progressHandler);
+					}
 				}
 			}
-
+			
 			/* Add event listeners that call handlers in the command manager */
-			cmd.addEventListener(CommandEvent.COMPLETE, onCommandComplete);
-			cmd.addEventListener(CommandEvent.ERROR, onCommandError);
-			cmd.addEventListener(CommandEvent.ABORT, onCommandAbort);
-			cmd.addEventListener(CommandEvent.PROGRESS, onCommandProgress);
+			cmd.completeSignal.add(onCommandComplete);
+			cmd.errorSignal.add(onCommandError);
+			cmd.abortSignal.add(onCommandAbort);
+			if (cmd is CompositeCommand)
+			{
+				CompositeCommand(cmd).progressSignal.add(onCommandProgress);
+			}
 		}
-
-
+		
+		
 		/**
 		 * First tries to find the commandDO that is associated with the specified command
 		 * and removes it from the executing commands queue. After that any event listeners
@@ -323,7 +331,7 @@ package base.command
 		 * @private
 		 * @param c The command to remove.
 		 */
-		private function removeCommand(c:BaseCommand):void
+		private function removeCommand(c:Command):void
 		{
 			/* Find the commandDO that the specified command is part of and remove it */
 			var cmdVO:CommandVO;
@@ -335,35 +343,52 @@ package base.command
 					break;
 				}
 			}
-
+			
 			/* Remove all event listeners from the command */
 			if (cmdVO)
 			{
-				var cmd:Command = cmdVO.command;
+				var cmd:CLICommand = cmdVO.command;
 				var l:ICommandListener = cmd.listener;
-
+				
 				if (l)
 				{
-					cmd.removeEventListener(CommandEvent.COMPLETE, l.onCommandComplete);
-					cmd.removeEventListener(CommandEvent.ERROR, l.onCommandError);
-					cmd.removeEventListener(CommandEvent.ABORT, l.onCommandAbort);
-					cmd.removeEventListener(CommandEvent.PROGRESS, l.onCommandProgress);
+					cmd.completeSignal.remove(l.onCommandComplete);
+					cmd.errorSignal.remove(l.onCommandError);
+					cmd.abortSignal.remove(l.onCommandAbort);
+					if (cmd is CompositeCommand)
+					{
+						CompositeCommand(cmd).progressSignal.remove(l.onCommandProgress);
+					}
 				}
-
+				
 				if (cmdVO.completeHandler != null)
-					cmd.removeEventListener(CommandEvent.COMPLETE, cmdVO.completeHandler);
+				{
+					cmd.completeSignal.remove(cmdVO.completeHandler);
+				}
 				if (cmdVO.errorHandler != null)
-					cmd.removeEventListener(CommandEvent.ERROR, cmdVO.errorHandler);
+				{
+					cmd.errorSignal.remove(cmdVO.errorHandler);
+				}
 				if (cmdVO.abortHandler != null)
-					cmd.removeEventListener(CommandEvent.ABORT, cmdVO.abortHandler);
+				{
+					cmd.abortSignal.remove(cmdVO.abortHandler);
+				}
 				if (cmdVO.progressHandler != null)
-					cmd.removeEventListener(CommandEvent.PROGRESS, cmdVO.progressHandler);
-
-				cmd.removeEventListener(CommandEvent.COMPLETE, onCommandComplete);
-				cmd.removeEventListener(CommandEvent.ERROR, onCommandError);
-				cmd.removeEventListener(CommandEvent.ABORT, onCommandAbort);
-				cmd.removeEventListener(CommandEvent.PROGRESS, onCommandProgress);
-
+				{
+					if (cmd is CompositeCommand)
+					{
+						CompositeCommand(cmd).progressSignal.remove(cmdVO.progressHandler);
+					}
+				}
+				
+				cmd.completeSignal.remove(onCommandComplete);
+				cmd.errorSignal.remove(onCommandError);
+				cmd.abortSignal.remove(onCommandAbort);
+				if (cmd is CompositeCommand)
+				{
+					CompositeCommand(cmd).progressSignal.remove(onCommandProgress);
+				}
+				
 				cmd.dispose();
 			}
 			else
@@ -377,7 +402,7 @@ package base.command
 }
 
 
-import base.command.Command;
+import base.command.CLICommand;
 
 /**
  * Command Data Object
@@ -385,7 +410,7 @@ import base.command.Command;
  */
 final class CommandVO
 {
-	public var command:Command;
+	public var command:CLICommand;
 	public var completeHandler:Function;
 	public var errorHandler:Function;
 	public var abortHandler:Function;

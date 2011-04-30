@@ -27,13 +27,13 @@
  */
 package base.command.env
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 
 	
 	/**
 	 * CLI command to test resource loading.
 	 */
-	public class OpenScreenCommand extends Command
+	public class OpenScreenCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

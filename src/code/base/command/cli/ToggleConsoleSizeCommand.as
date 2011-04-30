@@ -27,13 +27,13 @@
  */
 package base.command.cli
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 
 	
 	/**
 	 * CLI command to toggle the console size.
 	 */
-	public class ToggleConsoleSizeCommand extends Command
+	public class ToggleConsoleSizeCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods

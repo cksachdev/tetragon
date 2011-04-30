@@ -28,7 +28,7 @@
 package base.command.cli
 {
 	import base.AppInfo;
-	import base.command.Command;
+	import base.command.CLICommand;
 
 	import com.hexagonstar.util.debug.LogLevel;
 	import com.hexagonstar.util.string.TabularText;
@@ -39,7 +39,7 @@ package base.command.cli
 	/**
 	 * ...
 	 */
-	public class ListMetaDataCommand extends Command
+	public class ListMetaDataCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods

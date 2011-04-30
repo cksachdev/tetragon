@@ -27,7 +27,7 @@
  */
 package base.command.file
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 	import base.io.resource.ResourceManager;
 
 	import com.hexagonstar.util.debug.LogLevel;
@@ -36,7 +36,7 @@ package base.command.file
 	/**
 	 * CLI command to list all resources mapped by the resource manager.
 	 */
-	public class ListResourcesCommand extends Command
+	public class ListResourcesCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

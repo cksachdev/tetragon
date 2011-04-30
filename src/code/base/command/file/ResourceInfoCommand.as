@@ -27,7 +27,7 @@
  */
 package base.command.file
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 	import base.core.debug.Log;
 	import base.io.resource.Resource;
 	import base.io.resource.ResourceManager;
@@ -41,7 +41,7 @@ package base.command.file
 
 
 	
-	public class ResourceInfoCommand extends Command
+	public class ResourceInfoCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

@@ -27,10 +27,10 @@
  */
 package base.command.cli
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 
 	
-	public class HideConsoleCommand extends Command
+	public class HideConsoleCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods

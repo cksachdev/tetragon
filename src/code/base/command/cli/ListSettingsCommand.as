@@ -27,13 +27,13 @@
  */
 package base.command.cli
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 	import base.core.settings.LocalSettingsManager;
 
 	import com.hexagonstar.util.debug.LogLevel;
 
 	
-	public class ListSettingsCommand extends Command
+	public class ListSettingsCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods

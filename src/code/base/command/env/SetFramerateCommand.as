@@ -27,13 +27,13 @@
  */
 package base.command.env
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 
 	
 	/**
 	 * CLI command to set the framerate.
 	 */
-	public class SetFramerateCommand extends Command
+	public class SetFramerateCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

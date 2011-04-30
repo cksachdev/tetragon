@@ -27,12 +27,12 @@
  */
 package base.command.env
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 
 	import com.hexagonstar.util.debug.LogLevel;
 
 	
-	public class ListScreensCommand extends Command
+	public class ListScreensCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods

@@ -27,10 +27,10 @@
  */
 package base.command.cli
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 
 	
-	public class SetConsoleColorCommand extends Command
+	public class SetConsoleColorCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

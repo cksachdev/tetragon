@@ -28,12 +28,12 @@
 package base.command.cli
 {
 	import base.AppInfo;
-	import base.command.Command;
+	import base.command.CLICommand;
 
 	import com.hexagonstar.util.debug.LogLevel;
 
 	
-	public class OutputAppInfoCommand extends Command
+	public class OutputAppInfoCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods

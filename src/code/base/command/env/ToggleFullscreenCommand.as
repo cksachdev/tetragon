@@ -27,7 +27,7 @@
  */
 package base.command.env
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 	import base.core.desktop.*;
 
 	import com.hexagonstar.util.display.StageReference;
@@ -39,7 +39,7 @@ package base.command.env
 	/**
 	 * CLI command to toggle fullscreen mode.
 	 */
-	public class ToggleFullscreenCommand extends Command
+	public class ToggleFullscreenCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods

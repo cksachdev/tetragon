@@ -27,7 +27,7 @@
  */
 package base.command.cli
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 	import base.data.Registry;
 
 	import com.hexagonstar.util.debug.LogLevel;
@@ -36,7 +36,7 @@ package base.command.cli
 	import flash.utils.describeType;
 
 	
-	public class ListConfigCommand extends Command
+	public class ListConfigCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods

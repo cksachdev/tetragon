@@ -1,121 +1,1 @@
-/*
- *      _________  __      __
- *    _/        / / /____ / /________ ____ ____  ___
- *   _/        / / __/ -_) __/ __/ _ `/ _ `/ _ \/ _ \
- *  _/________/  \__/\__/\__/_/  \_,_/\_, /\___/_//_/
- *                                   /___/
- * 
- * tetragon : Engine for Flash-based web and desktop games.
- * Licensed under the MIT License.
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-package base.command
-{
-	import base.Main;
-	
-	
-	/**
-	 * Abstract Command class.
-	 */
-	public class Command extends BaseCommand
-	{
-		// -----------------------------------------------------------------------------------------
-		// Properties
-		// -----------------------------------------------------------------------------------------
-		
-		/** @private */
-		private var _main:Main;
-		/** @private */
-		private var _commandManager:CommandManager;
-		
-		
-		// -----------------------------------------------------------------------------------------
-		// Getters & Setters
-		// -----------------------------------------------------------------------------------------
-
-		/**
-		 * A reference to main, for internal command use only!
-		 * @private
-		 */
-		public function get main():Main
-		{
-			return _main;
-		}
-		public function set main(v:Main):void
-		{
-			_main = v;
-		}
-		
-		
-		/**
-		 * A reference to the command manager, for internal command use only!
-		 * @private
-		 */
-		public function get commandManager():CommandManager
-		{
-			return _commandManager;
-		}
-		public function set commandManager(v:CommandManager):void
-		{
-			_commandManager = v;
-		}
-		
-		
-		/**
-		 * The signature of the CLI command. The signature is defined by an Array
-		 * containing Strings that are used by the CLI to understand which arguments
-		 * the command accepts. Any such String needs to reflect an existing setter
-		 * in this class and should optimally have a type specified.
-		 */
-		public function get signature():Array
-		{
-			/* Abstract method! */
-			return null;
-		}
-
-
-		/**
-		 * The command's help text. This is used by the CLI help command.
-		 */
-		public function get helpText():String
-		{
-			/* Abstract method! */
-			return null;
-		}
-
-
-		/**
-		 * A usage example of the command, used by the CLI help command.
-		 */
-		public function get example():String
-		{
-			/* Abstract method! */
-			return null;
-		}
-
-
-		/**
-		 * Determines whether the command input echo's in the Console output or not.
-		 */
-		public function get suppressEcho():Boolean
-		{
-			return false;
-		}
-	}
-}
+/* *      _________  __      __ *    _/        / / /____ / /________ ____ ____  ___ *   _/        / / __/ -_) __/ __/ _ `/ _ `/ _ \/ _ \ *  _/________/  \__/\__/\__/_/  \_,_/\_, /\___/_//_/ *                                   /___/ *  * tetragon : Engine for Flash-based web and desktop games. * Licensed under the MIT License. *  * Permission is hereby granted, free of charge, to any person obtaining a copy of * this software and associated documentation files (the "Software"), to deal in * the Software without restriction, including without limitation the rights to * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of * the Software, and to permit persons to whom the Software is furnished to do so, * subject to the following conditions: *  * The above copyright notice and this permission notice shall be included in all * copies or substantial portions of the Software. *  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */package base.command{	import org.osflash.signals.Signal;	import flash.utils.getQualifiedClassName;		/**	 * Abstract class for command implementations. A command encapsulates code that can be	 * instantiated and executed anywhere else in the application.	 * 	 * <p>Commands can either be executed without signal listening if their execution code is	 * processed synchronous or a command can be listened to for signals that are broadcasted	 * by the command when the it completes, an error occurs or during command progress	 * steps.</p>	 */	public class Command	{		//-----------------------------------------------------------------------------------------		// Properties		//-----------------------------------------------------------------------------------------				/** @private */		protected var _listener:ICommandListener;		/** @private */		protected var _aborted:Boolean;						//-----------------------------------------------------------------------------------------		// Signal		//-----------------------------------------------------------------------------------------				/** @private */		public var completeSignal:Signal;		/** @private */		public var abortSignal:Signal;		/** @private */		public var errorSignal:Signal;						//-----------------------------------------------------------------------------------------		// Constructor		//-----------------------------------------------------------------------------------------				/**		 * Creates a new Command instance.		 */		public function Command()		{			completeSignal = new Signal();			abortSignal = new Signal();			errorSignal = new Signal();		}						//-----------------------------------------------------------------------------------------		// Public Methods		//-----------------------------------------------------------------------------------------				/**		 * Executes the command. In sub-classed commands you should override this		 * method, make a call to super.execute and then initiate all your command's		 * execution implementation from here.		 */ 		public function execute():void		{			_aborted = false;		}						/**		 * Aborts the command's execution. Any sub-classed implementation needs		 * to take care of abort functionality by checking the _aborted property.		 */		public function abort():void		{			_aborted = true;		}						/**		 * Disposes the command.		 */		public function dispose():void		{			completeSignal.removeAll();			abortSignal.removeAll();			errorSignal.removeAll();			_listener = null;		}						/**		 * Returns a string representation of the command.		 * 		 * @return A string representation of the command.		 */		public function toString():String		{			return "[" + getQualifiedClassName(this).match("[^:]*$")[0]				+ ", name=" + name + "]";		}						//-----------------------------------------------------------------------------------------		// Getters & Setters		//-----------------------------------------------------------------------------------------				/**		 * Returns the name identifier of the command. Names are mainly used for the		 * command to be identified when it should be able to be executed through the CLI.		 * This is an abstract method which needs to be overidden in sub classes to		 * give it a unique command name.		 * 		 * @return the name identifier of the command.		 */		public function get name():String		{			return "command";		}						/**		 * Gets or sets the object that listens to signals fired by this command. This		 * can be used as a shortcut. The listener has to implement the ICommandListener		 * interface to be able to use this.		 * 		 * @return The object that listens to signals fired by this command.		 */		public function get listener():ICommandListener		{			return _listener;		}		public function set listener(v:ICommandListener):void		{			_listener = v;		}						/**		 * Gets the abort state of the command.		 */		public function get aborted():Boolean		{			return _aborted;		}						//-----------------------------------------------------------------------------------------		// Private Methods		//-----------------------------------------------------------------------------------------				/**		 * Notifies listeners that the command has completed.		 * 		 * @private		 */		protected function notifyComplete():void		{			completeSignal.dispatch(this);		}						/**		 * Notifies listeners that the command was aborted.		 * 		 * @private		 */		protected function notifyAbort():void		{			abortSignal.dispatch(this);		}						/**		 * Notifies listeners that an error has occured while executing the command.		 * 		 * @private		 * @param errorMsg The error message to be broadcasted with the event.		 */		protected function notifyError(errorMsg:String):void		{			errorSignal.dispatch(this, errorMsg);		}						/**		 * Completes the command. This is an abstract method that needs to be overridden		 * by subclasses. You put code here that should be executed when the command		 * finishes, like cleaning up event listeners etc. After your code, place a call		 * to super.complete().		 * 		 * @private		 */		protected function complete():void		{			if (!_aborted) notifyComplete();			else notifyAbort();		}	}}

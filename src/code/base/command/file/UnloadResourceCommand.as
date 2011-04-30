@@ -27,12 +27,12 @@
  */
 package base.command.file
 {
-	import base.command.Command;
+	import base.command.CLICommand;
 	import base.core.debug.Log;
 	import base.io.resource.ResourceManager;
 
 	
-	public class UnloadResourceCommand extends Command
+	public class UnloadResourceCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
