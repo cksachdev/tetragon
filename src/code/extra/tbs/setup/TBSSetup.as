@@ -27,35 +27,14 @@
  */
 package extra.tbs.setup
 {
-	import base.Main;
-	import base.setup.ISetup;
+	import base.setup.Setup;
 	
 	
 	/**
 	 * Setup class specific for TBS (Turn-based Strategy) Add-On.
 	 */
-	public class TBSSetup implements ISetup
+	public class TBSSetup extends Setup
 	{
-		//-----------------------------------------------------------------------------------------
-		// Properties
-		//-----------------------------------------------------------------------------------------
-		
-		private var _main:Main;
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Constructor
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Constructs a new FlashSetup instance.
-		 */
-		public function TBSSetup(main:Main)
-		{
-			_main = main;
-		}
-		
-		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
@@ -63,18 +42,18 @@ package extra.tbs.setup
 		/**
 		 * @inheritDoc
 		 */
-		public function initialSetup():void
+		override public function initialSetup():void
 		{
 			/* Map data type parse classes necessary for TBS add-on. */
-			//DataTypeParserFactory.instance.addDataType("Attribute", AttributeDataParser);
-			//DataTypeParserFactory.instance.addDataType("Character", CharacterDataParser);
+			//dataTypeParserFactory.addDataType("Attribute", AttributeDataParser);
+			//dataTypeParserFactory.addDataType("Character", CharacterDataParser);
 		}
 		
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function postConfigSetup():void
+		override public function postConfigSetup():void
 		{
 		}
 		
@@ -82,7 +61,7 @@ package extra.tbs.setup
 		/**
 		 * @inheritDoc
 		 */
-		public function postUISetup():void
+		override public function postUISetup():void
 		{
 		}
 		
@@ -90,7 +69,7 @@ package extra.tbs.setup
 		/**
 		 * @inheritDoc
 		 */
-		public function finalSetup():void
+		override public function finalSetup():void
 		{
 		}
 		
@@ -102,9 +81,21 @@ package extra.tbs.setup
 		/**
 		 * @inheritDoc
 		 */
-		public function get name():String
+		override public function get name():String
 		{
 			return "tbs";
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Private Methods
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function mapInjectors():void
+		{
 		}
 	}
 }

@@ -79,7 +79,9 @@ package base.core.debug
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _main:Main;
+		//[Inject]
+		public var _main:Main;
+		
 		private var _container:DisplayObjectContainer;
 		private var _stage:Stage;
 		private var _bg:RectangleShape;

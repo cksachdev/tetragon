@@ -32,6 +32,8 @@ package base
 	import base.core.debug.Console;
 	import base.core.debug.FPSMonitor;
 	import base.core.debug.Log;
+	import base.core.entity.EntityManager;
+	import base.core.entity.EntitySystemManager;
 	import base.data.Registry;
 	import base.event.CommandEvent;
 	import base.view.ApplicationView;
@@ -40,20 +42,18 @@ package base
 	import com.hexagonstar.util.debug.HLog;
 	import com.hexagonstar.util.display.StageReference;
 
+	import org.swiftsuspenders.Injector;
+
 	import flash.display.*;
 	import flash.events.ErrorEvent;
 	import flash.events.UncaughtErrorEvent;
+	import flash.external.ExternalInterface;
 	
-	
-	[SWF(width="1024", height="640", backgroundColor="#000000", frameRate="60")]
 	
 	/**
-	 * Main acts as the entry point for the application. This is the class that the compiler
-	 * is being told to compile and from which all other application logic is being initiated.
-	 * 
-	 * IMPORTANT: Auto-generated file. Do not edit!
+	 * The main hub of the application.
 	 */
-	public class Main extends Sprite
+	public class Main
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -67,6 +67,12 @@ package base
 		private var _applicationView:ApplicationView;
 		/** @private */
 		private var _setupHelper:*;
+		/** @private */
+		private var _injector:Injector;
+		/** @private */
+		private var _entityManager:EntityManager;
+		/** @private */
+		private var _entitySystemManager:EntitySystemManager;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -76,11 +82,9 @@ package base
 		/**
 		 * Constructs a new App instance.
 		 */
-		public function Main()
+		public function Main(contextView:DisplayObjectContainer)
 		{
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP_LEFT;
-			_view = this;
+			_view = contextView;
 			_instance = this;
 			
 			setup();
@@ -175,6 +179,36 @@ package base
 		}
 		
 		
+		/**
+		 * The application's main IOC injector.
+		 * @private
+		 */
+		public function get injector():Injector
+		{
+			return _injector || (_injector = new Injector());
+		}
+		
+		
+		/**
+		 * The application's entity manager, used for the entity architecture.
+		 * @private
+		 */
+		public function get entityManager():EntityManager
+		{
+			return _entityManager || (_entityManager = new EntityManager());
+		}
+		
+		
+		/**
+		 * The application's entity system manager, used for the entity architecture.
+		 * @private
+		 */
+		public function get entitySystemManager():EntitySystemManager
+		{
+			return _entitySystemManager || (_entitySystemManager = new EntitySystemManager(injector));
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
@@ -235,10 +269,21 @@ package base
 		 */
 		private function setup():void
 		{
+			//injector.mapSingleton(Main);
+			
+			CONFIG::IS_WEB_BUILD
+			{
+				/* Call JavaScript function to give keyboard focus to web-based Flash content. */
+				if (ExternalInterface.available)
+				{
+					ExternalInterface.call("onFlashContentLoaded");
+				}
+			}
+			
 			/* Set up global error listener if this is a release version. */
 			if (!AppInfo.IS_DEBUG)
 			{
-				loaderInfo.uncaughtErrorEvents.addEventListener(
+				_view.loaderInfo.uncaughtErrorEvents.addEventListener(
 					UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
 			}
 			

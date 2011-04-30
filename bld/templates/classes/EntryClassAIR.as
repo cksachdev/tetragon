@@ -25,48 +25,45 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.setup
+package base
 {
+	import flash.display.Sprite;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
+	
+	
+	[SWF(width="@app_width@", height="@app_height@", backgroundColor="#@app_bgcolor@", frameRate="@app_framerate@")]
+	
 	/**
-	 * Common interface for the application setup classes.
+	 * Entry acts as the entry point and base display object container (or: context view) for
+	 * the application. This is the class that the compiler is being told to compile and from
+	 * which all other application logic is being initiated, in particular Main which acts as
+	 * the main hub for the application.
+	 * 
+	 * IMPORTANT: Auto-generated file. Do not edit!
 	 */
-	public interface ISetup
+	public final class Entry extends Sprite
 	{
 		//-----------------------------------------------------------------------------------------
-		// Public Methods
+		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * Executes initial setup steps.
-		 */
-		function initialSetup():void;
-		
-		/**
-		 * Executes setup tasks that need to be done after the config has been loaded but
-		 * before the application UI is created.
-		 */
-		function postConfigSetup():void;
-		
-		/**
-		 * Executes setup tasks that need to be done after the application UI is created.
-		 */
-		function postUISetup():void;
-		
-		/**
-		 * Executes setup tasks that need to be done after the application init process
-		 * has finished but before the application grants user interaction or executes
-		 * any further logic that happens after the app initialization.
-		 */
-		function finalSetup():void;
+		private var _main:Main;
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
+		// Constructor
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * The name of the setup.
+		 * Creates a new instance of the class.
 		 */
-		function get name():String;
+		public function Entry()
+		{
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
+			
+			_main = new Main(this);
+		}
 	}
 }

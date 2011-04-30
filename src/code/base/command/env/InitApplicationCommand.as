@@ -64,7 +64,7 @@ package base.command.env
 		//-----------------------------------------------------------------------------------------
 		
 		private var _configLoader:ConfigLoader;
-		private var _setups:Vector.<ISetup>;
+		private var _setups:Vector.<Setup>;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -81,11 +81,12 @@ package base.command.env
 			Log.init();
 			Log.info("Initializing...");
 			
-			_setups = new Vector.<ISetup>();
+			_setups = new Vector.<Setup>();
 			/* Add base setup ... */
-			_setups.push(new BaseSetup(_main));
+			_setups.push(new BaseSetup());
 			
 			addSetups();
+			executeSetup("init");
 			
 			var s:String = "Used setups: ";
 			for (var i:int = 0; i < _setups.length; i++)
@@ -175,31 +176,31 @@ package base.command.env
 			/* Add Desktop-specific setup if this is an AIR Desktop build. */
 			CONFIG::IS_DESKTOP_BUILD
 			{
-				_setups.push(new AIRDesktopSetup(_main));
+				_setups.push(new AIRDesktopSetup());
 			}
 			/* Add Android-specific setup if this is an AIR Android build. */
 			CONFIG::IS_ANDROID_BUILD
 			{
-				_setups.push(new AIRAndroidSetup(_main));
+				_setups.push(new AIRAndroidSetup());
 			}
 			/* Add iOS-specific setup if this is an AIR iOS build. */
 			CONFIG::IS_IOS_BUILD
 			{
-				_setups.push(new AIRIOSSetup(_main));
+				_setups.push(new AIRIOSSetup());
 			}
 			
 			/* You can add setups for extra code branches here if needed. */
  			CONFIG::EXTRA_GAME
 			{
-				_setups.push(new GameSetup(_main));
+				_setups.push(new GameSetup());
 			}
  			CONFIG::EXTRA_RPG
 			{
-				_setups.push(new RPGSetup(_main));
+				_setups.push(new RPGSetup());
 			}
  			CONFIG::EXTRA_TBS
 			{
-				_setups.push(new TBSSetup(_main));
+				_setups.push(new TBSSetup());
 			}
 		}
 		
@@ -307,6 +308,9 @@ package base.command.env
 			{
 				switch (step)
 				{
+					case "init":
+						_setups[i].init(_main);
+						break;
 					case "initial":
 						_setups[i].initialSetup();
 						break;

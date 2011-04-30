@@ -27,9 +27,7 @@
  */
 package extra.rpg.setup
 {
-	import base.Main;
-	import base.data.parsers.DataTypeParserFactory;
-	import base.setup.ISetup;
+	import base.setup.Setup;
 
 	import extra.rpg.data.parsers.*;
 	
@@ -37,28 +35,8 @@ package extra.rpg.setup
 	/**
 	 * Setup class specific for RPG Add-On.
 	 */
-	public class RPGSetup implements ISetup
+	public class RPGSetup extends Setup
 	{
-		//-----------------------------------------------------------------------------------------
-		// Properties
-		//-----------------------------------------------------------------------------------------
-		
-		private var _main:Main;
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Constructor
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Constructs a new FlashSetup instance.
-		 */
-		public function RPGSetup(main:Main)
-		{
-			_main = main;
-		}
-		
-		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
@@ -66,18 +44,18 @@ package extra.rpg.setup
 		/**
 		 * @inheritDoc
 		 */
-		public function initialSetup():void
+		override public function initialSetup():void
 		{
 			/* Map data type parse classes necessary for RPG add-on. */
-			DataTypeParserFactory.instance.addDataType("Attribute", AttributeDataParser);
-			DataTypeParserFactory.instance.addDataType("Character", CharacterDataParser);
+			dataTypeParserFactory.addDataType("Attribute", AttributeDataParser);
+			dataTypeParserFactory.addDataType("Character", CharacterDataParser);
 		}
 		
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function postConfigSetup():void
+		override public function postConfigSetup():void
 		{
 		}
 		
@@ -85,7 +63,7 @@ package extra.rpg.setup
 		/**
 		 * @inheritDoc
 		 */
-		public function postUISetup():void
+		override public function postUISetup():void
 		{
 		}
 		
@@ -93,7 +71,7 @@ package extra.rpg.setup
 		/**
 		 * @inheritDoc
 		 */
-		public function finalSetup():void
+		override public function finalSetup():void
 		{
 		}
 		
@@ -105,9 +83,21 @@ package extra.rpg.setup
 		/**
 		 * @inheritDoc
 		 */
-		public function get name():String
+		override public function get name():String
 		{
 			return "rpg";
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Private Methods
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function mapInjectors():void
+		{
 		}
 	}
 }

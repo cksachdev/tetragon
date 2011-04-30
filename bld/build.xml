@@ -187,7 +187,7 @@
 		<attribute name="debug"/>
 		<sequential>
 			<clean/>
-			<prepare buildType="web" debug="@{debug}" mainClassTemplate="MainClassWeb.as"/>
+			<prepare buildType="web" debug="@{debug}" entryClassTemplate="EntryClassWeb.as"/>
 			<generateHTMLWrapper/>
 			<copyWebFiles/>
 			<copyResources/>
@@ -201,7 +201,7 @@
 	<macrodef name="compileWeb">
 		<attribute name="debug"/>
 		<sequential>
-			<prepare buildType="web" debug="@{debug}" mainClassTemplate="MainClassWeb.as"/>
+			<prepare buildType="web" debug="@{debug}" entryClassTemplate="EntryClassWeb.as"/>
 			<compile debug="@{debug}" config="flex-config.xml" isWebBuild="true" isAIRBuild="false"
 				isDesktopBuild="false" isMobileBuild="false" isAndroidBuild="false" isIOSBuild="false"
 				libpath="player/${fpv.version}"/>
@@ -215,7 +215,7 @@
 		<attribute name="debug"/>
 		<sequential>
 			<clean/>
-			<prepare buildType="desktop" debug="@{debug}" mainClassTemplate="MainClassAIR.as"/>
+			<prepare buildType="desktop" debug="@{debug}" entryClassTemplate="EntryClassAIR.as"/>
 			<generateAIRDescriptor templatesfolder="${templates.air.desktop}"/>
 			<copyDesktopFiles/>
 			<packResources/>
@@ -229,7 +229,7 @@
 	<macrodef name="compileDesktop">
 		<attribute name="debug"/>
 		<sequential>
-			<prepare buildType="desktop" debug="@{debug}" mainClassTemplate="MainClassAIR.as"/>
+			<prepare buildType="desktop" debug="@{debug}" entryClassTemplate="EntryClassAIR.as"/>
 			<compile debug="@{debug}" config="air-config.xml" isWebBuild="false" isAIRBuild="true"
 				isDesktopBuild="true" isMobileBuild="false" isAndroidBuild="false" isIOSBuild="false"
 				libpath="air"/>
@@ -243,7 +243,7 @@
 		<attribute name="debug"/>
 		<sequential>
 			<clean/>
-			<prepare buildType="android" debug="@{debug}" mainClassTemplate="MainClassAIR.as"/>
+			<prepare buildType="android" debug="@{debug}" entryClassTemplate="EntryClassAIR.as"/>
 			<generateAIRDescriptor templatesfolder="${templates.air.android}"/>
 			<copyAndroidFiles/>
 			<packResources/>
@@ -257,7 +257,7 @@
 	<macrodef name="compileAndroid">
 		<attribute name="debug"/>
 		<sequential>
-			<prepare buildType="android" debug="@{debug}" mainClassTemplate="MainClassAIR.as"/>
+			<prepare buildType="android" debug="@{debug}" entryClassTemplate="EntryClassAIR.as"/>
 			<compile debug="@{debug}" config="air-config.xml" isWebBuild="false" isAIRBuild="true"
 				isDesktopBuild="false" isMobileBuild="true" isAndroidBuild="true" isIOSBuild="false"
 				libpath="air"/>
@@ -271,7 +271,7 @@
 		<attribute name="debug"/>
 		<sequential>
 			<clean/>
-			<prepare buildType="ios" debug="@{debug}" mainClassTemplate="MainClassAIR.as"/>
+			<prepare buildType="ios" debug="@{debug}" entryClassTemplate="EntryClassAIR.as"/>
 			<generateAIRDescriptor templatesfolder="${templates.air.ios}"/>
 			<copyIOSFiles/>
 			<packResources/>
@@ -285,7 +285,7 @@
 	<macrodef name="compileIOS">
 		<attribute name="debug"/>
 		<sequential>
-			<prepare buildType="ios" debug="@{debug}" mainClassTemplate="MainClassAIR.as"/>
+			<prepare buildType="ios" debug="@{debug}" entryClassTemplate="EntryClassAIR.as"/>
 			<compile debug="@{debug}" config="air-config.xml" isWebBuild="false" isAIRBuild="true"
 				isDesktopBuild="false" isMobileBuild="true" isAndroidBuild="false" isIOSBuild="true"
 				libpath="air"/>
@@ -319,7 +319,7 @@
 	<macrodef name="prepare">
 		<attribute name="buildType"/>
 		<attribute name="debug"/>
-		<attribute name="mainClassTemplate"/>
+		<attribute name="entryClassTemplate"/>
 		<sequential>
 			<buildnumber file="bld/build.number"/>
 			<tstamp>
@@ -327,7 +327,7 @@
 			</tstamp>
 			<echo message="*** ${project.name} version: ${app.version} build #${build.number} (@{buildType}), ${build.date} ***" level="info"/>
 			<generateAppInfoClass buildType="@{buildType}" debug="@{debug}"/>
-			<generateMainClass mainClassTemplate="@{mainClassTemplate}"/>
+			<generateEntryClass entryClassTemplate="@{entryClassTemplate}"/>
 		</sequential>
 	</macrodef>
 	
@@ -368,11 +368,11 @@
 	</macrodef>
 	
 	
-	<macrodef name="generateMainClass">
-		<attribute name="mainClassTemplate"/>
+	<macrodef name="generateEntryClass">
+		<attribute name="entryClassTemplate"/>
 		<sequential>
-			<echo message="Generating Main.as ..." level="info"/>
-			<copy file="${templates.classes}/@{mainClassTemplate}" tofile="${path.src.code}/${top.package}/Main.as" overwrite="true">
+			<echo message="Generating ${entry.class}.as ..." level="info"/>
+			<copy file="${templates.classes}/@{entryClassTemplate}" tofile="${path.src.code}/${top.package}/${entry.class}.as" overwrite="true">
 				<filterchain>
 					<replacetokens>
 						<token key="top_package"		value="${top.package}"/>

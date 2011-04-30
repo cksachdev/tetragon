@@ -27,7 +27,6 @@
  */
 package base.setup
 {
-	import base.Main;
 	import base.core.cli.CLICommandRegistryDesktop;
 	import base.core.desktop.WindowBoundsManager;
 	import base.core.update.UpdateManager;
@@ -41,27 +40,13 @@ package base.setup
 	/**
 	 * AIRDesktopSetup contains setup instructions exclusively for desktop-based applications.
 	 */
-	public class AIRDesktopSetup implements ISetup
+	public class AIRDesktopSetup extends Setup
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _main:Main;
 		private var _updateManager:UpdateManager;
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Constructor
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Constructs a new AIRSetup instance.
-		 */
-		public function AIRDesktopSetup(main:Main)
-		{
-			_main = main;
-		}
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -71,7 +56,7 @@ package base.setup
 		/**
 		 * @inheritDoc
 		 */
-		public function initialSetup():void
+		override public function initialSetup():void
 		{
 			/* set this to false, when we close the application we first do an update. */
 			NativeApplication.nativeApplication.autoExit = false;
@@ -88,7 +73,7 @@ package base.setup
 		/**
 		 * @inheritDoc
 		 */
-		public function postConfigSetup():void
+		override public function postConfigSetup():void
 		{
 		}
 		
@@ -96,7 +81,7 @@ package base.setup
 		/**
 		 * @inheritDoc
 		 */
-		public function postUISetup():void
+		override public function postUISetup():void
 		{
 			/* Only create new setup helper if it's not already existing! */
 			if (!_main.setupHelper) _main.setupHelper = new AIRDesktopHelper(_main);
@@ -106,7 +91,7 @@ package base.setup
 		/**
 		 * @inheritDoc
 		 */
-		public function finalSetup():void
+		override public function finalSetup():void
 		{
 			if (NativeWindow.isSupported)
 			{
@@ -138,7 +123,7 @@ package base.setup
 		/**
 		 * @inheritDoc
 		 */
-		public function get name():String
+		override public function get name():String
 		{
 			return "desktop";
 		}
@@ -156,6 +141,18 @@ package base.setup
 			_updateManager.removeEventListener(UpdateManagerEvent.FINISHED, onUpdateManagerFinished);
 			_updateManager.dispose();
 			_updateManager = null;
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Private Methods
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function mapInjectors():void
+		{
 		}
 	}
 }

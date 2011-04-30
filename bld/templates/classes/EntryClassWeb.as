@@ -25,83 +25,44 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.game.setup
+package base
 {
-	import base.setup.Setup;
-
-	import extra.game.data.parsers.*;
-	import extra.game.view.screen.*;
+	import @top_package@.core.preload.IPreloadable;
+	import @top_package@.core.preload.Preloader;
 	
+	
+	[SWF(width="@app_width@", height="@app_height@", backgroundColor="#@app_bgcolor@", frameRate="@app_framerate@")]
 	
 	/**
-	 * Setup class specific for Game Add-On.
+	 * Entry acts as the entry point and base display object container (or: context view) for
+	 * the application. This is the class that the compiler is being told to compile and from
+	 * which all other application logic is being initiated, in particular Main which acts as
+	 * the main hub for the application.
+	 * 
+	 * IMPORTANT: Auto-generated file. Do not edit!
 	 */
-	public class GameSetup extends Setup
+	[Frame(factoryClass="@top_package@.AppPreloader")]
+	public final class Entry implements IPreloadable
 	{
+		//-----------------------------------------------------------------------------------------
+		// Properties
+		//-----------------------------------------------------------------------------------------
+		
+		private var _main:Main;
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @inheritDoc
+		 * Invoked by the preloader after the application has been fully preloaded.
+		 * 
+		 * @param preloader a reference to the preloader.
 		 */
-		override public function initialSetup():void
+		public function onApplicationPreloaded(preloader:Preloader):void
 		{
-			/* Map data type parse classes necessary for Game add-on. */
-			dataTypeParserFactory.addDataType("WorldSpace", WorldspaceDataParser);
-			dataTypeParserFactory.addDataType("Cell", CellDataParser);
-			dataTypeParserFactory.addDataType("TileSet", TileSetDataParser);
-			dataTypeParserFactory.addDataType("TileMap", TileMapDataParser);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function postConfigSetup():void
-		{
-			_main.screenManager.registerScreen("gameScreen", GameScreen);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function postUISetup():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function finalSetup():void
-		{
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function get name():String
-		{
-			return "game";
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function mapInjectors():void
-		{
+			_main = new Main(preloader);
 		}
 	}
 }

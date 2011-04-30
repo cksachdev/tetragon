@@ -27,7 +27,6 @@
  */
 package base.setup
 {
-	import base.Main;
 	import base.core.cli.CLICommandRegistryMobile;
 
 	import flash.desktop.NativeApplication;
@@ -36,28 +35,8 @@ package base.setup
 	/**
 	 * AIRIOSSetup contains setup instructions exclusively for iOS-based applications.
 	 */
-	public class AIRIOSSetup implements ISetup
+	public class AIRIOSSetup extends Setup
 	{
-		//-----------------------------------------------------------------------------------------
-		// Properties
-		//-----------------------------------------------------------------------------------------
-		
-		private var _main:Main;
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Constructor
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Constructs a new instance.
-		 */
-		public function AIRIOSSetup(main:Main)
-		{
-			_main = main;
-		}
-		
-		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
@@ -65,7 +44,7 @@ package base.setup
 		/**
 		 * @inheritDoc
 		 */
-		public function initialSetup():void
+		override public function initialSetup():void
 		{
 			/* set this to false, when we close the application we first do an update. */
 			NativeApplication.nativeApplication.autoExit = false;
@@ -75,7 +54,7 @@ package base.setup
 		/**
 		 * @inheritDoc
 		 */
-		public function postConfigSetup():void
+		override public function postConfigSetup():void
 		{
 		}
 		
@@ -83,7 +62,7 @@ package base.setup
 		/**
 		 * @inheritDoc
 		 */
-		public function postUISetup():void
+		override public function postUISetup():void
 		{
 		}
 		
@@ -91,7 +70,7 @@ package base.setup
 		/**
 		 * @inheritDoc
 		 */
-		public function finalSetup():void
+		override public function finalSetup():void
 		{
 			/* Register mobile-specific CLI commands if we have the Console available. */
 			if (_main.console && _main.console.cli)
@@ -108,14 +87,21 @@ package base.setup
 		/**
 		 * @inheritDoc
 		 */
-		public function get name():String
+		override public function get name():String
 		{
 			return "ios";
 		}
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Event Handlers
+		// Private Methods
 		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function mapInjectors():void
+		{
+		}
 	}
 }

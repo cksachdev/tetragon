@@ -25,58 +25,79 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.game.setup
+package base.setup
 {
-	import base.setup.Setup;
+	import base.Main;
+	import base.data.parsers.DataTypeParserFactory;
 
-	import extra.game.data.parsers.*;
-	import extra.game.view.screen.*;
+	import org.swiftsuspenders.Injector;
 	
 	
 	/**
-	 * Setup class specific for Game Add-On.
+	 * Abstract Setup class, used as super class for any other setup classes.
 	 */
-	public class GameSetup extends Setup
+	public class Setup
 	{
+		//-----------------------------------------------------------------------------------------
+		// Properties
+		//-----------------------------------------------------------------------------------------
+		
+		protected var _main:Main;
+		protected var _injector:Injector;
+		protected var _dataTypeParserFactory:DataTypeParserFactory;
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @inheritDoc
+		 * Initlializes the setup with a reference to Main.
 		 */
-		override public function initialSetup():void
+		public function init(main:Main):void
 		{
-			/* Map data type parse classes necessary for Game add-on. */
-			dataTypeParserFactory.addDataType("WorldSpace", WorldspaceDataParser);
-			dataTypeParserFactory.addDataType("Cell", CellDataParser);
-			dataTypeParserFactory.addDataType("TileSet", TileSetDataParser);
-			dataTypeParserFactory.addDataType("TileMap", TileMapDataParser);
+			_main = main;
+			_injector = _main.injector;
+			mapInjectors();
 		}
 		
 		
 		/**
-		 * @inheritDoc
+		 * Executes initial setup steps.
 		 */
-		override public function postConfigSetup():void
+		public function initialSetup():void
 		{
-			_main.screenManager.registerScreen("gameScreen", GameScreen);
+			/* Abstract method! */
 		}
 		
 		
 		/**
-		 * @inheritDoc
+		 * Executes setup tasks that need to be done after the config has been loaded but
+		 * before the application UI is created.
 		 */
-		override public function postUISetup():void
+		public function postConfigSetup():void
 		{
+			/* Abstract method! */
 		}
 		
 		
 		/**
-		 * @inheritDoc
+		 * Executes setup tasks that need to be done after the application UI is created.
 		 */
-		override public function finalSetup():void
+		public function postUISetup():void
 		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Executes setup tasks that need to be done after the application init process
+		 * has finished but before the application grants user interaction or executes
+		 * any further logic that happens after the app initialization.
+		 */
+		public function finalSetup():void
+		{
+			/* Abstract method! */
 		}
 		
 		
@@ -85,11 +106,39 @@ package extra.game.setup
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @inheritDoc
+		 * The name of the setup.
 		 */
-		override public function get name():String
+		public function get name():String
 		{
-			return "game";
+			/* Abstract method! */
+			return "setup";
+		}
+		
+		
+		/**
+		 * A reference to Main.
+		 */
+		protected function get main():Main
+		{
+			return _main;
+		}
+		
+		
+		/**
+		 * A reference to the main IoC injector.
+		 */
+		protected function get injector():Injector
+		{
+			return _injector;
+		}
+		
+		
+		/**
+		 * A reference to the datatype parser factory.
+		 */
+		protected function get dataTypeParserFactory():DataTypeParserFactory
+		{
+			return DataTypeParserFactory.instance;
 		}
 		
 		
@@ -98,10 +147,14 @@ package extra.game.setup
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @inheritDoc
+		 * Does the IoC injection mappings for this setup.
+		 * This happens before any other setup step.
+		 * 
+		 * @private
 		 */
-		override protected function mapInjectors():void
+		protected function mapInjectors():void
 		{
+			/* Abstract method! */
 		}
 	}
 }

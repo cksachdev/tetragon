@@ -25,83 +25,45 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.game.setup
+package base
 {
-	import base.setup.Setup;
-
-	import extra.game.data.parsers.*;
-	import extra.game.view.screen.*;
+	import flash.display.Sprite;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
 	
+	
+	[SWF(width="1024", height="640", backgroundColor="#000000", frameRate="60")]
 	
 	/**
-	 * Setup class specific for Game Add-On.
+	 * Entry acts as the entry point and base display object container (or: context view) for
+	 * the application. This is the class that the compiler is being told to compile and from
+	 * which all other application logic is being initiated, in particular Main which acts as
+	 * the main hub for the application.
+	 * 
+	 * IMPORTANT: Auto-generated file. Do not edit!
 	 */
-	public class GameSetup extends Setup
+	public final class Entry extends Sprite
 	{
 		//-----------------------------------------------------------------------------------------
-		// Public Methods
+		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function initialSetup():void
-		{
-			/* Map data type parse classes necessary for Game add-on. */
-			dataTypeParserFactory.addDataType("WorldSpace", WorldspaceDataParser);
-			dataTypeParserFactory.addDataType("Cell", CellDataParser);
-			dataTypeParserFactory.addDataType("TileSet", TileSetDataParser);
-			dataTypeParserFactory.addDataType("TileMap", TileMapDataParser);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function postConfigSetup():void
-		{
-			_main.screenManager.registerScreen("gameScreen", GameScreen);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function postUISetup():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function finalSetup():void
-		{
-		}
+		private var _main:Main;
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
+		// Constructor
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @inheritDoc
+		 * Creates a new instance of the class.
 		 */
-		override public function get name():String
+		public function Entry()
 		{
-			return "game";
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function mapInjectors():void
-		{
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
+			
+			_main = new Main(this);
 		}
 	}
 }
