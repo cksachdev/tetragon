@@ -62,11 +62,11 @@ package base.setup
 			NativeApplication.nativeApplication.autoExit = false;
 			
 			/* recall app window bounds */
-			WindowBoundsManager.instance.recallWindowBounds(_main.baseWindow, "base");
+			WindowBoundsManager.instance.recallWindowBounds(main.baseWindow, "base");
 			
 			// TODO To be changed! Fullscreen state should not be stored in app.ini
 			// but in user settings file!
-			//_main.config.useFullscreen = WindowBoundsManager.instance.fullscreen;
+			//main.config.useFullscreen = WindowBoundsManager.instance.fullscreen;
 		}
 		
 		
@@ -84,7 +84,10 @@ package base.setup
 		override public function postUISetup():void
 		{
 			/* Only create new setup helper if it's not already existing! */
-			if (!_main.setupHelper) _main.setupHelper = new AIRDesktopHelper(_main);
+			if (!main.setupHelper)
+			{
+				main.setupHelper = new AIRDesktopHelper(_main);
+			}
 		}
 		
 		
@@ -96,14 +99,14 @@ package base.setup
 			if (NativeWindow.isSupported)
 			{
 				/* Make application visible. */
-				_main.contextView.stage.nativeWindow.visible = true;
-				_main.contextView.stage.nativeWindow.activate();
+				main.contextView.stage.nativeWindow.visible = true;
+				main.contextView.stage.nativeWindow.activate();
 			}
 			
 			/* Register desktop-specific CLI commands if we have the Console available. */
-			if (_main.console && _main.console.cli)
+			if (main.console && main.console.cli)
 			{
-				new CLICommandRegistryDesktop(_main);
+				new CLICommandRegistryDesktop(main);
 			}
 			
 			if (Registry.config.updateEnabled)

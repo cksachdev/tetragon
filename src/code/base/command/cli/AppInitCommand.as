@@ -28,7 +28,6 @@
 package base.command.cli
 {
 	import base.command.Command;
-	import base.command.CommandManager;
 	import base.command.env.InitApplicationCommand;
 
 	
@@ -48,7 +47,7 @@ package base.command.cli
 		{
 			super.execute();
 			
-			CommandManager.instance.execute(new InitApplicationCommand());
+			commandManager.execute(new InitApplicationCommand());
 			complete();
 		}
 		

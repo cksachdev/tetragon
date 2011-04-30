@@ -73,9 +73,9 @@ package base.setup
 		override public function finalSetup():void
 		{
 			/* Register mobile-specific CLI commands if we have the Console available. */
-			if (_main.console && _main.console.cli)
+			if (main.console && main.console.cli)
 			{
-				new CLICommandRegistryMobile(_main);
+				new CLICommandRegistryMobile(main);
 			}
 		}
 		

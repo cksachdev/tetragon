@@ -29,9 +29,6 @@ package base.view.screen
 {
 	import base.core.debug.Console;
 	import base.core.debug.FPSMonitor;
-	import base.core.entity.EntityManager;
-
-	import com.hexagonstar.util.debug.Debug;
 	
 	
 	/**
@@ -42,9 +39,6 @@ package base.view.screen
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
-		
-		[Inject]
-		public var entityManager:EntityManager;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -76,8 +70,6 @@ package base.view.screen
 			
 			var f:FPSMonitor = main.fpsMonitor;
 			if (f) f.toggle();
-			
-			Debug.trace(entityManager);
 		}
 		
 		

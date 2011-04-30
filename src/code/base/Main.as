@@ -88,7 +88,6 @@ package base
 			_contextView = contextView;
 			_instance = this;
 			
-			mapInjections();
 			setup();
 		}
 		
@@ -198,26 +197,6 @@ package base
 		}
 		
 		
-		/**
-		 * The application's entity manager, used for the entity architecture.
-		 * @private
-		 */
-		private function get entityManager():EntityManager
-		{
-			return _entityManager || (_entityManager = new EntityManager());
-		}
-		
-		
-		/**
-		 * The application's entity system manager, used for the entity architecture.
-		 * @private
-		 */
-		private function get entitySystemManager():EntitySystemManager
-		{
-			return _entitySystemManager || (_entitySystemManager = new EntitySystemManager(injector));
-		}
-		
-		
 		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
@@ -267,17 +246,6 @@ package base
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Base injection mapping hook.
-		 * @private
-		 */
-		protected function mapInjections():void
-		{
-			injector.mapValue(EntityManager, entityManager);
-			injector.mapValue(EntitySystemManager, entitySystemManager);
-		}
-		
-		
-		/**
 		 * Executes tasks that need to be done before the application init process is being
 		 * executed. This typically includes creating the application's UI as well as
 		 * instantiating other objects that exist throught the whole application life time.
@@ -308,13 +276,21 @@ package base
 			/* Set stage reference as early as possible. */
 			StageReference.stage = contextView.stage;
 			
-			/* CommandManager requires a reference to Main. */
-			CommandManager.instance.main = this;
-			
 			/* Ignore whitespace on all XML data files. */
 			XML.ignoreWhitespace = true;
 			XML.ignoreProcessingInstructions = true;
 			XML.ignoreComments = true;
+			
+			/* Create entity architecture-related objects. */
+			_entityManager = new EntityManager();
+			_entitySystemManager = new EntitySystemManager(injector);
+			
+			/* Do base IoC injection mappings. */
+			//injector.mapValue(EntityManager, _entityManager);
+			//injector.mapValue(EntitySystemManager, _entitySystemManager);
+			
+			/* CommandManager requires a reference to Main. */
+			CommandManager.instance.main = this;
 			
 			/* Init the data model registry. */
 			Registry.init();

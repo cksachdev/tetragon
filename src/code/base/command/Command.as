@@ -38,12 +38,11 @@ package base.command
 		// -----------------------------------------------------------------------------------------
 		// Properties
 		// -----------------------------------------------------------------------------------------
-
-		/**
-		 * Every command has a reference to main by default.
-		 * @private
-		 */
+		
+		/** @private */
 		private var _main:Main;
+		/** @private */
+		private var _commandManager:CommandManager;
 		
 		
 		// -----------------------------------------------------------------------------------------
@@ -51,7 +50,7 @@ package base.command
 		// -----------------------------------------------------------------------------------------
 
 		/**
-		 * A reference to main, used by the CLI when executing commands.
+		 * A reference to main, for internal command use only!
 		 * @private
 		 */
 		public function get main():Main
@@ -62,8 +61,22 @@ package base.command
 		{
 			_main = v;
 		}
-
-
+		
+		
+		/**
+		 * A reference to the command manager, for internal command use only!
+		 * @private
+		 */
+		public function get commandManager():CommandManager
+		{
+			return _commandManager;
+		}
+		public function set commandManager(v:CommandManager):void
+		{
+			_commandManager = v;
+		}
+		
+		
 		/**
 		 * The signature of the CLI command. The signature is defined by an Array
 		 * containing Strings that are used by the CLI to understand which arguments

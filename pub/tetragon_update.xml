@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<update xmlns="http://ns.adobe.com/air/framework/update/description/2.5">
+	<versionNumber>1.0.0</versionNumber>
+	<url>http://files.hexagonstar.com/downloads/app/tetragon/tetragon_100.air</url>
+	<description><![CDATA[v1.0.0 - Initial public release.
+v1.1.0 - Bug fixes.]]></description>
+</update>

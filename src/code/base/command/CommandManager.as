@@ -55,8 +55,8 @@ package base.command
 		private var _main:Main;
 		/** @private */
 		private var _executingCommands:Vector.<CommandVO>;
-
-
+		
+		
 		// -----------------------------------------------------------------------------------------
 		// Constructor
 		// -----------------------------------------------------------------------------------------
@@ -70,8 +70,8 @@ package base.command
 				throw new SingletonException(this);
 			_executingCommands = new Vector.<CommandVO>();
 		}
-
-
+		
+		
 		// -----------------------------------------------------------------------------------------
 		// Public Methods
 		// -----------------------------------------------------------------------------------------
@@ -98,20 +98,21 @@ package base.command
 			if (!isExecuting(cmd))
 			{
 				Debug.trace(toString() + " Executing command: " + cmd.name);
-
+				
 				var c:CommandVO = new CommandVO();
 				c.command = cmd;
 				c.completeHandler = completeHandler;
 				c.errorHandler = errorHandler;
 				c.abortHandler = abortHandler;
 				c.progressHandler = progressHandler;
-
+				
 				_executingCommands.push(c);
 				addCommandListeners(c);
-
+				
 				cmd.main = _main;
+				cmd.commandManager = this;
 				cmd.execute();
-
+				
 				return true;
 			}
 			else
@@ -120,8 +121,8 @@ package base.command
 				return false;
 			}
 		}
-
-
+		
+		
 		/**
 		 * Aborts all currently executed commands.
 		 */
@@ -132,8 +133,8 @@ package base.command
 				c.command.abort();
 			}
 		}
-
-
+		
+		
 		/**
 		 * Checks if the specified command is currently being executed.
 		 */
@@ -146,8 +147,8 @@ package base.command
 			}
 			return false;
 		}
-
-
+		
+		
 		/**
 		 * Returns a String Representation of CommandManager.
 		 * 
@@ -157,8 +158,8 @@ package base.command
 		{
 			return "[CommandManager]";
 		}
-
-
+		
+		
 		// -----------------------------------------------------------------------------------------
 		// Getters & Setters
 		// -----------------------------------------------------------------------------------------
@@ -176,8 +177,8 @@ package base.command
 			}
 			return _instance;
 		}
-
-
+		
+		
 		/**
 		 * Returns the amount of commands that are currently in execution.
 		 */
@@ -185,8 +186,8 @@ package base.command
 		{
 			return _executingCommands.length;
 		}
-
-
+		
+		
 		/**
 		 * Pauses or unpauses all currently executed commands that support being paused and
 		 * unpaused.
@@ -201,8 +202,8 @@ package base.command
 				}
 			}
 		}
-
-
+		
+		
 		/**
 		 * @private
 		 */
@@ -210,8 +211,8 @@ package base.command
 		{
 			_main = v;
 		}
-
-
+		
+		
 		// -----------------------------------------------------------------------------------------
 		// Event Handlers
 		// -----------------------------------------------------------------------------------------
@@ -225,8 +226,8 @@ package base.command
 			/* After complete remove the command from the executing commands queue */
 			removeCommand(e.command);
 		}
-
-
+		
+		
 		/**
 		 * @private
 		 */
@@ -236,8 +237,8 @@ package base.command
 			/* After abort remove the command from the executing commands queue */
 			removeCommand(e.command);
 		}
-
-
+		
+		
 		/**
 		 * @private
 		 */
@@ -246,8 +247,8 @@ package base.command
 			/* Only used for debugging! */
 			Debug.trace(toString() + " Command error: " + e.command.name);
 		}
-
-
+		
+		
 		/**
 		 * @private
 		 */
@@ -256,8 +257,8 @@ package base.command
 			/* Only used for debugging! */
 			// Log.debug(toString() + " Command progress: " + e.command.name);
 		}
-
-
+		
+		
 		// -----------------------------------------------------------------------------------------
 		// Private Methods
 		// -----------------------------------------------------------------------------------------
