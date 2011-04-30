@@ -27,51 +27,14 @@
  */
 package base.core.settings
 {
-	import base.event.LocalSettingsEvent;
-
 	import com.hexagonstar.exception.SingletonException;
 	import com.hexagonstar.net.SharedObjectStatus;
 
-	import flash.events.EventDispatcher;
+	import org.osflash.signals.Signal;
+
 	import flash.events.NetStatusEvent;
 	import flash.net.SharedObject;
 	import flash.net.SharedObjectFlushStatus;
-	
-	
-	/**
-	 * Dispatched when the settings flush is pending, i.e. if the user has permitted
-	 * local information storage for objects, but the amount of space allotted is not
-	 * sufficient to store the object and Flash Player prompts the user to allow more
-	 * space.
-	 * 
-	 * @eventType com.hexagonstar.event.LocalSettingsEvent.PENDING
-	 */
-	[Event(name="flushPending", type="base.event.LocalSettingsEvent")]
-	
-	/**
-	 * Dispatched when the settings has been successfully written to a file on the
-	 * local disk.
-	 * 
-	 * @eventType com.hexagonstar.event.LocalSettingsEvent.FLUSHED
-	 */
-	[Event(name="flushFlushed", type="base.event.LocalSettingsEvent")]
-	
-	/**
-	 * Dispatched when the settings flush failed and the settings could not be stored,
-	 * in particular if the user didn't grant more storage space after a FLUSH_PENDING
-	 * occured.
-	 * 
-	 * @eventType com.hexagonstar.event.LocalSettingsEvent.FAILED
-	 */
-	[Event(name="flushFailed", type="base.event.LocalSettingsEvent")]
-	
-	/**
-	 * Dispatched when an error occured and the settings could not be stored, e.g.
-	 * the user did not allow any storage of local data.
-	 * 
-	 * @eventType com.hexagonstar.event.LocalSettingsEvent.ERROR
-	 */
-	[Event(name="flushError", type="base.event.LocalSettingsEvent")]
 	
 	
 	/**
@@ -90,12 +53,8 @@ package base.core.settings
 	 *	ls.put("windowPosY", 150);
 	 *	ls.put("dataPath", "c:/user/documents/test/");
 	 *	
-	 *	// Create the LocalSettingsManager, add event listeners and store the settings:
+	 *	// Create the LocalSettingsManager, add signal listeners and store the settings:
 	 *	var lsm:LocalSettingsManager = LocalSettingsManager.instance;
-	 *	lsm.addEventListener(LocalSettingsEvent.PENDING, onPending);
-	 *	lsm.addEventListener(LocalSettingsEvent.FLUSHED, onFlushed);
-	 *	lsm.addEventListener(LocalSettingsEvent.FAILED, onFailed);
-	 *	lsm.addEventListener(LocalSettingsEvent.ERROR, onError);
 	 *	lsm.store(ls);
 	 * </pre>
 	 * 
@@ -110,7 +69,7 @@ package base.core.settings
 	 * 
 	 * @see #LocalSettings
 	 */
-	public class LocalSettingsManager extends EventDispatcher
+	public class LocalSettingsManager
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -127,6 +86,38 @@ package base.core.settings
 		private var _so:SharedObject;
 		/** @private */
 		private var _minDiskSpace:int = 51200; /* 50 Kilobyte */
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Signals
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Dispatched when the settings flush is pending, i.e. if the user has permitted
+		 * local information storage for objects, but the amount of space allotted is not
+		 * sufficient to store the object and Flash Player prompts the user to allow more
+		 * space.
+		 */
+		public var pendingSignal:Signal;
+		
+		/**
+		 * Dispatched when the settings have been successfully written to a file on the
+		 * local disk.
+		 */
+		public var flushedSignal:Signal;
+		
+		/**
+		 * Dispatched when the settings flush failed and the settings could not be stored,
+		 * in particular if the user didn't grant more storage space after a FLUSH_PENDING
+		 * occured.
+		 */
+		public var failedSignal:Signal;
+		
+		/**
+		 * Dispatched when an error occured and the settings could not be stored, e.g.
+		 * the user did not allow any storage of local data.
+		 */
+		public var errorSignal:Signal;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -231,9 +222,9 @@ package base.core.settings
 			{
 				status = _so.flush(_minDiskSpace);
 			}
-			catch (e:Error)
+			catch (err:Error)
 			{
-				dispatchEvent(new LocalSettingsEvent(LocalSettingsEvent.ERROR, e.message));
+				errorSignal.dispatch(err.message);
 			}
 			
 			if (status != null)
@@ -242,10 +233,10 @@ package base.core.settings
 				{
 					case SharedObjectFlushStatus.PENDING:
 						_so.addEventListener(NetStatusEvent.NET_STATUS, onNetStatus);
-						dispatchEvent(new LocalSettingsEvent(LocalSettingsEvent.PENDING));
+						pendingSignal.dispatch();
 						break;
 					case SharedObjectFlushStatus.FLUSHED:
-						dispatchEvent(new LocalSettingsEvent(LocalSettingsEvent.FLUSHED));
+						flushedSignal.dispatch();
 						break;
 				}
 			}
@@ -266,7 +257,7 @@ package base.core.settings
 		 * 
 		 * @return A String Representation of LocalSettingsManager.
 		 */
-		override public function toString():String
+		public function toString():String
 		{
 			return "[LocalSettingsManager]";
 		}
@@ -337,11 +328,11 @@ package base.core.settings
 			{
 				case SharedObjectStatus.FLUSH_SUCCESS:
 					/* User granted permission, data saved! */
-					dispatchEvent(new LocalSettingsEvent(LocalSettingsEvent.FLUSHED));
+					flushedSignal.dispatch();
 					break;
 				case SharedObjectStatus.FLUSH_FAILED:
 					/* User denied permission, data not saved! */
-					dispatchEvent(new LocalSettingsEvent(LocalSettingsEvent.FAILED));
+					failedSignal.dispatch();
 					break;
 			}
 		}
@@ -358,14 +349,18 @@ package base.core.settings
 		private function setup():void
 		{
 			_settings = new LocalSettings();
+			pendingSignal = new Signal();
+			flushedSignal = new Signal();
+			failedSignal = new Signal();
+			errorSignal = new Signal();
 			
 			try
 			{
 				_so = SharedObject.getLocal("localSettings");	
 			}
-			catch (e:Error)
+			catch (err:Error)
 			{
-				dispatchEvent(new LocalSettingsEvent(LocalSettingsEvent.ERROR, e.message));
+				errorSignal.dispatch(err.message);
 			}
 		}
 	}
