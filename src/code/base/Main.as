@@ -39,10 +39,9 @@ package base
 	import base.view.ApplicationView;
 	import base.view.screen.ScreenManager;
 
+	import com.hexagonstar.ioc.Injector;
 	import com.hexagonstar.util.debug.HLog;
 	import com.hexagonstar.util.display.StageReference;
-
-	import org.swiftsuspenders.Injector;
 
 	import flash.display.*;
 	import flash.events.ErrorEvent;

@@ -30,7 +30,7 @@ package base.core.entity
 	import base.core.IDisposable;
 	import base.core.debug.Log;
 
-	import org.swiftsuspenders.Injector;
+	import com.hexagonstar.ioc.Injector;
 
 	import flash.utils.Dictionary;
 	

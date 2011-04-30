@@ -30,7 +30,7 @@ package base.setup
 	import base.Main;
 	import base.data.parsers.DataTypeParserFactory;
 
-	import org.swiftsuspenders.Injector;
+	import com.hexagonstar.ioc.Injector;
 	
 	
 	/**
