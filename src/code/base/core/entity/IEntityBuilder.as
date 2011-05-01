@@ -38,5 +38,13 @@ package base.core.entity
 		 * @return an object of type IEntity.
 		 */
 		function build():IEntity;
+		
+		
+		/**
+		 * Returns a string representation of the builder.
+		 * 
+		 * @return A string representation of the builder.
+		 */
+		function toString():String;
 	}
 }

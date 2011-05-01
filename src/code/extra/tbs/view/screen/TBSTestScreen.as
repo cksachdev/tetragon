@@ -27,7 +27,16 @@
  */
 package extra.tbs.view.screen
 {
+	import base.core.entity.EntityFactory;
+	import base.core.entity.IEntity;
+	import base.core.entity.IEntityComponent;
 	import base.view.screen.BaseScreen;
+
+	import extra.tbs.entity.builders.TBSUnitBuilder;
+
+	import com.hexagonstar.util.debug.Debug;
+
+	import flash.utils.Dictionary;
 	
 	
 	public class TBSTestScreen extends BaseScreen
@@ -35,6 +44,9 @@ package extra.tbs.view.screen
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
+		
+		[Inject]
+		public var _entityFactory:EntityFactory;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -60,6 +72,14 @@ package extra.tbs.view.screen
 		override public function start():void
 		{
 			super.start();
+			
+			var unit:IEntity = _entityFactory.createEntity(TBSUnitBuilder);
+			Debug.trace(unit.toString());
+			var d:Dictionary = unit.getComponents();
+			for each (var c:IEntityComponent in d)
+			{
+				Debug.trace(c.toString());
+			}
 		}
 		
 		

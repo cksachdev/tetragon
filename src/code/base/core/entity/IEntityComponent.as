@@ -32,6 +32,11 @@ package base.core.entity
 	 */
 	public interface IEntityComponent
 	{
-		
+		/**
+		 * Returns a String Representation of the component.
+		 * 
+		 * @return A String Representation of the component.
+		 */
+		function toString():String;
 	}
 }

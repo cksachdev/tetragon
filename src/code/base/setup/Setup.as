@@ -77,6 +77,7 @@ package base.setup
 		 */
 		public function postConfigSetup():void
 		{
+			registerEntityBuilders();
 			registerScreens();
 		}
 		
@@ -162,6 +163,15 @@ package base.setup
 		 * @private
 		 */
 		protected function mapDataTypes():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		protected function registerEntityBuilders():void
 		{
 			/* Abstract method! */
 		}

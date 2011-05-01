@@ -40,8 +40,11 @@ package extra.tbs.entity.components
 		//-----------------------------------------------------------------------------------------
 		
 		public var nameID:String;
+		public var shortNameID:String;
 		public var descriptionID:String;
+		public var movementTypeID:String;
 		public var price:uint;
+		public var domain:String;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -59,6 +62,14 @@ package extra.tbs.entity.components
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function toString():String
+		{
+			return "[TBSUnitPropertiesComponent]";
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------

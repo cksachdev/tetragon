@@ -27,6 +27,8 @@
  */
 package base.core.entity
 {
+	import base.core.debug.Log;
+
 	import com.hexagonstar.ioc.Injector;
 
 	import flash.utils.Dictionary;
@@ -76,7 +78,16 @@ package base.core.entity
 		public function registerBuilder(builderClass:Class):void
 		{
 			var builder:IEntityBuilder = _injector.instantiate(builderClass);
-			_builderMap[builder] = builder;
+			if (builder)
+			{
+				_builderMap[builderClass] = builder;
+				Log.debug(toString() + " Registered entity builder: " + builder.toString());
+			}
+			else
+			{
+				Log.error(toString() + " Could not register entity builder of type: "
+					+ builderClass);
+			}
 		}
 		
 		
@@ -89,8 +100,24 @@ package base.core.entity
 		public function createEntity(builderClass:Class):IEntity
 		{
 			var builder:IEntityBuilder = _builderMap[builderClass];
-			if (builder) return builder.build();
+			if (builder)
+			{
+				return builder.build();
+			}
+			
+			Log.error(toString() + " Could not create entity from builder: " + builderClass);
 			return null;
+		}
+		
+		
+		/**
+		 * Returns a String Representation of the class.
+		 * 
+		 * @return A String Representation of the class.
+		 */
+		public function toString():String
+		{
+			return "[EntityFactory]";
 		}
 		
 		

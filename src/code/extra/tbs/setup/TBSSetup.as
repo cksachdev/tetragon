@@ -29,7 +29,9 @@ package extra.tbs.setup
 {
 	import base.setup.Setup;
 
+	import extra.tbs.entity.builders.TBSUnitBuilder;
 	import extra.tbs.entity.components.TBSUnitPropertiesComponent;
+	import extra.tbs.entity.components.TBSUnitStatsComponent;
 	import extra.tbs.view.screen.TBSTestScreen;
 	
 	
@@ -99,7 +101,10 @@ package extra.tbs.setup
 		override protected function mapInjectors():void
 		{
 			var propertiesComponent:TBSUnitPropertiesComponent = new TBSUnitPropertiesComponent();
+			var statsComponent:TBSUnitStatsComponent = new TBSUnitStatsComponent();
+			
 			injector.mapValue(TBSUnitPropertiesComponent, propertiesComponent);
+			injector.mapValue(TBSUnitStatsComponent, statsComponent);
 		}
 		
 		
@@ -110,6 +115,15 @@ package extra.tbs.setup
 		{
 			//dataTypeParserFactory.addDataType("Attribute", AttributeDataParser);
 			//dataTypeParserFactory.addDataType("Character", CharacterDataParser);
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function registerEntityBuilders():void
+		{
+			main.entityFactory.registerBuilder(TBSUnitBuilder);
 		}
 		
 		

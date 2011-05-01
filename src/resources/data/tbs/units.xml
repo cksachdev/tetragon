@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<units>
+	
+	<unit id="unitInfantry">
+		<components>
+			
+			<tbsUnitProperties>
+				<nameID>nameInfantryUnit</nameID>
+				<shortNameID>nameShortInfantryUnit</shortNameID>
+				<descriptionID>descInfantryUnit</descriptionID>
+				<movementTypeID>movementTypeInfantry</movementTypeID>
+				<price>1000</price>
+				<domain>ground</domain>
+			</tbsUnitProperties>
+			
+			<tbsUnitStats>
+				<movementPoints>2</movementPoints>
+				<mobility>3</mobility>
+				<vision>2</vision>
+				<strength>6</strength>
+				<fuel>-1</fuel>
+				<xp>0</xp>
+				<xpValueAttack>3</xpValueAttack>
+				<xpValueDefense>3</xpValueDefense>
+			</tbsUnitStats>
+			
+			<tbsUnitWeapons>
+				<primaryWeaponID></primaryWeaponID>
+				<secondaryWeaponID>weaponMachineGun</secondaryWeaponID>
+			</tbsUnitWeapons>
+			
+			<tbsUnitArmor>
+				<armorID>armorInfantry</armorID>
+			</tbsUnitArmor>
+			
+			<tbsUnitAbilities>
+			</tbsUnitAbilities>
+			
+			<tbsUnitAI>
+				<combatAI>aiInfantry</combatAI>
+			</tbsUnitAI>
+			
+			<tbsPrerequisites>
+				<technologyID>testTechnology</technologyID>
+				<resourceID>testResource</resourceID>
+			</tbsPrerequisites>
+			
+			<tbsUnitFlags>
+				<canCaptureUnits>true</canCaptureUnits>
+				<canCaptureFacilities>true</canCaptureFacilities>
+				<canPillage>true</canPillage>
+				<canFortify>true</canFortify>
+				<canRebase>false</canRebase>
+			</tbsUnitFlags>
+			
+			<tbsUnitArt>
+			</tbsUnitArt>
+			
+		</components>
+	</unit>
+	
+</units>

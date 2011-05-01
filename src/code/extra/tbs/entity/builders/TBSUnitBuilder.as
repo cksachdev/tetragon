@@ -32,6 +32,7 @@ package extra.tbs.entity.builders
 	import base.core.entity.IEntityBuilder;
 
 	import extra.tbs.entity.components.TBSUnitPropertiesComponent;
+	import extra.tbs.entity.components.TBSUnitStatsComponent;
 	
 	
 	/**
@@ -47,6 +48,8 @@ package extra.tbs.entity.builders
 		public var entityManager:EntityManager;
 		[Inject]
 		public var propertiesComponent:TBSUnitPropertiesComponent;
+		[Inject]
+		public var statsComponent:TBSUnitStatsComponent;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -60,12 +63,24 @@ package extra.tbs.entity.builders
 		{
 			var e:IEntity = entityManager.createEntity();
 			e.addComponent(propertiesComponent);
+			e.addComponent(statsComponent);
 			//e.addComponent(graphics);
 			//e.addComponent(gravity);
 			//e.addComponent(new Spacial2D());
 			//var startVelocity:Vector2D = new Vector2D(50 + (Math.random() * 100), -700);
 			//e.addComponent(new SimplePhysics(startVelocity));
 			return e;
+		}
+		
+		
+		/**
+		 * Returns a String Representation of the class.
+		 * 
+		 * @return A String Representation of the class.
+		 */
+		public function toString():String
+		{
+			return "[TBSUnitBuilder]";
 		}
 		
 		

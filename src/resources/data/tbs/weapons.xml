@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<weapons>
+	
+	<weapon id="weaponMachineGun">
+		<components>
+			
+			<tbsWeaponProperties>
+				<nameID>nameWeaponMachineGun</nameID>
+				<nameShortID>nameShortWeaponMachineGun</nameShortID>
+				<descriptionID>descWeaponMachineGun</descriptionID>
+				<weaponType></weaponType>
+			</tbsWeaponProperties>
+			
+			<tbsWeaponStats>
+				<minRange>1</minRange>
+				<maxRange>1</maxRange>
+				<ammo>-1</ammo>
+			</tbsWeaponStats>
+			
+		</components>
+	</weapon>
+	
+</weapons>
