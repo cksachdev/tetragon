@@ -25,96 +25,55 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.rpg.setup
+package extra.tbs.entity.components
 {
-	import base.setup.Setup;
-
-	import extra.rpg.data.parsers.*;
+	import base.core.entity.IEntityComponent;
 	
 	
 	/**
-	 * Setup class specific for RPG Add-On.
+	 * TBSUnitPropertiesComponent class
 	 */
-	public class RPGSetup extends Setup
+	public class TBSUnitPropertiesComponent implements IEntityComponent
 	{
+		//-----------------------------------------------------------------------------------------
+		// Properties
+		//-----------------------------------------------------------------------------------------
+		
+		public var nameID:String;
+		public var descriptionID:String;
+		public var price:uint;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Constructor
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Creates a new instance of the class.
+		 */
+		public function TBSUnitPropertiesComponent()
+		{
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function initialSetup():void
-		{
-			super.initialSetup();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function postConfigSetup():void
-		{
-			super.postConfigSetup();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function postUISetup():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function finalSetup():void
-		{
-		}
 		
 		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function get name():String
-		{
-			return "rpg";
-		}
+		
+		//-----------------------------------------------------------------------------------------
+		// Callback Handlers
+		//-----------------------------------------------------------------------------------------
 		
 		
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function mapInjectors():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function mapDataTypes():void
-		{
-			dataTypeParserFactory.addDataType("Attribute", AttributeDataParser);
-			dataTypeParserFactory.addDataType("Character", CharacterDataParser);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function registerScreens():void
-		{
-		}
 	}
 }

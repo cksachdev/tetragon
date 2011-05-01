@@ -67,7 +67,7 @@ package base.setup
 		 */
 		public function initialSetup():void
 		{
-			/* Abstract method! */
+			mapDataTypes();
 		}
 		
 		
@@ -77,7 +77,7 @@ package base.setup
 		 */
 		public function postConfigSetup():void
 		{
-			/* Abstract method! */
+			registerScreens();
 		}
 		
 		
@@ -153,6 +153,24 @@ package base.setup
 		 * @private
 		 */
 		protected function mapInjectors():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		protected function mapDataTypes():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		protected function registerScreens():void
 		{
 			/* Abstract method! */
 		}

@@ -33,6 +33,7 @@ package base
 	import base.core.debug.Console;
 	import base.core.debug.FPSMonitor;
 	import base.core.debug.Log;
+	import base.core.entity.EntityFactory;
 	import base.core.entity.EntityManager;
 	import base.core.entity.EntitySystemManager;
 	import base.data.Registry;
@@ -73,6 +74,8 @@ package base
 		private var _entityManager:EntityManager;
 		/** @private */
 		private var _entitySystemManager:EntitySystemManager;
+		/** @private */
+		private var _entityFactory:EntityFactory;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -283,10 +286,12 @@ package base
 			/* Create entity architecture-related objects. */
 			_entityManager = new EntityManager();
 			_entitySystemManager = new EntitySystemManager(injector);
+			_entityFactory = new EntityFactory(injector);
 			
 			/* Do base IoC injection mappings. */
-			//injector.mapValue(EntityManager, _entityManager);
-			//injector.mapValue(EntitySystemManager, _entitySystemManager);
+			injector.mapValue(EntityManager, _entityManager);
+			injector.mapValue(EntitySystemManager, _entitySystemManager);
+			injector.mapValue(EntityFactory, _entityFactory);
 			
 			/* CommandManager requires a reference to Main. */
 			CommandManager.instance.main = this;

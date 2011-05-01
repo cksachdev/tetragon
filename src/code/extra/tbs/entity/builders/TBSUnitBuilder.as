@@ -25,18 +25,30 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.rpg.setup
+package extra.tbs.entity.builders
 {
-	import base.setup.Setup;
+	import base.core.entity.EntityManager;
+	import base.core.entity.IEntity;
+	import base.core.entity.IEntityBuilder;
 
-	import extra.rpg.data.parsers.*;
+	import extra.tbs.entity.components.TBSUnitPropertiesComponent;
 	
 	
 	/**
-	 * Setup class specific for RPG Add-On.
+	 * A turn-based strategy unit builder.
 	 */
-	public class RPGSetup extends Setup
+	public class TBSUnitBuilder implements IEntityBuilder
 	{
+		//-----------------------------------------------------------------------------------------
+		// Properties
+		//-----------------------------------------------------------------------------------------
+		
+		[Inject]
+		public var entityManager:EntityManager;
+		[Inject]
+		public var propertiesComponent:TBSUnitPropertiesComponent;
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
@@ -44,34 +56,16 @@ package extra.rpg.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function initialSetup():void
+		public function build():IEntity
 		{
-			super.initialSetup();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function postConfigSetup():void
-		{
-			super.postConfigSetup();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function postUISetup():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function finalSetup():void
-		{
+			var e:IEntity = entityManager.createEntity();
+			e.addComponent(propertiesComponent);
+			//e.addComponent(graphics);
+			//e.addComponent(gravity);
+			//e.addComponent(new Spacial2D());
+			//var startVelocity:Vector2D = new Vector2D(50 + (Math.random() * 100), -700);
+			//e.addComponent(new SimplePhysics(startVelocity));
+			return e;
 		}
 		
 		
@@ -79,42 +73,15 @@ package extra.rpg.setup
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function get name():String
-		{
-			return "rpg";
-		}
+		
+		//-----------------------------------------------------------------------------------------
+		// Callback Handlers
+		//-----------------------------------------------------------------------------------------
 		
 		
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function mapInjectors():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function mapDataTypes():void
-		{
-			dataTypeParserFactory.addDataType("Attribute", AttributeDataParser);
-			dataTypeParserFactory.addDataType("Character", CharacterDataParser);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function registerScreens():void
-		{
-		}
 	}
 }

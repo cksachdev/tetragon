@@ -25,18 +25,31 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.rpg.setup
+package extra.tbs.view.screen
 {
-	import base.setup.Setup;
-
-	import extra.rpg.data.parsers.*;
+	import base.view.screen.BaseScreen;
 	
 	
-	/**
-	 * Setup class specific for RPG Add-On.
-	 */
-	public class RPGSetup extends Setup
+	public class TBSTestScreen extends BaseScreen
 	{
+		//-----------------------------------------------------------------------------------------
+		// Properties
+		//-----------------------------------------------------------------------------------------
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Constructor
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Creates a new instance.
+		 */
+		public function TBSTestScreen()
+		{
+			super();
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
@@ -44,25 +57,25 @@ package extra.rpg.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function initialSetup():void
+		override public function start():void
 		{
-			super.initialSetup();
+			super.start();
 		}
 		
 		
 		/**
 		 * @inheritDoc
 		 */
-		override public function postConfigSetup():void
+		override public function stop():void
 		{
-			super.postConfigSetup();
+			super.stop();
 		}
 		
 		
 		/**
 		 * @inheritDoc
 		 */
-		override public function postUISetup():void
+		override public function reset():void
 		{
 		}
 		
@@ -70,8 +83,18 @@ package extra.rpg.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function finalSetup():void
+		override public function update():void
 		{
+			super.update();
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function dispose():void
+		{
+			super.dispose();
 		}
 		
 		
@@ -82,10 +105,33 @@ package extra.rpg.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function get name():String
+		override public function get showLoadProgress():Boolean
 		{
-			return "rpg";
+			return false;
 		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function set enabled(v:Boolean):void
+		{
+			super.enabled = v;
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function set paused(v:Boolean):void
+		{
+			super.paused = v;
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Callback Handlers
+		//-----------------------------------------------------------------------------------------
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -95,7 +141,7 @@ package extra.rpg.setup
 		/**
 		 * @inheritDoc
 		 */
-		override protected function mapInjectors():void
+		override protected function createChildren():void
 		{
 		}
 		
@@ -103,18 +149,41 @@ package extra.rpg.setup
 		/**
 		 * @inheritDoc
 		 */
-		override protected function mapDataTypes():void
+		override protected function addChildren():void 
 		{
-			dataTypeParserFactory.addDataType("Attribute", AttributeDataParser);
-			dataTypeParserFactory.addDataType("Character", CharacterDataParser);
 		}
 		
 		
 		/**
 		 * @inheritDoc
 		 */
-		override protected function registerScreens():void
+		override protected function addListeners():void
 		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function removeListeners():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function layoutChildren():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function unload():void
+		{
+			
 		}
 	}
 }

@@ -29,6 +29,7 @@ package base.view.screen
 {
 	import base.Main;
 	import base.core.debug.Log;
+	import base.data.Registry;
 	import base.event.ResourceEvent;
 	import base.view.display.LoadProgressDisplay;
 
@@ -60,8 +61,6 @@ package base.view.screen
 		private var _loadProgressDisplay:LoadProgressDisplay;
 		/** @private */
 		private var _screenClasses:Object;
-		/** @private */
-		private var _startScreenID:String;
 		/** @private */
 		private var _screen:BaseScreen;
 		/** @private */
@@ -139,23 +138,28 @@ package base.view.screen
 		 * 
 		 * @param screenID Unique ID of the screen.
 		 * @param screenClass The screen's class.
-		 * @param isStartScreen If true the specified screen class will be used as the starting
-		 *        screen which is opened by default after application start.
 		 */
-		public function registerScreen(screenID:String, screenClass:Class,
-			isStartScreen:Boolean = false):void
+		public function registerScreen(screenID:String, screenClass:Class):void
 		{
 			_screenClasses[screenID] = screenClass;
-			if (isStartScreen) _startScreenID = screenID;
 		}
 		
 		
 		/**
-		 * Starts the screen manager by automatically opening the starting screen.
+		 * Starts the screen manager by automatically opening the splash screen screen or
+		 * the initial screen in case the splash screen should not be shown (as set in config).
 		 */
 		public function start():void
 		{
-			openScreen(_startScreenID, true);
+			if (Registry.config.showSplashScreen && Registry.config.splashScreenID != null
+				&& Registry.config.splashScreenID.length > 0)
+			{
+				openScreen(Registry.config.splashScreenID, true);
+			}
+			else
+			{
+				openScreen(Registry.config.initialScreenID, true);
+			}
 		}
 		
 		
@@ -264,13 +268,13 @@ package base.view.screen
 		 */
 		public function dumpScreenList():String
 		{
-			var t:TabularText = new TabularText(4, true, "  ", null, "  ", 100, ["ID", "CLASS", "OPEN", "STARTSCREEN"]);
+			var t:TabularText = new TabularText(4, true, "  ", null, "  ", 100, ["ID", "CLASS", "OPEN", "INITIAL"]);
 			for (var id:String in _screenClasses)
 			{
 				var clazz:Class = _screenClasses[id];
 				var open:String = _screen is clazz ? "true" : "";
-				var startScreen:String = id == _startScreenID ? "true" : "";
-				t.add([id, clazz, open, startScreen]);
+				var initial:String = id == Registry.config.initialScreenID ? "true" : "";
+				t.add([id, clazz, open, initial]);
 			}
 			return toString() + "\n" + t;
 		}

@@ -170,7 +170,7 @@ package base.view.screen
 		private function onUserInput(e:Event):void
 		{
 			_timer.stop();
-			main.screenManager.openScreen("dummyScreen", true, true);
+			main.screenManager.openScreen(Registry.config.initialScreenID, true, true);
 		}
 		
 		
@@ -180,9 +180,9 @@ package base.view.screen
 		private function onTimerComplete(e:TimerEvent):void
 		{
 			/* Once the screen fades out, the user should not be able to interrupt, otherwise
-			 * we might hang up somewhere so remove event listeners now. */
+			 * we might hang up somewhere so remove input listeners now. */
 			removeListeners();
-			main.screenManager.openScreen("dummyScreen");
+			main.screenManager.openScreen(Registry.config.initialScreenID);
 		}
 		
 		

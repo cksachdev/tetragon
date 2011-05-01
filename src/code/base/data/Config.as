@@ -89,6 +89,10 @@ package base.data
 		public var splashBackgroundColors:Array;
 		public var splashLogoColor:uint;
 		
+		public var showSplashScreen:Boolean;
+		public var splashScreenID:String;
+		public var initialScreenID:String;
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Constructor
@@ -164,6 +168,10 @@ package base.data
 			
 			splashBackgroundColors = [0x002c3f, 0x0181b8];
 			splashLogoColor = 0xFFBF00;
+			
+			showSplashScreen = true;
+			splashScreenID = "splashScreen";
+			initialScreenID = "dummyScreen";
 		}
 	}
 }

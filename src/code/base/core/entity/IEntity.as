@@ -33,7 +33,7 @@ package base.core.entity
 	
 	
 	/**
-	 * 
+	 * Base interface for all entity objects.
 	 */
 	public interface IEntity extends IDisposable
 	{
@@ -46,11 +46,11 @@ package base.core.entity
 		 * 
 		 * @param component Component to be added.
 		 */
-		function addComponent(component:Object):Boolean;
+		function addComponent(component:IEntityComponent):Boolean;
 		
 		
 		/**
-		 * Retrieves a components instance based on class name.
+		 * Retrieves a component's instance based on class name.
 		 * 
 		 * @param componentClass class name of component to be retrieved.
 		 */
@@ -58,7 +58,7 @@ package base.core.entity
 		
 		
 		/**
-		 * retrieves the dictionary contaning all the entities components.
+		 * Retrieves the dictionary contaning all the entity's components.
 		 * 
 		 * @return a dictionary of the entites components with the component Class as the key.
 		 * 
@@ -75,7 +75,21 @@ package base.core.entity
 		
 		
 		/**
-		 * Gets the entities unique ID.
+		 * Returns a string representation of the entity.
+		 * 
+		 * @param args An optional, comma-delimited list of properties that should be
+		 *            output together with the entity name.
+		 * @return A string representation of the entity.
+		 */
+		function toString(...args):String;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Getters & Setters
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * The unique ID of the entity.
 		 * 
 		 * @return id unique ID.
 		 */

@@ -28,6 +28,7 @@
 package base.core.entity
 {
 	import flash.utils.Dictionary;
+	import flash.utils.getQualifiedClassName;
 	
 	
 	/**
@@ -64,7 +65,7 @@ package base.core.entity
 		/**
 		 * @inheritDoc
 		 */
-		public function addComponent(component:Object):Boolean
+		public function addComponent(component:IEntityComponent):Boolean
 		{
 			return _entityManger.addComponent(_id, component);
 		}
@@ -103,6 +104,17 @@ package base.core.entity
 		public function dispose():void
 		{
 			_entityManger.removeEntity(_id);
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function toString(...args):String
+		{
+			var s:String = "";
+			for each (var i:String in args) s += ", " + i;
+			return "[" + getQualifiedClassName(this).match("[^:]*$")[0] + s + "]";
 		}
 		
 		

@@ -47,11 +47,7 @@ package extra.game.setup
 		 */
 		override public function initialSetup():void
 		{
-			/* Map data type parse classes necessary for Game add-on. */
-			dataTypeParserFactory.addDataType("WorldSpace", WorldspaceDataParser);
-			dataTypeParserFactory.addDataType("Cell", CellDataParser);
-			dataTypeParserFactory.addDataType("TileSet", TileSetDataParser);
-			dataTypeParserFactory.addDataType("TileMap", TileMapDataParser);
+			super.initialSetup();
 		}
 		
 		
@@ -60,7 +56,7 @@ package extra.game.setup
 		 */
 		override public function postConfigSetup():void
 		{
-			_main.screenManager.registerScreen("gameScreen", GameScreen);
+			super.postConfigSetup();
 		}
 		
 		
@@ -102,6 +98,27 @@ package extra.game.setup
 		 */
 		override protected function mapInjectors():void
 		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function mapDataTypes():void
+		{
+			dataTypeParserFactory.addDataType("WorldSpace", WorldspaceDataParser);
+			dataTypeParserFactory.addDataType("Cell", CellDataParser);
+			dataTypeParserFactory.addDataType("TileSet", TileSetDataParser);
+			dataTypeParserFactory.addDataType("TileMap", TileMapDataParser);
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function registerScreens():void
+		{
+			_main.screenManager.registerScreen("gameScreen", GameScreen);
 		}
 	}
 }

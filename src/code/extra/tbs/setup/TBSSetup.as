@@ -28,6 +28,9 @@
 package extra.tbs.setup
 {
 	import base.setup.Setup;
+
+	import extra.tbs.entity.components.TBSUnitPropertiesComponent;
+	import extra.tbs.view.screen.TBSTestScreen;
 	
 	
 	/**
@@ -44,9 +47,7 @@ package extra.tbs.setup
 		 */
 		override public function initialSetup():void
 		{
-			/* Map data type parse classes necessary for TBS add-on. */
-			//dataTypeParserFactory.addDataType("Attribute", AttributeDataParser);
-			//dataTypeParserFactory.addDataType("Character", CharacterDataParser);
+			super.initialSetup();
 		}
 		
 		
@@ -55,6 +56,7 @@ package extra.tbs.setup
 		 */
 		override public function postConfigSetup():void
 		{
+			super.postConfigSetup();
 		}
 		
 		
@@ -96,6 +98,27 @@ package extra.tbs.setup
 		 */
 		override protected function mapInjectors():void
 		{
+			var propertiesComponent:TBSUnitPropertiesComponent = new TBSUnitPropertiesComponent();
+			injector.mapValue(TBSUnitPropertiesComponent, propertiesComponent);
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function mapDataTypes():void
+		{
+			//dataTypeParserFactory.addDataType("Attribute", AttributeDataParser);
+			//dataTypeParserFactory.addDataType("Character", CharacterDataParser);
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function registerScreens():void
+		{
+			main.screenManager.registerScreen("tbsTestScreen", TBSTestScreen);
 		}
 	}
 }

@@ -25,53 +25,72 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.rpg.setup
+package base.core.entity
 {
-	import base.setup.Setup;
+	import com.hexagonstar.ioc.Injector;
 
-	import extra.rpg.data.parsers.*;
+	import flash.utils.Dictionary;
 	
 	
 	/**
-	 * Setup class specific for RPG Add-On.
+	 * EntityFactory class
 	 */
-	public class RPGSetup extends Setup
+	public class EntityFactory
 	{
+		//-----------------------------------------------------------------------------------------
+		// Properties
+		//-----------------------------------------------------------------------------------------
+		
+		/** @private */
+		private var _injector:Injector;
+		/** @private */
+		private var _builderMap:Dictionary;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Constructor
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Creates a new instance of the class.
+		 * 
+		 * @param injector The DI injector used to instantiate builder classes.
+		 */
+		public function EntityFactory(injector:Injector)
+		{
+			_injector = injector;
+			_builderMap = new Dictionary();
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @inheritDoc
+		 * Registers a builder in the factory.
+		 * 
+		 * @param builderClass The class of the builder to register. Must implement
+		 *        IEntityBuilder!
 		 */
-		override public function initialSetup():void
+		public function registerBuilder(builderClass:Class):void
 		{
-			super.initialSetup();
+			var builder:IEntityBuilder = _injector.instantiate(builderClass);
+			_builderMap[builder] = builder;
 		}
 		
 		
 		/**
-		 * @inheritDoc
+		 * Creates an entity of the type that is built by the specified builderClass.
+		 * 
+		 * @param builderClass The builder class which should create an entity.
+		 * @return An IEntity created by the specified builderClass or null.
 		 */
-		override public function postConfigSetup():void
+		public function createEntity(builderClass:Class):IEntity
 		{
-			super.postConfigSetup();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function postUISetup():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function finalSetup():void
-		{
+			var builder:IEntityBuilder = _builderMap[builderClass];
+			if (builder) return builder.build();
+			return null;
 		}
 		
 		
@@ -79,42 +98,15 @@ package extra.rpg.setup
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function get name():String
-		{
-			return "rpg";
-		}
+		
+		//-----------------------------------------------------------------------------------------
+		// Callback Handlers
+		//-----------------------------------------------------------------------------------------
 		
 		
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function mapInjectors():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function mapDataTypes():void
-		{
-			dataTypeParserFactory.addDataType("Attribute", AttributeDataParser);
-			dataTypeParserFactory.addDataType("Character", CharacterDataParser);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function registerScreens():void
-		{
-		}
 	}
 }
