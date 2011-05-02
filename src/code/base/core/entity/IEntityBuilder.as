@@ -35,9 +35,10 @@ package base.core.entity
 		/**
 		 * Builds a new IEntity of the type that this builder produces.
 		 * 
-		 * @return an object of type IEntity.
+		 * @param id The ID of the data resource from which to build an entity.
+		 * @return An object of type IEntity.
 		 */
-		function build():IEntity;
+		function build(id:String):IEntity;
 		
 		
 		/**

@@ -25,31 +25,41 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.tbs.entity.builders
+package base.core.entity
 {
-	import base.core.entity.EntityManager;
-	import base.core.entity.IEntity;
-	import base.core.entity.IEntityBuilder;
-
-	import extra.tbs.entity.components.TBSUnitPropertiesComponent;
-	import extra.tbs.entity.components.TBSUnitStatsComponent;
+	import flash.utils.Dictionary;
 	
 	
 	/**
-	 * A turn-based strategy unit builder.
+	 * EntityTemplate class
 	 */
-	public class TBSUnitBuilder implements IEntityBuilder
+	public class EntityTemplate
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		[Inject]
-		public var entityManager:EntityManager;
-		[Inject]
-		public var propertiesComponent:TBSUnitPropertiesComponent;
-		[Inject]
-		public var statsComponent:TBSUnitStatsComponent;
+		/** @private */
+		protected var _id:String;
+		/** @private */
+		protected var _componentMappings:Dictionary;
+		/** @private */
+		protected var _componentCount:int;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Constructor
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Creates a new instance of the class.
+		 */
+		public function EntityTemplate(id:String)
+		{
+			_id = id;
+			_componentMappings = new Dictionary();
+			_componentCount = 0;
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -57,19 +67,27 @@ package extra.tbs.entity.builders
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @inheritDoc
+		 * Adds a component mapping.
+		 * 
+		 * @param classID The class ID of the component.
+		 * @param map A map of key/value pairs with component parameters.
 		 */
-		public function build(id:String):IEntity
+		public function addComponentMapping(componentClass:Class, map:Object):void
 		{
-			var e:IEntity = entityManager.createEntity();
-			e.addComponent(propertiesComponent);
-			e.addComponent(statsComponent);
-			//e.addComponent(graphics);
-			//e.addComponent(gravity);
-			//e.addComponent(new Spacial2D());
-			//var startVelocity:Vector2D = new Vector2D(50 + (Math.random() * 100), -700);
-			//e.addComponent(new SimplePhysics(startVelocity));
-			return e;
+			_componentMappings[componentClass] = map;
+			_componentCount++;
+		}
+		
+		
+		/**
+		 * Gets a component mapping.
+		 * 
+		 * @param classID The class ID of the component.
+		 * @return A map of key/value pairs with component parameters.
+		 */
+		public function getComponentMapping(componentClass:Class):Object
+		{
+			return _componentMappings[componentClass];
 		}
 		
 		
@@ -80,7 +98,7 @@ package extra.tbs.entity.builders
 		 */
 		public function toString():String
 		{
-			return "[TBSUnitBuilder]";
+			return "[EntityTemplate, id=" + _id + ", componentCount=" + _componentCount + "]";
 		}
 		
 		
@@ -88,15 +106,21 @@ package extra.tbs.entity.builders
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * @inheritDoc
+		 */
+		public function get id():String
+		{
+			return _id;
+		}
 		
-		//-----------------------------------------------------------------------------------------
-		// Callback Handlers
-		//-----------------------------------------------------------------------------------------
 		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
+		/**
+		 * @inheritDoc
+		 */
+		public function get componentCount():int
+		{
+			return _componentCount;
+		}
 	}
 }

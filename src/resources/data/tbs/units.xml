@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <units>
 	
-	<unit id="unitInfantry">
+	<item id="unitInfantry">
 		<components>
 			
-			<tbsUnitProperties>
-				<nameID>nameInfantryUnit</nameID>
-				<shortNameID>nameShortInfantryUnit</shortNameID>
+			<component classID="tbsUnitPropertiesComponent">
+				<nameID></nameID>
+				<nameShortID></nameShortID>
+				<designationID>nameInfantryUnit</designationID>
+				<designationShortID>nameShortInfantryUnit</designationShortID>
 				<descriptionID>descInfantryUnit</descriptionID>
 				<movementTypeID>movementTypeInfantry</movementTypeID>
 				<price>1000</price>
-				<domain>ground</domain>
-			</tbsUnitProperties>
+			</component>
 			
-			<tbsUnitStats>
+			<component classID="TBSUnitStats">
 				<movementPoints>2</movementPoints>
 				<mobility>3</mobility>
 				<vision>2</vision>
@@ -22,41 +23,41 @@
 				<xp>0</xp>
 				<xpValueAttack>3</xpValueAttack>
 				<xpValueDefense>3</xpValueDefense>
-			</tbsUnitStats>
+			</component>
 			
-			<tbsUnitWeapons>
+			<component classID="TBSUnitWeapons">
 				<primaryWeaponID></primaryWeaponID>
 				<secondaryWeaponID>weaponMachineGun</secondaryWeaponID>
-			</tbsUnitWeapons>
+			</component>
 			
-			<tbsUnitArmor>
+			<component classID="TBSUnitArmor">
 				<armorID>armorInfantry</armorID>
-			</tbsUnitArmor>
+			</component>
 			
-			<tbsUnitAbilities>
-			</tbsUnitAbilities>
+			<component classID="TBSUnitAbilities">
+			</component>
 			
-			<tbsUnitAI>
+			<component classID="TBSUnitAI">
 				<combatAI>aiInfantry</combatAI>
-			</tbsUnitAI>
+			</component>
 			
-			<tbsPrerequisites>
+			<component classID="TBSPrerequisites">
 				<technologyID>testTechnology</technologyID>
 				<resourceID>testResource</resourceID>
-			</tbsPrerequisites>
+			</component>
 			
-			<tbsUnitFlags>
+			<component classID="TBSUnitFlags">
 				<canCaptureUnits>true</canCaptureUnits>
 				<canCaptureFacilities>true</canCaptureFacilities>
 				<canPillage>true</canPillage>
 				<canFortify>true</canFortify>
 				<canRebase>false</canRebase>
-			</tbsUnitFlags>
+			</component>
 			
-			<tbsUnitArt>
-			</tbsUnitArt>
+			<component classID="TBSUnitArt">
+			</component>
 			
 		</components>
-	</unit>
+	</item>
 	
 </units>

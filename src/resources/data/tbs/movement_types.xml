@@ -2,7 +2,7 @@
 <movementTypes>
 	
 	<!-- INFANTRY ========================================================================= -->
-	<movementType id="movementTypeInfantry" nameID="nameMovementTypeInfantry">
+	<movementType id="movementTypeInfantry" nameID="nameMovementTypeInfantry" domain="ground">
 		<terrainModifiers>
 			<terrain id="terrainGrassland"		mod="0"/>
 			<terrain id="terrainPlains"			mod="0"/>
@@ -38,7 +38,7 @@
 	</movementType>
 	
 	<!-- TIRES ============================================================================ -->
-	<movementType id="movementTypeTires" nameID="nameMovementTypeTires">
+	<movementType id="movementTypeTires" nameID="nameMovementTypeTires" domain="ground">
 		<terrainModifiers>
 			<terrain id="terrainGrassland"		mod="0"/>
 			<terrain id="terrainPlains"			mod="0"/>
@@ -74,7 +74,7 @@
 	</movementType>
 	
 	<!-- TREAD ============================================================================ -->
-	<movementType id="movementTypeTread" nameID="nameMovementTypeTread">
+	<movementType id="movementTypeTread" nameID="nameMovementTypeTread" domain="ground">
 		<terrainModifiers>
 			<terrain id="terrainGrassland"		mod="1"/>
 			<terrain id="terrainPlains"			mod="1"/>
@@ -110,7 +110,7 @@
 	</movementType>
 	
 	<!-- SEA ============================================================================== -->
-	<movementType id="movementTypeSea" nameID="nameMovementTypeSea">
+	<movementType id="movementTypeSea" nameID="nameMovementTypeSea" domain="sea">
 		<terrainModifiers>
 			<terrain id="terrainBridge"			mod="0"/>
 			<terrain id="terrainCoast"			mod="0"/>
@@ -136,7 +136,7 @@
 	</movementType>
 	
 	<!-- HOVER ============================================================================ -->
-	<movementType id="movementTypeHover" nameID="nameMovementTypeHover">
+	<movementType id="movementTypeHover" nameID="nameMovementTypeHover" domain="groundsea">
 		<terrainModifiers>
 			<terrain id="terrainGrassland"		mod="0"/>
 			<terrain id="terrainPlains"			mod="0"/>
@@ -177,7 +177,7 @@
 	</movementType>
 	
 	<!-- AIR ============================================================================== -->
-	<movementType id="movementTypeAir" nameID="nameMovementTypeAir">
+	<movementType id="movementTypeAir" nameID="nameMovementTypeAir" domain="air">
 		<terrainModifiers>
 			<terrain id="terrainGrassland"		mod="0"/>
 			<terrain id="terrainPlains"			mod="0"/>

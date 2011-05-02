@@ -30,6 +30,7 @@ package extra.tbs.view.screen
 	import base.core.entity.EntityFactory;
 	import base.core.entity.IEntity;
 	import base.core.entity.IEntityComponent;
+	import base.io.resource.ResourceManager;
 	import base.view.screen.BaseScreen;
 
 	import extra.tbs.entity.builders.TBSUnitBuilder;
@@ -73,13 +74,15 @@ package extra.tbs.view.screen
 		{
 			super.start();
 			
-			var unit:IEntity = _entityFactory.createEntity(TBSUnitBuilder);
+			var unit:IEntity = _entityFactory.createEntity(TBSUnitBuilder, "unitInfantry");
 			Debug.trace(unit.toString());
 			var d:Dictionary = unit.getComponents();
 			for each (var c:IEntityComponent in d)
 			{
 				Debug.trace(c.toString());
 			}
+			
+			ResourceManager.instance.load("unitInfantry");
 		}
 		
 		

@@ -28,6 +28,7 @@
 package base.io.resource
 {
 	import base.core.debug.Log;
+	import base.core.entity.EntityTemplate;
 	import base.data.DataObject;
 
 	import com.hexagonstar.util.string.TabularText;
@@ -200,11 +201,18 @@ package base.io.resource
 		 */
 		public function addDataResource(content:*):void
 		{
+			var r:Resource;
 			if (content is DataObject)
 			{
 				var o:DataObject = DataObject(content);
-				var r:Resource = _resources[o.id];
+				r = _resources[o.id];
 				r.setContent(o);
+			}
+			else if (content is EntityTemplate)
+			{
+				var et:EntityTemplate = EntityTemplate(content);
+				r = _resources[et.id];
+				r.setContent(et);
 			}
 		}
 		

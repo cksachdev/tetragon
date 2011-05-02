@@ -25,27 +25,20 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.tbs.entity.components
+package extra.tbs.data.objects
 {
-	import base.core.entity.IEntityComponent;
+	import base.data.DataObject;
 	
 	
 	/**
-	 * TBSUnitPropertiesComponent class
+	 * Data object for a turn-based strategy unit.
 	 */
-	public class TBSUnitPropertiesComponent implements IEntityComponent
+	public class TBSUnit extends DataObject
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _nameID:String;
-		private var _shortNameID:String;
-		private var _designationID:String;
-		private var _designationShortID:String;
-		private var _descriptionID:String;
-		private var _movementTypeID:String;
-		private var _price:uint;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -55,7 +48,7 @@ package extra.tbs.entity.components
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function TBSUnitPropertiesComponent()
+		public function TBSUnit()
 		{
 		}
 		
@@ -64,117 +57,10 @@ package extra.tbs.entity.components
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
-		public function toString():String
-		{
-			return "[TBSUnitPropertiesComponent]";
-		}
-		
 		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * A personal name for the unit. This is optional and can be used if a unit should
-		 * have a recognizable name among it's type of units, for example a spy unit could
-		 * have a personal name to make it easier to be recognized among other spy units.
-		 * 
-		 * If no name ID was specified for the unit, this property will return the same as
-		 * the unit's designation ID.
-		 */
-		public function get nameID():String
-		{
-			if (_nameID == null || _nameID.length < 1) return designationID;
-			return _nameID;
-		}
-		public function set nameID(v:String):void
-		{
-			_nameID = v;
-		}
-		
-		
-		/**
-		 * ID for the abbreviated version of the name.
-		 * 
-		 * If no short name ID was specified for the unit, this property will return the
-		 * same as the unit's short designation ID.
-		 */
-		public function get shortNameID():String
-		{
-			return _shortNameID;
-		}
-		public function set shortNameID(v:String):void
-		{
-			_shortNameID = v;
-		}
-		
-		
-		/**
-		 * The ID of the name of the unit as it goes by trade (e.g. Infantry).
-		 */
-		public function get designationID():String
-		{
-			return _designationID;
-		}
-		public function set designationID(v:String):void
-		{
-			_designationID = v;
-		}
-		
-		
-		/**
-		 * ID of the abbreviated version of the designation.
-		 */
-		public function get designationShortID():String
-		{
-			return _designationShortID;
-		}
-		public function set designationShortID(v:String):void
-		{
-			_designationShortID = v;
-		}
-		
-		
-		/**
-		 * ID for optional text that describes the unit.
-		 */
-		public function get descriptionID():String
-		{
-			return _descriptionID;
-		}
-		public function set descriptionID(v:String):void
-		{
-			_descriptionID = v;
-		}
-		
-		
-		/**
-		 * ID of the movement type of the unit, e.g. tires, tread, sea etc.
-		 */
-		public function get movementTypeID():String
-		{
-			return _movementTypeID;
-		}
-		public function set movementTypeID(v:String):void
-		{
-			_movementTypeID = v;
-		}
-		
-		
-		/**
-		 * The money it costs to buy one of these units.
-		 */
-		public function get price():uint
-		{
-			return _price;
-		}
-		public function set price(v:uint):void
-		{
-			_price = v;
-		}
 		
 		
 		//-----------------------------------------------------------------------------------------

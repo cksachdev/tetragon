@@ -29,6 +29,7 @@ package extra.tbs.setup
 {
 	import base.setup.Setup;
 
+	import extra.tbs.data.parsers.TBSUnitDataParser;
 	import extra.tbs.entity.builders.TBSUnitBuilder;
 	import extra.tbs.entity.components.TBSUnitPropertiesComponent;
 	import extra.tbs.entity.components.TBSUnitStatsComponent;
@@ -113,8 +114,7 @@ package extra.tbs.setup
 		 */
 		override protected function mapDataTypes():void
 		{
-			//dataTypeParserFactory.addDataType("Attribute", AttributeDataParser);
-			//dataTypeParserFactory.addDataType("Character", CharacterDataParser);
+			dataTypeParserFactory.addDataType("TBSUnit", TBSUnitDataParser);
 		}
 		
 		

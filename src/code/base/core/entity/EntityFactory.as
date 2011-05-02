@@ -95,14 +95,15 @@ package base.core.entity
 		 * Creates an entity of the type that is built by the specified builderClass.
 		 * 
 		 * @param builderClass The builder class which should create an entity.
+		 * @param id The ID of the data resource from which to create an entity.
 		 * @return An IEntity created by the specified builderClass or null.
 		 */
-		public function createEntity(builderClass:Class):IEntity
+		public function createEntity(builderClass:Class, id:String):IEntity
 		{
 			var builder:IEntityBuilder = _builderMap[builderClass];
 			if (builder)
 			{
-				return builder.build();
+				return builder.build(id);
 			}
 			
 			Log.error(toString() + " Could not create entity from builder: " + builderClass);
