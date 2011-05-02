@@ -28,7 +28,7 @@
 package base.setup
 {
 	import base.Main;
-	import base.data.parsers.DataTypeParserFactory;
+	import base.data.DataClassesFactory;
 
 	import com.hexagonstar.ioc.Injector;
 	
@@ -44,7 +44,6 @@ package base.setup
 		
 		protected var _main:Main;
 		protected var _injector:Injector;
-		protected var _dataTypeParserFactory:DataTypeParserFactory;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -68,6 +67,7 @@ package base.setup
 		public function initialSetup():void
 		{
 			mapDataTypes();
+			mapEntityComponentClasses();
 		}
 		
 		
@@ -77,7 +77,6 @@ package base.setup
 		 */
 		public function postConfigSetup():void
 		{
-			registerEntityBuilders();
 			registerScreens();
 		}
 		
@@ -135,11 +134,11 @@ package base.setup
 		
 		
 		/**
-		 * A reference to the datatype parser factory.
+		 * A reference to the data classes factory.
 		 */
-		protected function get dataTypeParserFactory():DataTypeParserFactory
+		protected function get dataClassesFactory():DataClassesFactory
 		{
-			return DataTypeParserFactory.instance;
+			return DataClassesFactory.instance;
 		}
 		
 		
@@ -171,7 +170,7 @@ package base.setup
 		/**
 		 * @private
 		 */
-		protected function registerEntityBuilders():void
+		protected function mapEntityComponentClasses():void
 		{
 			/* Abstract method! */
 		}

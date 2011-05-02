@@ -27,9 +27,9 @@
  */
 package extra.tbs.setup
 {
+	import base.data.parsers.EntityDataParser;
 	import base.setup.Setup;
 
-	import extra.tbs.data.parsers.TBSUnitDataParser;
 	import extra.tbs.entity.builders.TBSUnitBuilder;
 	import extra.tbs.entity.components.TBSUnitPropertiesComponent;
 	import extra.tbs.entity.components.TBSUnitStatsComponent;
@@ -114,16 +114,17 @@ package extra.tbs.setup
 		 */
 		override protected function mapDataTypes():void
 		{
-			dataTypeParserFactory.addDataType("TBSUnit", TBSUnitDataParser);
+			dataClassesFactory.mapDataType("TBSUnit", EntityDataParser, TBSUnitBuilder);
 		}
 		
 		
 		/**
 		 * @inheritDoc
 		 */
-		override protected function registerEntityBuilders():void
+		override protected function mapEntityComponentClasses():void
 		{
-			main.entityFactory.registerBuilder(TBSUnitBuilder);
+			dataClassesFactory.mapComponentClass("tbsUnitPropertiesComponent", TBSUnitPropertiesComponent);
+			dataClassesFactory.mapComponentClass("tbsUnitStatsComponent", TBSUnitStatsComponent);
 		}
 		
 		

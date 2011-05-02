@@ -230,6 +230,20 @@ package base.io.resource
 		
 		
 		/**
+		 * Returns the data type of the resource that is mapped under the specified ID.
+		 * 
+		 * @param id The ID of the resource.
+		 * @return A string describing the data type of the resource.
+		 */
+		public function getResourceDataType(id:String):String
+		{
+			var r:Resource = _resources[id];
+			if (r) return r.dataType;
+			return null;
+		}
+		
+		
+		/**
 		 * @private
 		 */
 		public function getResourceContent(id:String):*

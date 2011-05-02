@@ -27,7 +27,6 @@
  */
 package base.core.entity
 {
-	import flash.utils.Dictionary;
 	
 	
 	/**
@@ -42,7 +41,7 @@ package base.core.entity
 		/** @private */
 		protected var _id:String;
 		/** @private */
-		protected var _componentMappings:Dictionary;
+		protected var _componentMappings:Object;
 		/** @private */
 		protected var _componentCount:int;
 		
@@ -57,7 +56,7 @@ package base.core.entity
 		public function EntityTemplate(id:String)
 		{
 			_id = id;
-			_componentMappings = new Dictionary();
+			_componentMappings = {};
 			_componentCount = 0;
 		}
 		
@@ -72,9 +71,9 @@ package base.core.entity
 		 * @param classID The class ID of the component.
 		 * @param map A map of key/value pairs with component parameters.
 		 */
-		public function addComponentMapping(componentClass:Class, map:Object):void
+		public function addComponentMapping(classID:String, map:Object):void
 		{
-			_componentMappings[componentClass] = map;
+			_componentMappings[classID] = map;
 			_componentCount++;
 		}
 		
@@ -85,9 +84,9 @@ package base.core.entity
 		 * @param classID The class ID of the component.
 		 * @return A map of key/value pairs with component parameters.
 		 */
-		public function getComponentMapping(componentClass:Class):Object
+		public function getComponentMapping(classID:String):Object
 		{
-			return _componentMappings[componentClass];
+			return _componentMappings[classID];
 		}
 		
 		
@@ -121,6 +120,15 @@ package base.core.entity
 		public function get componentCount():int
 		{
 			return _componentCount;
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get componentMappings():Object
+		{
+			return _componentMappings;
 		}
 	}
 }

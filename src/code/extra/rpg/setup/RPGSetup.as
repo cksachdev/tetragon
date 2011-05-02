@@ -105,8 +105,8 @@ package extra.rpg.setup
 		 */
 		override protected function mapDataTypes():void
 		{
-			dataTypeParserFactory.addDataType("Attribute", AttributeDataParser);
-			dataTypeParserFactory.addDataType("Character", CharacterDataParser);
+			dataClassesFactory.mapDataType("Attribute", AttributeDataParser);
+			dataClassesFactory.mapDataType("Character", CharacterDataParser);
 		}
 		
 		

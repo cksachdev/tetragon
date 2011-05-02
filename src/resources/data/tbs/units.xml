@@ -14,7 +14,7 @@
 				<price>1000</price>
 			</component>
 			
-			<component classID="TBSUnitStats">
+			<component classID="tbsUnitStatsComponent">
 				<movementPoints>2</movementPoints>
 				<mobility>3</mobility>
 				<vision>2</vision>

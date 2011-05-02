@@ -106,10 +106,10 @@ package extra.game.setup
 		 */
 		override protected function mapDataTypes():void
 		{
-			dataTypeParserFactory.addDataType("WorldSpace", WorldspaceDataParser);
-			dataTypeParserFactory.addDataType("Cell", CellDataParser);
-			dataTypeParserFactory.addDataType("TileSet", TileSetDataParser);
-			dataTypeParserFactory.addDataType("TileMap", TileMapDataParser);
+			dataClassesFactory.mapDataType("WorldSpace", WorldspaceDataParser);
+			dataClassesFactory.mapDataType("Cell", CellDataParser);
+			dataClassesFactory.mapDataType("TileSet", TileSetDataParser);
+			dataClassesFactory.mapDataType("TileMap", TileMapDataParser);
 		}
 		
 		

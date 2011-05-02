@@ -82,6 +82,18 @@ package base.command.file
 						size = "" + XMLList(content).length();
 					else if (content is Sound)
 						size = new Byte(Sound(content).bytesTotal).toString();
+					else
+					{
+						try
+						{
+							var b:ByteArray = new ByteArray();
+							b.writeObject(content);
+							size = b.length.toString();
+						}
+						catch (err:Error)
+						{
+						}
+					}
 				}
 				
 				var s:String = "\n\tid:             " + r.id

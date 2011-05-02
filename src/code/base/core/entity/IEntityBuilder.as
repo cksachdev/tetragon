@@ -27,6 +27,8 @@
  */
 package base.core.entity
 {
+	
+	
 	/**
 	 * IEntityBuilder Interface
 	 */
@@ -38,7 +40,7 @@ package base.core.entity
 		 * @param id The ID of the data resource from which to build an entity.
 		 * @return An object of type IEntity.
 		 */
-		function build(id:String):IEntity;
+		function build(template:EntityTemplate):IEntity;
 		
 		
 		/**

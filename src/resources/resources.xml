@@ -85,12 +85,12 @@
 	<!-- ************************************************************************************** -->
 	<data>
 		
-		<group type="TBSUnit">
-			<resource id="unitInfantry" fileID="tbsUnitsFile"/>
+		<group type="TBSUnit" fileID="tbsUnitsFile">
+			<resource id="unitInfantry"/>
 		</group>
 		
-		<group type="TBSWeapon">
-			<resource id="weaponMachineGun" fileID="tbsWeaponsFile"/>
+		<group type="TBSWeapon" fileID="tbsWeaponsFile">
+			<resource id="weaponMachineGun"/>
 		</group>
 		
 		<group type="TBSMovementType" fileID="tbsMovementTypesFile">

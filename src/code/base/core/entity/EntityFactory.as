@@ -28,10 +28,11 @@
 package base.core.entity
 {
 	import base.core.debug.Log;
+	import base.data.DataClassesFactory;
+	import base.io.resource.Resource;
+	import base.io.resource.ResourceManager;
 
 	import com.hexagonstar.ioc.Injector;
-
-	import flash.utils.Dictionary;
 	
 	
 	/**
@@ -46,7 +47,7 @@ package base.core.entity
 		/** @private */
 		private var _injector:Injector;
 		/** @private */
-		private var _builderMap:Dictionary;
+		private var _builderCache:Object;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -61,7 +62,7 @@ package base.core.entity
 		public function EntityFactory(injector:Injector)
 		{
 			_injector = injector;
-			_builderMap = new Dictionary();
+			_builderCache = {};
 		}
 		
 		
@@ -70,44 +71,39 @@ package base.core.entity
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Registers a builder in the factory.
+		 * Creates an entity from the entity template of the specified id.
 		 * 
-		 * @param builderClass The class of the builder to register. Must implement
-		 *        IEntityBuilder!
+		 * @param id The ID of the data resource from which to create an entity.
+		 * @return An object of type IEntity or null.
 		 */
-		public function registerBuilder(builderClass:Class):void
+		public function createEntity(id:String):IEntity
 		{
-			var builder:IEntityBuilder = _injector.instantiate(builderClass);
-			if (builder)
+			var resource:Resource = ResourceManager.resourceIndex.getResource(id);
+			var dataTypeID:String = resource.dataType;
+			var builder:IEntityBuilder;
+			
+			if (!_builderCache[dataTypeID])
 			{
-				_builderMap[builderClass] = builder;
-				Log.debug(toString() + " Registered entity builder: " + builder.toString());
+				var builderClass:Class = DataClassesFactory.instance.getBuilderClass(dataTypeID);
+				builder = _injector.instantiate(builderClass);
+				if (builder)
+				{
+					_builderCache[dataTypeID] = builder;
+					Log.debug(toString() + " Cached entity builder: " + builder.toString());
+				}
+				else
+				{
+					Log.error(toString() + " Could not create entity builder of type: "
+						+ builderClass, this);
+					return null;
+				}
 			}
 			else
 			{
-				Log.error(toString() + " Could not register entity builder of type: "
-					+ builderClass);
-			}
-		}
-		
-		
-		/**
-		 * Creates an entity of the type that is built by the specified builderClass.
-		 * 
-		 * @param builderClass The builder class which should create an entity.
-		 * @param id The ID of the data resource from which to create an entity.
-		 * @return An IEntity created by the specified builderClass or null.
-		 */
-		public function createEntity(builderClass:Class, id:String):IEntity
-		{
-			var builder:IEntityBuilder = _builderMap[builderClass];
-			if (builder)
-			{
-				return builder.build(id);
+				builder = _builderCache[dataTypeID];
 			}
 			
-			Log.error(toString() + " Could not create entity from builder: " + builderClass);
-			return null;
+			return builder.build(resource.content);
 		}
 		
 		

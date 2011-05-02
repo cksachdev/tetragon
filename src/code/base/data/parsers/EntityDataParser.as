@@ -25,19 +25,19 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.tbs.data.parsers
+package base.data.parsers
 {
+	import base.core.debug.Log;
 	import base.core.entity.EntityTemplate;
-	import base.data.parsers.DataParser;
-	import base.data.parsers.IDataParser;
+	import base.data.DataClassesFactory;
 	import base.io.resource.ResourceIndex;
 	import base.io.resource.wrappers.XMLResourceWrapper;
 
 	
 	/**
-	 * 
+	 * A data parser that parses data for entity template objects.
 	 */
-	public class TBSUnitDataParser extends DataParser implements IDataParser
+	public class EntityDataParser extends DataParser implements IDataParser
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
@@ -50,6 +50,7 @@ package extra.tbs.data.parsers
 		{
 			_xml = wrapper.xml;
 			var index:ResourceIndex = model;
+			var dcf:DataClassesFactory = DataClassesFactory.instance;
 			
 			for each (var x:XML in _xml.item)
 			{
@@ -60,30 +61,39 @@ package extra.tbs.data.parsers
 				if (!wrapper.hasResourceID(id)) continue;
 				
 				/* Create a new entity template for the data item. */
-				var et:EntityTemplate = new EntityTemplate(id);
+				var t:EntityTemplate = new EntityTemplate(id);
 				
 				/* Loop through the item's component definitions. */
 				for each (var c:XML in x.components.component)
 				{
 					var componentClassID:String = extractString(c, "@classID");
-					var componentClass:Class = null; // TODO
+					// TODO componentClass still needed here?
+					var componentClass:Class = dcf.getComponentClass(componentClassID);
 					
-					/* Create map object that maps all properties and values of the component. */
-					var map:Object = {};
-					
-					/* Map all properties found in the component definition. */
-					for each (var p:XML in c.children())
+					if (componentClass)
 					{
-						var key:String = p.name();
-						var value:String = p.toString();
-						map[key] = value;
+						/* Create map that maps all properties and values of the component. */
+						var map:Object = {};
+						
+						/* Map all properties found in the component definition. */
+						for each (var p:XML in c.children())
+						{
+							var key:String = p.name();
+							var value:String = p.toString();
+							map[key] = value;
+						}
+						
+						/* Add component property map to entity template. */
+						t.addComponentMapping(componentClassID, map);
 					}
-					
-					/* Add component property map to entity template. */
-					et.addComponentMapping(componentClass, map);
+					else
+					{
+						Log.error("No component class mapped for the classID \""
+							+ componentClassID + "\" for item with ID \"" + id + "\".", this);
+					}
 				}
 				
-				index.addDataResource(et);
+				index.addDataResource(t);
 			}
 			
 			dispose();

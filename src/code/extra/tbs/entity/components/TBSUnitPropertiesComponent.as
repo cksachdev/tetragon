@@ -40,7 +40,7 @@ package extra.tbs.entity.components
 		//-----------------------------------------------------------------------------------------
 		
 		private var _nameID:String;
-		private var _shortNameID:String;
+		private var _nameShortID:String;
 		private var _designationID:String;
 		private var _designationShortID:String;
 		private var _descriptionID:String;
@@ -102,13 +102,13 @@ package extra.tbs.entity.components
 		 * If no short name ID was specified for the unit, this property will return the
 		 * same as the unit's short designation ID.
 		 */
-		public function get shortNameID():String
+		public function get nameShortID():String
 		{
-			return _shortNameID;
+			return _nameShortID;
 		}
-		public function set shortNameID(v:String):void
+		public function set nameShortID(v:String):void
 		{
-			_shortNameID = v;
+			_nameShortID = v;
 		}
 		
 		

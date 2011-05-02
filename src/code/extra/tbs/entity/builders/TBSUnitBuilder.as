@@ -27,12 +27,18 @@
  */
 package extra.tbs.entity.builders
 {
+	import base.core.debug.Log;
 	import base.core.entity.EntityManager;
+	import base.core.entity.EntityTemplate;
 	import base.core.entity.IEntity;
 	import base.core.entity.IEntityBuilder;
+	import base.core.entity.IEntityComponent;
+	import base.data.DataClassesFactory;
 
 	import extra.tbs.entity.components.TBSUnitPropertiesComponent;
 	import extra.tbs.entity.components.TBSUnitStatsComponent;
+
+	import com.hexagonstar.util.debug.Debug;
 	
 	
 	/**
@@ -59,11 +65,35 @@ package extra.tbs.entity.builders
 		/**
 		 * @inheritDoc
 		 */
-		public function build(id:String):IEntity
+		public function build(template:EntityTemplate):IEntity
 		{
 			var e:IEntity = entityManager.createEntity();
-			e.addComponent(propertiesComponent);
-			e.addComponent(statsComponent);
+			var mappings:Object = template.componentMappings;
+			
+			for (var classID:String in mappings)
+			{
+				var c:IEntityComponent = DataClassesFactory.instance.createComponent(classID);
+				var m:Object = mappings[classID];
+				for (var property:String in m)
+				{
+					if (Object(c).hasOwnProperty(property))
+					{
+						c[property] = m[property];
+					}
+					else
+					{
+						Log.warn("Tried to set a non-existing property <" + property
+							+ "> in component " + c.toString() + " for template "
+							+ template.toString() + ".");
+					}
+				}
+				Debug.traceObj(c);
+				// TODO
+			}
+			
+			
+			//e.addComponent(propertiesComponent);
+			//e.addComponent(statsComponent);
 			//e.addComponent(graphics);
 			//e.addComponent(gravity);
 			//e.addComponent(new Spacial2D());

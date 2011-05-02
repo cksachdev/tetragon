@@ -33,8 +33,6 @@ package extra.tbs.view.screen
 	import base.io.resource.ResourceManager;
 	import base.view.screen.BaseScreen;
 
-	import extra.tbs.entity.builders.TBSUnitBuilder;
-
 	import com.hexagonstar.util.debug.Debug;
 
 	import flash.utils.Dictionary;
@@ -74,15 +72,19 @@ package extra.tbs.view.screen
 		{
 			super.start();
 			
-			var unit:IEntity = _entityFactory.createEntity(TBSUnitBuilder, "unitInfantry");
+			ResourceManager.instance.load("unitInfantry", onLoaded);
+		}
+
+
+		private function onLoaded():void
+		{
+			var unit:IEntity = _entityFactory.createEntity("unitInfantry");
 			Debug.trace(unit.toString());
 			var d:Dictionary = unit.getComponents();
 			for each (var c:IEntityComponent in d)
 			{
 				Debug.trace(c.toString());
 			}
-			
-			ResourceManager.instance.load("unitInfantry");
 		}
 		
 		
