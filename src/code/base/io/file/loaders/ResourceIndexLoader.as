@@ -303,11 +303,18 @@ package base.io.file.loaders
 			for each (var x:XML in xml.data.group)
 			{
 				var type:String = x.@type;
+				var allFileID:String = "" + x.@fileID;
 				for each (var s:XML in x.children())
 				{
 					if (s.name() != "resource") continue;
 					
-					var dfp:String = _resourceIndex.getDataFilePath(s.@fileID);
+					/* If all resources of the group are in the same data file, the
+					 * data file ID can be specified globally for all resources instead
+					 * of having any resource repeat the same data file ID so if we got
+					 * a global data file ID use that one instead. */
+					var fileID:String = allFileID.length > 0 ? allFileID : s.@fileID;
+					var dfp:String = _resourceIndex.getDataFilePath(fileID);
+					
 					if (!dfp || dfp.length < 1)
 					{
 						Log.error("No data file with ID \"" + s.@fileID
@@ -315,8 +322,9 @@ package base.io.file.loaders
 							+ s.@id + "\" requires it.", this);
 						continue;
 					}
+					
 					s.@path = dfp;
-					s.@packageID = _resourceIndex.getDataFilePackageID(s.@fileID);
+					s.@packageID = _resourceIndex.getDataFilePackageID(fileID);
 					addResourceEntry(s, ResourceGroup.DATA, type);
 				}
 			}

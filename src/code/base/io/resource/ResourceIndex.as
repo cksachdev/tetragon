@@ -27,6 +27,7 @@
  */
 package base.io.resource
 {
+	import base.core.debug.Log;
 	import base.data.DataObject;
 
 	import com.hexagonstar.util.string.TabularText;
@@ -142,8 +143,12 @@ package base.io.resource
 		 */
 		public function getDataFilePath(id:String):String
 		{
-			if (!_dataFiles[id]) return null;
-			return ResourceDataFileEntry(_dataFiles[id]).path;
+			if (_dataFiles[id])
+			{
+				return ResourceDataFileEntry(_dataFiles[id]).path;
+			}
+			Log.error("No dataFilePath mapped for dataFileID \"" + id + "\".", this);
+			return null;
 		}
 		
 		
@@ -155,7 +160,12 @@ package base.io.resource
 		 */
 		public function getDataFilePackageID(id:String):String
 		{
-			return ResourceDataFileEntry(_dataFiles[id]).packageID;
+			if (_dataFiles[id])
+			{
+				return ResourceDataFileEntry(_dataFiles[id]).packageID;
+			}
+			Log.error("No packageID mapped for dataFileID \"" + id + "\".", this);
+			return null;
 		}
 		
 		
