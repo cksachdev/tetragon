@@ -27,7 +27,6 @@
  */
 package base.io.file.loaders
 {
-	import base.Main;
 	import base.core.debug.Log;
 	import base.data.Registry;
 
@@ -52,7 +51,6 @@ package base.io.file.loaders
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		protected var _main:Main;
 		protected var _loader:BulkLoader;
 		protected var _files:Queue;
 		protected var _preventNotify:Boolean;
@@ -67,11 +65,10 @@ package base.io.file.loaders
 		/**
 		 * Creates a new AbstractLoader instance.
 		 */
-		public function FileLoader(main:Main)
+		public function FileLoader()
 		{
 			super();
 			
-			_main = main;
 			_preventNotify = false;
 			_loader = new BulkLoader(Registry.config.ioLoadConnections, Registry.config.ioLoadRetries,
 				Registry.config.ioUseAbsoluteFilePath, Registry.config.ioPreventFileCaching);

@@ -50,11 +50,9 @@ package base.core.debug
 	
 	
 	/**
-	 * A Singleton class that represents a Debugging and Command output console similar
+	 * A class that represents a Debugging and Command output console similar
 	 * to that found in many later games. By default the console - once instantiated and
 	 * added to the stage - is hidden and can be toggled visible with the toggle() method.
-	 * 
-	 * StageReference.stage must be assigned before the console can be used.
 	 */
 	public class Console extends Sprite
 	{

@@ -51,12 +51,7 @@ package base.io.resource
 		/**
 		 * @private
 		 */
-		protected var _main:Main;
-		
-		/**
-		 * @private
-		 */
-		protected var _resourceManager:ResourceManager;
+		private var _resourceManager:ResourceManager;
 		
 		/**
 		 * @private
@@ -96,10 +91,9 @@ package base.io.resource
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function ResourceProvider(main:Main, rm:ResourceManager, id:String = null)
+		public function ResourceProvider(id:String = null)
 		{
-			_main = main;
-			_resourceManager = rm;
+			_resourceManager = Main.instance.resourceManager;
 			_dataClassesFactory = DataClassesFactory.instance;
 			_id = id;
 			_bulkFiles = {};
@@ -150,6 +144,20 @@ package base.io.resource
 		{
 			/* Abstract method! */
 			return null;
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Getters & Setters
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * A reference to the resource manager.
+		 * @private
+		 */
+		protected function get resourceManager():ResourceManager
+		{
+			return _resourceManager;
 		}
 		
 		
@@ -317,9 +325,9 @@ package base.io.resource
 			
 			/* Text data goes into the string index, other data into the resource index. */
 			if (resourceType == ResourceGroup.TEXT)
-				parser.parse(w, _main.resourceManager.stringIndex);
+				parser.parse(w, resourceManager.stringIndex);
 			else
-				parser.parse(w, _main.resourceManager.resourceIndex);
+				parser.parse(w, resourceManager.resourceIndex);
 			
 			/* Mark all resources in the loaded bulk file as loaded. */
 			for (var i:int = 0; i < bulkFile.items.length; i++)

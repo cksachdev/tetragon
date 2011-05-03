@@ -227,7 +227,7 @@ package base.command.env
 			{
 				/* Create ini filename that uses the same first part as the SWF. This
 				 * assures that we can have several SWFs with their own ini file if needed. */
-				_configLoader = new ConfigLoader(main);
+				_configLoader = new ConfigLoader();
 				_configLoader.addEventListener(Event.COMPLETE, onConfigLoadComplete);
 				_configLoader.addEventListener(ErrorEvent.ERROR, onConfigLoadComplete);
 				_configLoader.addFile(AppInfo.FILENAME + ".ini", "configFile");

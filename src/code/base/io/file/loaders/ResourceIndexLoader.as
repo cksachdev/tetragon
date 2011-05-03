@@ -27,7 +27,6 @@
  */
 package base.io.file.loaders
 {
-	import base.Main;
 	import base.core.debug.Log;
 	import base.data.Registry;
 	import base.io.resource.ResourceGroup;
@@ -70,9 +69,9 @@ package base.io.file.loaders
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function ResourceIndexLoader(main:Main, resourceIndex:ResourceIndex)
+		public function ResourceIndexLoader(resourceIndex:ResourceIndex)
 		{
-			super(main);
+			super();
 			
 			_resourceIndex = resourceIndex;
 			_locale = Registry.config.currentLocale;
@@ -99,7 +98,6 @@ package base.io.file.loaders
 		override public function dispose():void
 		{
 			super.dispose();
-			_main = null;
 			_resourceIndex = null;
 		}
 		

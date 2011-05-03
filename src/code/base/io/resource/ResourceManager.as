@@ -96,7 +96,7 @@ package base.io.resource
 			_waitingHandlers = {};
 			_stringIndex = new StringIndex();
 			_helper = new ResourceManagerHelper();
-			_helper.init(_main, this, resourceBundleClass);
+			_helper.init(resourceBundleClass);
 		}
 		
 		

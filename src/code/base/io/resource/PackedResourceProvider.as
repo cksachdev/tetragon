@@ -27,7 +27,6 @@
  */
 package base.io.resource
 {
-	import base.Main;
 	import base.core.debug.Log;
 	import base.data.Registry;
 
@@ -61,9 +60,9 @@ package base.io.resource
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function PackedResourceProvider(main:Main, rm:ResourceManager, id:String = null)
+		public function PackedResourceProvider(id:String = null)
 		{
-			super(main, rm, id);
+			super(id);
 		}
 		
 		

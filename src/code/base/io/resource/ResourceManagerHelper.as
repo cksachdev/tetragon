@@ -52,8 +52,6 @@ package base.io.resource
 		//-----------------------------------------------------------------------------------------
 		
 		/** @private */
-		private var _main:Main;
-		/** @private */
 		private var _resourceManager:ResourceManager;
 		/** @private */
 		private var _indexLoader:ResourceIndexLoader;
@@ -134,11 +132,9 @@ package base.io.resource
 		/**
 		 * Initializes and starts the ResourceManagerHelper.
 		 */
-		internal function init(main:Main, resourceManager:ResourceManager,
-			resourceBundleClass:Class = null):void
+		internal function init(resourceBundleClass:Class = null):void
 		{
-			_main = main;
-			_resourceManager = resourceManager;
+			_resourceManager = Main.instance.resourceManager;
 			
 			_resourceIndex = new ResourceIndex();
 			_resourceProviders = new Dictionary();
@@ -188,7 +184,7 @@ package base.io.resource
 				/* If we got any embedded resources, create the embedded resource provider. */
 				if (resourceBundle.resourceCount > 0)
 				{
-					p = new EmbeddedResourceProvider(_main, _resourceManager);
+					p = new EmbeddedResourceProvider();
 					p.init(resourceBundle);
 					_resourceProviders[EmbeddedResourceProvider.ID] = p;
 				}
@@ -217,11 +213,11 @@ package base.io.resource
 			if (Registry.config.resourceIndexFile && Registry.config.resourceIndexFile.length > 0)
 			{
 				/* Create resource provider for loaded resources. */
-				p = new LoadedResourceProvider(_main, _resourceManager);
+				p = new LoadedResourceProvider();
 				p.init();
 				_resourceProviders[LoadedResourceProvider.ID] = p;
 				
-				_indexLoader = new ResourceIndexLoader(_main, _resourceIndex);
+				_indexLoader = new ResourceIndexLoader(_resourceIndex);
 				_indexLoader.addEventListener(Event.COMPLETE, onResourceIndexFileProcessed);
 				_indexLoader.addEventListener(ErrorEvent.ERROR, onResourceIndexFileProcessed);
 				_indexLoader.load();
@@ -250,8 +246,7 @@ package base.io.resource
 				for (var packageID:String in d)
 				{
 					var name:String = d[packageID];
-					var p:PackedResourceProvider = new PackedResourceProvider(_main,
-						_resourceManager, packageID);
+					var p:PackedResourceProvider = new PackedResourceProvider(packageID);
 					if (p.init(name))
 					{
 						p.addEventListener(Event.OPEN, onPackedResourceProviderEvent);

@@ -27,7 +27,6 @@
  */
 package base.io.file.loaders
 {
-	import base.Main;
 	import base.core.debug.Log;
 	import base.data.Config;
 	import base.data.Registry;
@@ -66,9 +65,8 @@ package base.io.file.loaders
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function ConfigLoader(main:Main)
+		public function ConfigLoader()
 		{
-			super(main);
 			_config = Registry.config;
 		}
 		

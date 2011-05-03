@@ -27,7 +27,6 @@
  */
 package base.core.settings
 {
-	import com.hexagonstar.exception.SingletonException;
 	import com.hexagonstar.net.SharedObjectStatus;
 	import com.hexagonstar.signals.Signal;
 
@@ -73,11 +72,6 @@ package base.core.settings
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
-		
-		/** @private */
-		private static var _instance:LocalSettingsManager;
-		/** @private */
-		private static var _singletonLock:Boolean = false;
 		
 		/** @private */
 		private var _settings:LocalSettings;
@@ -128,7 +122,6 @@ package base.core.settings
 		 */
 		public function LocalSettingsManager()
 		{
-			if (!_singletonLock) throw new SingletonException(this);
 			setup();
 		}
 		
@@ -265,20 +258,6 @@ package base.core.settings
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Returns the singleton instance of LocalSettingsManager.
-		 */
-		public static function get instance():LocalSettingsManager
-		{
-			if (_instance == null)
-			{
-				_singletonLock = true;
-				_instance = new LocalSettingsManager();
-				_singletonLock = false;
-			}
-			return _instance;
-		}
 		
 		/**
 		 * The minimum disk space available in bytes that the user must

@@ -33,12 +33,15 @@ package base.data
 	import base.data.parsers.IDataParser;
 	import base.data.parsers.NullDataParser;
 	import base.data.parsers.TextDataParser;
+	import base.data.parsers.XMLDataParser;
 	import base.io.resource.ResourceGroup;
 
 	import com.hexagonstar.exception.SingletonException;
 
 	
 	/**
+	 * TODO Make non-Singleton!
+	 * 
 	 * A singleton factory that acts as an index for parser, builder and component
 	 * classes by mapping data parser classes and entity builder classes to datatype
 	 * IDs and entity component classes to component class IDs.
@@ -102,7 +105,7 @@ package base.data
 			/* Add default data types. */
 			mapDataType(ResourceGroup.NONE, NullDataParser);
 			mapDataType(ResourceGroup.TEXT, TextDataParser);
-			//addDataType("XML", XMLDataParser); // TODO
+			mapDataType(ResourceGroup.XML, XMLDataParser);
 		}
 		
 		

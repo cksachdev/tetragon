@@ -27,7 +27,6 @@
  */
 package base.io.resource
 {
-	import base.Main;
 	import base.event.ResourceEvent;
 
 	import com.hexagonstar.file.FileIOEvent;
@@ -65,9 +64,9 @@ package base.io.resource
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function EmbeddedResourceProvider(main:Main, rm:ResourceManager, id:String = null)
+		public function EmbeddedResourceProvider(id:String = null)
 		{
-			super(main, rm, id);
+			super(id);
 		}
 		
 		

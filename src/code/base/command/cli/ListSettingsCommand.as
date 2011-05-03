@@ -28,7 +28,6 @@
 package base.command.cli
 {
 	import base.command.CLICommand;
-	import base.core.settings.LocalSettingsManager;
 
 	import com.hexagonstar.util.debug.LogLevel;
 
@@ -44,7 +43,7 @@ package base.command.cli
 		 */
 		override public function execute():void 
 		{
-			main.console.log("\n" + LocalSettingsManager.instance.settings.dump(), LogLevel.INFO);
+			main.console.log("\n" + main.localSettingsManager.settings.dump(), LogLevel.INFO);
 			complete();
 		}
 		

@@ -25,22 +25,43 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.io.resource
+package base.data.parsers
 {
+	import base.io.resource.Resource;
+	import base.io.resource.StringIndex;
+	import base.io.resource.wrappers.XMLResourceWrapper;
+	
+	
 	/**
-	 * Contains constants for the resource index loader to determine of what basic type
-	 * a resource is.
+	 * A data parser that parses XML data into XML data objects. Use this parser if you
+	 * want to retain and use raw XML data from data files in your application.
 	 */
-	public class ResourceGroup
+	public class XMLDataParser extends DataParser implements IDataParser
 	{
 		//-----------------------------------------------------------------------------------------
-		// Constants
+		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
-		public static const DATA:String		= "data";
-		public static const TEXT:String		= "text";
-		public static const XML:String		= "xml";
-		public static const MEDIA:String	= "media";
-		public static const NONE:String		= "none";
+		/**
+		 * @inheritDoc
+		 */
+		public function parse(wrapper:XMLResourceWrapper, model:*):void
+		{
+			_xml = wrapper.xml;
+			var index:StringIndex = model;
+			var r:Resource = wrapper.bulkFile.item.resource;
+			
+			// TODO
+			//for each (var x:XML in _xml.string)
+			//{
+			//	var id:String = extractString(x, "@id");
+			//	if (id && id.length > 0)
+			//	{
+			//		index.add(id, extractText(x), r);
+			//	}
+			//}
+			
+			dispose();
+		}
 	}
 }

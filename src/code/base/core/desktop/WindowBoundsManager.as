@@ -82,7 +82,7 @@ package base.core.desktop
 			if (!_singletonLock) throw new SingletonException(this);
 			
 			_main = Main.instance;
-			_settingsManager = LocalSettingsManager.instance;
+			_settingsManager = _main.localSettingsManager;
 		}
 		
 		

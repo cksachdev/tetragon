@@ -36,6 +36,7 @@ package base
 	import base.core.entity.EntityFactory;
 	import base.core.entity.EntityManager;
 	import base.core.entity.EntitySystemManager;
+	import base.core.settings.LocalSettingsManager;
 	import base.data.Registry;
 	import base.io.resource.ResourceManager;
 	import base.view.ViewContainer;
@@ -78,6 +79,8 @@ package base
 		private var _resourceManager:ResourceManager;
 		/** @private */
 		private var _screenManager:ScreenManager;
+		/** @private */
+		private var _localSettingsManager:LocalSettingsManager;
 		/** @private */
 		private var _entityManager:EntityManager;
 		/** @private */
@@ -142,6 +145,15 @@ package base
 		public function get screenManager():ScreenManager
 		{
 			return _screenManager;
+		}
+		
+		
+		/**
+		 * A reference to the localsettings manager.
+		 */
+		public function get localSettingsManager():LocalSettingsManager
+		{
+			return _localSettingsManager;
 		}
 		
 		
@@ -340,6 +352,7 @@ package base
 			_commandManager = new CommandManager();
 			_resourceManager = new ResourceManager();
 			_screenManager = new ScreenManager(_viewContainer.screenContainer);
+			_localSettingsManager = new LocalSettingsManager();
 			
 			/* Create entity architecture-related objects. */
 			_entityManager = new EntityManager();
