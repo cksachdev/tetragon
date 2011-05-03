@@ -31,7 +31,6 @@ package base.io.resource
 	import base.core.debug.Log;
 	import base.event.ResourceEvent;
 
-	import com.hexagonstar.exception.SingletonException;
 	import com.hexagonstar.structures.IIterator;
 	import com.hexagonstar.structures.queues.Queue;
 
@@ -45,11 +44,6 @@ package base.io.resource
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
-		
-		/** @private */
-		private static var _instance:ResourceManager;
-		/** @private */
-		private static var _singletonLock:Boolean = false;
 		
 		/** @private */
 		private var _main:Main;
@@ -79,7 +73,6 @@ package base.io.resource
 		 */
 		public function ResourceManager()
 		{
-			if (!_singletonLock) throw new SingletonException(this);
 		}
 		
 		
@@ -411,35 +404,20 @@ package base.io.resource
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Returns the singleton instance of the class.
-		 */
-		public static function get instance():ResourceManager
-		{
-			if (_instance == null)
-			{
-				_singletonLock = true;
-				_instance = new ResourceManager();
-				_singletonLock = false;
-			}
-			return _instance;
-		}
-		
-		
-		/**
 		 * The index of resources.
 		 */
-		public static function get resourceIndex():ResourceIndex
+		public function get resourceIndex():ResourceIndex
 		{
-			return _instance._resourceIndex;
+			return _resourceIndex;
 		}
 		
 		
 		/**
 		 * The string index.
 		 */
-		public static function get stringIndex():StringIndex
+		public function get stringIndex():StringIndex
 		{
-			return _instance._stringIndex;
+			return _stringIndex;
 		}
 		
 		

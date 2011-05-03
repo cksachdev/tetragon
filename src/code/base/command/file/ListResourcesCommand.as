@@ -28,7 +28,6 @@
 package base.command.file
 {
 	import base.command.CLICommand;
-	import base.io.resource.ResourceManager;
 
 	import com.hexagonstar.util.debug.LogLevel;
 
@@ -54,7 +53,7 @@ package base.command.file
 		 */
 		override public function execute():void 
 		{
-			main.console.log(ResourceManager.instance.dumpResourceList(_filter), LogLevel.INFO);
+			main.console.log(main.resourceManager.dumpResourceList(_filter), LogLevel.INFO);
 			complete();
 		}
 		

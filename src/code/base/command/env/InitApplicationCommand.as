@@ -33,7 +33,6 @@ package base.command.env
 	import base.core.debug.Log;
 	import base.data.Registry;
 	import base.io.file.loaders.ConfigLoader;
-	import base.io.resource.ResourceManager;
 	import base.setup.*;
 
 	import extra.game.setup.*;
@@ -145,8 +144,7 @@ package base.command.env
 		 */
 		private function onResourceManagerReady(e:Event):void 
 		{
-			//Debug.trace(ResourceManager.instance.resourceIndex.dump());
-			ResourceManager.instance.removeEventListener(e.type, onResourceManagerReady);
+			main.resourceManager.removeEventListener(e.type, onResourceManagerReady);
 			postUISetup();
 		}
 		
@@ -258,9 +256,8 @@ package base.command.env
 		 */
 		private function initResourceManager():void
 		{
-			var rm:ResourceManager = ResourceManager.instance;
-			rm.addEventListener(Event.COMPLETE, onResourceManagerReady);
-			rm.init(main, AppResourceBundle);
+			main.resourceManager.addEventListener(Event.COMPLETE, onResourceManagerReady);
+			main.resourceManager.init(main, AppResourceBundle);
 		}
 		
 		

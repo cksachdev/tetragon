@@ -29,7 +29,6 @@ package base.command.file
 {
 	import base.command.CLICommand;
 	import base.core.debug.Log;
-	import base.io.resource.ResourceManager;
 
 	
 	public class UnloadAllResourcesCommand extends CLICommand
@@ -44,7 +43,7 @@ package base.command.file
 		override public function execute():void 
 		{
 			Log.info("Unloading all resources ...");
-			ResourceManager.instance.unloadAll();
+			main.resourceManager.unloadAll();
 			Log.info("Done.");
 			
 			complete();

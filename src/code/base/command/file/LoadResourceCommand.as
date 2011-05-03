@@ -30,7 +30,6 @@ package base.command.file
 	import base.command.CLICommand;
 	import base.core.debug.Log;
 	import base.io.resource.Resource;
-	import base.io.resource.ResourceManager;
 
 	
 	/**
@@ -54,7 +53,7 @@ package base.command.file
 		 */
 		override public function execute():void 
 		{
-			ResourceManager.instance.load(_resourceID, null, onResourceLoaded, onResourceFailed);
+			main.resourceManager.load(_resourceID, null, onResourceLoaded, onResourceFailed);
 		}
 		
 		

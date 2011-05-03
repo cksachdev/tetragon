@@ -37,6 +37,7 @@ package base
 	import base.core.entity.EntityManager;
 	import base.core.entity.EntitySystemManager;
 	import base.data.Registry;
+	import base.io.resource.ResourceManager;
 	import base.view.ViewContainer;
 	import base.view.screen.ScreenManager;
 
@@ -73,6 +74,8 @@ package base
 		
 		/** @private */
 		private var _commandManager:CommandManager;
+		/** @private */
+		private var _resourceManager:ResourceManager;
 		/** @private */
 		private var _screenManager:ScreenManager;
 		/** @private */
@@ -121,6 +124,15 @@ package base
 		public function get commandManager():CommandManager
 		{
 			return _commandManager;
+		}
+		
+		
+		/**
+		 * A reference to the resource manager.
+		 */
+		public function get resourceManager():ResourceManager
+		{
+			return _resourceManager;
 		}
 		
 		
@@ -326,6 +338,7 @@ package base
 			
 			/* Create managers. */
 			_commandManager = new CommandManager();
+			_resourceManager = new ResourceManager();
 			_screenManager = new ScreenManager(_viewContainer.screenContainer);
 			
 			/* Create entity architecture-related objects. */

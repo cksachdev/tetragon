@@ -29,7 +29,6 @@ package base.command.file
 {
 	import base.command.CLICommand;
 	import base.core.debug.Log;
-	import base.io.resource.ResourceManager;
 
 	
 	public class UnloadResourceCommand extends CLICommand
@@ -50,8 +49,8 @@ package base.command.file
 		 */
 		override public function execute():void 
 		{
-			ResourceManager.instance.unload(_resourceID);
-			var c:int = ResourceManager.instance.getRefCountFor(_resourceID);
+			main.resourceManager.unload(_resourceID);
+			var c:int = main.resourceManager.getRefCountFor(_resourceID);
 			Log.info("Unloaded resource with ID \"" + _resourceID + "\" (refCount: " + c + ").");
 			
 			complete();

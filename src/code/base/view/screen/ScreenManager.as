@@ -27,7 +27,6 @@
  */
 package base.view.screen
 {
-	import base.Main;
 	import base.core.debug.Log;
 	import base.data.Registry;
 	import base.event.ResourceEvent;
@@ -53,8 +52,6 @@ package base.view.screen
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
-		private var _main:Main;
 		/** @private */
 		private var _screenParent:DisplayObjectContainer;
 		/** @private */
@@ -117,7 +114,6 @@ package base.view.screen
 		{
 			super();
 			
-			_main = Main.instance;
 			_screenClasses = {};
 			_screenParent = screenParent;
 			_backupDuration = _tweenDuration;
@@ -206,7 +202,6 @@ package base.view.screen
 				_openScreenClass = screenClass;
 				_showLoadProgress = bs.showLoadProgress;
 				_nextScreen = bs;
-				bs.main = _main;
 				bs.init();
 				
 				if (fastTransition)

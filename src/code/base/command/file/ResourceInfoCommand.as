@@ -30,7 +30,6 @@ package base.command.file
 	import base.command.CLICommand;
 	import base.core.debug.Log;
 	import base.io.resource.Resource;
-	import base.io.resource.ResourceManager;
 
 	import com.hexagonstar.types.Byte;
 
@@ -59,7 +58,7 @@ package base.command.file
 		 */
 		override public function execute():void 
 		{
-			var r:Resource = ResourceManager.resourceIndex.getResource(_resourceID);
+			var r:Resource = main.resourceManager.resourceIndex.getResource(_resourceID);
 			if (r)
 			{
 				var content:* = r.content;

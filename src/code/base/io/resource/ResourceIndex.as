@@ -325,7 +325,6 @@ package base.io.resource
 		 */
 		public function dump(filter:String = "all"):String
 		{
-			var rm:ResourceManager = ResourceManager.instance;
 			var t:TabularText = new TabularText(7, true, "  ", null, "  ", 0,
 				["ID", "TYPE", "RESOURCECLASS", "PACKAGE", "PATH", "EMBEDDED", "REFCOUNT"]);
 			

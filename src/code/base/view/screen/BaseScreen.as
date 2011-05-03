@@ -200,7 +200,6 @@ package base.view.screen
 		 */
 		protected function addLoadDisplay(display:Display):void
 		{
-			display.main = main;
 			display.screen = this;
 			display.progressSignal.add(onDisplayProgress);
 			display.loadedSignal.add(onDisplayLoaded);

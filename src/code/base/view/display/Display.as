@@ -31,7 +31,6 @@ package base.view.display
 	import base.event.ResourceEvent;
 	import base.io.resource.Resource;
 	import base.io.resource.ResourceIndex;
-	import base.io.resource.ResourceManager;
 	import base.io.resource.StringIndex;
 	import base.view.screen.BaseScreen;
 
@@ -111,6 +110,7 @@ package base.view.display
 		 */
 		public function Display()
 		{
+			_main = Main.instance;
 			loadedSignal = new Signal();
 			progressSignal = new Signal();
 			
@@ -147,9 +147,9 @@ package base.view.display
 				onResourceLoadComplete();
 				return;
 			}
-			var rm:ResourceManager = ResourceManager.instance;
-			rm.load(_resourceIDs, onResourceLoadComplete, onResourceLoaded, onResourceLoadError,
-				onResourceProgress);
+			
+			main.resourceManager.load(_resourceIDs, onResourceLoadComplete, onResourceLoaded,
+				onResourceLoadError, onResourceProgress);
 		}
 		
 		
@@ -325,10 +325,6 @@ package base.view.display
 		{
 			return _main;
 		}
-		public function set main(v:Main):void
-		{
-			_main = v;
-		}
 		
 		
 		/**
@@ -412,8 +408,8 @@ package base.view.display
 			if (!_resourceIDs)
 			{
 				_resourceIDs = [];
-				_resourceIndex = ResourceManager.resourceIndex;
-				_stringIndex = ResourceManager.stringIndex;
+				_resourceIndex = main.resourceManager.resourceIndex;
+				_stringIndex = main.resourceManager.stringIndex;
 			}
 			_resourceIDs.push(resourceID);
 		}
@@ -540,8 +536,7 @@ package base.view.display
 		protected function unload():void
 		{
 			if (_resourceIDs.length < 1) return;
-			var rm:ResourceManager = ResourceManager.instance;
-			rm.unload(_resourceIDs);
+			main.resourceManager.unload(_resourceIDs);
 		}
 		
 		

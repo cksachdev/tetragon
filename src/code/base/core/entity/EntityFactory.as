@@ -27,10 +27,10 @@
  */
 package base.core.entity
 {
+	import base.Main;
 	import base.core.debug.Log;
 	import base.data.DataClassesFactory;
 	import base.io.resource.Resource;
-	import base.io.resource.ResourceManager;
 	
 	
 	/**
@@ -71,7 +71,8 @@ package base.core.entity
 		 */
 		public function createEntity(id:String):IEntity
 		{
-			var resource:Resource = ResourceManager.resourceIndex.getResource(id);
+			// TODO
+			var resource:Resource = Main.instance.resourceManager.resourceIndex.getResource(id);
 			var dataTypeID:String = resource.dataType;
 			var builder:IEntityBuilder;
 			

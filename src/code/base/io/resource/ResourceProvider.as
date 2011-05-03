@@ -317,9 +317,9 @@ package base.io.resource
 			
 			/* Text data goes into the string index, other data into the resource index. */
 			if (resourceType == ResourceGroup.TEXT)
-				parser.parse(w, ResourceManager.stringIndex);
+				parser.parse(w, _main.resourceManager.stringIndex);
 			else
-				parser.parse(w, ResourceManager.resourceIndex);
+				parser.parse(w, _main.resourceManager.resourceIndex);
 			
 			/* Mark all resources in the loaded bulk file as loaded. */
 			for (var i:int = 0; i < bulkFile.items.length; i++)

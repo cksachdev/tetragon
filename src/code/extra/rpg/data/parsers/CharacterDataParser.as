@@ -30,7 +30,6 @@ package extra.rpg.data.parsers
 	import base.data.parsers.DataParser;
 	import base.data.parsers.IDataParser;
 	import base.io.resource.ResourceIndex;
-	import base.io.resource.ResourceManager;
 	import base.io.resource.wrappers.XMLResourceWrapper;
 
 	import extra.rpg.data.constants.Gender;
@@ -56,7 +55,6 @@ package extra.rpg.data.parsers
 		{
 			_xml = resourceFile.xml;
 			var index:ResourceIndex = model;
-			var rm:ResourceManager = ResourceManager.instance;
 			
 			for each (var x:XML in _xml.characters.character)
 			{

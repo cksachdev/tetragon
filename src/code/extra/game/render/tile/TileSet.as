@@ -31,9 +31,9 @@
  */
 package extra.game.render.tile
 {
+	import base.Main;
 	import base.core.debug.Log;
 	import base.data.DataObject;
-	import base.io.resource.ResourceManager;
 
 	import flash.display.BitmapData;
 	import flash.geom.Point;
@@ -179,7 +179,7 @@ package extra.game.render.tile
 		 */
 		public function init():void
 		{
-			var image:BitmapData = ResourceManager.resourceIndex.getResourceContent(tileImageID);
+			var image:BitmapData = Main.instance.resourceManager.resourceIndex.getResourceContent(tileImageID);
 			if (!image)
 			{
 				Log.error("[TileSet] No image with ID \"" + tileImageID
