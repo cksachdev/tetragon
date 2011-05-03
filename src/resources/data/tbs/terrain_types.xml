@@ -1,40 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<terrainTypes>
-	<terrainType
-		id="terrainGrassland"
-		nameID="nameTerrainGrassland"
-		descriptionID="descTerrainGrassland"
-		movementCost="1"
-		combatModifier="-20"
-	/>
-	<terrainType
-		id="terrainPlains"
-		nameID="nameTerrainPlains"
-		descriptionID="descTerrainPlains"
-		movementCost="1"
-		combatModifier="-25"
-	/>
-	<terrainType
-		id="terrainTundra"
-		nameID="nameTerrainTundra"
-		descriptionID="descTerrainTundra"
-		movementCost="1"
-		combatModifier="-25"
-	/>
-	<terrainType
-		id="terrainDesert"
-		nameID="nameTerrainDesert"
-		descriptionID="descTerrainDesert"
-		movementCost="1"
-		combatModifier="-33"
-	/>
-	<terrainType
-		id="terrainHills"
-		nameID="nameTerrainHills"
-		descriptionID="descTerrainHills"
-		movementCost="2"
-		combatModifier="20"
-	/>
+<data>
+	
+	<list id="listTerrainTypes" dataType="terrainType">
+		
+		<item id="terrainGrassland">
+			<properties>
+				<property name="name" ref="text">nameTerrainGrassland</property>
+				<property name="description" ref="text">descTerrainGrassland</property>
+				<property name="movementCost">1</property>
+				<property name="combatModifier">-20</property>
+			</properties>
+		</item>
+		
+		<item id="terrainPlains">
+			<textRefs>
+				<nameID>nameTerrainPlains</nameID>
+				<descriptionID>descTerrainPlains</descriptionID>
+			</textRefs>
+			<dataRefs/>
+			<properties>
+				<property name="movementCost">1</property>
+				<property name="combatModifier">-25</property>
+			</properties>
+		</item>
+		
+		<item id="terrainTundra">
+			<textRefs>
+				<nameID>nameTerrainTundra</nameID>
+				<descriptionID>descTerrainTundra</descriptionID>
+			</textRefs>
+			<dataRefs/>
+			<properties>
+				<property name="movementCost">1</property>
+				<property name="combatModifier">-25</property>
+			</properties>
+		</item>
+		
+		<item id="terrainDesert">
+			<textRefs>
+				<nameID>nameTerrainDesert</nameID>
+				<descriptionID>descTerrainDesert</descriptionID>
+			</textRefs>
+			<dataRefs/>
+			<properties>
+				<property name="movementCost">1</property>
+				<property name="combatModifier">-33</property>
+			</properties>
+		</item>
+		
+		<item id="terrainHills">
+			<textRefs>
+				<nameID>nameTerrainHills</nameID>
+				<descriptionID>descTerrainHills</descriptionID>
+			</textRefs>
+			<dataRefs/>
+			<properties>
+				<property name="movementCost">2</property>
+				<property name="combatModifier">20</property>
+			</properties>
+		</item>
+		
+	</list>
+	
 	<terrainType
 		id="terrainMountains"
 		nameID="nameTerrainMountains"
@@ -148,4 +175,4 @@
 		combatModifier="20"
 	/>
 	
-</terrainTypes>
+</data>

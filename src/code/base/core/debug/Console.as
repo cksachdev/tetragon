@@ -79,9 +79,6 @@ package base.core.debug
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		//[Inject]
-		public var _main:Main;
-		
 		private var _container:DisplayObjectContainer;
 		private var _stage:Stage;
 		private var _bg:RectangleShape;
@@ -111,13 +108,12 @@ package base.core.debug
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function Console(main:Main, container:DisplayObjectContainer)
+		public function Console(container:DisplayObjectContainer)
 		{
 			super();
 			
-			_main = main;
 			_container = container;
-			_stage = _main.contextView.stage;
+			_stage = Main.instance.contextView.stage;
 		}
 		
 		
@@ -591,7 +587,7 @@ package base.core.debug
 			_ti = new ConsoleTextInput();
 			addChild(_ti);
 			
-			_cli = new CLI(_main, this);
+			_cli = new CLI(this);
 			_backBuffer = new BackBuffer();
 			
 			if (_useTween)

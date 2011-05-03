@@ -113,12 +113,12 @@ package base.view.screen
 		 * @param screenCloseDelay A delay (in seconds) that the screen manager waits
 		 *         before closing an opened screen.
 		 */
-		public function ScreenManager(main:Main, screenParent:DisplayObjectContainer)
+		public function ScreenManager(screenParent:DisplayObjectContainer)
 		{
 			super();
 			
+			_main = Main.instance;
 			_screenClasses = {};
-			_main = main;
 			_screenParent = screenParent;
 			_backupDuration = _tweenDuration;
 			_backupOpenDelay = _screenOpenDelay;

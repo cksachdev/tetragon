@@ -31,7 +31,6 @@ package base.core.desktop
 	import base.Main;
 	import base.core.debug.Log;
 	import base.core.settings.LocalSettingsManager;
-	import base.view.ApplicationView;
 
 	import com.hexagonstar.exception.SingletonException;
 
@@ -62,7 +61,7 @@ package base.core.desktop
 		private static var _singletonLock:Boolean = false;
 		
 		/** @private */
-		private var _appView:ApplicationView;
+		private var _main:Main;
 		/** @private */
 		private var _settingsManager:LocalSettingsManager;
 		/** @private */
@@ -82,7 +81,7 @@ package base.core.desktop
 		{
 			if (!_singletonLock) throw new SingletonException(this);
 			
-			_appView = Main.instance.applicationView;
+			_main = Main.instance;
 			_settingsManager = LocalSettingsManager.instance;
 		}
 		
@@ -97,7 +96,7 @@ package base.core.desktop
 		public function storeWindowBounds(window:NativeWindow, windowID:String):void
 		{
 			if (!window || !windowID || windowID.length < 1) return;
-			var fs:Boolean = _appView.isFullscreen;
+			var fs:Boolean = _main.isFullscreen;
 			var wb:WindowBounds = new WindowBounds();
 			wb.x = window.bounds.topLeft.x;
 			wb.y = window.bounds.topLeft.y;

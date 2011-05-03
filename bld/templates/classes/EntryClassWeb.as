@@ -48,6 +48,7 @@ package base
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
+		/** @private */
 		private var _main:Main;
 		
 		
@@ -62,7 +63,8 @@ package base
 		 */
 		public function onApplicationPreloaded(preloader:Preloader):void
 		{
-			_main = new Main(preloader);
+			_main = Main.instance;
+			_main.init(preloader);
 		}
 	}
 }

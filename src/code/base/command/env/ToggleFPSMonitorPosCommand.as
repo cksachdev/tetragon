@@ -43,7 +43,7 @@ package base.command.env
 		{
 			super.execute();
 			
-			main.applicationView.fpsMonitor.togglePosition();
+			main.fpsMonitor.togglePosition();
 			complete();
 		}
 		

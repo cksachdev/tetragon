@@ -66,7 +66,6 @@ package base.core.debug
 		
 		private var _graphHeight:int;
 		
-		private var _main:Main;
 		private var _container:DisplayObjectContainer;
 		private var _stage:Stage;
 		private var _graph:BitmapData;
@@ -100,11 +99,10 @@ package base.core.debug
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function FPSMonitor(main:Main, container:DisplayObjectContainer)
+		public function FPSMonitor(container:DisplayObjectContainer)
 		{
-			_main = main;
 			_container = container;
-			_stage = _main.contextView.stage;
+			_stage = Main.instance.contextView.stage;
 			
 			if (Registry.config.fpsMonitorAutoOpen)
 			{

@@ -27,9 +27,8 @@
  */
 package base
 {
-	import flash.display.Sprite;
-	import flash.display.StageAlign;
-	import flash.display.StageScaleMode;
+	import base.core.preload.IPreloadable;
+	import base.core.preload.Preloader;
 	
 	
 	[SWF(width="1024", height="640", backgroundColor="#000000", frameRate="60")]
@@ -42,28 +41,30 @@ package base
 	 * 
 	 * IMPORTANT: Auto-generated file. Do not edit!
 	 */
-	public final class Entry extends Sprite
+	[Frame(factoryClass="base.AppPreloader")]
+	public final class Entry implements IPreloadable
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
+		/** @private */
 		private var _main:Main;
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Constructor
+		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Creates a new instance of the class.
+		 * Invoked by the preloader after the application has been fully preloaded.
+		 * 
+		 * @param preloader a reference to the preloader.
 		 */
-		public function Entry()
+		public function onApplicationPreloaded(preloader:Preloader):void
 		{
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP_LEFT;
-			
-			_main = new Main(this);
+			_main = Main.instance;
+			_main.init(preloader);
 		}
 	}
 }

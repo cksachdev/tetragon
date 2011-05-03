@@ -27,8 +27,6 @@
  */
 package base.core.entity
 {
-	
-	
 	/**
 	 * IEntityBuilder Interface
 	 */
@@ -37,16 +35,16 @@ package base.core.entity
 		/**
 		 * Builds a new IEntity of the type that this builder produces.
 		 * 
-		 * @param id The ID of the data resource from which to build an entity.
+		 * @param template The entity template from which to build an entity.
 		 * @return An object of type IEntity.
 		 */
 		function build(template:EntityTemplate):IEntity;
 		
 		
 		/**
-		 * Returns a string representation of the builder.
+		 * Returns a String representation of the entity builder.
 		 * 
-		 * @return A string representation of the builder.
+		 * @return A String representation of the entity builder.
 		 */
 		function toString():String;
 	}

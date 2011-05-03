@@ -31,26 +31,20 @@ package base.view
 	import base.core.debug.Console;
 	import base.core.debug.FPSMonitor;
 	import base.data.Registry;
-	import base.view.screen.BaseScreen;
-	import base.view.screen.ScreenManager;
 
 	import flash.display.Sprite;
-	import flash.display.StageDisplayState;
 	
 	
 	/**
-	 * ApplicationView is the main wrapper for all other display objects in the application.
-	 * It contains the console, the FPS monitor and the screen container which in turn acts
-	 * as a wrapper for any screens and their display children.
+	 * ViewContainer acts as the display object container for all other views. It wraps
+	 * the screen container as well as utility views like the console and FPS monitor.
 	 */
-	public class ApplicationView extends Sprite
+	public class ViewContainer extends Sprite
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
-		private var _main:Main;
 		/** @private */
 		private var _console:Console;
 		/** @private */
@@ -59,8 +53,6 @@ package base.view
 		private var _screenContainer:Sprite;
 		/** @private */
 		private var _utilityContainer:Sprite;
-		/** @private */
-		private var _screenManager:ScreenManager;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -68,12 +60,12 @@ package base.view
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Creates a new ApplicationView instance.
+		 * Creates a new ViewContainer instance.
 		 */
-		public function ApplicationView(main:Main)
+		public function ViewContainer()
 		{
-			_main = main;
 			super();
+			
 			setup();
 		}
 		
@@ -81,15 +73,6 @@ package base.view
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Starts the application view and the currently opened screen.
-		 */
-		public function start():void
-		{
-			_screenManager.start();
-		}
-		
 		
 		/**
 		 * Creates Console and FPSMonior, Called automatically by base setup.
@@ -103,16 +86,16 @@ package base.view
 		
 		
 		/**
-		 * Updates the application view and the currently opened screen.
+		 * Updates the ViewContainer and the currently opened screen.
 		 */
 		public function update():void
 		{
-			_screenManager.updateScreen();
+			Main.instance.screenManager.updateScreen();
 		}
 		
 		
 		/**
-		 * Disposes the application view.
+		 * Disposes the ViewContainer.
 		 */
 		public function dispose():void
 		{
@@ -121,13 +104,13 @@ package base.view
 		
 		
 		/**
-		 * Returns a String Representation of the class.
+		 * Returns a String representation of the class.
 		 * 
-		 * @return A String Representation of the class.
+		 * @return A String representation of the class.
 		 */
 		override public function toString():String
 		{
-			return "[ApplicationView]";
+			return "[ViewContainer]";
 		}
 		
 		
@@ -136,11 +119,11 @@ package base.view
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * A reference to the screen manager.
+		 * The container that contains any screens.
 		 */
-		public function get screenManager():ScreenManager
+		public function get screenContainer():Sprite
 		{
-			return _screenManager;
+			return _screenContainer;
 		}
 		
 		
@@ -164,35 +147,9 @@ package base.view
 		}
 		
 		
-		/**
-		 * Returns <code>true</code> if the application is in fullscreen mode, otherwise
-		 * <code>false</code>.
-		 */
-		public function get isFullscreen():Boolean
-		{
-			return (_main.contextView.stage.displayState == StageDisplayState["FULL_SCREEN_INTERACTIVE"]
-				|| _main.contextView.stage.displayState == StageDisplayState.FULL_SCREEN);
-		}
-		
-		
 		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @private
-		 */
-		private function onScreenOpened(screen:BaseScreen):void
-		{
-		}
-		
-		
-		/**
-		 * @private
-		 */
-		private function onScreenClosed(screen:BaseScreen):void
-		{
-		}
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -217,7 +174,6 @@ package base.view
 		{
 			_screenContainer = new Sprite();
 			addChild(_screenContainer);
-			_screenManager = new ScreenManager(_main, _screenContainer);
 		}
 		
 		
@@ -233,7 +189,7 @@ package base.view
 					_utilityContainer = new Sprite();
 					addChild(_utilityContainer);
 				}
-				_console = new Console(_main, _utilityContainer);
+				_console = new Console(_utilityContainer);
 				_console.init();
 			}
 		}
@@ -251,7 +207,7 @@ package base.view
 					_utilityContainer = new Sprite();
 					addChild(_utilityContainer);
 				}
-				_fpsMonitor = new FPSMonitor(_main, _utilityContainer);
+				_fpsMonitor = new FPSMonitor(_utilityContainer);
 			}
 		}
 		
@@ -269,8 +225,6 @@ package base.view
 		 */
 		private function addListeners():void
 		{
-			_screenManager.screenOpenedSignal.add(onScreenOpened);
-			_screenManager.screenClosedSignal.add(onScreenClosed);
 		}
 		
 		
@@ -279,8 +233,6 @@ package base.view
 		 */
 		private function removeListeners():void
 		{
-			_screenManager.screenOpenedSignal.remove(onScreenOpened);
-			_screenManager.screenClosedSignal.remove(onScreenClosed);
 		}
 	}
 }

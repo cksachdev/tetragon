@@ -48,6 +48,7 @@ package base
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
+		/** @private */
 		private var _main:Main;
 		
 		
@@ -63,7 +64,8 @@ package base
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			
-			_main = new Main(this);
+			_main = Main.instance;
+			_main.init(this);
 		}
 	}
 }

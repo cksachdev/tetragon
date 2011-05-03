@@ -27,7 +27,6 @@
  */
 package base.core.cli
 {
-	import base.Main;
 	import base.command.CLICommand;
 	import base.command.CommandManager;
 	import base.core.debug.Console;
@@ -45,7 +44,6 @@ package base.core.cli
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _main:Main;
 		private var _console:Console;
 		private var _commandManager:CommandManager;
 		private var _commandMap:Object;
@@ -58,9 +56,8 @@ package base.core.cli
 		/**
 		 * Creates a new CLI instance.
 		 */
-		public function CLI(main:Main, console:Console)
+		public function CLI(console:Console)
 		{
-			_main = main;
 			_console = console;
 			_commandManager = CommandManager.instance;
 			_commandMap = {};

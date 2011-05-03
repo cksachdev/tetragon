@@ -33,7 +33,7 @@ package base.core
 	public interface IDisposable
 	{
 		/**
-		 * Invoked when the instance is to be disposed.
+		 * Invoked when the object is to be disposed.
 		 */	
 		function dispose():void;
 	}

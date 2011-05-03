@@ -37,9 +37,10 @@ package base
 	import base.core.entity.EntityManager;
 	import base.core.entity.EntitySystemManager;
 	import base.data.Registry;
-	import base.view.ApplicationView;
+	import base.view.ViewContainer;
 	import base.view.screen.ScreenManager;
 
+	import com.hexagonstar.exception.SingletonException;
 	import com.hexagonstar.ioc.Injector;
 	import com.hexagonstar.util.debug.HLog;
 	import com.hexagonstar.util.display.StageReference;
@@ -63,9 +64,14 @@ package base
 		/** @private */
 		private static var _instance:Main;
 		/** @private */
+		private static var _singletonLock:Boolean = false;
+		
+		/** @private */
 		private var _contextView:DisplayObjectContainer;
 		/** @private */
-		private var _applicationView:ApplicationView;
+		private var _viewContainer:ViewContainer;
+		/** @private */
+		private var _screenManager:ScreenManager;
 		/** @private */
 		private var _setupHelper:*;
 		/** @private */
@@ -85,12 +91,9 @@ package base
 		/**
 		 * Constructs a new App instance.
 		 */
-		public function Main(contextView:DisplayObjectContainer)
+		public function Main()
 		{
-			_contextView = contextView;
-			_instance = this;
-			
-			setup();
+			if (!_singletonLock) throw new SingletonException(this);
 		}
 		
 		
@@ -99,11 +102,26 @@ package base
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * The instance of Main.
+		 * Returns the singleton instance of Main.
 		 */
 		public static function get instance():Main
 		{
+			if (_instance == null)
+			{
+				_singletonLock = true;
+				_instance = new Main();
+				_singletonLock = false;
+			}
 			return _instance;
+		}
+		
+		
+		/**
+		 * A reference to the screen manager.
+		 */
+		public function get screenManager():ScreenManager
+		{
+			return _screenManager;
 		}
 		
 		
@@ -116,10 +134,12 @@ package base
 		}
 		
 		
-		public function get applicationView():ApplicationView
+		/**
+		 * A reference to the application's view container.
+		 */
+		public function get viewContainer():ViewContainer
 		{
-			if (!_applicationView) _applicationView = new ApplicationView(this);
-			return _applicationView;
+			return _viewContainer;
 		}
 		
 		
@@ -129,7 +149,7 @@ package base
 		 */
 		public function get console():Console
 		{
-			return applicationView.console;
+			return viewContainer.console;
 		}
 		
 		
@@ -139,16 +159,7 @@ package base
 		 */
 		public function get fpsMonitor():FPSMonitor
 		{
-			return applicationView.fpsMonitor;
-		}
-		
-		
-		/**
-		 * A reference to the screen manager.
-		 */
-		public function get screenManager():ScreenManager
-		{
-			return applicationView.screenManager;
+			return viewContainer.fpsMonitor;
 		}
 		
 		
@@ -205,6 +216,17 @@ package base
 		}
 		
 		
+		/**
+		 * Determines whether the application is in fullscreen mode (<code>true</code>) or not
+		 * (<code>false</code>).
+		 */
+		public function get isFullscreen():Boolean
+		{
+			return (contextView.stage.displayState == StageDisplayState["FULL_SCREEN_INTERACTIVE"]
+				|| contextView.stage.displayState == StageDisplayState.FULL_SCREEN);
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
@@ -214,8 +236,8 @@ package base
 		 */
 		private function onAppInitComplete(command:Command):void 
 		{
-			/* Start the UI */
-			applicationView.start();
+			/* Time to open the first screen. */
+			screenManager.start();
 		}
 		
 		
@@ -252,6 +274,20 @@ package base
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Initializes Main by providing the context view to it. This method is called
+		 * only once at start by the Entry class.
+		 * 
+		 * @private
+		 */
+		internal function init(contextView:DisplayObjectContainer):void
+		{
+			_contextView = contextView;
+			_instance = this;
+			setup();
+		}
+		
 		
 		/**
 		 * Executes tasks that need to be done before the application init process is being
@@ -305,7 +341,12 @@ package base
 			/* Init the data model registry. */
 			Registry.init();
 			
-			contextView.addChild(applicationView);
+			/* Create the application's view container. */
+			_viewContainer = new ViewContainer();
+			contextView.addChild(viewContainer);
+			
+			/* Create manager that handles opening & closing of screens. */
+			_screenManager = new ScreenManager(_viewContainer.screenContainer);
 			
 			/* We make the logger available as soon as possible so that any log
 			 * messages from the hexagonLib come through even before the console

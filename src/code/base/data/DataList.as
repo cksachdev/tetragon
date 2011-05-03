@@ -25,20 +25,28 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.tbs.data.objects
+package base.data
 {
-	import base.data.DataObject;
-	
-	
 	/**
-	 * Data object for a turn-based strategy unit.
+	 * A DataList is a data structure that stores a list of data objects that belong
+	 * together.
 	 */
-	public class TBSUnit extends DataObject
+	public class DataList extends DataObject
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * A map that stores objects of type DataListItem.
+		 * @private
+		 */
+		protected var _items:Object;
+		
+		/**
+		 * @private
+		 */
+		protected var _dataType:String;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -48,8 +56,9 @@ package extra.tbs.data.objects
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function TBSUnit()
+		public function DataList()
 		{
+			_items = {};
 		}
 		
 		
@@ -57,10 +66,39 @@ package extra.tbs.data.objects
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * Adds a new datalist item to the datalist.
+		 */
+		public function addItem(item:DataListItem):void
+		{
+			_items[item.id] = item;
+		}
+		
+		
+		/**
+		 * Returns the datalist item that is mapped under the specified itemID.
+		 */
+		public function getItem(itemID:String):DataListItem
+		{
+			return _items[itemID];
+		}
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * The data type that the list represents.
+		 */
+		public function get dataType():String
+		{
+			return _dataType;
+		}
+		public function set dataType(v:String):void
+		{
+			_dataType = v;
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------

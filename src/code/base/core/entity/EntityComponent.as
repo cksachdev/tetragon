@@ -27,23 +27,24 @@
  */
 package base.core.entity
 {
+	import flash.utils.getQualifiedClassName;
+	
+	
 	/**
 	 * Abstract base class for entity components.
 	 */
-	public class EntityComponent
+	public class EntityComponent implements IEntityComponent
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Returns a String Representation of the class.
-		 * 
-		 * @return A String Representation of the class.
+		 * @inheritDoc
 		 */
 		public function toString():String
 		{
-			return "[EntityComponent]";
+			return "[" + getQualifiedClassName(this).match("[^:]*$")[0] + "]";
 		}
 	}
 }

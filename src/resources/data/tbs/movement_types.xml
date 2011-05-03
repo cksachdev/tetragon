@@ -1,5 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<movementTypes>
+<data>
+	
+	<list id="listMovementTypes" dataType="movementType">
+		
+		<item id="movementTypeInfantry">
+			<properties>
+				<property name="nameID" ref="text">nameMovementTypeInfantry</property>
+				<property name="domainID" ref="data">domainGround</property>
+			</properties>
+			<sets>
+				<set name="terrainModifiers">
+					<property name="terrainGrassland">0</property>
+					<property name="terrainPlains">0</property>
+					<property name="terrainTundra">0</property>
+					<property name="terrainDesert">0</property>
+					<property name="terrainHills">0</property>
+					<property name="terrainMountains">-3</property>
+					<property name="terrainSnow">-1</property>
+					<property name="terrainIce">-1</property>
+					<property name="terrainForest">-1</property>
+					<property name="terrainJungle">-1</property>
+					<property name="terrainMarsh">-1</property>
+					<property name="terrainSwamp">-2</property>
+					<property name="terrainUrban">0</property>
+					<property name="terrainRuins">0</property>
+					<property name="terrainRoad">0</property>
+					<property name="terrainBridge">0</property>
+				</set>
+				<set name="weatherModifiers">
+					<property name="weatherFair">0</property>
+					<property name="weatherOvercast">0</property>
+					<property name="weatherRain">0</property>
+					<property name="weatherHeavyRain">-1</property>
+					<property name="weatherHail">-1</property>
+					<property name="weatherSnow">0</property>
+					<property name="weatherBlizzard">-3</property>
+					<property name="weatherFog">0</property>
+					<property name="weatherThunderstorm">0</property>
+					<property name="weatherSandstorm">-3</property>
+					<property name="weatherHeatWave">0</property>
+					<property name="weatherFallout">-3</property>
+				</set>
+			</sets>
+		</item>
+		
+		
+	</list>
 	
 	<!-- INFANTRY ========================================================================= -->
 	<movementType id="movementTypeInfantry" nameID="nameMovementTypeInfantry" domain="ground">
@@ -217,4 +263,4 @@
 		</weatherModifiers>
 	</movementType>
 	
-</movementTypes>
+</data>

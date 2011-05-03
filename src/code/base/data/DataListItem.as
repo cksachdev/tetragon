@@ -27,47 +27,49 @@
  */
 package base.data
 {
-	import base.core.IDisposable;
-	
-	
 	/**
-	 * Base interface for all data objects.
+	 * DataListItem class
 	 */
-	public interface IDataObject extends IDisposable
+	public class DataListItem extends DataObject
 	{
 		//-----------------------------------------------------------------------------------------
-		// Public Methods
+		// Properties
+		//-----------------------------------------------------------------------------------------
+		
+		private var _properties:Object;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Constructor
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Returns a string representation of the object. Optionally a number of arguments
-		 * can be specified, typically properties that are output together with the object
-		 * name to provide additional information about the object.
-		 * 
-		 * @example
-		 * <pre>
-		 *    // overriden toString method to include a size property:
-		 *    override public function toString(...args):String
-		 *    {
-		 *        return super.toString("size=" + size);
-		 *    }
-		 * </pre>
-		 * 
-		 * @param args an optional, comma-delimited list of class properties that should be
-		 *            output together with the object name.
-		 * @return A string representation of the object.
+		 * Creates a new instance of the class.
 		 */
-		function toString(...args):String;
+		public function DataListItem()
+		{
+			_properties = {};
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Public Methods
+		//-----------------------------------------------------------------------------------------
 		
 		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * The unique ID of the data object.
-		 */
-		function get id():String;
-		function set id(v:String):void;
+		
+		//-----------------------------------------------------------------------------------------
+		// Callback Handlers
+		//-----------------------------------------------------------------------------------------
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Private Methods
+		//-----------------------------------------------------------------------------------------
+		
 	}
 }
