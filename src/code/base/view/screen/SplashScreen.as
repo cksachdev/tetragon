@@ -37,6 +37,7 @@ package base.view.screen
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
+	import flash.ui.Mouse;
 	import flash.utils.Timer;
 
 	
@@ -170,6 +171,7 @@ package base.view.screen
 		private function onUserInput(e:Event):void
 		{
 			_timer.stop();
+			Mouse.show();
 			main.screenManager.openScreen(Registry.config.initialScreenID, true, true);
 		}
 		
@@ -182,6 +184,7 @@ package base.view.screen
 			/* Once the screen fades out, the user should not be able to interrupt, otherwise
 			 * we might hang up somewhere so remove input listeners now. */
 			removeListeners();
+			Mouse.show();
 			main.screenManager.openScreen(Registry.config.initialScreenID);
 		}
 		
@@ -200,6 +203,9 @@ package base.view.screen
 			_background = new RectangleGradientShape();
 			_display = new SplashDisplay();
 			addLoadDisplay(_display);
+			
+			/* Hide mouse during splash screen if fullscreen. */
+			if (main.isFullscreen) Mouse.hide();
 		}
 		
 		

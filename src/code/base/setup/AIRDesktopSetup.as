@@ -99,17 +99,19 @@ package base.setup
 		 */
 		override public function finalSetup():void
 		{
+			/* Register desktop-specific CLI commands if we have the Console available. */
+			if (main.console && main.console.cli)
+			{
+				new CLICommandRegistryDesktop(main);
+			}
+			
+			//main.commandManager.execute(new ToggleFullscreenCommand());
+			
 			if (NativeWindow.isSupported)
 			{
 				/* Make application visible. */
 				main.contextView.stage.nativeWindow.visible = true;
 				main.contextView.stage.nativeWindow.activate();
-			}
-			
-			/* Register desktop-specific CLI commands if we have the Console available. */
-			if (main.console && main.console.cli)
-			{
-				new CLICommandRegistryDesktop(main);
 			}
 			
 			if (Registry.config.updateEnabled)

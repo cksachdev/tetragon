@@ -46,6 +46,8 @@ package base.core.update
 	
 	
 	/**
+	 * TODO make non-Singleton!
+	 * 
 	 * Handles updates for AIR applications.
 	 */
 	public class UpdateManager extends EventDispatcher
