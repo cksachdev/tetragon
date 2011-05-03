@@ -167,6 +167,15 @@ package base
 		
 		
 		/**
+		 * A reference to the base display object's stage.
+		 */
+		public function get stage():Stage
+		{
+			return contextView.stage;
+		}
+		
+		
+		/**
 		 * A reference to the application's view container.
 		 */
 		public function get viewContainer():ViewContainer
@@ -229,6 +238,12 @@ package base
 		public function get entityFactory():EntityFactory
 		{
 			return _entityFactory;
+		}
+		
+		
+		public function get entityManager():EntityManager
+		{
+			return _entityManager;
 		}
 		
 		

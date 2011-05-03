@@ -50,7 +50,7 @@ package base.view.screen
 		 * Stores all child displays of this screen.
 		 * @private
 		 */
-		protected var _displays:Vector.<Display>;
+		private var _displays:Vector.<Display>;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -102,6 +102,58 @@ package base.view.screen
 		/**
 		 * @inheritDoc
 		 */
+		override public function start():void
+		{
+			super.start();
+			callOnAllDisplays("start");
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function stop():void
+		{
+			super.stop();
+			callOnAllDisplays("stop");
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function reset():void
+		{
+			callOnAllDisplays("reset");
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function update():void
+		{
+			callOnAllDisplays("update");
+			super.update();
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function dispose():void
+		{
+			stop();
+			callOnAllDisplays("dispose");
+			removeListeners();
+			disposeSignals();
+			unload();
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
 		override public function disposeSignals():void
 		{
 			if (createdSignal)
@@ -120,11 +172,40 @@ package base.view.screen
 		/**
 		 * Determines whether this screen shows a load progress display while it's resources
 		 * are loaded. The default is true. You can override this getter and set it to false
-		 * for screen where you don't want to shows the load progress display.
+		 * for screen where you don't want to show the load progress display.
 		 */
 		public function get showLoadProgress():Boolean
 		{
 			return true;
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function set enabled(v:Boolean):void
+		{
+			super.enabled = v;
+			callOnAllDisplays("enabled", v);
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function set paused(v:Boolean):void
+		{
+			super.paused = v;
+			callOnAllDisplays("paused", v);
+		}
+		
+		
+		/**
+		 * The displays of the screen.
+		 */
+		protected function get displays():Vector.<Display>
+		{
+			return _displays;
 		}
 		
 		
@@ -226,6 +307,43 @@ package base.view.screen
 		protected function addChildren():void
 		{
 			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Calls a method on all display objects of the screen.
+		 * @private
+		 */
+		private function callOnAllDisplays(op:String, v:* = null):void
+		{
+			var len:uint = _displays.length;
+			for (var i:uint = 0; i < len; i++)
+			{
+				switch (op)
+				{
+					case "start":
+						_displays[i].start();
+						break;
+					case "stop":
+						_displays[i].stop();
+						break;
+					case "reset":
+						_displays[i].reset();
+						break;
+					case "update":
+						_displays[i].update();
+						break;
+					case "dispose":
+						_displays[i].dispose();
+						break;
+					case "enabled":
+						_displays[i].enabled = v;
+						break;
+					case "paused":
+						_displays[i].paused = v;
+						break;
+				}
+			}
 		}
 		
 		

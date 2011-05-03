@@ -31,7 +31,6 @@ package base.view.screen
 	import base.view.display.SplashDisplay;
 
 	import com.hexagonstar.display.shape.RectangleGradientShape;
-	import com.hexagonstar.util.display.StageReference;
 
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -39,8 +38,11 @@ package base.view.screen
 	import flash.events.TimerEvent;
 	import flash.ui.Mouse;
 	import flash.utils.Timer;
-
 	
+	
+	/**
+	 * A splash screen that display's the engine's logo after application launch.
+	 */
 	public class SplashScreen extends BaseScreen
 	{
 		//-----------------------------------------------------------------------------------------
@@ -75,47 +77,7 @@ package base.view.screen
 		override public function start():void
 		{
 			super.start();
-			_display.start();
 			_timer.start();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function stop():void
-		{
-			super.stop();
-			_display.stop();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function reset():void
-		{
-			_display.reset();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function update():void
-		{
-			_display.update();
-			super.update();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function dispose():void
-		{
-			_display.dispose();
-			super.dispose();
 		}
 		
 		
@@ -129,26 +91,6 @@ package base.view.screen
 		override public function get showLoadProgress():Boolean
 		{
 			return false;
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function set enabled(v:Boolean):void
-		{
-			super.enabled = v;
-			_display.enabled = v;
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function set paused(v:Boolean):void
-		{
-			super.paused = v;
-			_display.paused = v;
 		}
 		
 		
@@ -224,9 +166,9 @@ package base.view.screen
 		 */
 		override protected function addListeners():void
 		{
-			StageReference.stage.addEventListener(Event.RESIZE, onStageResize);
-			StageReference.stage.addEventListener(MouseEvent.CLICK, onUserInput);
-			StageReference.stage.addEventListener(KeyboardEvent.KEY_DOWN, onUserInput);
+			main.stage.addEventListener(Event.RESIZE, onStageResize);
+			main.stage.addEventListener(MouseEvent.CLICK, onUserInput);
+			main.stage.addEventListener(KeyboardEvent.KEY_DOWN, onUserInput);
 			_timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
 		}
 		
@@ -236,9 +178,9 @@ package base.view.screen
 		 */
 		override protected function removeListeners():void
 		{
-			StageReference.stage.removeEventListener(Event.RESIZE, onStageResize);
-			StageReference.stage.removeEventListener(MouseEvent.CLICK, onUserInput);
-			StageReference.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onUserInput);
+			main.stage.removeEventListener(Event.RESIZE, onStageResize);
+			main.stage.removeEventListener(MouseEvent.CLICK, onUserInput);
+			main.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onUserInput);
 			_timer.removeEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
 		}
 		
@@ -248,7 +190,7 @@ package base.view.screen
 		 */
 		override protected function layoutChildren():void
 		{
-			_background.draw(StageReference.stageWidth, StageReference.stageHeight, -90,
+			_background.draw(main.stage.stageWidth, main.stage.stageHeight, -90,
 				Registry.config.splashBackgroundColors);
 			_display.x = getHorizontalCenter(_display);
 			_display.y = getVerticalCenter(_display);
@@ -260,7 +202,6 @@ package base.view.screen
 		 */
 		override protected function unload():void
 		{
-			
 		}
 	}
 }

@@ -70,23 +70,6 @@ package base.view.display
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function stop():void
-		{
-			super.stop();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function reset():void
-		{
-		}
-		
-		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------

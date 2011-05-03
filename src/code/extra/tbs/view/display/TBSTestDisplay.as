@@ -25,20 +25,22 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.tbs.view.screen
+package extra.tbs.view.display
 {
-	import base.view.screen.BaseScreen;
+	import base.core.entity.IEntity;
+	import base.core.entity.IEntityComponent;
+	import base.view.display.Display;
 
-	import extra.tbs.view.display.TBSTestDisplay;
+	import com.hexagonstar.util.debug.Debug;
+
+	import flash.utils.Dictionary;
+
 	
-	
-	public class TBSTestScreen extends BaseScreen
+	public class TBSTestDisplay extends Display
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
-		
-		private var _display:TBSTestDisplay;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -48,7 +50,7 @@ package extra.tbs.view.screen
 		/**
 		 * Creates a new instance.
 		 */
-		public function TBSTestScreen()
+		public function TBSTestDisplay()
 		{
 			super();
 		}
@@ -57,6 +59,31 @@ package extra.tbs.view.screen
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function start():void
+		{
+			super.start();
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function stop():void
+		{
+			super.stop();
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function reset():void
+		{
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -76,19 +103,56 @@ package extra.tbs.view.screen
 		/**
 		 * @inheritDoc
 		 */
-		override protected function createChildren():void
+		override protected function addResources():void
 		{
-			_display = new TBSTestDisplay();
-			addLoadDisplay(_display);
+			addResource("unitInfantry");
 		}
 		
 		
 		/**
 		 * @inheritDoc
 		 */
-		override protected function addChildren():void 
+		override protected function createChildren():void
 		{
-			addChild(_display);
+			var unit:IEntity = main.entityFactory.createEntity("unitInfantry");
+			Debug.trace(unit.toString());
+			var d:Dictionary = unit.getComponents();
+			for each (var c:IEntityComponent in d)
+			{
+				Debug.trace(c.toString());
+			}
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function enableChildren():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function disableChildren():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function pauseChildren():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function unpauseChildren():void
+		{
 		}
 		
 		
@@ -111,7 +175,7 @@ package extra.tbs.view.screen
 		/**
 		 * @inheritDoc
 		 */
-		override protected function layoutChildren():void
+		override protected function updateDisplayText():void
 		{
 		}
 		
@@ -119,9 +183,8 @@ package extra.tbs.view.screen
 		/**
 		 * @inheritDoc
 		 */
-		override protected function unload():void
+		override protected function layoutChildren():void
 		{
-			
 		}
 	}
 }

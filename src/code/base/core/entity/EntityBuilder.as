@@ -25,20 +25,24 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.tbs.view.screen
+package base.core.entity
 {
-	import base.view.screen.BaseScreen;
+	import base.Main;
 
-	import extra.tbs.view.display.TBSTestDisplay;
+	import flash.utils.getQualifiedClassName;
 	
 	
-	public class TBSTestScreen extends BaseScreen
+	/**
+	 * EntityBuilder class
+	 */
+	public class EntityBuilder
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _display:TBSTestDisplay;
+		private var _main:Main;
+		private var _entityManager:EntityManager;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -46,11 +50,12 @@ package extra.tbs.view.screen
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Creates a new instance.
+		 * Creates a new instance of the class.
 		 */
-		public function TBSTestScreen()
+		public function EntityBuilder()
 		{
-			super();
+			_main = Main.instance;
+			_entityManager = _main.entityManager;
 		}
 		
 		
@@ -58,10 +63,41 @@ package extra.tbs.view.screen
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * build.
+		 */
+		public function build(template:EntityTemplate):IEntity
+		{
+			/* Abstract method! */
+			return null;
+		}
+		
+		
+		/**
+		 * Returns a String Representation of the class.
+		 * 
+		 * @return A String Representation of the class.
+		 */
+		public function toString():String
+		{
+			return "[" + getQualifiedClassName(this).match("[^:]*$")[0] + "]";
+		}
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
+		
+		protected function get main():Main
+		{
+			return _main;
+		}
+		
+		
+		protected function get entityManager():EntityManager
+		{
+			return _entityManager;
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -73,55 +109,5 @@ package extra.tbs.view.screen
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function createChildren():void
-		{
-			_display = new TBSTestDisplay();
-			addLoadDisplay(_display);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function addChildren():void 
-		{
-			addChild(_display);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function addListeners():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function removeListeners():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function layoutChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function unload():void
-		{
-			
-		}
 	}
 }

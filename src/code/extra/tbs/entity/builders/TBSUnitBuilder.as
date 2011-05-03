@@ -28,15 +28,12 @@
 package extra.tbs.entity.builders
 {
 	import base.core.debug.Log;
-	import base.core.entity.EntityManager;
+	import base.core.entity.EntityBuilder;
 	import base.core.entity.EntityTemplate;
 	import base.core.entity.IEntity;
 	import base.core.entity.IEntityBuilder;
 	import base.core.entity.IEntityComponent;
 	import base.data.DataClassesFactory;
-
-	import extra.tbs.entity.components.TBSUnitPropertiesComponent;
-	import extra.tbs.entity.components.TBSUnitStatsComponent;
 
 	import com.hexagonstar.util.debug.Debug;
 	
@@ -44,18 +41,11 @@ package extra.tbs.entity.builders
 	/**
 	 * A turn-based strategy unit builder.
 	 */
-	public class TBSUnitBuilder implements IEntityBuilder
+	public class TBSUnitBuilder extends EntityBuilder implements IEntityBuilder
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
-		
-		[Inject]
-		public var entityManager:EntityManager;
-		[Inject]
-		public var propertiesComponent:TBSUnitPropertiesComponent;
-		[Inject]
-		public var statsComponent:TBSUnitStatsComponent;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -65,7 +55,7 @@ package extra.tbs.entity.builders
 		/**
 		 * @inheritDoc
 		 */
-		public function build(template:EntityTemplate):IEntity
+		override public function build(template:EntityTemplate):IEntity
 		{
 			var e:IEntity = entityManager.createEntity();
 			var mappings:Object = template.componentMappings;
@@ -100,17 +90,6 @@ package extra.tbs.entity.builders
 			//var startVelocity:Vector2D = new Vector2D(50 + (Math.random() * 100), -700);
 			//e.addComponent(new SimplePhysics(startVelocity));
 			return e;
-		}
-		
-		
-		/**
-		 * Returns a String Representation of the class.
-		 * 
-		 * @return A String Representation of the class.
-		 */
-		public function toString():String
-		{
-			return "[TBSUnitBuilder]";
 		}
 		
 		
