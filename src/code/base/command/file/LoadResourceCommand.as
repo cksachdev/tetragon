@@ -54,8 +54,6 @@ package base.command.file
 		 */
 		override public function execute():void 
 		{
-			super.execute();
-			
 			ResourceManager.instance.load(_resourceID, null, onResourceLoaded, onResourceFailed);
 		}
 		

@@ -48,8 +48,6 @@ package base.command.cli
 		 */
 		override public function execute():void 
 		{
-			super.execute();
-			
 			var console:Console = main.console;
 			var cmds:Object = console.cli.commandMap;
 			var t:TabularText = new TabularText(3, true, "  ", null, "  ", 0,

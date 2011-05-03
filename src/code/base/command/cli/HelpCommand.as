@@ -57,8 +57,6 @@ package base.command.cli
 		 */
 		override public function execute():void 
 		{
-			super.execute();
-			
 			var console:Console = main.console;
 			var help:String;
 			

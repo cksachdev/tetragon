@@ -41,8 +41,6 @@ package base.command.cli
 		 */
 		override public function execute():void 
 		{
-			super.execute();
-			
 			main.console.clearInput();
 			main.console.toggle();
 			complete();

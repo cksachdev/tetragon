@@ -43,8 +43,6 @@ package base.command.env
 		 */
 		override public function execute():void 
 		{
-			super.execute();
-			
 			main.console.log(main.screenManager.dumpScreenList(), LogLevel.INFO);
 			complete();
 		}

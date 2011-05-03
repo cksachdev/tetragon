@@ -56,8 +56,6 @@ package base.command.cli
 		 */
 		override public function execute():void 
 		{
-			super.execute();
-			
 			var a:Array = Font.enumerateFonts(_includeDeviceFonts);
 			var s:String;
 			

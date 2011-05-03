@@ -50,8 +50,6 @@ package base.command.cli
 		 */
 		override public function execute():void 
 		{
-			super.execute();
-			
 			var x:XML = describeType(AppInfo);
 			var t:TabularText = new TabularText(2, true, " ", null, "  ");
 			for each (var a:XML in x.constant)

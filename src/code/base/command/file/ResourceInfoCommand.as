@@ -59,8 +59,6 @@ package base.command.file
 		 */
 		override public function execute():void 
 		{
-			super.execute();
-			
 			var r:Resource = ResourceManager.resourceIndex.getResource(_resourceID);
 			if (r)
 			{

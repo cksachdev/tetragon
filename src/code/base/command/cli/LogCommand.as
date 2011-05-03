@@ -55,8 +55,6 @@ package base.command.cli
 		 */
 		override public function execute():void 
 		{
-			super.execute();
-			
 			Log.logByLevel(_level, _message);
 			complete();
 		}

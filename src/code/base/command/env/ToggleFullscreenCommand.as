@@ -30,9 +30,6 @@ package base.command.env
 	import base.command.CLICommand;
 	import base.core.desktop.*;
 
-	import com.hexagonstar.util.display.StageReference;
-
-	import flash.display.Stage;
 	import flash.display.StageDisplayState;
 
 	
@@ -50,11 +47,9 @@ package base.command.env
 		 */
 		override public function execute():void
 		{
-			super.execute();
-			
-			var stage:Stage = StageReference.stage;
-			var state:String = stage.displayState;
+			var state:String = main.contextView.stage.displayState;
 			var interactive:String = StageDisplayState["FULL_SCREEN_INTERACTIVE"];
+			
 			/* We have fs interactive support! */
 			if (interactive != null)
 			{
@@ -96,7 +91,7 @@ package base.command.env
 				}
 			}
 			
-			stage.displayState = state;
+			main.contextView.stage.displayState = state;
 			complete();
 		}
 		

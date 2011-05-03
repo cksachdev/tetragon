@@ -51,8 +51,6 @@ package base.command.env
 		 */
 		override public function execute():void 
 		{
-			super.execute();
-			
 			main.screenManager.openScreen(_screenID, true);
 			complete();
 		}

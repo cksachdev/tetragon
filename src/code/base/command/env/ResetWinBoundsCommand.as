@@ -48,8 +48,6 @@ package base.command.env
 		 */
 		override public function execute():void 
 		{
-			super.execute();
-			
 			WindowBoundsManager.instance.resetBaseWindow();
 			
 			setTimeout(function():void

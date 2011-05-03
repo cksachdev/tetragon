@@ -76,8 +76,6 @@ package base.command.env
 		 */ 
 		override public function execute():void
 		{
-			super.execute();
-			
 			Log.init();
 			Log.info("Initializing...");
 			

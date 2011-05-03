@@ -43,8 +43,6 @@ package base.command.file
 		 */
 		override public function execute():void 
 		{
-			super.execute();
-			
 			Log.info("Unloading all resources ...");
 			ResourceManager.instance.unloadAll();
 			Log.info("Done.");

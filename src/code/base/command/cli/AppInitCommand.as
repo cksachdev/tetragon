@@ -45,8 +45,6 @@ package base.command.cli
 		 */
 		override public function execute():void 
 		{
-			super.execute();
-			
 			commandManager.execute(new InitApplicationCommand());
 			complete();
 		}

@@ -317,11 +317,6 @@ package base
 			XML.ignoreProcessingInstructions = true;
 			XML.ignoreComments = true;
 			
-			/* Create entity architecture-related objects. */
-			_entityManager = new EntityManager();
-			_entitySystemManager = new EntitySystemManager();
-			_entityFactory = new EntityFactory();
-			
 			/* Init the data model registry. */
 			Registry.init();
 			
@@ -332,6 +327,11 @@ package base
 			/* Create managers. */
 			_commandManager = new CommandManager();
 			_screenManager = new ScreenManager(_viewContainer.screenContainer);
+			
+			/* Create entity architecture-related objects. */
+			_entityManager = new EntityManager();
+			_entitySystemManager = new EntitySystemManager();
+			_entityFactory = new EntityFactory();
 			
 			/* We make the logger available as soon as possible so that any log
 			 * messages from the hexagonLib come through even before the console

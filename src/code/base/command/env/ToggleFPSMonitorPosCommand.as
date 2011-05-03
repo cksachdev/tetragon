@@ -41,8 +41,6 @@ package base.command.env
 		 */
 		override public function execute():void 
 		{
-			super.execute();
-			
 			main.fpsMonitor.togglePosition();
 			complete();
 		}

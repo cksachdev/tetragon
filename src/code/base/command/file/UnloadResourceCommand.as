@@ -50,8 +50,6 @@ package base.command.file
 		 */
 		override public function execute():void 
 		{
-			super.execute();
-			
 			ResourceManager.instance.unload(_resourceID);
 			var c:int = ResourceManager.instance.getRefCountFor(_resourceID);
 			Log.info("Unloaded resource with ID \"" + _resourceID + "\" (refCount: " + c + ").");

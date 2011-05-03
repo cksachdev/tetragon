@@ -48,8 +48,6 @@ package base.command.cli
 		 */
 		override public function execute():void 
 		{
-			super.execute();
-			
 			var xml:XML = describeType(Capabilities);
 			var c:TabularText = new TabularText(2, true, " ", null, "  ");
 			for each (var node:XML in xml.*)

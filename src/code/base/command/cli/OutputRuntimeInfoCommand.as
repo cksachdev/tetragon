@@ -45,8 +45,6 @@ package base.command.cli
 		 */
 		override public function execute():void 
 		{
-			super.execute();
-			
 			var d:String = Capabilities.isDebugger.toString();
 			var t:String = Capabilities.playerType;
 			var v:String = Capabilities.version;

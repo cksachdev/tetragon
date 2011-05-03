@@ -50,8 +50,6 @@ package base.command.env
 		 */
 		override public function execute():void 
 		{
-			super.execute();
-			
 			setTimeout(onGCDone, 2000, (new Byte(System.totalMemory).toString()));
 			System.gc();
 		}

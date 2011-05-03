@@ -44,8 +44,6 @@ package base.command.cli
 		 */
 		override public function execute():void 
 		{
-			super.execute();
-			
 			main.console.log("\n" + LocalSettingsManager.instance.settings.dump(), LogLevel.INFO);
 			complete();
 		}

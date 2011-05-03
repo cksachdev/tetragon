@@ -47,8 +47,6 @@ package base.command.cli
 		 */
 		override public function execute():void 
 		{
-			super.execute();
-			
 			var xml:XML = describeType(Registry.config);
 			var c:TabularText = new TabularText(2, true, " ", null, "  ", 0, ["PROPERTY", "VALUE"]);
 			for each (var node:XML in xml.variable)

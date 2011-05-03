@@ -47,8 +47,6 @@ package base.command.env
 		 */
 		override public function execute():void 
 		{
-			super.execute();
-			
 			UpdateManager.instance.checkForUpdate();
 			complete();
 		}
