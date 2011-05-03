@@ -41,7 +41,6 @@ package base
 	import base.view.screen.ScreenManager;
 
 	import com.hexagonstar.exception.SingletonException;
-	import com.hexagonstar.ioc.Injector;
 	import com.hexagonstar.util.debug.HLog;
 	import com.hexagonstar.util.display.StageReference;
 
@@ -49,7 +48,6 @@ package base
 	import flash.events.ErrorEvent;
 	import flash.events.UncaughtErrorEvent;
 	import flash.external.ExternalInterface;
-	import flash.system.ApplicationDomain;
 	
 	
 	/**
@@ -71,11 +69,12 @@ package base
 		/** @private */
 		private var _viewContainer:ViewContainer;
 		/** @private */
-		private var _screenManager:ScreenManager;
-		/** @private */
 		private var _setupHelper:*;
+		
 		/** @private */
-		private var _injector:Injector;
+		private var _commandManager:CommandManager;
+		/** @private */
+		private var _screenManager:ScreenManager;
 		/** @private */
 		private var _entityManager:EntityManager;
 		/** @private */
@@ -113,6 +112,15 @@ package base
 				_singletonLock = false;
 			}
 			return _instance;
+		}
+		
+		
+		/**
+		 * A reference to the command manager.
+		 */
+		public function get commandManager():CommandManager
+		{
+			return _commandManager;
 		}
 		
 		
@@ -191,22 +199,6 @@ package base
 		{
 			if (_setupHelper) return;
 			_setupHelper = v;
-		}
-		
-		
-		/**
-		 * The application's main IoC injector.
-		 */
-		public function get injector():Injector
-		{
-			if (!_injector)
-			{
-				_injector = new Injector();
-				_injector.applicationDomain = contextView && contextView.loaderInfo
-					? contextView.loaderInfo.applicationDomain
-					: ApplicationDomain.currentDomain;
-			}
-			return _injector;
 		}
 		
 		
@@ -327,16 +319,8 @@ package base
 			
 			/* Create entity architecture-related objects. */
 			_entityManager = new EntityManager();
-			_entitySystemManager = new EntitySystemManager(injector);
-			_entityFactory = new EntityFactory(injector);
-			
-			/* Do base IoC injection mappings. */
-			injector.mapValue(EntityManager, _entityManager);
-			injector.mapValue(EntitySystemManager, _entitySystemManager);
-			injector.mapValue(EntityFactory, _entityFactory);
-			
-			/* CommandManager requires a reference to Main. */
-			CommandManager.instance.main = this;
+			_entitySystemManager = new EntitySystemManager();
+			_entityFactory = new EntityFactory();
 			
 			/* Init the data model registry. */
 			Registry.init();
@@ -345,7 +329,8 @@ package base
 			_viewContainer = new ViewContainer();
 			contextView.addChild(viewContainer);
 			
-			/* Create manager that handles opening & closing of screens. */
+			/* Create managers. */
+			_commandManager = new CommandManager();
 			_screenManager = new ScreenManager(_viewContainer.screenContainer);
 			
 			/* We make the logger available as soon as possible so that any log
@@ -354,7 +339,7 @@ package base
 			HLog.registerExternalLogger(Log);
 			
 			/* Start initialization phase. */
-			CommandManager.instance.execute(new InitApplicationCommand(), onAppInitComplete);
+			commandManager.execute(new InitApplicationCommand(), onAppInitComplete);
 		}
 	}
 }

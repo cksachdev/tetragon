@@ -31,8 +31,6 @@ package base.core.entity
 	import base.data.DataClassesFactory;
 	import base.io.resource.Resource;
 	import base.io.resource.ResourceManager;
-
-	import com.hexagonstar.ioc.Injector;
 	
 	
 	/**
@@ -45,8 +43,6 @@ package base.core.entity
 		//-----------------------------------------------------------------------------------------
 		
 		/** @private */
-		private var _injector:Injector;
-		/** @private */
 		private var _builderCache:Object;
 		
 		
@@ -56,12 +52,9 @@ package base.core.entity
 		
 		/**
 		 * Creates a new instance of the class.
-		 * 
-		 * @param injector The DI injector used to instantiate builder classes.
 		 */
-		public function EntityFactory(injector:Injector)
+		public function EntityFactory()
 		{
-			_injector = injector;
 			_builderCache = {};
 		}
 		
@@ -85,7 +78,7 @@ package base.core.entity
 			if (!_builderCache[dataTypeID])
 			{
 				var builderClass:Class = DataClassesFactory.instance.getBuilderClass(dataTypeID);
-				builder = _injector.instantiate(builderClass);
+				builder = new builderClass();
 				if (builder)
 				{
 					_builderCache[dataTypeID] = builder;

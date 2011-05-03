@@ -27,7 +27,7 @@
  */
 package extra.game.view.display
 {
-	import base.command.CommandManager;
+	import base.Main;
 	import base.command.env.ToggleFullscreenCommand;
 	import base.view.display.Display;
 
@@ -185,7 +185,7 @@ package extra.game.view.display
 					_tileScroller.autoScrollV = !_tileScroller.autoScrollV;
 					break;
 				case 70:
-					CommandManager.instance.execute(new ToggleFullscreenCommand());
+					Main.instance.commandManager.execute(new ToggleFullscreenCommand());
 					break;
 				case 69:
 					switchEdgeMode();

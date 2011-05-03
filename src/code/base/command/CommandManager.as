@@ -28,13 +28,10 @@
 package base.command
 {
 	import base.Main;
-
-	import com.hexagonstar.exception.SingletonException;
-	import com.hexagonstar.util.debug.Debug;
 	
 	
 	/**
-	 * A Singleton that can be used to manage command execution. You call the execute
+	 * A manager that can be used to manage command execution. You call the execute
 	 * method and specify a command and any handler methods that should be notified of
 	 * broadcasted command events. After the command has finished execution all it's
 	 * event listeners are automatically removed. The CommandManager also makes sure
@@ -46,10 +43,6 @@ package base.command
 		// Properties
 		// -----------------------------------------------------------------------------------------
 		
-		/** @private */
-		private static var _instance:CommandManager;
-		/** @private */
-		private static var _singletonLock:Boolean = false;
 		/** @private */
 		private var _main:Main;
 		/** @private */
@@ -65,8 +58,7 @@ package base.command
 		 */
 		public function CommandManager()
 		{
-			if (!_singletonLock)
-				throw new SingletonException(this);
+			_main = Main.instance;
 			_executingCommands = new Vector.<CommandVO>();
 		}
 		
@@ -96,7 +88,7 @@ package base.command
 		{
 			if (!isExecuting(cmd))
 			{
-				Debug.trace(toString() + " Executing command: " + cmd.name);
+				//Debug.trace(toString() + " Executing command: " + cmd.name);
 				
 				var c:CommandVO = new CommandVO();
 				c.command = cmd;
@@ -164,21 +156,6 @@ package base.command
 		// -----------------------------------------------------------------------------------------
 		
 		/**
-		 * Returns the singleton instance of the class.
-		 */
-		public static function get instance():CommandManager
-		{
-			if (_instance == null)
-			{
-				_singletonLock = true;
-				_instance = new CommandManager();
-				_singletonLock = false;
-			}
-			return _instance;
-		}
-		
-		
-		/**
 		 * Returns the amount of commands that are currently in execution.
 		 */
 		public function get executingCommandCount():int
@@ -203,15 +180,6 @@ package base.command
 		}
 		
 		
-		/**
-		 * @private
-		 */
-		public function set main(v:Main):void
-		{
-			_main = v;
-		}
-		
-		
 		// -----------------------------------------------------------------------------------------
 		// Event Handlers
 		// -----------------------------------------------------------------------------------------
@@ -221,7 +189,7 @@ package base.command
 		 */
 		public function onCommandComplete(command:Command):void
 		{
-			Debug.trace(toString() + " Completed command: " + command.name);
+			//Debug.trace(toString() + " Completed command: " + command.name);
 			/* After complete remove the command from the executing commands queue */
 			removeCommand(command);
 		}
@@ -232,7 +200,7 @@ package base.command
 		 */
 		public function onCommandAbort(command:Command):void
 		{
-			Debug.trace(toString() + " Command aborted: " + command.name);
+			//Debug.trace(toString() + " Command aborted: " + command.name);
 			/* After abort remove the command from the executing commands queue */
 			removeCommand(command);
 		}
@@ -244,7 +212,7 @@ package base.command
 		public function onCommandError(command:Command, message:String):void
 		{
 			/* Only used for debugging! */
-			Debug.trace(toString() + " Command error: " + command.name);
+			//Debug.trace(toString() + " Command error: " + command.name);
 		}
 		
 		

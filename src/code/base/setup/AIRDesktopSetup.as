@@ -89,7 +89,7 @@ package base.setup
 			/* Only create new setup helper if it's not already existing! */
 			if (!main.setupHelper)
 			{
-				main.setupHelper = new AIRDesktopHelper(_main);
+				main.setupHelper = new AIRDesktopHelper();
 			}
 		}
 		
@@ -153,14 +153,6 @@ package base.setup
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function mapInjectors():void
-		{
-		}
-		
 		
 		/**
 		 * @inheritDoc

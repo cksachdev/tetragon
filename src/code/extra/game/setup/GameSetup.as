@@ -96,14 +96,6 @@ package extra.game.setup
 		/**
 		 * @inheritDoc
 		 */
-		override protected function mapInjectors():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function mapDataTypes():void
 		{
 			dataClassesFactory.mapDataType("WorldSpace", WorldspaceDataParser);
@@ -118,7 +110,7 @@ package extra.game.setup
 		 */
 		override protected function registerScreens():void
 		{
-			_main.screenManager.registerScreen("gameScreen", GameScreen);
+			main.screenManager.registerScreen("gameScreen", GameScreen);
 		}
 	}
 }

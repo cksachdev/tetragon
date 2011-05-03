@@ -99,19 +99,6 @@ package extra.tbs.setup
 		/**
 		 * @inheritDoc
 		 */
-		override protected function mapInjectors():void
-		{
-			var propertiesComponent:TBSUnitPropertiesComponent = new TBSUnitPropertiesComponent();
-			var statsComponent:TBSUnitStatsComponent = new TBSUnitStatsComponent();
-			
-			injector.mapValue(TBSUnitPropertiesComponent, propertiesComponent);
-			injector.mapValue(TBSUnitStatsComponent, statsComponent);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function mapDataTypes():void
 		{
 			dataClassesFactory.mapDataType("TBSUnit", EntityDataParser, TBSUnitBuilder);

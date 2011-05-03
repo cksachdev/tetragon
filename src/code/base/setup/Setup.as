@@ -51,17 +51,6 @@ package base.setup
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Initlializes the setup with a reference to Main.
-		 */
-		public function init(main:Main):void
-		{
-			_main = main;
-			_injector = _main.injector;
-			mapInjectors();
-		}
-		
-		
-		/**
 		 * Executes initial setup steps.
 		 */
 		public function initialSetup():void
@@ -120,16 +109,8 @@ package base.setup
 		 */
 		protected function get main():Main
 		{
+			if (!_main) _main = Main.instance;
 			return _main;
-		}
-		
-		
-		/**
-		 * A reference to the main IoC injector.
-		 */
-		protected function get injector():Injector
-		{
-			return _injector;
 		}
 		
 		
@@ -145,18 +126,6 @@ package base.setup
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Does the IoC injection mappings for this setup.
-		 * This happens before any other setup step.
-		 * 
-		 * @private
-		 */
-		protected function mapInjectors():void
-		{
-			/* Abstract method! */
-		}
-		
 		
 		/**
 		 * @private

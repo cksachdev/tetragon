@@ -27,6 +27,7 @@
  */
 package base.core.cli
 {
+	import base.Main;
 	import base.command.CLICommand;
 	import base.command.CommandManager;
 	import base.core.debug.Console;
@@ -59,7 +60,7 @@ package base.core.cli
 		public function CLI(console:Console)
 		{
 			_console = console;
-			_commandManager = CommandManager.instance;
+			_commandManager = Main.instance.commandManager;
 			_commandMap = {};
 		}
 		

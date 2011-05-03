@@ -206,7 +206,6 @@ package base.view.screen
 				_openScreenClass = screenClass;
 				_showLoadProgress = bs.showLoadProgress;
 				_nextScreen = bs;
-				_main.injector.injectInto(bs);
 				bs.main = _main;
 				bs.init();
 				

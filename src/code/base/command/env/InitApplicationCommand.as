@@ -86,7 +86,6 @@ package base.command.env
 			_setups.push(new BaseSetup());
 			
 			addSetups();
-			executeSetup("init");
 			
 			var s:String = "Used setups: ";
 			for (var i:int = 0; i < _setups.length; i++)
@@ -307,9 +306,6 @@ package base.command.env
 			{
 				switch (step)
 				{
-					case "init":
-						_setups[i].init(main);
-						break;
 					case "initial":
 						_setups[i].initialSetup();
 						break;

@@ -30,7 +30,6 @@ package extra.tbs.view.screen
 	import base.core.entity.EntityFactory;
 	import base.core.entity.IEntity;
 	import base.core.entity.IEntityComponent;
-	import base.io.resource.ResourceManager;
 	import base.view.screen.BaseScreen;
 
 	import com.hexagonstar.util.debug.Debug;
@@ -72,7 +71,7 @@ package extra.tbs.view.screen
 		{
 			super.start();
 			
-			ResourceManager.instance.load("unitInfantry", onLoaded);
+			//ResourceManager.instance.load("unitInfantry", onLoaded);
 		}
 
 

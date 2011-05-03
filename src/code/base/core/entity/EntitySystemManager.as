@@ -30,8 +30,6 @@ package base.core.entity
 	import base.core.IDisposable;
 	import base.core.debug.Log;
 
-	import com.hexagonstar.ioc.Injector;
-
 	import flash.utils.Dictionary;
 	
 	
@@ -44,7 +42,6 @@ package base.core.entity
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _injector:Injector;
 		private var _systems:Dictionary;
 		
 		
@@ -54,12 +51,9 @@ package base.core.entity
 		
 		/**
 		 * Creates a new instance of the class.
-		 * 
-		 * @param injector An Injector to use for this EntitySystemManager.
 		 */
-		public function EntitySystemManager(injector:Injector)
+		public function EntitySystemManager()
 		{
-			_injector = injector;
 			_systems = new Dictionary();
 		}
 		
@@ -78,7 +72,7 @@ package base.core.entity
 				Log.warn("System " + system + " already exists in entity system manager.", this);
 			}
 			
-			var s:IEntitySystem = _injector.instantiate(system);
+			var s:IEntitySystem = new system();
 			_systems[system] = s;
 			s.onRegister();
 			return s;

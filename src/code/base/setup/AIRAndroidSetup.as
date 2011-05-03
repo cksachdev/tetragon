@@ -103,14 +103,6 @@ package base.setup
 		/**
 		 * @inheritDoc
 		 */
-		override protected function mapInjectors():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function mapDataTypes():void
 		{
 		}

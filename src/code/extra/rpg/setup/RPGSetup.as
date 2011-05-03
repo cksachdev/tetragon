@@ -95,14 +95,6 @@ package extra.rpg.setup
 		/**
 		 * @inheritDoc
 		 */
-		override protected function mapInjectors():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function mapDataTypes():void
 		{
 			dataClassesFactory.mapDataType("Attribute", AttributeDataParser);
