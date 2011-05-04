@@ -172,6 +172,7 @@ package base.data
 			showSplashScreen = true;
 			splashScreenID = "splashScreen";
 			//initialScreenID = "dummyScreen";
+			//initialScreenID = "gameScreen";
 			initialScreenID = "tbsTestScreen";
 		}
 	}

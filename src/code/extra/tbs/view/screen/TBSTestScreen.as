@@ -76,10 +76,18 @@ package extra.tbs.view.screen
 		/**
 		 * @inheritDoc
 		 */
+		override protected function registerResources():void
+		{
+			registerResource("unitInfantry");
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
 		override protected function createChildren():void
 		{
 			_display = new TBSTestDisplay();
-			addLoadDisplay(_display);
 		}
 		
 		
@@ -121,7 +129,7 @@ package extra.tbs.view.screen
 		 */
 		override protected function unload():void
 		{
-			
+			super.unload();
 		}
 	}
 }

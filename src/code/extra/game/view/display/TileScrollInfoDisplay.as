@@ -66,40 +66,6 @@ package extra.game.view.display
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function start():void
-		{
-			super.start();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function stop():void
-		{
-			super.stop();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function reset():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function dispose():void
-		{
-			super.dispose();
-		}
-		
 		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
@@ -159,14 +125,6 @@ package extra.game.view.display
 		/**
 		 * @inheritDoc
 		 */
-		override protected function addResources():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function createChildren():void
 		{
 			_format = new TextFormat();
@@ -209,7 +167,14 @@ package extra.game.view.display
 			graphics.beginFill(0x4F449D, 1.0);
 			graphics.drawRect(0, 0, 180, StageReference.stageHeight);
 			graphics.endFill();
-			
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function addChildren():void
+		{
 			addChild(_infoTF);
 			addChild(_helpTF);
 		}

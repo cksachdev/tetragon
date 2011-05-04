@@ -111,36 +111,15 @@ package extra.game.view.screen
 		 */
 		override public function dispose():void
 		{
+			super.dispose();
 			_scrollDisplay.dispose();
 			_infoDisplay.dispose();
-			super.dispose();
 		}
 		
 		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function set enabled(v:Boolean):void
-		{
-			super.enabled = v;
-			_scrollDisplay.enabled = v;
-			_infoDisplay.enabled = v;
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function set paused(v:Boolean):void
-		{
-			super.paused = v;
-			_scrollDisplay.paused = v;
-			_infoDisplay.paused = v;
-		}
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -159,9 +138,35 @@ package extra.game.view.screen
 		{
 			_infoDisplay = new TileScrollInfoDisplay();
 			_scrollDisplay = new TileScrollDisplay();
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function registerResources():void
+		{
+			registerResource("tileSet1Image");
+			registerResource("tileSet2Image");
+			registerResource("tileSet3Image");
+			registerResource("fontDina08x16Image");
 			
-			addLoadDisplay(_infoDisplay);
-			addLoadDisplay(_scrollDisplay);
+			registerResource("testTileSet");
+			registerResource("bdTileSet");
+			registerResource("hnTileSet");
+			registerResource("tileSetDina08x16");
+			
+			registerResource("testTileMap");
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function registerDisplays():void
+		{
+			registerDisplay(_infoDisplay);
+			registerDisplay(_scrollDisplay);
 		}
 		
 		
@@ -208,7 +213,7 @@ package extra.game.view.screen
 		 */
 		override protected function unload():void
 		{
-			
+			super.unload();
 		}
 	}
 }

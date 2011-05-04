@@ -35,24 +35,16 @@ package base.view.display
 	import flash.media.Sound;
 
 	
+	/**
+	 * A splash display that shows the engine's logo.
+	 */
 	public class SplashDisplay extends Display
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		
-		//-----------------------------------------------------------------------------------------
-		// Constructor
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Creates a new TestDisplay instance.
-		 */
-		public function SplashDisplay()
-		{
-			super();
-		}
+		private var _tetragonLogo:TetragonLogo;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -71,102 +63,28 @@ package base.view.display
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Callback Handlers
-		//-----------------------------------------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
 		/**
 		 * @inheritDoc
 		 */
-		override protected function addResources():void
-		{
-			addResource("audioLogoTetragon");
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function createChildren():void
 		{
-			var logo:TetragonLogo = new TetragonLogo();
+			_tetragonLogo = new TetragonLogo();
 			var ds:DropShadowFilter = new DropShadowFilter(1.0, 45, 0x000000, 0.4, 8.0, 8.0, 2);
-			logo.filters = [ds];
-			logo.transform.colorTransform = colorUintToColorTransform(Registry.config.splashLogoColor);
-			addChild(logo);
+			_tetragonLogo.filters = [ds];
+			_tetragonLogo.transform.colorTransform =
+				colorUintToColorTransform(Registry.config.splashLogoColor);
 		}
 		
 		
 		/**
 		 * @inheritDoc
 		 */
-		override protected function enableChildren():void
+		override protected function addChildren():void
 		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function disableChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function pauseChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function unpauseChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function addListeners():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function removeListeners():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function updateDisplayText():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function layoutChildren():void
-		{
+			addChild(_tetragonLogo);
 		}
 	}
 }

@@ -32,28 +32,11 @@ package base.view.screen
 	
 	
 	/**
-	 * A screen that does nothing.
+	 * A screen that does nothing specific. It only opens the logging console and shows
+	 * the fps monitor.
 	 */
 	public class DummyScreen extends BaseScreen
 	{
-		//-----------------------------------------------------------------------------------------
-		// Properties
-		//-----------------------------------------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Constructor
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Creates a new instance.
-		 */
-		public function DummyScreen()
-		{
-			super();
-		}
-		
-		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
@@ -73,41 +56,6 @@ package base.view.screen
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function stop():void
-		{
-			super.stop();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function reset():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function update():void
-		{
-			super.update();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function dispose():void
-		{
-			super.dispose();
-		}
-		
-		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
@@ -118,82 +66,6 @@ package base.view.screen
 		override public function get showLoadProgress():Boolean
 		{
 			return false;
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function set enabled(v:Boolean):void
-		{
-			super.enabled = v;
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function set paused(v:Boolean):void
-		{
-			super.paused = v;
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Callback Handlers
-		//-----------------------------------------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function createChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function addChildren():void 
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function addListeners():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function removeListeners():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function layoutChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function unload():void
-		{
-			
 		}
 	}
 }

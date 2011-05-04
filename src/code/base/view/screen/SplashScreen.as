@@ -41,7 +41,7 @@ package base.view.screen
 	
 	
 	/**
-	 * A splash screen that display's the engine's logo after application launch.
+	 * A screen that shows the SplashDisplay.
 	 */
 	public class SplashScreen extends BaseScreen
 	{
@@ -52,19 +52,6 @@ package base.view.screen
 		private var _background:RectangleGradientShape;
 		private var _display:SplashDisplay;
 		private var _timer:Timer;
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Constructor
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Creates a new instance.
-		 */
-		public function SplashScreen()
-		{
-			super();
-		}
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -114,7 +101,7 @@ package base.view.screen
 		{
 			_timer.stop();
 			Mouse.show();
-			main.screenManager.openScreen(Registry.config.initialScreenID, true, true);
+			screenManager.openScreen(Registry.config.initialScreenID, true, true);
 		}
 		
 		
@@ -124,10 +111,10 @@ package base.view.screen
 		private function onTimerComplete(e:TimerEvent):void
 		{
 			/* Once the screen fades out, the user should not be able to interrupt, otherwise
-			 * we might hang up somewhere so remove input listeners now. */
+			 * we might hang up somewhere so remove input listeners right here. */
 			removeListeners();
 			Mouse.show();
-			main.screenManager.openScreen(Registry.config.initialScreenID);
+			screenManager.openScreen(Registry.config.initialScreenID);
 		}
 		
 		
@@ -144,10 +131,27 @@ package base.view.screen
 			
 			_background = new RectangleGradientShape();
 			_display = new SplashDisplay();
-			addLoadDisplay(_display);
 			
 			/* Hide mouse during splash screen if fullscreen. */
 			if (main.isFullscreen) Mouse.hide();
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function registerResources():void
+		{
+			registerResource("audioLogoTetragon");
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function registerDisplays():void
+		{
+			registerDisplay(_display);
 		}
 		
 		
@@ -194,14 +198,6 @@ package base.view.screen
 				Registry.config.splashBackgroundColors);
 			_display.x = getHorizontalCenter(_display);
 			_display.y = getVerticalCenter(_display);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function unload():void
-		{
 		}
 	}
 }

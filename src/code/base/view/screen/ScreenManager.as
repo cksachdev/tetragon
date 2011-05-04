@@ -202,7 +202,6 @@ package base.view.screen
 				_openScreenClass = screenClass;
 				_showLoadProgress = bs.showLoadProgress;
 				_nextScreen = bs;
-				bs.init();
 				
 				if (fastTransition)
 				{

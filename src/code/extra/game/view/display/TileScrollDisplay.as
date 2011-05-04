@@ -299,32 +299,12 @@ package extra.game.view.display
 		/**
 		 * @inheritDoc
 		 */
-		override protected function addResources():void
-		{
-			addResource("tileSet1Image");
-			addResource("tileSet2Image");
-			addResource("tileSet3Image");
-			addResource("fontDina08x16Image");
-			
-			addResource("testTileSet");
-			addResource("bdTileSet");
-			addResource("hnTileSet");
-			addResource("tileSetDina08x16");
-			
-			addResource("testTileMap");
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function createChildren():void
 		{
 			var w:int = VIEWPORT_SIZES[_currentVPSize]["w"];
 			var h:int = VIEWPORT_SIZES[_currentVPSize]["h"];
 			_tileScroller = new TileScroller(w, h);
 			createTilemap(1, 2);
-			addChild(_tileScroller);
 			_tileScroller.start();
 		}
 		
@@ -342,6 +322,15 @@ package extra.game.view.display
 			
 			_tilemap = new TileMapGenerator().generate(_tileset, mapType, sizeRange);
 			_tileScroller.tilemap = _tilemap;
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function addChildren():void
+		{
+			addChild(_tileScroller);
 		}
 		
 		

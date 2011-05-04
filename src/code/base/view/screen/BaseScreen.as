@@ -28,6 +28,7 @@
 package base.view.screen
 {
 	import base.event.ResourceEvent;
+	import base.io.resource.Resource;
 	import base.view.display.Display;
 
 	import com.hexagonstar.signals.Signal;
@@ -47,10 +48,19 @@ package base.view.screen
 		//-----------------------------------------------------------------------------------------
 		
 		/**
+		 * Keeps a list of IDs for resources that need to be loaded for this screen.
+		 * @private
+		 */
+		private var _resourceIDs:Array;
+		
+		/**
 		 * Stores all child displays of this screen.
 		 * @private
 		 */
 		private var _displays:Vector.<Display>;
+		
+		/** @private */
+		private var _loaded:Boolean = false;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -58,7 +68,19 @@ package base.view.screen
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Signal that is broadcasted when the screen has been created.
+		 * Signal that is broadcasted when the screen has load progress.
+		 * @private
+		 */
+		public var progressSignal:Signal;
+		
+		/**
+		 * Signal that is broadcasted when the screen's resources have been loaded.
+		 * @private
+		 */
+		public var loadedSignal:Signal;
+		
+		/**
+		 * Signal that is broadcasted when the screen has been created and is ready for use.
 		 * @private
 		 */
 		public var createdSignal:Signal;
@@ -73,7 +95,13 @@ package base.view.screen
 		 */
 		public function BaseScreen()
 		{
-			prepare();
+			progressSignal = new Signal();
+			loadedSignal = new Signal();
+			createdSignal = new Signal();
+			
+			createChildren();
+			registerResources();
+			registerDisplays();
 		}
 		
 		
@@ -82,20 +110,20 @@ package base.view.screen
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @inheritDoc
+		 * Loads all resources that the screen requires. This method gets called
+		 * automatically by the screen manager.
 		 */
-		override public function load():void
+		public function load():void
 		{
-			if (_displays.length < 1)
+			/* If there are no resources to load for this screen, we have to move
+			 * onwards here or the screen would never fire the loaded signal! */
+			if (!_resourceIDs || _resourceIDs.length < 1)
 			{
-				setup();
+				onResourceLoadComplete();
 				return;
 			}
-			for (var i:int = 0; i < _displays.length; i++)
-			{
-				_displays[i].loaded = false;
-				_displays[i].load();
-			}
+			resourceManager.load(_resourceIDs, onResourceLoadComplete, onResourceLoaded,
+				onResourceLoadError, onResourceProgress);
 		}
 		
 		
@@ -105,7 +133,7 @@ package base.view.screen
 		override public function start():void
 		{
 			super.start();
-			callOnAllDisplays("start");
+			callOnRegisteredDisplays("start");
 		}
 		
 		
@@ -115,7 +143,7 @@ package base.view.screen
 		override public function stop():void
 		{
 			super.stop();
-			callOnAllDisplays("stop");
+			callOnRegisteredDisplays("stop");
 		}
 		
 		
@@ -124,7 +152,7 @@ package base.view.screen
 		 */
 		override public function reset():void
 		{
-			callOnAllDisplays("reset");
+			callOnRegisteredDisplays("reset");
 		}
 		
 		
@@ -133,7 +161,7 @@ package base.view.screen
 		 */
 		override public function update():void
 		{
-			callOnAllDisplays("update");
+			callOnRegisteredDisplays("update");
 			super.update();
 		}
 		
@@ -144,7 +172,7 @@ package base.view.screen
 		override public function dispose():void
 		{
 			stop();
-			callOnAllDisplays("dispose");
+			callOnRegisteredDisplays("dispose");
 			removeListeners();
 			disposeSignals();
 			unload();
@@ -152,16 +180,42 @@ package base.view.screen
 		
 		
 		/**
-		 * @inheritDoc
+		 * Disposes all signals used by the screen.
 		 */
-		override public function disposeSignals():void
+		public function disposeSignals():void
 		{
+			if (progressSignal)
+			{
+				progressSignal.removeAll();
+				progressSignal = null;
+			}
+			if (loadedSignal)
+			{
+				loadedSignal.removeAll();
+				loadedSignal = null;
+			}
 			if (createdSignal)
 			{
 				createdSignal.removeAll();
 				createdSignal = null;
 			}
-			super.disposeSignals();
+		}
+		
+		
+		/**
+		 * Used to initialize the screen. Called by the screen manager after all of the
+		 * screen resources have been loaded. Do not call manually!
+		 * 
+		 * @private
+		 */
+		override public function init():void
+		{
+			callOnRegisteredDisplays("init");
+			addChildren();
+			addListeners();
+			
+			/* All done! Time to show the screen on the next frame. */
+			addEventListener(Event.ENTER_FRAME, onFramePassed);
 		}
 		
 		
@@ -181,12 +235,25 @@ package base.view.screen
 		
 		
 		/**
+		 * Determines whether all required resources for the display have been loaded.
+		 */
+		public function get loaded():Boolean
+		{
+			return _loaded;
+		}
+		public function set loaded(v:Boolean):void
+		{
+			_loaded = v;
+		}
+		
+		
+		/**
 		 * @inheritDoc
 		 */
 		override public function set enabled(v:Boolean):void
 		{
 			super.enabled = v;
-			callOnAllDisplays("enabled", v);
+			callOnRegisteredDisplays("enabled", v);
 		}
 		
 		
@@ -196,7 +263,7 @@ package base.view.screen
 		override public function set paused(v:Boolean):void
 		{
 			super.paused = v;
-			callOnAllDisplays("paused", v);
+			callOnRegisteredDisplays("paused", v);
 		}
 		
 		
@@ -209,40 +276,57 @@ package base.view.screen
 		}
 		
 		
+		/**
+		 * A reference to the screen manager for use in sub-classes.
+		 */
+		protected function get screenManager():ScreenManager
+		{
+			return main.screenManager;
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
 		
 		/**
+		 * Invoked after a resource has been loaded for this screen.
 		 * @private
 		 */
-		private function onDisplayProgress(e:ResourceEvent):void
+		public function onResourceLoaded(resource:Resource):void
 		{
-			progressSignal.dispatch(e);
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Invoked if a resource for this screen has failed to loaded.
+		 * @private
+		 */
+		public function onResourceLoadError(resource:Resource):void
+		{
+			/* Abstract method! */
 		}
 		
 		
 		/**
 		 * @private
 		 */
-		protected function onDisplayLoaded(display:Display):void
+		public function onResourceProgress(e:ResourceEvent):void
 		{
-			display.init();
-			display.loaded = true;
-			
-			for (var i:int = 0; i < _displays.length; i++)
-			{
-				var d:Display = _displays[i];
-				
-				/* Check if any unloaded display is left. */
-				if (!d.loaded) return;
-				
-				/* If we reach this point, all displays have been loaded.
-				 * Remove signal listeners from displays. */
-				 d.disposeSignals();
-			}
-			
-			setup();
+			progressSignal.dispatch(e);
+		}
+		
+		
+		/**
+		 * Invoked after all resource loading for this screen has been completed.
+		 * @private
+		 */
+		public function onResourceLoadComplete():void
+		{
+			loaded = true;
+			loadedSignal.dispatch(this);
+			init();
 		}
 		
 		
@@ -264,63 +348,122 @@ package base.view.screen
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @private
-		 */
-		protected function prepare():void
-		{
-			_displays = new Vector.<Display>();
-			progressSignal = new Signal();
-			createdSignal = new Signal();
-			
-			createChildren();
-		}
-		
-		
-		/**
-		 * @private
-		 */
-		protected function addLoadDisplay(display:Display):void
-		{
-			display.screen = this;
-			display.progressSignal.add(onDisplayProgress);
-			display.loadedSignal.add(onDisplayLoaded);
-			_displays.push(display);
-		}
-		
-		
-		/**
 		 * @inheritDoc
 		 */
-		override protected function setup():void
-		{
-			addChildren();
-			addListeners();
-			
-			/* All done! Time to show the screen */
-			addEventListener(Event.ENTER_FRAME, onFramePassed);
-		}
-		
-		
-		/**
-		 * @private
-		 */
-		protected function addChildren():void
+		override protected function createChildren():void
 		{
 			/* Abstract method! */
 		}
 		
 		
 		/**
-		 * Calls a method on all display objects of the screen.
+		 * Registers required resources for loading. Override this method in your sub-screen
+		 * class and add as many resources as you need for the screen and it's display children.
+		 * The resources are being preloaded before the screen is opened by the screen manager.
+		 * 
+		 * @private
+		 * @example
+		 * <pre>
+		 *    registerResource("resource1");
+		 *    registerResource("resource2");
+		 * </pre>
+		 */
+		protected function registerResources():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Registers displays for use with the screen. Override this method in your sub-screen
+		 * class and register the displays by using the <code>registerDisplay()</code> method.
+		 * Displays that are registered with the screen have most of their methods called
+		 * automatically when these methods are called on the screen. These methods are:
+		 * <code>init()</code>, <code>start()</code>, <code>stop()</code>, <code>reset()</code>,
+		 * <code>update()</code>, <code>dispose()</code>, <code>enabled</code> and
+		 * <code>paused</code>.
+		 * 
+		 * @private
+		 * @example
+		 * <pre>
+		 *    registerDisplay("display1");
+		 *    registerDisplay("display2");
+		 * </pre>
+		 */
+		protected function registerDisplays():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
 		 * @private
 		 */
-		private function callOnAllDisplays(op:String, v:* = null):void
+		override protected function addChildren():void
 		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Registers a resource that is going to be loaded for the screen. All resources
+		 * that are registered with their ID are being loaded before the screen is being
+		 * opened.
+		 * 
+		 * @private
+		 */
+		protected function registerResource(resourceID:String):void
+		{
+			if (!_resourceIDs) _resourceIDs = [];
+			_resourceIDs.push(resourceID);
+		}
+		
+		
+		/**
+		 * Registers a Display for use with the screen. This doesn't add the display to
+		 * the display list but 'registers' it for use with the screen. Displays that are
+		 * registered with the screen have several methods and setters automatically
+		 * called if these methods are called on the screen.
+		 * 
+		 * @private
+		 */
+		protected function registerDisplay(display:Display):void
+		{
+			if (!_displays) _displays = new Vector.<Display>();
+			display.screen = this;
+			_displays.push(display);
+		}
+		
+		
+		/**
+		 * Used to unload any resources that have been loaded for the screen.
+		 * @private
+		 */
+		protected function unload():void
+		{
+			if (!_resourceIDs || _resourceIDs.length < 1) return;
+			resourceManager.unload(_resourceIDs);
+		}
+		
+		
+		/**
+		 * Calls a method on all registered displays of the screen.
+		 * @private
+		 * 
+		 * @param func Function that should be called on the display.
+		 * @param value Optional value used when calling setters.
+		 */
+		private function callOnRegisteredDisplays(func:String, value:* = null):void
+		{
+			if (!_displays) return;
 			var len:uint = _displays.length;
 			for (var i:uint = 0; i < len; i++)
 			{
-				switch (op)
+				switch (func)
 				{
+					case "init":
+						_displays[i].init();
+						break;
 					case "start":
 						_displays[i].start();
 						break;
@@ -337,10 +480,10 @@ package base.view.screen
 						_displays[i].dispose();
 						break;
 					case "enabled":
-						_displays[i].enabled = v;
+						_displays[i].enabled = value;
 						break;
 					case "paused":
-						_displays[i].paused = v;
+						_displays[i].paused = value;
 						break;
 				}
 			}

@@ -103,15 +103,6 @@ package extra.tbs.view.display
 		/**
 		 * @inheritDoc
 		 */
-		override protected function addResources():void
-		{
-			addResource("unitInfantry");
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function createChildren():void
 		{
 			var unit:IEntity = main.entityFactory.createEntity("unitInfantry");

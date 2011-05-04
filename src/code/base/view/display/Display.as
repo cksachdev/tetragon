@@ -28,20 +28,19 @@
 package base.view.display
 {
 	import base.Main;
-	import base.event.ResourceEvent;
-	import base.io.resource.Resource;
-	import base.io.resource.ResourceIndex;
-	import base.io.resource.StringIndex;
+	import base.io.resource.ResourceManager;
 	import base.view.screen.BaseScreen;
-
-	import com.hexagonstar.signals.Signal;
 
 	import flash.display.Sprite;
 	import flash.utils.getQualifiedClassName;
 	
 	
 	/**
-	 * Abstract base class for all display classes.
+	 * The abstract base class for all display classes, inclusive screens.
+	 * 
+	 * A Display is a container that can contain any kind and number of other display
+	 * objects (Sprites, MovieClips, Shapes, Bitmaps etc.) and which is placed for
+	 * display in a screen.
 	 */
 	public class Display extends Sprite
 	{
@@ -49,56 +48,19 @@ package base.view.display
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * A reference to Main.
-		 * @private
-		 */
+		/** @private */
 		private var _main:Main;
-		
-		/**
-		 * @private
-		 */
+		/** @private */
 		private var _screen:BaseScreen;
+		/** @private */
+		private var _resourceManager:ResourceManager;
 		
-		/**
-		 * A reference to the resource index.
-		 * @private
-		 */
-		private var _resourceIndex:ResourceIndex;
-		
-		/**
-		 * A reference to the string index.
-		 * @private
-		 */
-		private var _stringIndex:StringIndex;
-		
-		/**
-		 * Keeps a list of IDs for resources that need to be loaded for this display.
-		 * @private
-		 */
-		private var _resourceIDs:Array;
-		
-		protected var _enabled:Boolean = true;
-		protected var _loaded:Boolean = false;
-		protected var _started:Boolean = false;
-		protected var _paused:Boolean = false;
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Signals
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Signal that is broadcasted when the display has been loaded.
-		 * @private
-		 */
-		public var loadedSignal:Signal;
-		
-		/**
-		 * Signal that is broadcasted when the display has load progress.
-		 * @private
-		 */
-		public var progressSignal:Signal;
+		/** @private */
+		private var _enabled:Boolean = true;
+		/** @private */
+		private var _started:Boolean = false;
+		/** @private */
+		private var _paused:Boolean = false;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -111,10 +73,7 @@ package base.view.display
 		public function Display()
 		{
 			_main = Main.instance;
-			loadedSignal = new Signal();
-			progressSignal = new Signal();
-			
-			addResources();
+			_resourceManager = _main.resourceManager;
 		}
 		
 		
@@ -123,45 +82,17 @@ package base.view.display
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Used to Initialize the display. For displays which are child objects of a
-		 * <code>Screen</code> this method gets called automatically after the display has
-		 * been loaded. For screens <code>init</code> is being called by the
-		 * <code>ScreenManager</code> right after the screen has been created.
-		 */
-		public function init():void
-		{
-		}
-		
-		
-		/**
-		 * Loads any resources that the display might require. For displays which are child
-		 * objects in a <code>Screen</code> this method gets called automatically by the
-		 * screen before the screen is being opened.
-		 */
-		public function load():void
-		{
-			/* If there are no resources to load for this display, we have to call
-			 * setup() here or the display would never fire the LOADED event! */
-			if (!_resourceIDs || _resourceIDs.length < 1)
-			{
-				onResourceLoadComplete();
-				return;
-			}
-			
-			main.resourceManager.load(_resourceIDs, onResourceLoadComplete, onResourceLoaded,
-				onResourceLoadError, onResourceProgress);
-		}
-		
-		
-		/**
 		 * Can be called to start the display in case the display has any child objects that
 		 * need to be started. For example a display might contain animated display children
 		 * that should not start playing right after the display has been opened but only
 		 * after this method has been called.<br><br>
 		 * 
-		 * For displays that are children of a Screen <code>start</code> gets called
-		 * automatically by the screen once the start method of the screen has been called by
-		 * the ScreenManager.
+		 * <p>For displays that are children of a Screen <code>start</code> gets called
+		 * automatically by the screen if the start method of the screen has been called by
+		 * the ScreenManager.</p>
+		 * 
+		 * <p>When overriding this method make sure to call super.start() at the beginning of
+		 * your start method!</p>
 		 */
 		public function start():void
 		{
@@ -173,6 +104,9 @@ package base.view.display
 		/**
 		 * Can be called to stop the display and it's child objects after it has been started
 		 * by calling the start method.
+		 * 
+		 * <p>When overriding this method make sure to call super.stop() at the beginning of
+		 * your stop method!</p>
 		 */
 		public function stop():void
 		{
@@ -182,7 +116,7 @@ package base.view.display
 		
 		
 		/**
-		 * Used to put the display into it's initial state like it was right after the display
+		 * Used to put the display into it's initial state as it was right after the display
 		 * has been instantiated for the first time. This method can be called to reset
 		 * properties and child objects in case the display should be re-used without the need
 		 * to re-instantiate it.
@@ -197,6 +131,13 @@ package base.view.display
 		 * Updates the display. This method can be called if child objects of the display
 		 * need to be updated, e.g. after localization has been changed or if the display
 		 * children need to be re-layouted.
+		 * 
+		 * <p>For displays that are children of a Screen <code>update</code> gets called
+		 * automatically by the screen if the update method of the screen has been called by
+		 * the ScreenManager.</p>
+		 * 
+		 * <p>When overriding this method make sure to call super.update() at the end of
+		 * your update method!</p>
 		 */
 		public function update():void
 		{
@@ -206,40 +147,37 @@ package base.view.display
 		
 		
 		/**
-		 * Disposes the display to clean up resources that are no longer in use. A call to
-		 * this method stops the display, removes it's event listeners and then unloads it.
+		 * Disposes the display to clean up resources that are no longer needed. A call to
+		 * this method stops the display, removes it's listeners and then unloads it.
+		 * 
+		 * <p>When overriding this method make sure to call super.dispose() at the start of
+		 * your dispose method!</p>
 		 */
 		public function dispose():void
 		{
 			stop();
 			removeListeners();
-			disposeSignals();
-			unload();
 		}
 		
 		
 		/**
-		 * Disposes all signals used by the instance.
-		 */
-		public function disposeSignals():void
-		{
-			if (loadedSignal)
-			{
-				loadedSignal.removeAll();
-				loadedSignal = null;
-			}
-			if (progressSignal)
-			{
-				progressSignal.removeAll();
-				progressSignal = null;
-			}
-		}
-		
-		
-		/**
-		 * Returns a string representation of the display.
+		 * Used to initialize the display. Called by it's parent screen after the screen
+		 * is ready. Don't call manually!
 		 * 
-		 * @return A string representation of the display.
+		 * @private
+		 */
+		public function init():void
+		{
+			createChildren();
+			addChildren();
+			addListeners();
+		}
+		
+		
+		/**
+		 * Returns a String representation of the object.
+		 * 
+		 * @return A String representation of the object.
 		 */
 		override public function toString():String
 		{
@@ -272,25 +210,13 @@ package base.view.display
 		
 		/**
 		 * Determines if the display has been started, i.e. if it's start method has been
-		 * called. Returns true if the display has been started or false if the display
-		 * has either been stopped or has not yet been started.
+		 * called. Returns <code>true<code> if the display has been started or
+		 * <code>false<code> if the display has either been stopped by calling
+		 * <code>stop()</code> or has not yet been started.
 		 */
 		public function get started():Boolean
 		{
 			return _started;
-		}
-		
-		
-		/**
-		 * Determines whether all required resources for the display have been loaded.
-		 */
-		public function get loaded():Boolean
-		{
-			return _loaded;
-		}
-		public function set loaded(v:Boolean):void
-		{
-			_loaded = v;
 		}
 		
 		
@@ -314,22 +240,9 @@ package base.view.display
 		
 		
 		/**
-		 * Used to set a reference to <code>Main</code> for displays. Screens receive this
-		 * reference automatically from the <code>ScreenManager</code> and displays that are
-		 * child objects of a <code>Screen</code> receive the reference automatically from the
-		 * screen. In most cases you don't need to touch this setter.
-		 * 
-		 * @private
-		 */
-		public function get main():Main
-		{
-			return _main;
-		}
-		
-		
-		/**
-		 * A reference to the display's parent screen.
-		 * @private
+		 * A reference to the display's parent screen, for use in sub-classes.
+		 * This property is set automatically by the display's parent screen when the
+		 * display is registered with the screen by using registerDisplay().
 		 */
 		public function get screen():BaseScreen
 		{
@@ -341,45 +254,27 @@ package base.view.display
 		}
 		
 		
+		/**
+		 * A reference to Main for use in sub-classes.
+		 */
+		protected function get main():Main
+		{
+			return _main;
+		}
+		
+		
+		/**
+		 * A reference to the resource manager for use in sub-classes.
+		 */
+		protected function get resourceManager():ResourceManager
+		{
+			return _resourceManager;
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Invoked after a resource has been loaded for this display.
-		 * @private
-		 */
-		public function onResourceLoaded(resource:Resource):void
-		{
-		}
-		
-		
-		/**
-		 * Invoked if a resource for this display has failed to loaded.
-		 * @private
-		 */
-		public function onResourceLoadError(resource:Resource):void
-		{
-		}
-		
-		
-		/**
-		 * @private
-		 */
-		public function onResourceProgress(e:ResourceEvent):void
-		{
-			progressSignal.dispatch(e);
-		}
-		
-		
-		/**
-		 * Invoked after a all resource loading has been completed.
-		 * @private
-		 */
-		public function onResourceLoadComplete():void
-		{
-			setup();
-		}
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -387,51 +282,9 @@ package base.view.display
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Adds resources for loading. Override this method in your concrete display
-		 * class and add as many resources as you need for this display. The resources
-		 * will be loaded before the display's parent screen is opened by the screen
-		 * manager.
-		 * 
-		 * @private
-		 */
-		protected function addResources():void
-		{
-			/* Abstract method! */
-		}
-		
-		
-		/**
-		 * @private
-		 */
-		protected function addResource(resourceID:String):void
-		{
-			if (!_resourceIDs)
-			{
-				_resourceIDs = [];
-				_resourceIndex = main.resourceManager.resourceIndex;
-				_stringIndex = main.resourceManager.stringIndex;
-			}
-			_resourceIDs.push(resourceID);
-		}
-		
-		
-		/**
-		 * Sets up the display. This method is called after all resources for this
-		 * display have been loaded.
-		 * 
-		 * @private
-		 */
-		protected function setup():void
-		{
-			createChildren();
-			addListeners();
-			loadedSignal.dispatch(this);
-		}
-		
-		
-		/**
 		 * Used to create any display children (and other objects) that the display
-		 * contains.
+		 * might need. Note that child display objects should not be added to the display
+		 * list here. Instead they are added in the <code>addChildren()</code> method.
 		 * 
 		 * @private
 		 */
@@ -442,45 +295,19 @@ package base.view.display
 		
 		
 		/**
-		 * @private
-		 */
-		protected function enableChildren():void
-		{
-			/* Abstract method! */
-		}
-		
-		
-		/**
-		 * @private
-		 */
-		protected function disableChildren():void
-		{
-			/* Abstract method! */
-		}
-		
-		
-		/**
-		 * @private
-		 */
-		protected function pauseChildren():void
-		{
-			/* Abstract method! */
-		}
-		
-		
-		/**
-		 * @private
-		 */
-		protected function unpauseChildren():void
-		{
-			/* Abstract method! */
-		}
-		
-		
-		/**
-		 * Should be used to add any required event/signal listeners to the display and/or it's
-		 * children.
+		 * Used to add display objects to the display list that were created in the
+		 * <code>createChildren()</code> method.
 		 * 
+		 * @private
+		 */
+		protected function addChildren():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Used to add any required event/signal listeners to the display and/or it's children.
 		 * @private
 		 */
 		protected function addListeners():void
@@ -490,8 +317,9 @@ package base.view.display
 		
 		
 		/**
-		 * Used to remove any event/signal listeners that has been added with addEventListeners().
-		 * This method is automatically called by the dispose() method.
+		 * Used to remove any event/signal listeners that have been added with
+		 * <code>addListeners()</code>. This method is automatically called by the
+		 * <code>dispose()</code> method.
 		 * 
 		 * @private
 		 */
@@ -502,9 +330,49 @@ package base.view.display
 		
 		
 		/**
+		 * Used to enable all child objects.
+		 * @private
+		 */
+		protected function enableChildren():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Used to disable all child objects.
+		 * @private
+		 */
+		protected function disableChildren():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Used to pause all child objects.
+		 * @private
+		 */
+		protected function pauseChildren():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Used to unpause all child objects.
+		 * @private
+		 */
+		protected function unpauseChildren():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
 		 * Used to update any display text of the display if it contains any children that
-		 * are used to display text. Typically any text displays should be updated here with
-		 * text strings from the application's locale object.
+		 * are used to display text. Typically any textfield text should be set here with
+		 * strings from the application's currently used text resources.
 		 * 
 		 * @private
 		 */
@@ -515,10 +383,10 @@ package base.view.display
 		
 		
 		/**
-		 * Used to lay out the display children of the display. This method is called
+		 * Used to layout the display children of the display. This method is called
 		 * initially to set the position and size of any child objects and is called
 		 * whenever the children need to update their position or size because the layout
-		 * has changed, for instance after the application window has been resized.
+		 * has changed, for example after the application window has been resized.
 		 * 
 		 * @private
 		 */
@@ -529,32 +397,22 @@ package base.view.display
 		
 		
 		/**
-		 * Should be used to unload any assets that have been loaded for the display.
-		 * 
-		 * @private
-		 */
-		protected function unload():void
-		{
-			if (_resourceIDs.length < 1) return;
-			main.resourceManager.unload(_resourceIDs);
-		}
-		
-		
-		/**
+		 * Helper method to get a resource from the resource index.
 		 * @private
 		 */
 		protected function getResource(id:String):*
 		{
-			return _resourceIndex.getResourceContent(id);
+			return resourceManager.resourceIndex.getResourceContent(id);
 		}
 		
 		
 		/**
+		 * Helper method to get a string from the string index.
 		 * @private
 		 */
 		protected function getString(id:String):String
 		{
-			return _stringIndex.get(id);
+			return resourceManager.stringIndex.get(id);
 		}
 	}
 }
