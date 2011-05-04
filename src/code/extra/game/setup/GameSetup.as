@@ -110,7 +110,9 @@ package extra.game.setup
 		 */
 		override protected function registerScreens():void
 		{
-			main.screenManager.registerScreen("gameScreen", GameScreen);
+			main.screenManager.registerScreen("gameMenuScreen", GameMenuScreen);
+			main.screenManager.registerScreen("gameOptionsScreen", GameOptionsScreen);
+			main.screenManager.registerScreen("gamePlayScreen", GamePlayScreen);
 		}
 	}
 }

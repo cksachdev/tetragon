@@ -514,8 +514,6 @@
 				<keep-as3-metadata name="TypeHint"/>
 				<keep-as3-metadata name="Resource"/>
 				<keep-as3-metadata name="Embed"/>
-				<keep-as3-metadata name="Inject"/>
-				<keep-as3-metadata name="PostConstruct"/>
 				
 				<metadata
 					title="${meta.title}"
@@ -550,7 +548,7 @@
 					<include name="*.swc"/>
 				</compiler.library-path>
 				<compiler.library-path dir="${FLEX_HOME}/frameworks/libs" append="false">
-					<include name="flex.swc"/>
+					<include name="framework.swc"/>
 				</compiler.library-path>
 				<compiler.library-path dir="${FLEX_HOME}/frameworks/locale/en_US" append="false">
 					<include name="*.swc"/>

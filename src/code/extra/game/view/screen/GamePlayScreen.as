@@ -25,20 +25,24 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.tbs.view.screen
+package extra.game.view.screen
 {
 	import base.view.screen.BaseScreen;
 
-	import extra.tbs.view.display.TBSTestDisplay;
+	import extra.game.view.display.TileScrollDisplay;
+	import extra.game.view.display.TileScrollInfoDisplay;
+
+	import com.hexagonstar.util.display.StageReference;
+
 	
-	
-	public class TBSTestScreen extends BaseScreen
+	public class GamePlayScreen extends BaseScreen
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _display:TBSTestDisplay;
+		private var _scrollDisplay:TileScrollDisplay;
+		private var _infoDisplay:TileScrollInfoDisplay;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -48,7 +52,7 @@ package extra.tbs.view.screen
 		/**
 		 * Creates a new instance.
 		 */
-		public function TBSTestScreen()
+		public function GamePlayScreen()
 		{
 			super();
 		}
@@ -58,6 +62,60 @@ package extra.tbs.view.screen
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * @inheritDoc
+		 */
+		override public function start():void
+		{
+			super.start();
+			_scrollDisplay.start();
+			_infoDisplay.tileScroller = _scrollDisplay.tileScroller;
+			_infoDisplay.start();
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function stop():void
+		{
+			super.stop();
+			_scrollDisplay.stop();
+			_infoDisplay.stop();
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function reset():void
+		{
+			_scrollDisplay.reset();
+			_infoDisplay.reset();
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function update():void
+		{
+			_scrollDisplay.update();
+			_infoDisplay.update();
+			super.update();
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function dispose():void
+		{
+			super.dispose();
+			_scrollDisplay.dispose();
+			_infoDisplay.dispose();
+		}
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
@@ -65,7 +123,7 @@ package extra.tbs.view.screen
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Callback Handlers
+		// Event Handlers
 		//-----------------------------------------------------------------------------------------
 		
 		
@@ -76,18 +134,39 @@ package extra.tbs.view.screen
 		/**
 		 * @inheritDoc
 		 */
-		override protected function registerResources():void
+		override protected function createChildren():void
 		{
-			registerResource("unitInfantry");
+			_infoDisplay = new TileScrollInfoDisplay();
+			_scrollDisplay = new TileScrollDisplay();
 		}
 		
 		
 		/**
 		 * @inheritDoc
 		 */
-		override protected function createChildren():void
+		override protected function registerResources():void
 		{
-			_display = new TBSTestDisplay();
+			registerResource("tileSet1Image");
+			registerResource("tileSet2Image");
+			registerResource("tileSet3Image");
+			registerResource("fontDina08x16Image");
+			
+			registerResource("testTileSet");
+			registerResource("bdTileSet");
+			registerResource("hnTileSet");
+			registerResource("tileSetDina08x16");
+			
+			registerResource("testTileMap");
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function registerDisplays():void
+		{
+			registerDisplay(_infoDisplay);
+			registerDisplay(_scrollDisplay);
 		}
 		
 		
@@ -96,7 +175,8 @@ package extra.tbs.view.screen
 		 */
 		override protected function addChildren():void 
 		{
-			addChild(_display);
+			addChild(_scrollDisplay);
+			addChild(_infoDisplay);
 		}
 		
 		
@@ -121,6 +201,10 @@ package extra.tbs.view.screen
 		 */
 		override protected function layoutChildren():void
 		{
+			_infoDisplay.x = 0;
+			_infoDisplay.y = 0;
+			_scrollDisplay.x = ((StageReference.stageWidth + _infoDisplay.width) * 0.5) - (_scrollDisplay.tileScroller.viewportWidth * 0.5);
+			_scrollDisplay.y = (StageReference.stageHeight * 0.5) - (_scrollDisplay.tileScroller.viewportHeight * 0.5);
 		}
 		
 		

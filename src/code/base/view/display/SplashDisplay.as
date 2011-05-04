@@ -33,6 +33,7 @@ package base.view.display
 
 	import flash.filters.DropShadowFilter;
 	import flash.media.Sound;
+	import flash.media.SoundChannel;
 
 	
 	/**
@@ -45,6 +46,7 @@ package base.view.display
 		//-----------------------------------------------------------------------------------------
 		
 		private var _tetragonLogo:TetragonLogo;
+		private var _tetragonLogoSoundChannel:SoundChannel;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -58,7 +60,24 @@ package base.view.display
 		{
 			super.start();
 			var sound:Sound = getResource("audioLogoTetragon");
-			if (sound) sound.play();
+			if (sound)
+			{
+				_tetragonLogoSoundChannel = sound.play();
+			}
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function stop():void
+		{
+			super.stop();
+			if (_tetragonLogoSoundChannel)
+			{
+				_tetragonLogoSoundChannel.stop();
+				_tetragonLogoSoundChannel = null;
+			}
 		}
 		
 		

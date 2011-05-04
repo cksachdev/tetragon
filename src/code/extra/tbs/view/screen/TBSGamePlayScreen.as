@@ -25,37 +25,25 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.game.view.screen
+package extra.tbs.view.screen
 {
 	import base.view.screen.BaseScreen;
 
-	import extra.game.view.display.TileScrollDisplay;
-	import extra.game.view.display.TileScrollInfoDisplay;
+	import extra.tbs.view.display.TBSPlayfieldDisplay;
 
-	import com.hexagonstar.util.display.StageReference;
-
+	import flash.events.Event;
 	
-	public class GameScreen extends BaseScreen
+	
+	/**
+	 * Gameplay screen for turn-based strategy games.
+	 */
+	public class TBSGamePlayScreen extends BaseScreen
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _scrollDisplay:TileScrollDisplay;
-		private var _infoDisplay:TileScrollInfoDisplay;
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Constructor
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Creates a new instance.
-		 */
-		public function GameScreen()
-		{
-			super();
-		}
+		private var _playfieldDisplay:TBSPlayfieldDisplay;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -68,52 +56,6 @@ package extra.game.view.screen
 		override public function start():void
 		{
 			super.start();
-			_scrollDisplay.start();
-			_infoDisplay.tileScroller = _scrollDisplay.tileScroller;
-			_infoDisplay.start();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function stop():void
-		{
-			super.stop();
-			_scrollDisplay.stop();
-			_infoDisplay.stop();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function reset():void
-		{
-			_scrollDisplay.reset();
-			_infoDisplay.reset();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function update():void
-		{
-			_scrollDisplay.update();
-			_infoDisplay.update();
-			super.update();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function dispose():void
-		{
-			super.dispose();
-			_scrollDisplay.dispose();
-			_infoDisplay.dispose();
 		}
 		
 		
@@ -121,10 +63,26 @@ package extra.game.view.screen
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * @inheritDoc
+		 */
+		override public function get showLoadProgress():Boolean
+		{
+			return true;
+		}
+		
 		
 		//-----------------------------------------------------------------------------------------
-		// Event Handlers
+		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @private
+		 */
+		private function onStageResize(e:Event):void
+		{
+			layoutChildren();
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -136,8 +94,7 @@ package extra.game.view.screen
 		 */
 		override protected function createChildren():void
 		{
-			_infoDisplay = new TileScrollInfoDisplay();
-			_scrollDisplay = new TileScrollDisplay();
+			_playfieldDisplay = new TBSPlayfieldDisplay();
 		}
 		
 		
@@ -146,17 +103,7 @@ package extra.game.view.screen
 		 */
 		override protected function registerResources():void
 		{
-			registerResource("tileSet1Image");
-			registerResource("tileSet2Image");
-			registerResource("tileSet3Image");
-			registerResource("fontDina08x16Image");
-			
-			registerResource("testTileSet");
-			registerResource("bdTileSet");
-			registerResource("hnTileSet");
-			registerResource("tileSetDina08x16");
-			
-			registerResource("testTileMap");
+			registerResource("unitInfantry");
 		}
 		
 		
@@ -165,8 +112,7 @@ package extra.game.view.screen
 		 */
 		override protected function registerDisplays():void
 		{
-			registerDisplay(_infoDisplay);
-			registerDisplay(_scrollDisplay);
+			registerDisplay(_playfieldDisplay);
 		}
 		
 		
@@ -175,8 +121,7 @@ package extra.game.view.screen
 		 */
 		override protected function addChildren():void 
 		{
-			addChild(_scrollDisplay);
-			addChild(_infoDisplay);
+			addChild(_playfieldDisplay);
 		}
 		
 		
@@ -185,6 +130,7 @@ package extra.game.view.screen
 		 */
 		override protected function addListeners():void
 		{
+			main.stage.addEventListener(Event.RESIZE, onStageResize);
 		}
 		
 		
@@ -193,6 +139,7 @@ package extra.game.view.screen
 		 */
 		override protected function removeListeners():void
 		{
+			main.stage.removeEventListener(Event.RESIZE, onStageResize);
 		}
 		
 		
@@ -201,19 +148,6 @@ package extra.game.view.screen
 		 */
 		override protected function layoutChildren():void
 		{
-			_infoDisplay.x = 0;
-			_infoDisplay.y = 0;
-			_scrollDisplay.x = ((StageReference.stageWidth + _infoDisplay.width) * 0.5) - (_scrollDisplay.tileScroller.viewportWidth * 0.5);
-			_scrollDisplay.y = (StageReference.stageHeight * 0.5) - (_scrollDisplay.tileScroller.viewportHeight * 0.5);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function unload():void
-		{
-			super.unload();
 		}
 	}
 }

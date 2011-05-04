@@ -33,7 +33,7 @@ package extra.tbs.setup
 	import extra.tbs.entity.builders.TBSUnitBuilder;
 	import extra.tbs.entity.components.TBSUnitPropertiesComponent;
 	import extra.tbs.entity.components.TBSUnitStatsComponent;
-	import extra.tbs.view.screen.TBSTestScreen;
+	import extra.tbs.view.screen.TBSGamePlayScreen;
 	
 	
 	/**
@@ -120,7 +120,7 @@ package extra.tbs.setup
 		 */
 		override protected function registerScreens():void
 		{
-			main.screenManager.registerScreen("tbsTestScreen", TBSTestScreen);
+			main.screenManager.registerScreen("tbsGamePlayScreen", TBSGamePlayScreen);
 		}
 	}
 }
