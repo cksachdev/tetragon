@@ -31,6 +31,7 @@ package base.core.entity
 	import base.core.debug.Log;
 	import base.data.DataClassesFactory;
 	import base.io.resource.Resource;
+	import base.io.resource.ResourceIndex;
 	
 	
 	/**
@@ -43,7 +44,11 @@ package base.core.entity
 		//-----------------------------------------------------------------------------------------
 		
 		/** @private */
-		private var _builderCache:Object;
+		private var _resourceIndex:ResourceIndex;
+		/** @private */
+		private var _dcFactory:DataClassesFactory;
+		/** @private */
+		private var _entityManager:EntityManager;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -55,7 +60,8 @@ package base.core.entity
 		 */
 		public function EntityFactory()
 		{
-			_builderCache = {};
+			_dcFactory = DataClassesFactory.instance;
+			_entityManager = Main.instance.entityManager;
 		}
 		
 		
@@ -71,40 +77,55 @@ package base.core.entity
 		 */
 		public function createEntity(id:String):IEntity
 		{
-			// TODO
-			var resource:Resource = Main.instance.resourceManager.resourceIndex.getResource(id);
-			var dataTypeID:String = resource.dataType;
-			var builder:IEntityBuilder;
-			
-			if (!_builderCache[dataTypeID])
+			var resource:Resource = resourceIndex.getResource(id);
+			if (!resource)
 			{
-				var builderClass:Class = DataClassesFactory.instance.getBuilderClass(dataTypeID);
-				builder = new builderClass();
-				if (builder)
-				{
-					_builderCache[dataTypeID] = builder;
-					Log.debug(toString() + " Cached entity builder: " + builder.toString());
-				}
-				else
-				{
-					Log.error(toString() + " Could not create entity builder of type: "
-						+ builderClass, this);
-					return null;
-				}
+				fail("Could not create entity. Resource with ID \"" + id + "\" was null.");
+				return null;
 			}
-			else
+			else if (!(resource.content is EntityTemplate))
 			{
-				builder = _builderCache[dataTypeID];
+				fail("Could not create entity. Resource content is not of type EntityTemplate.");
+				return null;
 			}
 			
-			return builder.build(resource.content);
+			var e:IEntity = _entityManager.createEntity(resource.dataType);
+			if (!e)
+			{
+				fail("Could not create entity. EntityManager.createEntity() returned null.");
+				return null;
+			}
+			
+			var mappings:Object = EntityTemplate(resource.content).componentMappings;
+			
+			/* Create components on entity and assign properties to them. */
+			for (var classID:String in mappings)
+			{
+				var c:IEntityComponent = _dcFactory.createComponent(classID);
+				var m:Object = mappings[classID];
+				for (var property:String in m)
+				{
+					if (Object(c).hasOwnProperty(property))
+					{
+						c[property] = m[property];
+					}
+					else
+					{
+						Log.warn("Tried to set a non-existing property <" + property
+							+ "> in component " + c.toString() + " for template "
+							+ EntityTemplate(resource.content).toString() + ".");
+					}
+				}
+			}
+			
+			return e;
 		}
 		
 		
 		/**
-		 * Returns a String Representation of the class.
+		 * Returns a String representation of the class.
 		 * 
-		 * @return A String Representation of the class.
+		 * @return A String representation of the class.
 		 */
 		public function toString():String
 		{
@@ -116,6 +137,16 @@ package base.core.entity
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * Lazy getter.
+		 * @private
+		 */
+		public function get resourceIndex():ResourceIndex
+		{
+			if (!_resourceIndex) _resourceIndex = Main.instance.resourceManager.resourceIndex;
+			return _resourceIndex;
+		}
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
@@ -126,5 +157,12 @@ package base.core.entity
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * @private
+		 */
+		protected function fail(message:String):void
+		{
+			Log.error(message, this);
+		}
 	}
 }

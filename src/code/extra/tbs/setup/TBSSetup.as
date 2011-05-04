@@ -30,7 +30,6 @@ package extra.tbs.setup
 	import base.data.parsers.EntityDataParser;
 	import base.setup.Setup;
 
-	import extra.tbs.entity.builders.TBSUnitBuilder;
 	import extra.tbs.entity.components.TBSUnitPropertiesComponent;
 	import extra.tbs.entity.components.TBSUnitStatsComponent;
 	import extra.tbs.view.screen.TBSGamePlayScreen;
@@ -101,7 +100,7 @@ package extra.tbs.setup
 		 */
 		override protected function mapDataTypes():void
 		{
-			dataClassesFactory.mapDataType("TBSUnit", EntityDataParser, TBSUnitBuilder);
+			dataClassesFactory.mapDataType("TBSUnit", EntityDataParser);
 		}
 		
 		

@@ -77,11 +77,9 @@ package base.core.entity
 		/**
 		 * Returns a string representation of the entity.
 		 * 
-		 * @param args An optional, comma-delimited list of properties that should be
-		 *            output together with the entity name.
 		 * @return A string representation of the entity.
 		 */
-		function toString(...args):String;
+		function toString():String;
 		
 		
 		//-----------------------------------------------------------------------------------------

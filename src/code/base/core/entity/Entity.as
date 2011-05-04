@@ -28,7 +28,6 @@
 package base.core.entity
 {
 	import flash.utils.Dictionary;
-	import flash.utils.getQualifiedClassName;
 	
 	
 	/**
@@ -42,6 +41,7 @@ package base.core.entity
 		
 		private static var _entityManger:EntityManager;
 		private var _id:String;
+		private var _type:String;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -51,9 +51,10 @@ package base.core.entity
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function Entity(entityManger:EntityManager, id:String)
+		public function Entity(entityManger:EntityManager, type:String, id:String)
 		{
 			_entityManger = entityManger;
+			_type = type;
 			_id = id;
 		}
 		
@@ -110,11 +111,9 @@ package base.core.entity
 		/**
 		 * @inheritDoc
 		 */
-		public function toString(...args):String
+		public function toString():String
 		{
-			var s:String = "";
-			for each (var i:String in args) s += ", " + i;
-			return "[" + getQualifiedClassName(this).match("[^:]*$")[0] + s + "]";
+			return "[Entity type=" + _type + ", id=" + _id + "]";
 		}
 		
 		

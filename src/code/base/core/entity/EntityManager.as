@@ -78,7 +78,7 @@ package base.core.entity
 		 * @param id ID of the entity.
 		 * @return The new entity or null.
 		 */
-		public function createEntity(id:String = null):IEntity
+		public function createEntity(type:String, id:String = null):IEntity
 		{
 			if (id == null || id == "")
 			{
@@ -90,7 +90,7 @@ package base.core.entity
 				return null;
 			}
 			
-			var entity:IEntity = new Entity(this, id);
+			var entity:IEntity = new Entity(this, type, id);
 			_components[id] = new Dictionary();
 			return entity;
 		}
@@ -271,7 +271,8 @@ package base.core.entity
 			{
 				if (hasAllComponents(id, components))
 				{
-					entityList.push(new Entity(this, id));
+					// TODO type!
+					entityList.push(new Entity(this, null, id));
 				}
 			}
 			return entityList;
@@ -294,6 +295,8 @@ package base.core.entity
 			return true;
 		}
 		
+		// TODO The whole approach with entity families has to be changed because we're
+		// using a type String to identify similar entities, not which components they share!
 		
 		/**
 		 * Updates families when a component is added to an entity.
@@ -307,7 +310,8 @@ package base.core.entity
 				if (hasAllComponents(id, a))
 				{
 					var family:EntityFamily = getFamily(a);
-					var newEntity:Entity = new Entity(this, id);
+					// TODO type!
+					var newEntity:Entity = new Entity(this, null, id);
 					family.entities.push(newEntity);
 					family.entityAdded.dispatch(newEntity);
 				}

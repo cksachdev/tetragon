@@ -28,7 +28,6 @@
 package base.data
 {
 	import base.core.debug.Log;
-	import base.core.entity.IEntityBuilder;
 	import base.core.entity.IEntityComponent;
 	import base.data.parsers.IDataParser;
 	import base.data.parsers.NullDataParser;
@@ -64,12 +63,6 @@ package base.data
 		private var _parserMap:Object;
 		
 		/**
-		 * Maps class definitions of type IEntityBuilder.
-		 * @private
-		 */
-		private var _builderMap:Object;
-		
-		/**
 		 * Maps class definitions of type IEntityComponent.
 		 * @private
 		 */
@@ -99,7 +92,6 @@ package base.data
 		public function init():void
 		{
 			_parserMap = {};
-			_builderMap = {};
 			_componentMap = {};
 			
 			/* Add default data types. */
@@ -116,13 +108,10 @@ package base.data
 		 * 
 		 * @param dataTypeID The ID of the data type.
 		 * @param parserClass The parser class to map.
-		 * @param builderClass The builder class to map.
 		 */
-		public function mapDataType(dataTypeID:String, parserClass:Class,
-			builderClass:Class = null):void
+		public function mapDataType(dataTypeID:String, parserClass:Class):void
 		{
 			_parserMap[dataTypeID] = parserClass;
-			if (builderClass) _builderMap[dataTypeID] = builderClass;
 		}
 		
 		
@@ -152,18 +141,6 @@ package base.data
 		
 		
 		/**
-		 * Returns a builder class definition that is mapped under the specified dataTypeID.
-		 * 
-		 * @param dataTypeID The ID with that the builder class is mapped.
-		 * @return A builder class of type IEntityBuilder or null if the ID is not mapped.
-		 */
-		public function getBuilderClass(dataTypeID:String):Class
-		{
-			return _builderMap[dataTypeID];
-		}
-		
-		
-		/**
 		 * Returns a component class definition that is mapped under the specified classID.
 		 * 
 		 * @param classID The ID with that the class is mapped.
@@ -187,8 +164,8 @@ package base.data
 			var parser:IDataParser;
 			if (!clazz)
 			{
-				Log.error(toString() + " Failed to create parser class! No parser class has been"
-					+ " mapped for dataTypeID \"" + dataTypeID + "\".");
+				fail("Failed to create parser class! No parser class has been mapped for"
+					+ " dataTypeID \"" + dataTypeID + "\".");
 				return null;
 			}
 			try
@@ -197,41 +174,11 @@ package base.data
 			}
 			catch (err:Error)
 			{
-				Log.error(toString() + " Failed to create parser class! The parser class mapped"
-					+ " for dataTypeID \"" + dataTypeID + "\" is not of type IResourceParser.");
+				fail("Failed to create parser class! The parser class mapped for dataTypeID \""
+					+ dataTypeID + "\" is not of type IResourceParser.");
 				return null;
 			}
 			return parser;
-		}
-		
-		
-		/**
-		 * Creates a new entity builder that is associated with the specified dataTypeID.
-		 * 
-		 * @param dataTypeID The ID of the data type for which to create a builder.
-		 * @return A builder of type IEntityBuilder.
-		 */
-		public function createBuilder(dataTypeID:String):IEntityBuilder
-		{
-			var clazz:* = _builderMap[dataTypeID];
-			var builder:IEntityBuilder;
-			if (!clazz)
-			{
-				Log.error(toString() + " Failed to create builder class! No builder class has been"
-					+ " mapped for dataTypeID \"" + dataTypeID + "\".");
-				return null;
-			}
-			try
-			{
-				builder = new clazz();
-			}
-			catch (err:Error)
-			{
-				Log.error(toString() + " Failed to create builder class! The builder class mapped"
-					+ " for dataTypeID \"" + dataTypeID + "\" is not of type IEntityBuilder.");
-				return null;
-			}
-			return builder;
 		}
 		
 		
@@ -247,8 +194,8 @@ package base.data
 			var component:IEntityComponent;
 			if (!clazz)
 			{
-				Log.error(toString() + " Failed to create component class! No component class has"
-					+ " been mapped for classID \"" + classID + "\".");
+				fail("Failed to create component class! No component class has been mapped for"
+				+ " classID \"" + classID + "\".");
 				return null;
 			}
 			try
@@ -257,8 +204,8 @@ package base.data
 			}
 			catch (err:Error)
 			{
-				Log.error(toString() + " Failed to create component class! The component class"
-					+ " mapped for classID \"" + classID + "\" is not of type IEntityComponent.");
+				fail("Failed to create component class! The component class mapped for classID \""
+					+ classID + "\" is not of type IEntityComponent.");
 				return null;
 			}
 			return component;
@@ -292,6 +239,19 @@ package base.data
 				_singletonLock = false;
 			}
 			return _instance;
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Private Methods
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @private
+		 */
+		private function fail(message:String):void
+		{
+			Log.error(message, this);
 		}
 	}
 }
