@@ -84,7 +84,7 @@ package base.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function postUISetup():void
+		override public function postResourceSetup():void
 		{
 			/* Only create new setup helper if it's not already existing! */
 			if (!main.setupHelper)

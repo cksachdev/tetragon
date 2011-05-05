@@ -65,7 +65,7 @@ package extra.tbs.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function postUISetup():void
+		override public function postResourceSetup():void
 		{
 		}
 		

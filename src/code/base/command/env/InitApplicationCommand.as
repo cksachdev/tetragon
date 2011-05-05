@@ -52,9 +52,9 @@ package base.command.env
 	 * 
 	 * 1. Initial
 	 * 2. Load application config file "app.ini" (if not set to ignored by params!)
-	 * 3. Post-config
+	 * 3. Post-Config
 	 * 4. Resource Manager initialization
-	 * 5. Post-UI
+	 * 5. Post-Resource
 	 * 6. Final
 	 */
 	public class InitApplicationCommand extends CLICommand
@@ -146,7 +146,7 @@ package base.command.env
 		private function onResourceManagerReady(e:Event):void 
 		{
 			main.resourceManager.removeEventListener(e.type, onResourceManagerReady);
-			postUISetup();
+			postResourceSetup();
 		}
 		
 		
@@ -269,10 +269,10 @@ package base.command.env
 		/**
 		 * @private
 		 */
-		private function postUISetup():void
+		private function postResourceSetup():void
 		{
-			Log.debug("Post-UI setup ...");
-			executeSetup("postUI");
+			Log.debug("Post-Resource setup ...");
+			executeSetup("postResource");
 			finalSetup();
 		}
 		
@@ -312,8 +312,8 @@ package base.command.env
 					case "postConfig":
 						_setups[i].postConfigSetup();
 						break;
-					case "postUI":
-						_setups[i].postUISetup();
+					case "postResource":
+						_setups[i].postResourceSetup();
 						break;
 					case "final":
 						_setups[i].finalSetup();

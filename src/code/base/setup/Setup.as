@@ -71,9 +71,9 @@ package base.setup
 		
 		
 		/**
-		 * Executes setup tasks that need to be done after the application UI is created.
+		 * Executes setup tasks that need to be done after resource manager is ready.
 		 */
-		public function postUISetup():void
+		public function postResourceSetup():void
 		{
 			/* Abstract method! */
 		}
