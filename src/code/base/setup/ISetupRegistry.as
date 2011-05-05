@@ -25,64 +25,17 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.game.setup
+package base.setup
 {
-	import base.setup.Setup;
-	
-	
 	/**
-	 * Setup class specific for Game Add-On.
+	 * ISetupRegistry Interface
 	 */
-	public class GameSetup extends Setup
+	public interface ISetupRegistry
 	{
-		//-----------------------------------------------------------------------------------------
-		// Public Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function initialSetup():void
-		{
-			new GameSetupRegistry().execute();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function postConfigSetup():void
-		{
-			super.postConfigSetup();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function postResourceSetup():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function finalSetup():void
-		{
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function get name():String
-		{
-			return "game";
-		}
+		function execute():void;
+		function registerScreens():void;
+		function registerDataTypes():void;
+		function registerEntitySystems():void;
+		function registerEntityComponents():void;
 	}
 }

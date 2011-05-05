@@ -25,15 +25,18 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.game.setup
+package extra.test.setup
 {
-	import base.setup.Setup;
+	import base.setup.ISetupRegistry;
+	import base.setup.SetupRegistry;
+
+	import extra.test.view.screen.*;
 	
 	
 	/**
-	 * Setup class specific for Game Add-On.
+	 * Test setup registry class.
 	 */
-	public class GameSetup extends Setup
+	public class TestSetupRegistry extends SetupRegistry implements ISetupRegistry
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
@@ -42,25 +45,16 @@ package extra.game.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function initialSetup():void
+		override public function registerScreens():void
 		{
-			new GameSetupRegistry().execute();
+			registerScreen("testScreen", TestScreen);
 		}
 		
 		
 		/**
 		 * @inheritDoc
 		 */
-		override public function postConfigSetup():void
-		{
-			super.postConfigSetup();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function postResourceSetup():void
+		override public function registerDataTypes():void
 		{
 		}
 		
@@ -68,21 +62,16 @@ package extra.game.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function finalSetup():void
+		override public function registerEntitySystems():void
 		{
 		}
 		
 		
-		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
 		/**
 		 * @inheritDoc
 		 */
-		override public function get name():String
+		override public function registerEntityComponents():void
 		{
-			return "game";
 		}
 	}
 }

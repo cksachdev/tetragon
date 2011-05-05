@@ -28,8 +28,6 @@
 package extra.test.setup
 {
 	import base.setup.Setup;
-
-	import extra.test.view.screen.TestScreen;
 	
 	
 	/**
@@ -46,7 +44,7 @@ package extra.test.setup
 		 */
 		override public function initialSetup():void
 		{
-			super.initialSetup();
+			new TestSetupRegistry().execute();
 		}
 		
 		
@@ -55,7 +53,6 @@ package extra.test.setup
 		 */
 		override public function postConfigSetup():void
 		{
-			super.postConfigSetup();
 		}
 		
 		
@@ -85,38 +82,6 @@ package extra.test.setup
 		override public function get name():String
 		{
 			return "test";
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function mapDataTypes():void
-		{
-			//dataClassesFactory.mapDataType("TBSUnit", EntityDataParser);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function mapEntityComponentClasses():void
-		{
-			//dataClassesFactory.mapComponentClass("tbsUnitPropertiesComponent", TBSUnitPropertiesComponent);
-			//dataClassesFactory.mapComponentClass("tbsUnitStatsComponent", TBSUnitStatsComponent);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function registerScreens():void
-		{
-			main.screenManager.registerScreen("testScreen", TestScreen);
 		}
 	}
 }

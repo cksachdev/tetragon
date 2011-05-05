@@ -25,16 +25,43 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.game.setup
+package extra.game.entity.systems
 {
-	import base.setup.Setup;
+	import base.Main;
+	import base.core.entity.IEntitySystem;
+	import base.signals.RenderSignal;
+	import base.signals.TickSignal;
+
+	import flash.events.Event;
+	import flash.utils.getTimer;
 	
 	
 	/**
-	 * Setup class specific for Game Add-On.
+	 * GameLoopSystem class
 	 */
-	public class GameSetup extends Setup
+	public class GameLoopSystem implements IEntitySystem
 	{
+		//-----------------------------------------------------------------------------------------
+		// Properties
+		//-----------------------------------------------------------------------------------------
+		
+		private var _startTime:int = 0;
+		public var tickSignal:TickSignal;
+		public var renderSignal:RenderSignal;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Constructor
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Creates a new instance of the class.
+		 */
+		public function GameLoopSystem()
+		{
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
@@ -42,34 +69,20 @@ package extra.game.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function initialSetup():void
+		public function onRegister():void
 		{
-			new GameSetupRegistry().execute();
+			tickSignal = Main.instance.tickSignal;
+			renderSignal = Main.instance.renderSignal;
+			Main.instance.contextView.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
 		
 		/**
 		 * @inheritDoc
 		 */
-		override public function postConfigSetup():void
+		public function dispose():void
 		{
-			super.postConfigSetup();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function postResourceSetup():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function finalSetup():void
-		{
+			Main.instance.contextView.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
 		
@@ -77,12 +90,27 @@ package extra.game.setup
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
+		
+		//-----------------------------------------------------------------------------------------
+		// Callback Handlers
+		//-----------------------------------------------------------------------------------------
+		
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
-		override public function get name():String
+		private function onEnterFrame(e:Event):void
 		{
-			return "game";
+			var time:int = getTimer();
+			var t:Number = (time - _startTime) / 1000;
+			_startTime = time;
+			tickSignal.dispatch(t);
+			renderSignal.dispatch();
 		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Private Methods
+		//-----------------------------------------------------------------------------------------
+		
 	}
 }

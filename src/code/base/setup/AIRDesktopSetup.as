@@ -67,8 +67,6 @@ package base.setup
 			// TODO To be changed! Fullscreen state should not be stored in app.ini
 			// but in user settings file!
 			//main.config.useFullscreen = WindowBoundsManager.instance.fullscreen;
-			
-			super.initialSetup();
 		}
 		
 		
@@ -77,7 +75,6 @@ package base.setup
 		 */
 		override public function postConfigSetup():void
 		{
-			super.postConfigSetup();
 		}
 		
 		
@@ -149,26 +146,6 @@ package base.setup
 			_updateManager.removeEventListener(UpdateManagerEvent.FINISHED, onUpdateManagerFinished);
 			_updateManager.dispose();
 			_updateManager = null;
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function mapDataTypes():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function registerScreens():void
-		{
 		}
 	}
 }

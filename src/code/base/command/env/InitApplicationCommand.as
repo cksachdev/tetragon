@@ -304,6 +304,7 @@ package base.command.env
 		{
 			for (var i:int = 0; i < _setups.length; i++)
 			{
+				Log.debug("Executing " + step + " setup on " + _setups[i].name + " ...");
 				switch (step)
 				{
 					case "initial":

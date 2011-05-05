@@ -48,8 +48,6 @@ package base.setup
 		{
 			/* set this to false, when we close the application we first do an update. */
 			NativeApplication.nativeApplication.autoExit = false;
-			
-			super.initialSetup();
 		}
 		
 		
@@ -58,7 +56,6 @@ package base.setup
 		 */
 		override public function postConfigSetup():void
 		{
-			super.postConfigSetup();
 		}
 		
 		
@@ -93,26 +90,6 @@ package base.setup
 		override public function get name():String
 		{
 			return "ios";
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function mapDataTypes():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function registerScreens():void
-		{
 		}
 	}
 }

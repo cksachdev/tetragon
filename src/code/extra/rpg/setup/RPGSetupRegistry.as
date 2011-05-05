@@ -25,15 +25,18 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.game.setup
+package extra.rpg.setup
 {
-	import base.setup.Setup;
+	import base.setup.ISetupRegistry;
+	import base.setup.SetupRegistry;
+
+	import extra.rpg.data.parsers.*;
 	
 	
 	/**
-	 * Setup class specific for Game Add-On.
+	 * RPG setup registry class.
 	 */
-	public class GameSetup extends Setup
+	public class RPGSetupRegistry extends SetupRegistry implements ISetupRegistry
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
@@ -42,25 +45,7 @@ package extra.game.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function initialSetup():void
-		{
-			new GameSetupRegistry().execute();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function postConfigSetup():void
-		{
-			super.postConfigSetup();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function postResourceSetup():void
+		override public function registerScreens():void
 		{
 		}
 		
@@ -68,21 +53,26 @@ package extra.game.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function finalSetup():void
+		override public function registerDataTypes():void
 		{
+			registerDataType("Attribute", AttributeDataParser);
+			registerDataType("Character", CharacterDataParser);
 		}
 		
-		
-		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
 		
 		/**
 		 * @inheritDoc
 		 */
-		override public function get name():String
+		override public function registerEntitySystems():void
 		{
-			return "game";
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registerEntityComponents():void
+		{
 		}
 	}
 }

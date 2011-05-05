@@ -40,6 +40,8 @@ package base
 	import base.data.Registry;
 	import base.io.key.KeyManager;
 	import base.io.resource.ResourceManager;
+	import base.signals.RenderSignal;
+	import base.signals.TickSignal;
 	import base.view.screen.ScreenManager;
 
 	import com.hexagonstar.exception.SingletonException;
@@ -94,6 +96,14 @@ package base
 		private var _entitySystemManager:EntitySystemManager;
 		/** @private */
 		private var _entityFactory:EntityFactory;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Signals
+		//-----------------------------------------------------------------------------------------
+		
+		public var tickSignal:TickSignal;
+		public var renderSignal:RenderSignal;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -254,6 +264,12 @@ package base
 		}
 		
 		
+		public function get entitySystemManager():EntitySystemManager
+		{
+			return _entitySystemManager;
+		}
+		
+		
 		/**
 		 * Determines whether the application is in fullscreen mode (<code>true</code>) or not
 		 * (<code>false</code>).
@@ -373,6 +389,13 @@ package base
 			_localSettingsManager = new LocalSettingsManager();
 			_keyManager = new KeyManager();
 			
+			/* Create entity architecture-related objects. */
+			tickSignal = new TickSignal();
+			renderSignal = new RenderSignal();
+			_entityManager = new EntityManager();
+			_entitySystemManager = new EntitySystemManager();
+			_entityFactory = new EntityFactory();
+			
 			/* We make the logger available as soon as possible so that any log
 			 * messages from the hexagonLib come through even before the console
 			 * would be available! */
@@ -408,19 +431,6 @@ package base
 				}
 				_fpsMonitor = new FPSMonitor(_utilityContainer);
 			}
-		}
-		
-		
-		/**
-		 * Create entity architecture-related objects.
-		 * @private
-		 */
-		public function setupEntityManagers():void
-		{
-			if (_entityManager) return;
-			_entityManager = new EntityManager();
-			_entitySystemManager = new EntitySystemManager();
-			_entityFactory = new EntityFactory();
 		}
 	}
 }

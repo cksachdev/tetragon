@@ -28,8 +28,6 @@
 package extra.rpg.setup
 {
 	import base.setup.Setup;
-
-	import extra.rpg.data.parsers.*;
 	
 	
 	/**
@@ -46,7 +44,7 @@ package extra.rpg.setup
 		 */
 		override public function initialSetup():void
 		{
-			super.initialSetup();
+			new RPGSetupRegistry().execute();
 		}
 		
 		
@@ -55,7 +53,6 @@ package extra.rpg.setup
 		 */
 		override public function postConfigSetup():void
 		{
-			super.postConfigSetup();
 		}
 		
 		
@@ -85,28 +82,6 @@ package extra.rpg.setup
 		override public function get name():String
 		{
 			return "rpg";
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function mapDataTypes():void
-		{
-			dataClassesFactory.mapDataType("Attribute", AttributeDataParser);
-			dataClassesFactory.mapDataType("Character", CharacterDataParser);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function registerScreens():void
-		{
 		}
 	}
 }

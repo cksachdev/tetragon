@@ -25,15 +25,20 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.game.setup
+package extra.tbs.setup
 {
-	import base.setup.Setup;
+	import base.data.parsers.EntityDataParser;
+	import base.setup.ISetupRegistry;
+	import base.setup.SetupRegistry;
+
+	import extra.tbs.entity.components.*;
+	import extra.tbs.view.screen.*;
 	
 	
 	/**
-	 * Setup class specific for Game Add-On.
+	 * TBS setup registry class.
 	 */
-	public class GameSetup extends Setup
+	public class TBSSetupRegistry extends SetupRegistry implements ISetupRegistry
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
@@ -42,25 +47,25 @@ package extra.game.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function initialSetup():void
+		override public function registerScreens():void
 		{
-			new GameSetupRegistry().execute();
+			registerScreen("tbsGamePlayScreen", TBSGamePlayScreen);
 		}
 		
 		
 		/**
 		 * @inheritDoc
 		 */
-		override public function postConfigSetup():void
+		override public function registerDataTypes():void
 		{
-			super.postConfigSetup();
+			registerDataType("TBSUnit", EntityDataParser);
 		}
 		
 		
 		/**
 		 * @inheritDoc
 		 */
-		override public function postResourceSetup():void
+		override public function registerEntitySystems():void
 		{
 		}
 		
@@ -68,21 +73,10 @@ package extra.game.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function finalSetup():void
+		override public function registerEntityComponents():void
 		{
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function get name():String
-		{
-			return "game";
+			registerEntityComponent("tbsUnitPropertiesComponent", TBSUnitPropertiesComponent);
+			registerEntityComponent("tbsUnitStatsComponent", TBSUnitStatsComponent);
 		}
 	}
 }

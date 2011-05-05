@@ -27,13 +27,19 @@
  */
 package extra.game.setup
 {
-	import base.setup.Setup;
+	import base.setup.ISetupRegistry;
+	import base.setup.SetupRegistry;
+
+	import extra.game.data.parsers.*;
+	import extra.game.entity.components.*;
+	import extra.game.entity.systems.*;
+	import extra.game.view.screen.*;
 	
 	
 	/**
-	 * Setup class specific for Game Add-On.
+	 * base setup registry class.
 	 */
-	public class GameSetup extends Setup
+	public class GameSetupRegistry extends SetupRegistry implements ISetupRegistry
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
@@ -42,47 +48,46 @@ package extra.game.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function initialSetup():void
+		override public function registerScreens():void
 		{
-			new GameSetupRegistry().execute();
+			registerScreen("gameMenuScreen", GameMenuScreen);
+			registerScreen("gameOptionsScreen", GameOptionsScreen);
+			registerScreen("gamePlayScreen", GamePlayScreen);
 		}
 		
 		
 		/**
 		 * @inheritDoc
 		 */
-		override public function postConfigSetup():void
+		override public function registerDataTypes():void
 		{
-			super.postConfigSetup();
+			registerDataType("WorldSpace", WorldspaceDataParser);
+			registerDataType("Cell", CellDataParser);
+			registerDataType("TileSet", TileSetDataParser);
+			registerDataType("TileMap", TileMapDataParser);
 		}
 		
 		
 		/**
 		 * @inheritDoc
 		 */
-		override public function postResourceSetup():void
+		override public function registerEntitySystems():void
 		{
+			registerEntitySystem(GameLoopSystem);
+			registerEntitySystem(ParticleEmitterSystem);
 		}
 		
 		
 		/**
 		 * @inheritDoc
 		 */
-		override public function finalSetup():void
+		override public function registerEntityComponents():void
 		{
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function get name():String
-		{
-			return "game";
+			registerEntityComponent("graphicsComponent", GraphicsComponent);
+			registerEntityComponent("gravityComponent", GravityComponent);
+			registerEntityComponent("particleEmitterComponent", ParticleEmitterComponent);
+			registerEntityComponent("physics2DComponent", Physics2DComponent);
+			registerEntityComponent("spacial2DComponent", Spacial2DComponent);
 		}
 	}
 }

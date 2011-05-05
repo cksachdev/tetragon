@@ -27,12 +27,7 @@
  */
 package extra.tbs.setup
 {
-	import base.data.parsers.EntityDataParser;
 	import base.setup.Setup;
-
-	import extra.tbs.entity.components.TBSUnitPropertiesComponent;
-	import extra.tbs.entity.components.TBSUnitStatsComponent;
-	import extra.tbs.view.screen.TBSGamePlayScreen;
 	
 	
 	/**
@@ -49,7 +44,7 @@ package extra.tbs.setup
 		 */
 		override public function initialSetup():void
 		{
-			super.initialSetup();
+			new TBSSetupRegistry().execute();
 		}
 		
 		
@@ -58,7 +53,6 @@ package extra.tbs.setup
 		 */
 		override public function postConfigSetup():void
 		{
-			super.postConfigSetup();
 		}
 		
 		
@@ -88,38 +82,6 @@ package extra.tbs.setup
 		override public function get name():String
 		{
 			return "tbs";
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function mapDataTypes():void
-		{
-			dataClassesFactory.mapDataType("TBSUnit", EntityDataParser);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function mapEntityComponentClasses():void
-		{
-			dataClassesFactory.mapComponentClass("tbsUnitPropertiesComponent", TBSUnitPropertiesComponent);
-			dataClassesFactory.mapComponentClass("tbsUnitStatsComponent", TBSUnitStatsComponent);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function registerScreens():void
-		{
-			main.screenManager.registerScreen("tbsGamePlayScreen", TBSGamePlayScreen);
 		}
 	}
 }

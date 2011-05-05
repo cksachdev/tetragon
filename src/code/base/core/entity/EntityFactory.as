@@ -60,7 +60,6 @@ package base.core.entity
 		 */
 		public function EntityFactory()
 		{
-			_resourceIndex = Main.instance.resourceManager.resourceIndex;
 			_dcFactory = DataClassesFactory.instance;
 			_entityManager = Main.instance.entityManager;
 		}
@@ -78,7 +77,7 @@ package base.core.entity
 		 */
 		public function createEntity(resourceID:String):IEntity
 		{
-			var resource:Resource = _resourceIndex.getResource(resourceID);
+			var resource:Resource = resourceIndex.getResource(resourceID);
 			if (!resource)
 			{
 				fail("Could not create entity. Resource with ID \"" + resourceID + "\" was null.");
@@ -184,6 +183,15 @@ package base.core.entity
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Lazy getter.
+		 */
+		protected function get resourceIndex():ResourceIndex
+		{
+			if (!_resourceIndex) _resourceIndex = Main.instance.resourceManager.resourceIndex;
+			return _resourceIndex;
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------

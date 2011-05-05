@@ -28,9 +28,6 @@
 package base.setup
 {
 	import base.Main;
-	import base.data.DataClassesFactory;
-
-	import com.hexagonstar.ioc.Injector;
 	
 	
 	/**
@@ -43,7 +40,6 @@ package base.setup
 		//-----------------------------------------------------------------------------------------
 		
 		protected var _main:Main;
-		protected var _injector:Injector;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -55,8 +51,7 @@ package base.setup
 		 */
 		public function initialSetup():void
 		{
-			mapDataTypes();
-			mapEntityComponentClasses();
+			/* Abstract method! */
 		}
 		
 		
@@ -66,7 +61,7 @@ package base.setup
 		 */
 		public function postConfigSetup():void
 		{
-			registerScreens();
+			/* Abstract method! */
 		}
 		
 		
@@ -111,46 +106,6 @@ package base.setup
 		{
 			if (!_main) _main = Main.instance;
 			return _main;
-		}
-		
-		
-		/**
-		 * A reference to the data classes factory.
-		 */
-		protected function get dataClassesFactory():DataClassesFactory
-		{
-			return DataClassesFactory.instance;
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @private
-		 */
-		protected function mapDataTypes():void
-		{
-			/* Abstract method! */
-		}
-		
-		
-		/**
-		 * @private
-		 */
-		protected function mapEntityComponentClasses():void
-		{
-			/* Abstract method! */
-		}
-		
-		
-		/**
-		 * @private
-		 */
-		protected function registerScreens():void
-		{
-			/* Abstract method! */
 		}
 	}
 }
