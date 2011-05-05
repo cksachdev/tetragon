@@ -29,8 +29,6 @@ package base.io.key
 {
 	import base.event.KeyCombinationEvent;
 
-	import com.hexagonstar.exception.SingletonException;
-
 	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
 
@@ -43,11 +41,6 @@ package base.io.key
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
-		
-		/** @private */
-		private static var _instance:KeyManager;
-		/** @private */
-		private static var _singletonLock:Boolean = false;
 		
 		/** @private */
 		private var _key:Key;
@@ -67,8 +60,6 @@ package base.io.key
 		public function KeyManager()
 		{
 			// TODO There is still a bug with KeyCombination when more than 3 keys are used!
-			
-			if (!_singletonLock) throw new SingletonException(this);
 			
 			_assignmentsDown = new Dictionary();
 			_assignmentsRelease = new Dictionary();
@@ -155,20 +146,6 @@ package base.io.key
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Returns the singleton instance of KeyManager.
-		 */
-		public static function get instance():KeyManager
-		{
-			if (_instance == null)
-			{
-				_singletonLock = true;
-				_instance = new KeyManager();
-				_singletonLock = false;
-			}
-			return _instance;
-		}
 		
 		
 		//-----------------------------------------------------------------------------------------

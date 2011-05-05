@@ -38,6 +38,7 @@ package base
 	import base.core.entity.EntitySystemManager;
 	import base.core.settings.LocalSettingsManager;
 	import base.data.Registry;
+	import base.io.key.KeyManager;
 	import base.io.resource.ResourceManager;
 	import base.view.screen.ScreenManager;
 
@@ -85,6 +86,8 @@ package base
 		private var _screenManager:ScreenManager;
 		/** @private */
 		private var _localSettingsManager:LocalSettingsManager;
+		/** @private */
+		private var _keyManager:KeyManager;
 		/** @private */
 		private var _entityManager:EntityManager;
 		/** @private */
@@ -158,6 +161,15 @@ package base
 		public function get localSettingsManager():LocalSettingsManager
 		{
 			return _localSettingsManager;
+		}
+		
+		
+		/**
+		 * A reference to the key input manager.
+		 */
+		public function get keyManager():KeyManager
+		{
+			return _keyManager;
 		}
 		
 		
@@ -359,11 +371,7 @@ package base
 			_resourceManager = new ResourceManager();
 			_screenManager = new ScreenManager();
 			_localSettingsManager = new LocalSettingsManager();
-			
-			/* Create entity architecture-related objects. */
-			_entityManager = new EntityManager();
-			_entitySystemManager = new EntitySystemManager();
-			_entityFactory = new EntityFactory();
+			_keyManager = new KeyManager();
 			
 			/* We make the logger available as soon as possible so that any log
 			 * messages from the hexagonLib come through even before the console
@@ -376,12 +384,9 @@ package base
 		
 		
 		/**
-		 * Creates Console and FPSMonior, Called automatically by base setup after
-		 * the app ini has been loaded.
-		 * 
 		 * @private
 		 */
-		public function createUtilityViews():void
+		public function setupDebugUtilities():void
 		{
 			if (!_console && Registry.config.consoleEnabled)
 			{
@@ -403,6 +408,18 @@ package base
 				}
 				_fpsMonitor = new FPSMonitor(_utilityContainer);
 			}
+		}
+		
+		
+		/**
+		 * Create entity architecture-related objects.
+		 * @private
+		 */
+		public function setupEntityManagers():void
+		{
+			_entityManager = new EntityManager();
+			_entitySystemManager = new EntitySystemManager();
+			_entityFactory = new EntityFactory();
 		}
 	}
 }
