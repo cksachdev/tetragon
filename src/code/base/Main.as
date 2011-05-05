@@ -417,6 +417,7 @@ package base
 		 */
 		public function setupEntityManagers():void
 		{
+			if (_entityManager) return;
 			_entityManager = new EntityManager();
 			_entitySystemManager = new EntitySystemManager();
 			_entityFactory = new EntityFactory();

@@ -73,15 +73,15 @@ package base.core.entity
 		/**
 		 * Creates an entity from the entity template of the specified id.
 		 * 
-		 * @param id The ID of the data resource from which to create an entity.
+		 * @param resourceID The ID of the data resource from which to create an entity.
 		 * @return An object of type IEntity or null.
 		 */
-		public function createEntity(id:String):IEntity
+		public function createEntity(resourceID:String):IEntity
 		{
-			var resource:Resource = _resourceIndex.getResource(id);
+			var resource:Resource = _resourceIndex.getResource(resourceID);
 			if (!resource)
 			{
-				fail("Could not create entity. Resource with ID \"" + id + "\" was null.");
+				fail("Could not create entity. Resource with ID \"" + resourceID + "\" was null.");
 				return null;
 			}
 			else if (!(resource.content is EntityTemplate))
@@ -115,6 +115,53 @@ package base.core.entity
 						Log.warn("Tried to set a non-existing property <" + property
 							+ "> in component " + c.toString() + " for template "
 							+ EntityTemplate(resource.content).toString() + ".");
+					}
+				}
+			}
+			
+			return e;
+		}
+		
+		
+		/**
+		 * Creates an entity from it's template class instead of a resource.
+		 * Mainly used for testing!
+		 */
+		public function createEntityFromClass(entityTemplateClass:Class, id:String, dataType:String):IEntity
+		{
+			var et:* = new entityTemplateClass(id);
+			
+			if (!(et is EntityTemplate))
+			{
+				fail("Could not create entity. Class is not of type EntityTemplate.");
+				return null;
+			}
+			
+			var e:IEntity = _entityManager.createEntity(dataType);
+			if (!e)
+			{
+				fail("Could not create entity. EntityManager.createEntity() returned null.");
+				return null;
+			}
+			
+			var mappings:Object = EntityTemplate(et).componentMappings;
+			
+			/* Create components on entity and assign properties to them. */
+			for (var classID:String in mappings)
+			{
+				var c:IEntityComponent = _dcFactory.createComponent(classID);
+				var m:Object = mappings[classID];
+				for (var property:String in m)
+				{
+					if (Object(c).hasOwnProperty(property))
+					{
+						c[property] = m[property];
+					}
+					else
+					{
+						Log.warn("Tried to set a non-existing property <" + property
+							+ "> in component " + c.toString() + " for template "
+							+ EntityTemplate(et).toString() + ".");
 					}
 				}
 			}

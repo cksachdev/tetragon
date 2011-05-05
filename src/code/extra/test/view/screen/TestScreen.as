@@ -103,6 +103,7 @@ package extra.test.view.screen
 		 */
 		override protected function registerResources():void
 		{
+			registerResource("unitInfantry");
 		}
 		
 		

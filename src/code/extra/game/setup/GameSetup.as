@@ -30,6 +30,11 @@ package extra.game.setup
 	import base.setup.Setup;
 
 	import extra.game.data.parsers.*;
+	import extra.game.entity.components.GraphicsComponent;
+	import extra.game.entity.components.GravityComponent;
+	import extra.game.entity.components.ParticleEmitterComponent;
+	import extra.game.entity.components.Physics2DComponent;
+	import extra.game.entity.components.Spacial2DComponent;
 	import extra.game.view.screen.*;
 	
 	
@@ -102,6 +107,19 @@ package extra.game.setup
 			dataClassesFactory.mapDataType("Cell", CellDataParser);
 			dataClassesFactory.mapDataType("TileSet", TileSetDataParser);
 			dataClassesFactory.mapDataType("TileMap", TileMapDataParser);
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function mapEntityComponentClasses():void
+		{
+			dataClassesFactory.mapComponentClass("graphicsComponent", GraphicsComponent);
+			dataClassesFactory.mapComponentClass("gravityComponent", GravityComponent);
+			dataClassesFactory.mapComponentClass("particleEmitterComponent", ParticleEmitterComponent);
+			dataClassesFactory.mapComponentClass("physics2DComponent", Physics2DComponent);
+			dataClassesFactory.mapComponentClass("spacial2DComponent", Spacial2DComponent);
 		}
 		
 		

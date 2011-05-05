@@ -25,27 +25,37 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.test.view.display
+package extra.game.entity.systems
 {
 	import base.core.entity.IEntity;
-	import base.core.entity.IEntityComponent;
-	import base.view.display.Display;
+	import base.core.entity.IEntitySystem;
 
-	import extra.game.entity.entities.ParticleEmitter;
-
-	import com.hexagonstar.util.debug.Debug;
-
-	import flash.utils.Dictionary;
+	import extra.game.entity.components.ParticleEmitterComponent;
+	import extra.game.entity.components.Spacial2DComponent;
 	
 	
 	/**
-	 * A test display.
+	 * ParticleEmitterSystem class
 	 */
-	public class TestDisplay extends Display
+	public class ParticleEmitterSystem implements IEntitySystem
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
+		
+		private var _emitters:Vector.<IEntity>;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Constructor
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Creates a new instance of the class.
+		 */
+		public function ParticleEmitterSystem()
+		{
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -55,47 +65,14 @@ package extra.test.view.display
 		/**
 		 * @inheritDoc
 		 */
-		override public function start():void
+		public function onRegister():void
 		{
-			super.start();
-			
-			var emitter:IEntity = main.entityFactory.createEntityFromClass(ParticleEmitter, "testEmitter", "ParticleEmitter");
-			Debug.trace(emitter.toString());
+			//_emitters = Main.instance.entityManager.getEntityFamily(Emitter, Spacial2D);
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function stop():void
+		public function dispose():void
 		{
-			super.stop();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function reset():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function update():void
-		{
-			super.update();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function dispose():void
-		{
-			super.dispose();
 		}
 		
 		
@@ -108,95 +85,25 @@ package extra.test.view.display
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * @private
+		 */
+		public function onTick(t:Number):void
+		{
+			for each (var e:IEntity in _emitters)
+			{
+				var emitter:ParticleEmitterComponent = e.getComponent(ParticleEmitterComponent);
+				var spacial:Spacial2DComponent = e.getComponent(Spacial2DComponent);
+				//var newEntity:IEntity = factory.create(emitter.type);
+				//var newEntitySpacial:Spacial2DComponent = newEntity.getComponent(Spacial2DComponent);
+				//newEntitySpacial.postion = spacial.postion.getCopy();
+			}
+		}
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function createChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function addChildren():void
-		{
-			var unit:IEntity = main.entityFactory.createEntity("unitInfantry");
-			Debug.trace(unit.toString());
-			var d:Dictionary = unit.getComponents();
-			for each (var c:IEntityComponent in d)
-			{
-				Debug.trace(c.toString());
-			}
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function addListeners():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function removeListeners():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function enableChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function disableChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function pauseChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function unpauseChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function updateDisplayText():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function layoutChildren():void
-		{
-		}
 	}
 }
