@@ -39,7 +39,8 @@ package base.core.entity
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private static var _entityManger:EntityManager;
+		public static var entityManager:EntityManager;
+		
 		private var _id:String;
 		private var _type:String;
 		
@@ -51,9 +52,8 @@ package base.core.entity
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function Entity(entityManger:EntityManager, type:String, id:String)
+		public function Entity(type:String, id:String)
 		{
-			_entityManger = entityManger;
 			_type = type;
 			_id = id;
 		}
@@ -68,7 +68,7 @@ package base.core.entity
 		 */
 		public function addComponent(component:IEntityComponent):Boolean
 		{
-			return _entityManger.addComponent(_id, component);
+			return entityManager.addComponent(_id, component);
 		}
 		
 		
@@ -77,7 +77,7 @@ package base.core.entity
 		 */
 		public function getComponent(componentClass:Class):*
 		{
-			return _entityManger.getComponent(_id, componentClass);
+			return entityManager.getComponent(_id, componentClass);
 		}
 		
 		
@@ -86,7 +86,7 @@ package base.core.entity
 		 */
 		public function getComponents():Dictionary
 		{
-			return _entityManger.getComponents(_id);
+			return entityManager.getComponents(_id);
 		}
 		
 		
@@ -95,7 +95,7 @@ package base.core.entity
 		 */
 		public function removeComponent(componentClass:Class):void
 		{
-			_entityManger.removeComponent(_id, componentClass);
+			entityManager.removeComponent(_id, componentClass);
 		}
 		
 		
@@ -104,7 +104,7 @@ package base.core.entity
 		 */
 		public function dispose():void
 		{
-			_entityManger.removeEntity(_id);
+			entityManager.removeEntity(_id);
 		}
 		
 		

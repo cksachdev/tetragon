@@ -85,6 +85,15 @@ package base.setup
 		}
 		
 		
+		/**
+		 * Executes the setup's registry class.
+		 */
+		public function registrySetup():void
+		{
+			/* Abstract method! */
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------

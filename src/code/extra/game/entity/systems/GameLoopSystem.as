@@ -28,6 +28,7 @@
 package extra.game.entity.systems
 {
 	import base.Main;
+	import base.core.entity.EntitySystem;
 	import base.core.entity.IEntitySystem;
 	import base.signals.RenderSignal;
 	import base.signals.TickSignal;
@@ -39,7 +40,7 @@ package extra.game.entity.systems
 	/**
 	 * GameLoopSystem class
 	 */
-	public class GameLoopSystem implements IEntitySystem
+	public class GameLoopSystem extends EntitySystem implements IEntitySystem
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -71,9 +72,14 @@ package extra.game.entity.systems
 		 */
 		public function onRegister():void
 		{
+		}
+		
+		
+		public function start():void
+		{
 			tickSignal = Main.instance.tickSignal;
 			renderSignal = Main.instance.renderSignal;
-			Main.instance.contextView.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			main.contextView.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
 		
@@ -82,7 +88,7 @@ package extra.game.entity.systems
 		 */
 		public function dispose():void
 		{
-			Main.instance.contextView.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			main.contextView.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
 		

@@ -27,6 +27,7 @@
  */
 package extra.game.entity.systems
 {
+	import base.core.entity.EntitySystem;
 	import base.core.entity.IEntity;
 	import base.core.entity.IEntitySystem;
 
@@ -37,7 +38,7 @@ package extra.game.entity.systems
 	/**
 	 * ParticleEmitterSystem class
 	 */
-	public class ParticleEmitterSystem implements IEntitySystem
+	public class ParticleEmitterSystem extends EntitySystem implements IEntitySystem
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -67,7 +68,12 @@ package extra.game.entity.systems
 		 */
 		public function onRegister():void
 		{
-			//_emitters = Main.instance.entityManager.getEntityFamily(Emitter, Spacial2D);
+		}
+		
+		
+		public function start():void
+		{
+			_emitters = main.entityManager.getEntityFamily(ParticleEmitterComponent, Spacial2DComponent).entities;
 		}
 		
 		

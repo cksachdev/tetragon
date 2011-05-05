@@ -44,7 +44,6 @@ package extra.game.setup
 		 */
 		override public function initialSetup():void
 		{
-			new GameSetupRegistry().execute();
 		}
 		
 		
@@ -70,6 +69,15 @@ package extra.game.setup
 		 */
 		override public function finalSetup():void
 		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registrySetup():void
+		{
+			new GameSetupRegistry().execute();
 		}
 		
 		

@@ -97,11 +97,23 @@ package base.core.entity
 		
 		
 		/**
+		 * Starts all systems.
+		 */
+		public function start():void
+		{
+			for each (var s:IEntitySystem in _systems)
+			{
+				s.start();
+			}
+		}
+		
+		
+		/**
 		 * @inheritDoc
 		 */
 		public function dispose():void
 		{
-			for each (var s:IDisposable in _systems)
+			for each (var s:IEntitySystem in _systems)
 			{
 				s.dispose();
 			}
@@ -116,7 +128,7 @@ package base.core.entity
 		 */
 		public function toString():String
 		{
-			return "[EntitySystemManager]";
+			return "EntitySystemManager:";
 		}
 	}
 }

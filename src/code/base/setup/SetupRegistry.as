@@ -62,7 +62,6 @@ package base.setup
 			_screenManager = Main.instance.screenManager;
 			_entitySystemManager = Main.instance.entitySystemManager;
 			_dataClassesFactory = DataClassesFactory.instance;
-			_dataClassesFactory.init();
 		}
 		
 		

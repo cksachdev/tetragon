@@ -25,24 +25,23 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.game.entity.components
+package base.core.entity
 {
-	import base.core.entity.EntityComponent;
+	import base.Main;
 
-	import com.hexagonstar.types.Vector2D;
+	import flash.utils.getQualifiedClassName;
 	
 	
 	/**
-	 * Spacial2DComponent class
+	 * Abstract entity system base class.
 	 */
-	public class Spacial2DComponent extends EntityComponent
+	public class EntitySystem
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _postion:Vector2D;
-		private var _rotation:Number;
+		private var _main:Main;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -52,8 +51,9 @@ package extra.game.entity.components
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function Spacial2DComponent()
+		public function EntitySystem()
 		{
+			_main = Main.instance;
 		}
 		
 		
@@ -61,27 +61,19 @@ package extra.game.entity.components
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
+		public function toString():String
+		{
+			return "[" + getQualifiedClassName(this).match("[^:]*$")[0] + "]";
+		}
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
-		public function get postion():Vector2D
+		protected function get main():Main
 		{
-			return _postion;
-		}
-		public function set postion(v:Vector2D):void
-		{
-			if (!v) _postion = new Vector2D();
-			else _postion = v;
-		}
-		public function get rotation():Number
-		{
-			return _rotation;
-		}
-		public function set rotation(v:Number):void
-		{
-			_rotation = v;
+			return _main;
 		}
 		
 		

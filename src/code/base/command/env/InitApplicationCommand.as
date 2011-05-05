@@ -318,6 +318,7 @@ package base.command.env
 						break;
 					case "final":
 						_setups[i].finalSetup();
+						_setups[i].registrySetup();
 				}
 			}
 		}

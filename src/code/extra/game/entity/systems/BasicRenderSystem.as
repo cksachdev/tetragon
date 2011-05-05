@@ -25,24 +25,20 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.game.entity.components
+package extra.game.entity.systems
 {
-	import base.core.entity.EntityComponent;
-
-	import com.hexagonstar.types.Vector2D;
+	import base.core.entity.EntitySystem;
+	import base.core.entity.IEntitySystem;
 	
 	
 	/**
-	 * Spacial2DComponent class
+	 * BasicRenderSystem class
 	 */
-	public class Spacial2DComponent extends EntityComponent
+	public class BasicRenderSystem extends EntitySystem implements IEntitySystem
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
-		
-		private var _postion:Vector2D;
-		private var _rotation:Number;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -52,7 +48,7 @@ package extra.game.entity.components
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function Spacial2DComponent()
+		public function BasicRenderSystem()
 		{
 		}
 		
@@ -61,28 +57,27 @@ package extra.game.entity.components
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * @inheritDoc
+		 */
+		public function onRegister():void
+		{
+		}
+		
+		
+		public function start():void
+		{
+		}
+		
+		
+		public function dispose():void
+		{
+		}
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
-		
-		public function get postion():Vector2D
-		{
-			return _postion;
-		}
-		public function set postion(v:Vector2D):void
-		{
-			if (!v) _postion = new Vector2D();
-			else _postion = v;
-		}
-		public function get rotation():Number
-		{
-			return _rotation;
-		}
-		public function set rotation(v:Number):void
-		{
-			_rotation = v;
-		}
 		
 		
 		//-----------------------------------------------------------------------------------------

@@ -51,7 +51,7 @@ package extra.game.entity.entities
 		{
 			super(id);
 			
-			addComponentMapping("spacial2DComponent", {});
+			addComponentMapping("spacial2DComponent", {postion: null, rotation: 0});
 			addComponentMapping("particleEmitterComponent", {});
 		}
 		

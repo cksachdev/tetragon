@@ -61,6 +61,8 @@ package extra.test.view.display
 			
 			var emitter:IEntity = main.entityFactory.createEntityFromClass(ParticleEmitter, "testEmitter", "ParticleEmitter");
 			Debug.trace(emitter.toString());
+			
+			main.entitySystemManager.start();
 		}
 		
 		

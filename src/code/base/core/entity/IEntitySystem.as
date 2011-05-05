@@ -36,5 +36,7 @@ package base.core.entity
 	public interface IEntitySystem extends IDisposable
 	{
 		function onRegister():void;
+		function start():void;
+		function toString():String;
 	}
 }

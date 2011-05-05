@@ -236,6 +236,7 @@ package base.data
 			{
 				_singletonLock = true;
 				_instance = new DataClassesFactory();
+				_instance.init();
 				_singletonLock = false;
 			}
 			return _instance;

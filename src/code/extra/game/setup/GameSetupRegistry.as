@@ -75,6 +75,8 @@ package extra.game.setup
 		{
 			registerEntitySystem(GameLoopSystem);
 			registerEntitySystem(ParticleEmitterSystem);
+			registerEntitySystem(Physics2DSystem);
+			registerEntitySystem(BasicRenderSystem);
 		}
 		
 		

@@ -63,6 +63,7 @@ package base.core.entity
 			_families = new Dictionary();
 			_componentFamilyMap = new Dictionary();
 			_keyCount = 0;
+			Entity.entityManager = this;
 		}
 		
 		
@@ -90,7 +91,7 @@ package base.core.entity
 				return null;
 			}
 			
-			var entity:IEntity = new Entity(this, type, id);
+			var entity:IEntity = new Entity(type, id);
 			_components[id] = new Dictionary();
 			return entity;
 		}
@@ -272,7 +273,7 @@ package base.core.entity
 				if (hasAllComponents(id, components))
 				{
 					// TODO type!
-					entityList.push(new Entity(this, null, id));
+					entityList.push(new Entity(null, id));
 				}
 			}
 			return entityList;
@@ -311,7 +312,7 @@ package base.core.entity
 				{
 					var family:EntityFamily = getFamily(a);
 					// TODO type!
-					var newEntity:Entity = new Entity(this, null, id);
+					var newEntity:Entity = new Entity(null, id);
 					family.entities.push(newEntity);
 					family.entityAdded.dispatch(newEntity);
 				}

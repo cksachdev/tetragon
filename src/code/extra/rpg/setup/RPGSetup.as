@@ -44,7 +44,6 @@ package extra.rpg.setup
 		 */
 		override public function initialSetup():void
 		{
-			new RPGSetupRegistry().execute();
 		}
 		
 		
@@ -69,6 +68,15 @@ package extra.rpg.setup
 		 */
 		override public function finalSetup():void
 		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registrySetup():void
+		{
+			new RPGSetupRegistry().execute();
 		}
 		
 		

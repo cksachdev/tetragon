@@ -44,7 +44,6 @@ package extra.test.setup
 		 */
 		override public function initialSetup():void
 		{
-			new TestSetupRegistry().execute();
 		}
 		
 		
@@ -69,6 +68,15 @@ package extra.test.setup
 		 */
 		override public function finalSetup():void
 		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registrySetup():void
+		{
+			new TestSetupRegistry().execute();
 		}
 		
 		

@@ -27,18 +27,21 @@
  */
 package extra.game.entity.systems
 {
+	import base.core.entity.EntitySystem;
 	import base.core.entity.IEntity;
 	import base.core.entity.IEntitySystem;
 
 	import extra.game.entity.components.GravityComponent;
 	import extra.game.entity.components.Physics2DComponent;
 	import extra.game.entity.components.Spacial2DComponent;
+
+	import com.hexagonstar.util.debug.Debug;
 	
 	
 	/**
 	 * Physics2DSystem class
 	 */
-	public class Physics2DSystem implements IEntitySystem
+	public class Physics2DSystem extends EntitySystem implements IEntitySystem
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -58,19 +61,27 @@ package extra.game.entity.systems
 		{
 		}
 		
+		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
 		public function onRegister():void
 		{
-			//_entities = Main.instance.entityManager.getEntityFamily(Spacial2D, SimplePhysics, Gravity);
-			//gameTick.add(onTick);
+		}
+		
+		
+		public function start():void
+		{
+			_entities = main.entityManager.getEntityFamily(Spacial2DComponent, Physics2DComponent, GravityComponent).entities;
+			Debug.trace(">>> " + _entities.length);
+			main.tickSignal.add(onTick);
 		}
 		
 		
 		public function dispose():void
 		{
+			main.tickSignal.remove(onTick);
 		}
 		
 		

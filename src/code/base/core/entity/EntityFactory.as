@@ -159,7 +159,7 @@ package base.core.entity
 					else
 					{
 						Log.warn("Tried to set a non-existing property <" + property
-							+ "> in component " + c.toString() + " for template "
+							+ "> in component " + c + " for template "
 							+ EntityTemplate(et).toString() + ".");
 					}
 				}
