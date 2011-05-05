@@ -173,7 +173,8 @@ package base.data
 			splashScreenID = "splashScreen";
 			//initialScreenID = "dummyScreen";
 			//initialScreenID = "gamePlayScreen";
-			initialScreenID = "tbsGamePlayScreen";
+			//initialScreenID = "tbsGamePlayScreen";
+			initialScreenID = "testScreen";
 		}
 	}
 }
