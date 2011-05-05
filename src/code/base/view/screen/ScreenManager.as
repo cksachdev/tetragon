@@ -27,6 +27,7 @@
  */
 package base.view.screen
 {
+	import base.Main;
 	import base.core.debug.Log;
 	import base.data.Registry;
 	import base.event.ResourceEvent;
@@ -38,7 +39,7 @@ package base.view.screen
 	import com.hexagonstar.util.string.TabularText;
 
 	import flash.display.DisplayObject;
-	import flash.display.DisplayObjectContainer;
+	import flash.display.Sprite;
 	import flash.events.EventDispatcher;
 	import flash.utils.setTimeout;
 	
@@ -53,7 +54,7 @@ package base.view.screen
 		//-----------------------------------------------------------------------------------------
 		
 		/** @private */
-		private var _screenParent:DisplayObjectContainer;
+		private var _screenContainer:Sprite;
 		/** @private */
 		private var _loadProgressDisplay:LoadProgressDisplay;
 		/** @private */
@@ -102,23 +103,18 @@ package base.view.screen
 		/**
 		 * Creates a new ScreenManager instance.
 		 * 
-		 * @param screenParent the parent container for all screens.
-		 * @param tweenDuration Duration (in seconds) used for screen in/out tweens.
-		 *         Setting this to 0 will make the ScreenManager use no tweening at all.
-		 * @param screenOpenDelay A delay (in seconds) that the screen manager waits
-		 *         before opening a screen.
-		 * @param screenCloseDelay A delay (in seconds) that the screen manager waits
-		 *         before closing an opened screen.
 		 */
-		public function ScreenManager(screenParent:DisplayObjectContainer)
+		public function ScreenManager()
 		{
 			super();
 			
 			_screenClasses = {};
-			_screenParent = screenParent;
 			_backupDuration = _tweenDuration;
 			_backupOpenDelay = _screenOpenDelay;
 			_backupCloseDelay = _screenCloseDelay;
+			
+			_screenContainer = new Sprite();
+			Main.instance.contextView.addChild(_screenContainer);
 			
 			screenOpenedSignal = new Signal();
 			screenClosedSignal = new Signal();
@@ -218,7 +214,7 @@ package base.view.screen
 					_nextScreen.alpha = 0;
 				}
 				
-				_screenParent.addChild(_nextScreen);
+				_screenContainer.addChild(_nextScreen);
 				closeLastScreen();
 			}
 			else
@@ -432,7 +428,7 @@ package base.view.screen
 			Log.debug("Closed " + _screen.toString(), this);
 			
 			var oldScreen:BaseScreen = _screen;
-			_screenParent.removeChild(DisplayObject(_screen));
+			_screenContainer.removeChild(_screen);
 			_screen.dispose();
 			_screen = null;
 			_openScreenClass = null;
@@ -508,7 +504,7 @@ package base.view.screen
 			_loadProgressDisplay.x = StageReference.hCenter - (_loadProgressDisplay.width * 0.5);
 			_loadProgressDisplay.y = StageReference.vCenter - (_loadProgressDisplay.height * 0.5);
 			_loadProgressDisplay.alpha = 0;
-			_screenParent.addChild(_loadProgressDisplay);
+			_screenContainer.addChild(_loadProgressDisplay);
 			TweenLite.to(_loadProgressDisplay, 0.6, {alpha: 1.0});
 		}
 		
@@ -519,10 +515,10 @@ package base.view.screen
 		private function removeLoadProgressDisplay():void
 		{
 			if (!_loadProgressDisplay) return;
-			_screenParent.swapChildren(_screen, _loadProgressDisplay);
+			_screenContainer.swapChildren(_screen, _loadProgressDisplay);
 			TweenLite.to(_loadProgressDisplay, 1.0, {alpha: 0.0, onComplete: function():void
 			{
-				_screenParent.removeChild(_loadProgressDisplay);
+				_screenContainer.removeChild(_loadProgressDisplay);
 				_loadProgressDisplay = null;
 			}});
 		}

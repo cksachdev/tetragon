@@ -39,7 +39,6 @@ package base
 	import base.core.settings.LocalSettingsManager;
 	import base.data.Registry;
 	import base.io.resource.ResourceManager;
-	import base.view.ViewContainer;
 	import base.view.screen.ScreenManager;
 
 	import com.hexagonstar.exception.SingletonException;
@@ -55,7 +54,7 @@ package base
 	/**
 	 * The main hub of the application.
 	 */
-	public class Main
+	public final class Main
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -69,7 +68,12 @@ package base
 		/** @private */
 		private var _contextView:DisplayObjectContainer;
 		/** @private */
-		private var _viewContainer:ViewContainer;
+		private var _utilityContainer:Sprite;
+		/** @private */
+		private var _console:Console;
+		/** @private */
+		private var _fpsMonitor:FPSMonitor;
+		
 		/** @private */
 		private var _setupHelper:*;
 		
@@ -176,21 +180,12 @@ package base
 		
 		
 		/**
-		 * A reference to the application's view container.
-		 */
-		public function get viewContainer():ViewContainer
-		{
-			return _viewContainer;
-		}
-		
-		
-		/**
 		 * A reference to the console. Will return <code>null</code> if the console has
 		 * been disabled.
 		 */
 		public function get console():Console
 		{
-			return viewContainer.console;
+			return _console;
 		}
 		
 		
@@ -200,7 +195,7 @@ package base
 		 */
 		public function get fpsMonitor():FPSMonitor
 		{
-			return viewContainer.fpsMonitor;
+			return _fpsMonitor;
 		}
 		
 		
@@ -359,14 +354,10 @@ package base
 			/* Init the data model registry. */
 			Registry.init();
 			
-			/* Create the application's view container. */
-			_viewContainer = new ViewContainer();
-			contextView.addChild(viewContainer);
-			
 			/* Create managers. */
 			_commandManager = new CommandManager();
 			_resourceManager = new ResourceManager();
-			_screenManager = new ScreenManager(_viewContainer.screenContainer);
+			_screenManager = new ScreenManager();
 			_localSettingsManager = new LocalSettingsManager();
 			
 			/* Create entity architecture-related objects. */
@@ -381,6 +372,37 @@ package base
 			
 			/* Start initialization phase. */
 			commandManager.execute(new InitApplicationCommand(), onAppInitComplete);
+		}
+		
+		
+		/**
+		 * Creates Console and FPSMonior, Called automatically by base setup after
+		 * the app ini has been loaded.
+		 * 
+		 * @private
+		 */
+		public function createUtilityViews():void
+		{
+			if (!_console && Registry.config.consoleEnabled)
+			{
+				if (!_utilityContainer)
+				{
+					_utilityContainer = new Sprite();
+					contextView.addChild(_utilityContainer);
+				}
+				_console = new Console(_utilityContainer);
+				_console.init();
+			}
+			
+			if (!_fpsMonitor && Registry.config.fpsMonitorEnabled)
+			{
+				if (!_utilityContainer)
+				{
+					_utilityContainer = new Sprite();
+					contextView.addChild(_utilityContainer);
+				}
+				_fpsMonitor = new FPSMonitor(_utilityContainer);
+			}
 		}
 	}
 }

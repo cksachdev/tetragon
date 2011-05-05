@@ -67,9 +67,10 @@ package base.core.entity
 		 */
 		public function registerSystem(system:Class):IEntitySystem
 		{
-			if (_systems[system] != null)
+			if (_systems[system])
 			{
 				Log.warn("System " + system + " already exists in entity system manager.", this);
+				return null;
 			}
 			
 			var s:IEntitySystem = new system();
@@ -84,15 +85,14 @@ package base.core.entity
 		 */
 		public function unregisterSystem(system:Class):void
 		{
-			try
+			if (!_systems[system])
 			{
-				IDisposable(_systems[system]).dispose();
-				delete _systems[system];
+				Log.warn("System " + system + " doesn't exist in entity system manager.", this);
+				return;
 			}
-			catch (err:Error)
-			{
-				Log.warn("System " + system + " dosn't exist in entity system manager.", this);
-			}
+			
+			IDisposable(_systems[system]).dispose();
+			delete _systems[system];
 		}
 		
 		
@@ -101,9 +101,9 @@ package base.core.entity
 		 */
 		public function dispose():void
 		{
-			for each (var i:IDisposable in _systems)
+			for each (var s:IDisposable in _systems)
 			{
-				i.dispose();
+				s.dispose();
 			}
 			_systems = new Dictionary();
 		}
