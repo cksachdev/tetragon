@@ -27,6 +27,8 @@
  */
 package base.core.entity
 {
+	import com.hexagonstar.util.reflection.describeTypeProperties;
+
 	import flash.utils.Dictionary;
 	
 	
@@ -52,10 +54,10 @@ package base.core.entity
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function Entity(type:String, id:String)
+		public function Entity(id:String, type:String)
 		{
-			_type = type;
 			_id = id;
+			_type = type;
 		}
 		
 		
@@ -68,7 +70,7 @@ package base.core.entity
 		 */
 		public function addComponent(component:IEntityComponent):Boolean
 		{
-			return entityManager.addComponent(_id, component);
+			return entityManager.addComponent(_id, _type, component);
 		}
 		
 		
@@ -114,6 +116,26 @@ package base.core.entity
 		public function toString():String
 		{
 			return "[Entity type=" + _type + ", id=" + _id + "]";
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function dump():String
+		{
+			var s:String = "\n" + toString();
+			var d:Dictionary = getComponents();
+			for each (var c:IEntityComponent in d)
+			{
+				s += "\n\t" + c;
+				var obj:Object = describeTypeProperties(c);
+				for (var k:String in obj)
+				{
+					s += "\n\t\t" + k + ": " + c[k];
+				}
+			}
+			return s;
 		}
 		
 		

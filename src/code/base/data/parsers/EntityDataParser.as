@@ -67,7 +67,6 @@ package base.data.parsers
 				for each (var c:XML in x.components.component)
 				{
 					var componentClassID:String = extractString(c, "@classID");
-					// TODO componentClass still needed here?
 					var componentClass:Class = dcf.getComponentClass(componentClassID);
 					
 					if (componentClass)
@@ -80,7 +79,25 @@ package base.data.parsers
 						{
 							var key:String = p.name();
 							var value:String = p.toString();
-							map[key] = value;
+							
+							/* Check if property has a complex type assigned. */
+							var ctype:String = p.@ctype;
+							if (ctype && ctype.length > 0)
+							{
+								var type:Object = generateComplexType(ctype);
+								if (!type)
+								{
+									Log.error("Could not create complex type \"" + ctype
+										+ "\" for property \"" + key + "\" (componentClassID: "
+										+ componentClassID + ", entityID: " + id + ").", this);
+									continue;
+								}
+								map[key] = parseComplexTypeParams(type, value);
+							}
+							else
+							{
+								map[key] = value;
+							}
 						}
 						
 						/* Add component property map to entity template. */
@@ -97,6 +114,104 @@ package base.data.parsers
 			}
 			
 			dispose();
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Private Methods
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @private
+		 */
+		protected static function generateComplexType(type:String):Object
+		{
+			var clazz:Class = DataClassesFactory.instance.getComplexTypeClass(type.toLowerCase());
+			if (clazz) return new clazz();
+			return null;
+		}
+		
+		
+		/**
+		 * Parses a parameter string for a complex data type.
+		 * 
+		 * @private
+		 */
+		private static function parseComplexTypeParams(type:Object, params:String):Object
+		{
+			var len:int = params.length;
+			var quotesCount:int = 0;
+			var isInsideQuotes:Boolean = false;
+			var current:String;
+			var segment:String = "";
+			var segments:Array = [];
+			
+			for (var i:int = 0; i < len; i++)
+			{
+				current = params.charAt(i);
+				
+				/* Check if we're inside quotes. */
+				if (current == "\"")
+				{
+					quotesCount++;
+					if (quotesCount == 1)
+					{
+						isInsideQuotes = true;
+					}
+					else if (quotesCount == 2)
+					{
+						quotesCount = 0;
+						isInsideQuotes = false;
+					}
+				}
+				
+				/* Remove all whitespace unless we're inside quotes. */
+				if (isInsideQuotes || current != " ")
+				{
+					segment += current;
+				}
+				
+				/* Split the string where comma occurs, but not inside quotes. */
+				if (!isInsideQuotes && current == ",")
+				{
+					/* Remove last char from segment which must be a comma. */
+					segment = segment.substr(0, segment.length - 1);
+					segments.push(segment);
+					segment = "";
+				}
+				
+				/* Last segment needs to be added extra. */
+				if (i == len - 1)
+				{
+					segments.push(segment);
+				}
+			}
+			
+			/* Loop through segments and split them into property and value. */
+			for each (segment in segments)
+			{
+				var a:Array = segment.split(":");
+				var p:String = a[0];
+				var v:String = a[1];
+				
+				/* If value is wrapped into quotes we need to remove these. */
+				if (v.charAt(0) == "\"" && v.charAt(v.length - 1) == "\"")
+				{
+					v = v.substr(1, v.length - 2);
+				}
+				
+				if (type.hasOwnProperty(p))
+				{
+					type[p] = v;
+				}
+				else
+				{
+					Log.warn("Tried to set a non-existing property <"
+						+ p + "> in complex type " + type + ".");
+				}
+			}
+			
+			return type;
 		}
 	}
 }

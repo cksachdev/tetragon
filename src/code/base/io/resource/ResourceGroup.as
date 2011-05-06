@@ -38,6 +38,7 @@ package base.io.resource
 		//-----------------------------------------------------------------------------------------
 		
 		public static const DATA:String		= "data";
+		public static const ENTITY:String	= "entity";
 		public static const TEXT:String		= "text";
 		public static const XML:String		= "xml";
 		public static const MEDIA:String	= "media";

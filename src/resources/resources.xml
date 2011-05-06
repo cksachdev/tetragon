@@ -20,6 +20,7 @@
 	
 	<!-- ************************************************************************************** -->
 	<dataFiles>
+		<file id="testEntityFile" path="data/test/test_entities.xml" packageID="resourcePackage"/>
 		<file id="tbsUnitsFile" path="data/tbs/units.xml" packageID="resourcePackage"/>
 		<file id="tbsWeaponsFile" path="data/tbs/weapons.xml" packageID="resourcePackage"/>
 		<file id="tbsMovementTypesFile" path="data/tbs/movement_types.xml" packageID="resourcePackage"/>
@@ -83,11 +84,24 @@
 	</media>
 	
 	<!-- ************************************************************************************** -->
-	<data>
+	<entities>
+		
+		<group type="TestEntity" fileID="testEntityFile">
+			<resource id="testEntity1"/>
+		</group>
+		
+		<group type="TestParticle" fileID="testEntityFile">
+			<resource id="defaultParticle"/>
+		</group>
 		
 		<group type="TBSUnit" fileID="tbsUnitsFile">
 			<resource id="unitInfantry"/>
 		</group>
+		
+	</entities>
+	
+	<!-- ************************************************************************************** -->
+	<data>
 		
 		<group type="TBSWeapon" fileID="tbsWeaponsFile">
 			<resource id="weaponMachineGun"/>

@@ -28,14 +28,12 @@
 package base.data.parsers
 {
 	import base.io.resource.wrappers.XMLResourceWrapper;
-
-	import flash.events.IEventDispatcher;
 	
 	
 	/**
 	 * IFileParser Interface
 	 */
-	public interface IDataParser extends IEventDispatcher
+	public interface IDataParser
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods

@@ -27,7 +27,6 @@
  */
 package extra.tbs.setup
 {
-	import base.data.parsers.EntityDataParser;
 	import base.setup.ISetupRegistry;
 	import base.setup.SetupRegistry;
 
@@ -58,7 +57,14 @@ package extra.tbs.setup
 		 */
 		override public function registerDataTypes():void
 		{
-			registerDataType("TBSUnit", EntityDataParser);
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registerComplexTypes():void
+		{
 		}
 		
 		

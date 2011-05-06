@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+	
+	<item id="testEntity1">
+		<components>
+			<component classID="particleEmitterComponent">
+				<position ctype="Point2D">x: 50, y: 100</position>
+				<particle ctype="EntityTemplate">entityTemplateID: defaultParticle</particle>
+			</component>
+		</components>
+	</item>
+	
+	<item id="defaultParticle">
+		<components>
+			<component classID="graphicsComponent">
+				<graphicID>particleShape</graphicID>
+				<boundingRect></boundingRect>
+			</component>
+			<component classID="gravityComponent">
+				<force ctype="Vector2D">x: 0, y: 0</force>
+			</component>
+			<component classID="physics2DComponent">
+				<velocity ctype="Vector2D">x: 0, y: 0</velocity>
+			</component>
+			<component classID="spacial2DComponent">
+				<position ctype="Vector2D">x: 0, y: 0</position>
+				<rotation>0</rotation>
+			</component>
+		</components>
+	</item>
+	
+</data>

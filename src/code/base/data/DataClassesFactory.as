@@ -29,6 +29,7 @@ package base.data
 {
 	import base.core.debug.Log;
 	import base.core.entity.IEntityComponent;
+	import base.data.parsers.EntityDataParser;
 	import base.data.parsers.IDataParser;
 	import base.data.parsers.NullDataParser;
 	import base.data.parsers.TextDataParser;
@@ -36,6 +37,10 @@ package base.data
 	import base.io.resource.ResourceGroup;
 
 	import com.hexagonstar.exception.SingletonException;
+	import com.hexagonstar.types.*;
+
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 
 	
 	/**
@@ -68,6 +73,12 @@ package base.data
 		 */
 		private var _componentMap:Object;
 		
+		/**
+		 * Maps complex types that are used in entity component definitions.
+		 * @private
+		 */
+		private var _ctypesMap:Object;
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Constructor
@@ -93,11 +104,20 @@ package base.data
 		{
 			_parserMap = {};
 			_componentMap = {};
+			_ctypesMap = {};
 			
 			/* Add default data types. */
 			mapDataType(ResourceGroup.NONE, NullDataParser);
 			mapDataType(ResourceGroup.TEXT, TextDataParser);
 			mapDataType(ResourceGroup.XML, XMLDataParser);
+			mapDataType(ResourceGroup.ENTITY, EntityDataParser);
+			
+			/* Add default complex types. */
+			mapComplexType("point", Point);
+			mapComplexType("point2d", Point2D);
+			mapComplexType("point3d", Point3D);
+			mapComplexType("vector2d", Vector2D);
+			mapComplexType("rectangle", Rectangle);
 		}
 		
 		
@@ -112,6 +132,18 @@ package base.data
 		public function mapDataType(dataTypeID:String, parserClass:Class):void
 		{
 			_parserMap[dataTypeID] = parserClass;
+		}
+		
+		
+		/**
+		 * Maps complex data types by ID which are used in entity component definitions.
+		 * 
+		 * @param complexTypeID The ID of the compex data type.
+		 * @param clazz The class to map.
+		 */
+		public function mapComplexType(complexTypeID:String, clazz:Class):void
+		{
+			_ctypesMap[complexTypeID.toLowerCase()] = clazz;
 		}
 		
 		
@@ -137,6 +169,19 @@ package base.data
 		public function getParserClass(dataTypeID:String):Class
 		{
 			return _parserMap[dataTypeID];
+		}
+		
+		
+		/**
+		 * Returns a complex type class definition that is mapped under the specified
+		 * complexTypeID.
+		 * 
+		 * @param complexTypeID The ID with that the complex type class is mapped.
+		 * @return A class or null if the ID is not mapped.
+		 */
+		public function getComplexTypeClass(complexTypeID:String):Class
+		{
+			return _ctypesMap[complexTypeID];
 		}
 		
 		

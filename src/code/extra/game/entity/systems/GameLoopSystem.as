@@ -27,7 +27,6 @@
  */
 package extra.game.entity.systems
 {
-	import base.Main;
 	import base.core.entity.EntitySystem;
 	import base.core.entity.IEntitySystem;
 	import base.signals.RenderSignal;
@@ -77,8 +76,8 @@ package extra.game.entity.systems
 		
 		public function start():void
 		{
-			tickSignal = Main.instance.tickSignal;
-			renderSignal = Main.instance.renderSignal;
+			tickSignal = main.tickSignal;
+			renderSignal = main.renderSignal;
 			main.contextView.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		

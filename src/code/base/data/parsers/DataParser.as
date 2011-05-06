@@ -30,7 +30,6 @@ package base.data.parsers
 	import com.hexagonstar.util.string.createStringVector;
 	import com.hexagonstar.util.string.unwrapString;
 
-	import flash.events.EventDispatcher;
 	import flash.system.System;
 	import flash.utils.getQualifiedClassName;
 	
@@ -38,7 +37,7 @@ package base.data.parsers
 	/**
 	 * Abstract base class for data resource parsers.
 	 */
-	public class DataParser extends EventDispatcher
+	public class DataParser
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -72,7 +71,7 @@ package base.data.parsers
 		 * 
 		 * @return A string representation of the object.
 		 */
-		override public function toString():String
+		public function toString():String
 		{
 			return "[" + getQualifiedClassName(this).match("[^:]*$")[0] + "]";
 		}
@@ -196,6 +195,16 @@ package base.data.parsers
 				string = string.substr(2, string.length - 1);
 			var r:uint = uint("0x" + string);
 			return r;
+		}
+		
+		
+		/**
+		 * Trims whitespace from the start and end of the specified string.
+		 * @private
+		 */
+		protected static function trim(s:String):String
+		{
+			return s.replace(/^[ \t]+|[ \t]+$/g, "");
 		}
 	}
 }

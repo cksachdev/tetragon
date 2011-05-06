@@ -62,6 +62,14 @@ package extra.test.setup
 		/**
 		 * @inheritDoc
 		 */
+		override public function registerComplexTypes():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
 		override public function registerEntitySystems():void
 		{
 		}

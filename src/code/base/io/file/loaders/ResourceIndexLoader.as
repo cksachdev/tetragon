@@ -201,7 +201,6 @@ package base.io.file.loaders
 		
 		/**
 		 * Initiates parsing of different resource index entries.
-		 * 
 		 * @private
 		 */
 		private function parse(file:IFile):void
@@ -227,6 +226,7 @@ package base.io.file.loaders
 			parseReferences(xml);
 			parseMedia(xml);
 			parseData(xml);
+			parseEntities(xml);
 			parseText(xml);
 			
 			CONFIG::IS_AIR_BUILD
@@ -241,7 +241,6 @@ package base.io.file.loaders
 		
 		/**
 		 * Parses the package file and data file reference entries.
-		 * 
 		 * @private
 		 */
 		private function parseReferences(xml:XML):void
@@ -262,7 +261,6 @@ package base.io.file.loaders
 		
 		/**
 		 * Parses media resource entries.
-		 * 
 		 * @private
 		 */
 		private function parseMedia(xml:XML):void
@@ -293,7 +291,6 @@ package base.io.file.loaders
 		
 		/**
 		 * Parses data resource entries.
-		 * 
 		 * @private
 		 */
 		private function parseData(xml:XML):void
@@ -330,8 +327,44 @@ package base.io.file.loaders
 		
 		
 		/**
+		 * Parses entity resource entries.
+		 * @private
+		 */
+		private function parseEntities(xml:XML):void
+		{
+			for each (var x:XML in xml.entities.group)
+			{
+				var type:String = x.@type;
+				var allFileID:String = "" + x.@fileID;
+				for each (var s:XML in x.children())
+				{
+					if (s.name() != "resource") continue;
+					
+					/* If all resources of the group are in the same data file, the
+					 * data file ID can be specified globally for all resources instead
+					 * of having any resource repeat the same data file ID so if we got
+					 * a global data file ID use that one instead. */
+					var fileID:String = allFileID.length > 0 ? allFileID : s.@fileID;
+					var dfp:String = _resourceIndex.getDataFilePath(fileID);
+					
+					if (!dfp || dfp.length < 1)
+					{
+						Log.error("No data file with ID \"" + s.@fileID
+							+ "\" defined in resource index but the resource with ID \""
+							+ s.@id + "\" requires it.", this);
+						continue;
+					}
+					
+					s.@path = dfp;
+					s.@packageID = _resourceIndex.getDataFilePackageID(fileID);
+					addResourceEntry(s, ResourceGroup.DATA, ResourceGroup.ENTITY);
+				}
+			}
+		}
+		
+		
+		/**
 		 * Parses text resource entries.
-		 * 
 		 * @private
 		 */
 		private function parseText(xml:XML):void
@@ -339,7 +372,6 @@ package base.io.file.loaders
 			for each (var x:XML in xml.elements("text").resource)
 			{
 				var id:String = x.@id;
-				
 				for each (var s:XML in x.locale)
 				{
 					var lang:String = s.@lang;

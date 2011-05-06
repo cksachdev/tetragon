@@ -34,8 +34,6 @@ package extra.game.entity.systems
 	import extra.game.entity.components.GravityComponent;
 	import extra.game.entity.components.Physics2DComponent;
 	import extra.game.entity.components.Spacial2DComponent;
-
-	import com.hexagonstar.util.debug.Debug;
 	
 	
 	/**
@@ -74,7 +72,6 @@ package extra.game.entity.systems
 		public function start():void
 		{
 			_entities = main.entityManager.getEntityFamily(Spacial2DComponent, Physics2DComponent, GravityComponent).entities;
-			Debug.trace(">>> " + _entities.length);
 			main.tickSignal.add(onTick);
 		}
 		

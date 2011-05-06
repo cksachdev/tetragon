@@ -90,21 +90,20 @@ package base.core.entity
 			}
 			
 			var e:IEntity = _entityManager.createEntity(resource.dataType);
-			if (!e)
-			{
-				fail("Could not create entity. EntityManager.createEntity() returned null.");
-				return null;
-			}
+			if (!e) return null;
 			
 			var mappings:Object = EntityTemplate(resource.content).componentMappings;
 			
-			/* Create components on entity and assign properties to them. */
+			/* Create components in entity and assign properties to them from template. */
 			for (var classID:String in mappings)
 			{
 				var c:IEntityComponent = _dcFactory.createComponent(classID);
 				var m:Object = mappings[classID];
 				for (var property:String in m)
 				{
+					// TODO Need to move generation of complex property types here from
+					// EntityDataParser! Otherwise we might end up with components
+					// sharing the same complex type instances.
 					if (Object(c).hasOwnProperty(property))
 					{
 						c[property] = m[property];
@@ -116,6 +115,7 @@ package base.core.entity
 							+ EntityTemplate(resource.content).toString() + ".");
 					}
 				}
+				e.addComponent(c);
 			}
 			
 			return e;

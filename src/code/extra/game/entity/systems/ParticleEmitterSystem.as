@@ -33,6 +33,8 @@ package extra.game.entity.systems
 
 	import extra.game.entity.components.ParticleEmitterComponent;
 	import extra.game.entity.components.Spacial2DComponent;
+
+	import com.hexagonstar.util.debug.Debug;
 	
 	
 	/**
@@ -74,11 +76,14 @@ package extra.game.entity.systems
 		public function start():void
 		{
 			_emitters = main.entityManager.getEntityFamily(ParticleEmitterComponent, Spacial2DComponent).entities;
+			Debug.trace(_emitters.length);
+			main.tickSignal.add(onTick);
 		}
 		
 		
 		public function dispose():void
 		{
+			main.tickSignal.remove(onTick);
 		}
 		
 		

@@ -73,6 +73,7 @@ package base.setup
 		{
 			registerScreens();
 			registerDataTypes();
+			registerComplexTypes();
 			registerEntitySystems();
 			registerEntityComponents();
 		}
@@ -85,6 +86,12 @@ package base.setup
 		
 		
 		public function registerDataTypes():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		public function registerComplexTypes():void
 		{
 			/* Abstract method! */
 		}

@@ -28,6 +28,7 @@
 package base.core.entity
 {
 	import base.core.IDisposable;
+	import base.core.debug.Log;
 
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
@@ -44,10 +45,19 @@ package base.core.entity
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * Maps objects of type Dictionary, mapped by entityID which in turn contain
+		 * objects of type IEntityComponent, mapped by their componentClass, e.g.
+		 * 
+		 * _components[entityID] = Dictionary[componentClass] = IEntityComponent
+		 * 
+		 * @private
+		 */
 		private var _components:Object;
+		
 		private var _families:Dictionary;
 		private var _componentFamilyMap:Dictionary;
-		private var _keyCount:int;
+		private var _idCount:int;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -62,7 +72,7 @@ package base.core.entity
 			_components = {};
 			_families = new Dictionary();
 			_componentFamilyMap = new Dictionary();
-			_keyCount = 0;
+			_idCount = 0;
 			Entity.entityManager = this;
 		}
 		
@@ -72,49 +82,52 @@ package base.core.entity
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Creates a new entity with the id provided. If no id is provided a unique id will
-		 * be auto generated. If an id is provided but the entityManager already has an entity
-		 * with the same id, no entity will be created and null is returned.
+		 * Creates a new entity with the ID provided. If no ID is provided a unique ID will
+		 * be auto-generated. If an ID is provided but the entityManager already has an entity
+		 * with the same ID, no entity will be created and <code>null</code> is returned.
 		 * 
-		 * @param id ID of the entity.
-		 * @return The new entity or null.
+		 * @param id ID of the new created entity.
+		 * @return The new entity or <code>null</code>.
 		 */
-		public function createEntity(type:String, id:String = null):IEntity
+		public function createEntity(type:String, entityID:String = null):IEntity
 		{
-			if (id == null || id == "")
+			if (!entityID || entityID == "")
 			{
-				_keyCount++;
-				id = "entity" + _keyCount;
+				_idCount++;
+				entityID = "entity" + _idCount;
 			}
-			else if (_components[id])
+			else if (_components[entityID])
 			{
+				Log.warn("Tried to create an entity whose ID already exists.", this);
 				return null;
 			}
 			
-			var entity:IEntity = new Entity(type, id);
-			_components[id] = new Dictionary();
+			var entity:IEntity = new Entity(entityID, type);
+			_components[entityID] = new Dictionary();
 			return entity;
 		}
 		
 		
 		/**
-		 * @param id
-		 * @return true if an entity with the provided id exists.
+		 * Determines whether the entity manager has an entity mapped with the specified ID.
+		 * 
+		 * @param entityID The ID to check.
+		 * @return true if an entity with the provided ID exists.
 		 */
-		public function hasEntity(id:String):Boolean
+		public function hasEntity(entityID:String):Boolean
 		{
-			return _components[id] != null;
+			return _components[entityID] != null;
 		}
 		
 		
 		/**
-		 * Unregisters an entity.
+		 * Removes an entity from the entity manager.
 		 * 
-		 * @param id
+		 * @param id ID of entity to remove.
 		 */
 		public function removeEntity(id:String):void
 		{
-			for each (var c:Object in _components[id])
+			for each (var c:IEntityComponent in _components[id])
 			{
 				removeEntityFromFamilies(id, getClass(c));
 			}
@@ -123,7 +136,7 @@ package base.core.entity
 		
 		
 		/**
-		 * Unregisters all entities and resets the entity manager.
+		 * Removes all entities and resets the entity manager.
 		 */
 		public function removeAll():void
 		{
@@ -131,27 +144,26 @@ package base.core.entity
 			{
 				removeEntity(id);
 			}
-			_keyCount = 0;
+			_idCount = 0;
 		}
 		
 		
 		/**
 		 * Registers a component with an entity.
 		 * 
-		 * @param id The component is to be registered with.
+		 * @param entityID ID of the entity the component is to be registered with.
 		 * @param component Component to be registered.
-		 * 
 		 * @return true if the component was added.
 		 */
-		public function addComponent(id:String, component:Object):Boolean
+		public function addComponent(entityID:String, entityType:String, component:IEntityComponent):Boolean
 		{
 			var componentClass:Class = getClass(component);
-			if (!hasEntity(id))
+			if (!hasEntity(entityID))
 			{
 				return false;
 			}
-			_components[id][componentClass] = component;
-			addEntityToFamilies(id, componentClass);
+			_components[entityID][componentClass] = component;
+			addEntityToFamilies(entityID, entityType, componentClass);
 			return true;
 		}
 		
@@ -159,25 +171,19 @@ package base.core.entity
 		/**
 		 * Retrieves a component.
 		 *  
-		 * @param id the component is registered with.
+		 * @param entityID the ID that the component is registered with.
 		 * @param componentClass Component to be retrieved.
 		 * @return component.
 		 */
-		public function getComponent(id:String, componentClass:Class):*
+		public function getComponent(entityID:String, componentClass:Class):IEntityComponent
 		{
-			var entityComponents:Dictionary = _components[id];
-			if (entityComponents == null)
+			var entityComponents:Dictionary = _components[entityID];
+			if (!entityComponents)
 			{
-				throw new Error("Entity with ID \"" + id + "\" not found in entity manager.");
+				Log.error("Entity with ID \"" + entityID + "\" not found in entity manager.", this);
+				return null;
 			}
-			try
-			{
-				return entityComponents[componentClass];
-			}
-			catch (err:Error)
-			{
-				throw new Error("Component " + componentClass + " not found on entity " + id);
-			}
+			return entityComponents[componentClass];
 		}
 		
 		
@@ -187,12 +193,12 @@ package base.core.entity
 		 * @param id Entity ID the components are registered with.
 		 * @return a dictionary of the entites components with the component Class as the key.
 		 */
-		public function getComponents(id:String):Dictionary
+		public function getComponents(entityID:String):Dictionary
 		{
-			var entityComponents:Dictionary = _components[id];
-			if (entityComponents == null)
+			var entityComponents:Dictionary = _components[entityID];
+			if (!entityComponents)
 			{
-				throw new Error("Entity " + id + " not found in Entity Manager.");
+				Log.error("Entity with ID \"" + entityID + "\" not found in entity manager.", this);
 			}
 			return entityComponents;
 		}
@@ -226,13 +232,13 @@ package base.core.entity
 		public function dispose():void
 		{
 			_components = null;
-			for each (var family:EntityFamily in _families)
+			for each (var f:EntityFamily in _families)
 			{
-				family.dispose();
+				f.dispose();
 			}
 			_families = null;
 			_componentFamilyMap = null;
-			_keyCount = 0;
+			_idCount = 0;
 		}
 		
 		
@@ -273,7 +279,7 @@ package base.core.entity
 				if (hasAllComponents(id, components))
 				{
 					// TODO type!
-					entityList.push(new Entity(null, id));
+					entityList.push(new Entity(id, null));
 				}
 			}
 			return entityList;
@@ -281,38 +287,32 @@ package base.core.entity
 		
 		
 		/**
-		 * Checks if a entity has a set of Components.
+		 * Checks if a entity has a set of components.
 		 * @private
 		 */
-		private function hasAllComponents(id:String, components:Array):Boolean
+		private function hasAllComponents(entityID:String, components:Array):Boolean
 		{
 			for each (var c:Class in components)
 			{
-				if (!_components[id][c])
-				{
-					return false;
-				}
+				if (!_components[entityID][c]) return false;
 			}
 			return true;
 		}
 		
-		// TODO The whole approach with entity families has to be changed because we're
-		// using a type String to identify similar entities, not which components they share!
 		
 		/**
 		 * Updates families when a component is added to an entity.
 		 * @private
 		 */
-		private function addEntityToFamilies(id:String, componentClass:Class):void
+		private function addEntityToFamilies(entityID:String, entityType:String, componentClass:Class):void
 		{
 			var families:Vector.<Array> = getFamiliesWithComponent(componentClass);
-			for each (var a:Array in getFamiliesWithComponent(componentClass))
+			for each (var a:Array in families)
 			{
-				if (hasAllComponents(id, a))
+				if (hasAllComponents(entityID, a))
 				{
 					var family:EntityFamily = getFamily(a);
-					// TODO type!
-					var newEntity:Entity = new Entity(null, id);
+					var newEntity:Entity = new Entity(entityID, entityType);
 					family.entities.push(newEntity);
 					family.entityAdded.dispatch(newEntity);
 				}
@@ -324,18 +324,19 @@ package base.core.entity
 		 * Updates families when a component is removed from an entity.
 		 * @private
 		 */
-		private function removeEntityFromFamilies(id:String, componentClass:Class):void
+		private function removeEntityFromFamilies(entityID:String, componentClass:Class):void
 		{
 			for each (var a:Array in getFamiliesWithComponent(componentClass))
 			{
 				var family:EntityFamily = getFamily(a);
-				for (var i:int = 0; i < family.entities.length; i++)
+				var len:uint = family.entities.length;
+				for (var i:uint = 0; i < len; i++)
 				{
-					var entity:IEntity = family.entities[i] as IEntity;
-					if (entity.id == id)
+					var e:IEntity = family.entities[i];
+					if (e.id == entityID)
 					{
 						family.entities.splice(i, 1);
-						family.entityRemoved.dispatch(entity);
+						family.entityRemoved.dispatch(e);
 					}
 				}
 			}
@@ -352,7 +353,8 @@ package base.core.entity
 
 			for each (var familyRefList:Vector.<Array> in _componentFamilyMap)
 			{
-				for (var i:int = 0; i < familyRefList.length; i++)
+				var len:uint = familyRefList.length;
+				for (var i:uint = 0; i < len; i++)
 				{
 					if (familyRefList[i] == components)
 					{
@@ -365,7 +367,7 @@ package base.core.entity
 		
 		
 		/**
-		 * Retrieves a list of Families with Component or creates a new one.
+		 * Retrieves a list of families with components or creates a new one.
 		 * @private
 		 */
 		private function getFamiliesWithComponent(componentClass:Class):Vector.<Array>

@@ -27,15 +27,11 @@
  */
 package extra.test.view.display
 {
+	import base.core.entity.EntityTemplate;
 	import base.core.entity.IEntity;
-	import base.core.entity.IEntityComponent;
 	import base.view.display.Display;
 
-	import extra.game.entity.entities.ParticleEmitter;
-
 	import com.hexagonstar.util.debug.Debug;
-
-	import flash.utils.Dictionary;
 	
 	
 	/**
@@ -59,8 +55,13 @@ package extra.test.view.display
 		{
 			super.start();
 			
-			var emitter:IEntity = main.entityFactory.createEntityFromClass(ParticleEmitter, "testEmitter", "ParticleEmitter");
-			Debug.trace(emitter.toString());
+			var template:EntityTemplate = getResource("testEntity1");
+			Debug.trace(template.toString());
+			
+			Debug.trace(main.entityManager.hasEntity("entity1"));
+			var emitter:IEntity = main.entityFactory.createEntity("testEntity1");
+			Debug.trace(emitter.dump());
+			Debug.trace(main.entityManager.hasEntity("entity1"));
 			
 			main.entitySystemManager.start();
 		}
@@ -128,13 +129,6 @@ package extra.test.view.display
 		 */
 		override protected function addChildren():void
 		{
-			var unit:IEntity = main.entityFactory.createEntity("unitInfantry");
-			Debug.trace(unit.toString());
-			var d:Dictionary = unit.getComponents();
-			for each (var c:IEntityComponent in d)
-			{
-				Debug.trace(c.toString());
-			}
 		}
 		
 		

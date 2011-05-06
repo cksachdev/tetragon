@@ -28,6 +28,9 @@
 package extra.game.entity.components
 {
 	import base.core.entity.EntityComponent;
+	import base.core.entity.EntityTemplate;
+
+	import com.hexagonstar.types.Point2D;
 	
 	
 	/**
@@ -38,6 +41,9 @@ package extra.game.entity.components
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
+		
+		private var _position:Point2D;
+		private var _particle:EntityTemplate;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -60,6 +66,31 @@ package extra.game.entity.components
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * The position of the emitter.
+		 */
+		public function get position():Point2D
+		{
+			return _position;
+		}
+		public function set position(v:Point2D):void
+		{
+			_position = v;
+		}
+		
+		
+		/**
+		 * The entity template which is used as particles.
+		 */
+		public function get particle():EntityTemplate
+		{
+			return _particle;
+		}
+		public function set particle(v:EntityTemplate):void
+		{
+			_particle = v;
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------

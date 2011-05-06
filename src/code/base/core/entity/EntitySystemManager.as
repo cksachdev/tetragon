@@ -103,6 +103,7 @@ package base.core.entity
 		{
 			for each (var s:IEntitySystem in _systems)
 			{
+				Log.debug("Starting " + s.toString() + " ...", this);
 				s.start();
 			}
 		}
