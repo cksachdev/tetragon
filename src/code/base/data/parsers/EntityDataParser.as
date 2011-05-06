@@ -28,14 +28,14 @@
 package base.data.parsers
 {
 	import base.core.debug.Log;
-	import base.core.entity.EntityTemplate;
+	import base.core.entity.EntityDefinition;
 	import base.data.DataClassesFactory;
 	import base.io.resource.ResourceIndex;
 	import base.io.resource.wrappers.XMLResourceWrapper;
 
 	
 	/**
-	 * A data parser that parses data for entity template objects.
+	 * A data parser that parses entity data and creates entity definitions from it.
 	 */
 	public class EntityDataParser extends DataParser implements IDataParser
 	{
@@ -61,7 +61,7 @@ package base.data.parsers
 				if (!wrapper.hasResourceID(id)) continue;
 				
 				/* Create a new entity template for the data item. */
-				var t:EntityTemplate = new EntityTemplate(id);
+				var e:EntityDefinition = new EntityDefinition(id);
 				
 				/* Loop through the item's component definitions. */
 				for each (var c:XML in x.components.component)
@@ -96,12 +96,13 @@ package base.data.parsers
 							}
 							else
 							{
-								map[key] = value;
+								if (value == "") map[key] = null;
+								else map[key] = value;
 							}
 						}
 						
 						/* Add component property map to entity template. */
-						t.addComponentMapping(componentClassID, map);
+						e.addComponentMapping(componentClassID, map);
 					}
 					else
 					{
@@ -110,7 +111,7 @@ package base.data.parsers
 					}
 				}
 				
-				index.addDataResource(t);
+				index.addDataResource(e);
 			}
 			
 			dispose();
@@ -202,11 +203,12 @@ package base.data.parsers
 				
 				if (type.hasOwnProperty(p))
 				{
-					type[p] = v;
+					if (v == "") type[p] = null;
+					else type[p] = v;
 				}
 				else
 				{
-					Log.warn("Tried to set a non-existing property <"
+					Log.warn("EntityDataParser: Tried to set a non-existing property <"
 						+ p + "> in complex type " + type + ".");
 				}
 			}

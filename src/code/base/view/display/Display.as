@@ -397,7 +397,9 @@ package base.view.display
 		
 		
 		/**
-		 * Helper method to get a resource from the resource index.
+		 * Helper method to get a resource's content from the resource index. The type
+		 * depends on the content type of the resource.
+		 * 
 		 * @private
 		 */
 		protected function getResource(id:String):*

@@ -27,13 +27,8 @@
  */
 package base.view.screen
 {
-	import base.core.debug.Console;
-	import base.core.debug.FPSMonitor;
-	
-	
 	/**
-	 * A screen that does nothing specific. It only opens the logging console and shows
-	 * the fps monitor.
+	 * A screen that does nothing specific.
 	 */
 	public class DummyScreen extends BaseScreen
 	{
@@ -47,12 +42,6 @@ package base.view.screen
 		override public function start():void
 		{
 			super.start();
-			
-			var c:Console = main.console;
-			if (c) c.toggle();
-			
-			var f:FPSMonitor = main.fpsMonitor;
-			if (f) f.toggle();
 		}
 		
 		

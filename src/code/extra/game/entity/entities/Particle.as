@@ -27,7 +27,7 @@
  */
 package extra.game.entity.entities
 {
-	import base.core.entity.EntityTemplate;
+	import base.core.entity.EntityDefinition;
 
 	import com.hexagonstar.types.Vector2D;
 	
@@ -35,7 +35,7 @@ package extra.game.entity.entities
 	/**
 	 * Particle class
 	 */
-	public class Particle extends EntityTemplate
+	public class Particle extends EntityDefinition
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

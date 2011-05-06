@@ -27,12 +27,10 @@
  */
 package base.core.entity
 {
-	
-	
 	/**
-	 * EntityTemplate class
+	 * Represents an entity definition. Entity instances are created from this class.
 	 */
-	public class EntityTemplate
+	public class EntityDefinition
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -53,7 +51,7 @@ package base.core.entity
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function EntityTemplate(id:String)
+		public function EntityDefinition(id:String)
 		{
 			_id = id;
 			_componentMappings = {};
@@ -97,7 +95,7 @@ package base.core.entity
 		 */
 		public function toString():String
 		{
-			return "[EntityTemplate, id=" + _id + ", componentCount=" + _componentCount + "]";
+			return "[EntityDefinition, id=" + _id + ", componentCount=" + _componentCount + "]";
 		}
 		
 		

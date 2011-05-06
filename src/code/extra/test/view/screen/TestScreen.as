@@ -27,6 +27,8 @@
  */
 package extra.test.view.screen
 {
+	import base.core.debug.Console;
+	import base.core.debug.FPSMonitor;
 	import base.view.screen.BaseScreen;
 
 	import extra.test.view.display.TestDisplay;
@@ -56,6 +58,12 @@ package extra.test.view.screen
 		override public function start():void
 		{
 			super.start();
+			
+			var c:Console = main.console;
+			if (c) c.toggle();
+			
+			var f:FPSMonitor = main.fpsMonitor;
+			if (f) f.toggle();
 		}
 		
 		
@@ -104,7 +112,9 @@ package extra.test.view.screen
 		override protected function registerResources():void
 		{
 			registerResource("unitInfantry");
-			registerResource("testEntity1");
+			registerResource("testParticleEmitter");
+			registerResource("testParticle");
+			registerResource("particleSymbol");
 		}
 		
 		

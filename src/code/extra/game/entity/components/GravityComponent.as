@@ -41,7 +41,7 @@ package extra.game.entity.components
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		public var force:Vector2D;
+		private var _force:Vector2D;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -53,7 +53,6 @@ package extra.game.entity.components
 		 */
 		public function GravityComponent()
 		{
-			force = new Vector2D();
 		}
 		
 		
@@ -65,6 +64,15 @@ package extra.game.entity.components
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
+		
+		public function get force():Vector2D
+		{
+			return _force;
+		}
+		public function set force(v:Vector2D):void
+		{
+			_force = v;
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------

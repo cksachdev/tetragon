@@ -64,6 +64,7 @@
 		
 		<swf>
 			<resource id="swfTest" path="swf/test.swf" packageID="resourcePackage"/>
+			<resource id="particleSymbol" path="swf/particle_symbol.swf" packageID="resourcePackage"/>
 		</swf>
 		
 		<shader>
@@ -86,12 +87,12 @@
 	<!-- ************************************************************************************** -->
 	<entities>
 		
-		<group type="TestEntity" fileID="testEntityFile">
-			<resource id="testEntity1"/>
+		<group type="ParticleEmitter" fileID="testEntityFile">
+			<resource id="testParticleEmitter"/>
 		</group>
 		
-		<group type="TestParticle" fileID="testEntityFile">
-			<resource id="defaultParticle"/>
+		<group type="Particle" fileID="testEntityFile">
+			<resource id="testParticle"/>
 		</group>
 		
 		<group type="TBSUnit" fileID="tbsUnitsFile">

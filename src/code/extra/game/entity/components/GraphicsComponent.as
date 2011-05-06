@@ -29,7 +29,6 @@ package extra.game.entity.components
 {
 	import base.core.entity.EntityComponent;
 
-	import flash.display.DisplayObject;
 	import flash.geom.Rectangle;
 	
 	
@@ -42,8 +41,8 @@ package extra.game.entity.components
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		public var graphic:DisplayObject;
-		public var boundingRect:Rectangle;
+		private var _graphicID:String;
+		private var _boundingRect:Rectangle;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -66,6 +65,25 @@ package extra.game.entity.components
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
+		
+		public function get graphicID():String
+		{
+			return _graphicID;
+		}
+		public function set graphicID(v:String):void
+		{
+			_graphicID = v;
+		}
+		
+		
+		public function get boundingRect():Rectangle
+		{
+			return _boundingRect;
+		}
+		public function set boundingRect(v:Rectangle):void
+		{
+			_boundingRect = v;
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------

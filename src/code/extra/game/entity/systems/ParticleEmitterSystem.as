@@ -33,8 +33,6 @@ package extra.game.entity.systems
 
 	import extra.game.entity.components.ParticleEmitterComponent;
 	import extra.game.entity.components.Spacial2DComponent;
-
-	import com.hexagonstar.util.debug.Debug;
 	
 	
 	/**
@@ -73,14 +71,19 @@ package extra.game.entity.systems
 		}
 		
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function start():void
 		{
 			_emitters = main.entityManager.getEntityFamily(ParticleEmitterComponent, Spacial2DComponent).entities;
-			Debug.trace(_emitters.length);
 			main.tickSignal.add(onTick);
 		}
 		
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function dispose():void
 		{
 			main.tickSignal.remove(onTick);
@@ -105,9 +108,9 @@ package extra.game.entity.systems
 			{
 				var emitter:ParticleEmitterComponent = e.getComponent(ParticleEmitterComponent);
 				var spacial:Spacial2DComponent = e.getComponent(Spacial2DComponent);
-				//var newEntity:IEntity = factory.create(emitter.type);
-				//var newEntitySpacial:Spacial2DComponent = newEntity.getComponent(Spacial2DComponent);
-				//newEntitySpacial.postion = spacial.postion.getCopy();
+				var newEntity:IEntity = main.entityFactory.createEntity(emitter.particleDefinitionID);
+				var newEntitySpacial:Spacial2DComponent = newEntity.getComponent(Spacial2DComponent);
+				newEntitySpacial.position = spacial.position.clone();
 			}
 		}
 		

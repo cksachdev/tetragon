@@ -28,7 +28,7 @@
 package base.io.resource
 {
 	import base.core.debug.Log;
-	import base.core.entity.EntityTemplate;
+	import base.core.entity.EntityDefinition;
 	import base.data.DataObject;
 
 	import com.hexagonstar.util.string.TabularText;
@@ -208,9 +208,9 @@ package base.io.resource
 				r = _resources[o.id];
 				r.setContent(o);
 			}
-			else if (content is EntityTemplate)
+			else if (content is EntityDefinition)
 			{
-				var et:EntityTemplate = EntityTemplate(content);
+				var et:EntityDefinition = EntityDefinition(content);
 				r = _resources[et.id];
 				r.setContent(et);
 			}

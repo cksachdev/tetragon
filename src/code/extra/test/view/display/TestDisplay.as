@@ -27,7 +27,6 @@
  */
 package extra.test.view.display
 {
-	import base.core.entity.EntityTemplate;
 	import base.core.entity.IEntity;
 	import base.view.display.Display;
 
@@ -55,13 +54,11 @@ package extra.test.view.display
 		{
 			super.start();
 			
-			var template:EntityTemplate = getResource("testEntity1");
-			Debug.trace(template.toString());
-			
-			Debug.trace(main.entityManager.hasEntity("entity1"));
-			var emitter:IEntity = main.entityFactory.createEntity("testEntity1");
+			var emitter:IEntity = main.entityFactory.createEntity("testParticleEmitter");
 			Debug.trace(emitter.dump());
-			Debug.trace(main.entityManager.hasEntity("entity1"));
+			
+			var particle:IEntity = main.entityFactory.createEntity("testParticle");
+			Debug.trace(particle.dump());
 			
 			main.entitySystemManager.start();
 		}

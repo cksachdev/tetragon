@@ -83,7 +83,7 @@ package base.core.entity
 				fail("Could not create entity. Resource with ID \"" + resourceID + "\" was null.");
 				return null;
 			}
-			else if (!(resource.content is EntityTemplate))
+			else if (!(resource.content is EntityDefinition))
 			{
 				fail("Could not create entity. Resource content is not of type EntityTemplate.");
 				return null;
@@ -92,7 +92,7 @@ package base.core.entity
 			var e:IEntity = _entityManager.createEntity(resource.dataType);
 			if (!e) return null;
 			
-			var mappings:Object = EntityTemplate(resource.content).componentMappings;
+			var mappings:Object = EntityDefinition(resource.content).componentMappings;
 			
 			/* Create components in entity and assign properties to them from template. */
 			for (var classID:String in mappings)
@@ -112,7 +112,7 @@ package base.core.entity
 					{
 						Log.warn("Tried to set a non-existing property <" + property
 							+ "> in component " + c.toString() + " for template "
-							+ EntityTemplate(resource.content).toString() + ".");
+							+ EntityDefinition(resource.content).toString() + ".", this);
 					}
 				}
 				e.addComponent(c);
@@ -126,47 +126,47 @@ package base.core.entity
 		 * Creates an entity from it's template class instead of a resource.
 		 * Mainly used for testing!
 		 */
-		public function createEntityFromClass(entityTemplateClass:Class, id:String, dataType:String):IEntity
-		{
-			var et:* = new entityTemplateClass(id);
-			
-			if (!(et is EntityTemplate))
-			{
-				fail("Could not create entity. Class is not of type EntityTemplate.");
-				return null;
-			}
-			
-			var e:IEntity = _entityManager.createEntity(dataType);
-			if (!e)
-			{
-				fail("Could not create entity. EntityManager.createEntity() returned null.");
-				return null;
-			}
-			
-			var mappings:Object = EntityTemplate(et).componentMappings;
-			
-			/* Create components on entity and assign properties to them. */
-			for (var classID:String in mappings)
-			{
-				var c:IEntityComponent = _dcFactory.createComponent(classID);
-				var m:Object = mappings[classID];
-				for (var property:String in m)
-				{
-					if (Object(c).hasOwnProperty(property))
-					{
-						c[property] = m[property];
-					}
-					else
-					{
-						Log.warn("Tried to set a non-existing property <" + property
-							+ "> in component " + c + " for template "
-							+ EntityTemplate(et).toString() + ".");
-					}
-				}
-			}
-			
-			return e;
-		}
+//		public function createEntityFromClass(entityTemplateClass:Class, id:String, dataType:String):IEntity
+//		{
+//			var et:* = new entityTemplateClass(id);
+//			
+//			if (!(et is EntityDefinition))
+//			{
+//				fail("Could not create entity. Class is not of type EntityTemplate.");
+//				return null;
+//			}
+//			
+//			var e:IEntity = _entityManager.createEntity(dataType);
+//			if (!e)
+//			{
+//				fail("Could not create entity. EntityManager.createEntity() returned null.");
+//				return null;
+//			}
+//			
+//			var mappings:Object = EntityDefinition(et).componentMappings;
+//			
+//			/* Create components on entity and assign properties to them. */
+//			for (var classID:String in mappings)
+//			{
+//				var c:IEntityComponent = _dcFactory.createComponent(classID);
+//				var m:Object = mappings[classID];
+//				for (var property:String in m)
+//				{
+//					if (Object(c).hasOwnProperty(property))
+//					{
+//						c[property] = m[property];
+//					}
+//					else
+//					{
+//						Log.warn("Tried to set a non-existing property <" + property
+//							+ "> in component " + c + " for template "
+//							+ EntityDefinition(et).toString() + ".");
+//					}
+//				}
+//			}
+//			
+//			return e;
+//		}
 		
 		
 		/**
@@ -176,7 +176,7 @@ package base.core.entity
 		 */
 		public function toString():String
 		{
-			return "[EntityFactory]";
+			return "EntityFactory:";
 		}
 		
 		

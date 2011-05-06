@@ -99,7 +99,7 @@ package extra.game.entity.systems
 				var physics:Physics2DComponent = e.getComponent(Physics2DComponent);
 				var gravity:GravityComponent = e.getComponent(GravityComponent);
 				physics.velocity.addEquals(gravity.force);
-				spacial.postion.addEquals(physics.velocity.multiply(t));
+				spacial.position.addEquals(physics.velocity.multiply(t));
 			}
 		}
 		

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data>
 	
-	<item id="testEntity1">
+	<item id="testParticleEmitter">
 		<components>
 			<component classID="particleEmitterComponent">
 				<position ctype="Point2D">x: 50, y: 100</position>
-				<particle ctype="EntityTemplate">entityTemplateID: defaultParticle</particle>
+				<particleDefinitionID>testParticle</particleDefinitionID>
 			</component>
 		</components>
 	</item>
 	
-	<item id="defaultParticle">
+	<item id="testParticle">
 		<components>
 			<component classID="graphicsComponent">
-				<graphicID>particleShape</graphicID>
+				<graphicID>particleSymbol</graphicID>
 				<boundingRect></boundingRect>
 			</component>
 			<component classID="gravityComponent">

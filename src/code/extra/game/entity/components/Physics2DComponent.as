@@ -41,7 +41,7 @@ package extra.game.entity.components
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		public var velocity:Vector2D;
+		private var _velocity:Vector2D;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -51,9 +51,8 @@ package extra.game.entity.components
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function Physics2DComponent(velocity:Vector2D = null)
+		public function Physics2DComponent()
 		{
-			this.velocity = velocity || new Vector2D();
 		}
 		
 		
@@ -65,6 +64,15 @@ package extra.game.entity.components
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
+		
+		public function get velocity():Vector2D
+		{
+			return _velocity;
+		}
+		public function set velocity(v:Vector2D):void
+		{
+			_velocity = v;
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------
