@@ -73,7 +73,7 @@ package base.data.parsers
 		 */
 		public function toString():String
 		{
-			return "[" + getQualifiedClassName(this).match("[^:]*$")[0] + "]";
+			return getQualifiedClassName(this).match("[^:]*$")[0] + ":";
 		}
 		
 		

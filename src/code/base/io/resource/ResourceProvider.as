@@ -28,7 +28,7 @@
 package base.io.resource
 {
 	import base.Main;
-	import base.data.DataClassesFactory;
+	import base.data.DataSupportManager;
 	import base.data.parsers.IDataParser;
 	import base.event.ResourceEvent;
 	import base.io.resource.wrappers.ResourceWrapper;
@@ -56,7 +56,7 @@ package base.io.resource
 		/**
 		 * @private
 		 */
-		protected var _dataClassesFactory:DataClassesFactory;
+		protected var _dsm:DataSupportManager;
 		
 		/**
 		 * ID of the resource provider, if necessary (PackedResourceProvider needs it!)
@@ -94,7 +94,7 @@ package base.io.resource
 		public function ResourceProvider(id:String = null)
 		{
 			_resourceManager = Main.instance.resourceManager;
-			_dataClassesFactory = DataClassesFactory.instance;
+			_dsm = Main.instance.dataSupportManager;
 			_id = id;
 			_bulkFiles = {};
 		}
@@ -316,7 +316,7 @@ package base.io.resource
 				fail(bulkFile, "Data resource has no type defined.");
 				return;
 			}
-			var parser:IDataParser = _dataClassesFactory.createParser(resourceType);
+			var parser:IDataParser = _dsm.createParser(resourceType);
 			if (!parser)
 			{
 				fail(bulkFile);

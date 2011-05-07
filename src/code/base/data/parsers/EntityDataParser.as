@@ -27,9 +27,10 @@
  */
 package base.data.parsers
 {
+	import base.Main;
 	import base.core.debug.Log;
 	import base.core.entity.EntityDefinition;
-	import base.data.DataClassesFactory;
+	import base.data.DataSupportManager;
 	import base.io.resource.ResourceIndex;
 	import base.io.resource.wrappers.XMLResourceWrapper;
 
@@ -50,7 +51,7 @@ package base.data.parsers
 		{
 			_xml = wrapper.xml;
 			var index:ResourceIndex = model;
-			var dcf:DataClassesFactory = DataClassesFactory.instance;
+			var dsm:DataSupportManager = Main.instance.dataSupportManager;
 			
 			for each (var x:XML in _xml.item)
 			{
@@ -67,7 +68,7 @@ package base.data.parsers
 				for each (var c:XML in x.components.component)
 				{
 					var componentClassID:String = extractString(c, "@classID");
-					var componentClass:Class = dcf.getComponentClass(componentClassID);
+					var componentClass:Class = dsm.getComponentClass(componentClassID);
 					
 					if (componentClass)
 					{
@@ -84,14 +85,14 @@ package base.data.parsers
 							var ctype:String = p.@ctype;
 							if (ctype && ctype.length > 0)
 							{
-								var type:Object = generateComplexType(ctype);
-								if (!type)
+								var clazz:Class = dsm.getComplexTypeClass(ctype.toLowerCase());
+								if (!clazz)
 								{
-									Log.error("Could not create complex type \"" + ctype
-										+ "\" for property \"" + key + "\" (componentClassID: "
-										+ componentClassID + ", entityID: " + id + ").", this);
+									Log.error("Could not create complex type class."
+										+ " Class for ctype \"" + ctype + "\" was not mapped.", this);
 									continue;
 								}
+								var type:Object = new clazz();
 								map[key] = parseComplexTypeParams(type, value);
 							}
 							else
@@ -121,17 +122,6 @@ package base.data.parsers
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @private
-		 */
-		protected static function generateComplexType(type:String):Object
-		{
-			var clazz:Class = DataClassesFactory.instance.getComplexTypeClass(type.toLowerCase());
-			if (clazz) return new clazz();
-			return null;
-		}
-		
 		
 		/**
 		 * Parses a parameter string for a complex data type.

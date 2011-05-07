@@ -27,13 +27,14 @@
  */
 package extra.tbs.entity.components
 {
+	import base.core.entity.EntityComponent;
 	import base.core.entity.IEntityComponent;
 	
 	
 	/**
 	 * TBSUnitPropertiesComponent class
 	 */
-	public class TBSUnitPropertiesComponent implements IEntityComponent
+	public class TBSUnitPropertiesComponent extends EntityComponent implements IEntityComponent
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -49,28 +50,8 @@ package extra.tbs.entity.components
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Constructor
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Creates a new instance of the class.
-		 */
-		public function TBSUnitPropertiesComponent()
-		{
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function toString():String
-		{
-			return "[TBSUnitPropertiesComponent]";
-		}
 		
 		
 		//-----------------------------------------------------------------------------------------

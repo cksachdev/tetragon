@@ -37,6 +37,7 @@ package base
 	import base.core.entity.EntityManager;
 	import base.core.entity.EntitySystemManager;
 	import base.core.settings.LocalSettingsManager;
+	import base.data.DataSupportManager;
 	import base.data.Registry;
 	import base.io.key.KeyManager;
 	import base.io.resource.ResourceManager;
@@ -80,6 +81,8 @@ package base
 		/** @private */
 		private var _setupHelper:*;
 		
+		/** @private */
+		private var _dataSupportManager:DataSupportManager;
 		/** @private */
 		private var _commandManager:CommandManager;
 		/** @private */
@@ -139,51 +142,6 @@ package base
 		
 		
 		/**
-		 * A reference to the command manager.
-		 */
-		public function get commandManager():CommandManager
-		{
-			return _commandManager;
-		}
-		
-		
-		/**
-		 * A reference to the resource manager.
-		 */
-		public function get resourceManager():ResourceManager
-		{
-			return _resourceManager;
-		}
-		
-		
-		/**
-		 * A reference to the screen manager.
-		 */
-		public function get screenManager():ScreenManager
-		{
-			return _screenManager;
-		}
-		
-		
-		/**
-		 * A reference to the localsettings manager.
-		 */
-		public function get localSettingsManager():LocalSettingsManager
-		{
-			return _localSettingsManager;
-		}
-		
-		
-		/**
-		 * A reference to the key input manager.
-		 */
-		public function get keyManager():KeyManager
-		{
-			return _keyManager;
-		}
-		
-		
-		/**
 		 * A reference to the base display object container.
 		 */
 		public function get contextView():DisplayObjectContainer
@@ -236,6 +194,17 @@ package base
 		
 		
 		/**
+		 * Determines whether the application is in fullscreen mode (<code>true</code>) or not
+		 * (<code>false</code>).
+		 */
+		public function get isFullscreen():Boolean
+		{
+			return (contextView.stage.displayState == StageDisplayState["FULL_SCREEN_INTERACTIVE"]
+				|| contextView.stage.displayState == StageDisplayState.FULL_SCREEN);
+		}
+		
+		
+		/**
 		 * A reference to the setup helper if the build type uses any. Read-only access!
 		 */
 		public function get setupHelper():*
@@ -249,6 +218,57 @@ package base
 		{
 			if (_setupHelper) return;
 			_setupHelper = v;
+		}
+		
+		
+		public function get dataSupportManager():DataSupportManager
+		{
+			return _dataSupportManager;
+		}
+		
+		
+		/**
+		 * A reference to the command manager.
+		 */
+		public function get commandManager():CommandManager
+		{
+			return _commandManager;
+		}
+		
+		
+		/**
+		 * A reference to the resource manager.
+		 */
+		public function get resourceManager():ResourceManager
+		{
+			return _resourceManager;
+		}
+		
+		
+		/**
+		 * A reference to the screen manager.
+		 */
+		public function get screenManager():ScreenManager
+		{
+			return _screenManager;
+		}
+		
+		
+		/**
+		 * A reference to the localsettings manager.
+		 */
+		public function get localSettingsManager():LocalSettingsManager
+		{
+			return _localSettingsManager;
+		}
+		
+		
+		/**
+		 * A reference to the key input manager.
+		 */
+		public function get keyManager():KeyManager
+		{
+			return _keyManager;
 		}
 		
 		
@@ -267,17 +287,6 @@ package base
 		public function get entitySystemManager():EntitySystemManager
 		{
 			return _entitySystemManager;
-		}
-		
-		
-		/**
-		 * Determines whether the application is in fullscreen mode (<code>true</code>) or not
-		 * (<code>false</code>).
-		 */
-		public function get isFullscreen():Boolean
-		{
-			return (contextView.stage.displayState == StageDisplayState["FULL_SCREEN_INTERACTIVE"]
-				|| contextView.stage.displayState == StageDisplayState.FULL_SCREEN);
 		}
 		
 		
@@ -383,6 +392,7 @@ package base
 			Registry.init();
 			
 			/* Create managers. */
+			_dataSupportManager = new DataSupportManager();
 			_commandManager = new CommandManager();
 			_resourceManager = new ResourceManager();
 			_screenManager = new ScreenManager();

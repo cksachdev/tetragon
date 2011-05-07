@@ -36,7 +36,6 @@ package base.data
 	import base.data.parsers.XMLDataParser;
 	import base.io.resource.ResourceGroup;
 
-	import com.hexagonstar.exception.SingletonException;
 	import com.hexagonstar.types.*;
 
 	import flash.geom.Point;
@@ -44,22 +43,16 @@ package base.data
 
 	
 	/**
-	 * TODO Make non-Singleton!
-	 * 
-	 * A singleton factory that acts as an index for parser, builder and component
-	 * classes by mapping data parser classes and entity builder classes to datatype
-	 * IDs and entity component classes to component class IDs.
+	 * An odd multi-role class that manages the mapping and creation of several objects
+	 * used by the resource management and the entity system. It acts as an index for
+	 * parser-, entity component- and complex type classes by mapping data parser classes
+	 * to datatype IDs and entity component classes to component class IDs.
 	 */
-	public class DataClassesFactory
+	public class DataSupportManager
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
-		
-		/** @private */
-		private static var _instance:DataClassesFactory;
-		/** @private */
-		private static var _singletonLock:Boolean = false;
 		
 		/**
 		 * Maps class definitions of type IResourceParser.
@@ -79,6 +72,12 @@ package base.data
 		 */
 		private var _ctypesMap:Object;
 		
+		/**
+		 * Counter used to create unique component IDs.
+		 * @private
+		 */
+		private var _componentIDCount:uint;
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Constructor
@@ -87,9 +86,9 @@ package base.data
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function DataClassesFactory()
+		public function DataSupportManager()
 		{
-			if (!_singletonLock) throw new SingletonException(this);
+			init();
 		}
 		
 		
@@ -105,6 +104,7 @@ package base.data
 			_parserMap = {};
 			_componentMap = {};
 			_ctypesMap = {};
+			_componentIDCount = 0;
 			
 			/* Add default data types. */
 			mapDataType(ResourceGroup.NONE, NullDataParser);
@@ -237,6 +237,7 @@ package base.data
 		{
 			var clazz:* = _componentMap[classID];
 			var component:IEntityComponent;
+			
 			if (!clazz)
 			{
 				fail("Failed to create component class! No component class has been mapped for"
@@ -253,39 +254,26 @@ package base.data
 					+ classID + "\" is not of type IEntityComponent.");
 				return null;
 			}
+			component.id = "component" + _componentIDCount;
+			_componentIDCount++;
 			return component;
 		}
 		
 		
 		/**
-		 * Returns a String Representation of the class.
+		 * Returns a String representation of the class.
 		 * 
-		 * @return A String Representation of the class.
+		 * @return A String representation of the class.
 		 */
 		public function toString():String
 		{
-			return "[DataClassesFactory]";
+			return "[DataSupportManager]";
 		}
 		
 		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Returns the singleton instance of the class.
-		 */
-		public static function get instance():DataClassesFactory
-		{
-			if (_instance == null)
-			{
-				_singletonLock = true;
-				_instance = new DataClassesFactory();
-				_instance.init();
-				_singletonLock = false;
-			}
-			return _instance;
-		}
 		
 		
 		//-----------------------------------------------------------------------------------------

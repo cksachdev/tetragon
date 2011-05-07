@@ -30,7 +30,7 @@ package base.setup
 	import base.Main;
 	import base.core.debug.Log;
 	import base.core.entity.EntitySystemManager;
-	import base.data.DataClassesFactory;
+	import base.data.DataSupportManager;
 	import base.view.screen.ScreenManager;
 
 	import flash.utils.getQualifiedClassName;
@@ -47,7 +47,7 @@ package base.setup
 		
 		private var _screenManager:ScreenManager;
 		private var _entitySystemManager:EntitySystemManager;
-		private var _dataClassesFactory:DataClassesFactory;
+		private var _dsm:DataSupportManager;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -61,7 +61,7 @@ package base.setup
 		{
 			_screenManager = Main.instance.screenManager;
 			_entitySystemManager = Main.instance.entitySystemManager;
-			_dataClassesFactory = DataClassesFactory.instance;
+			_dsm = Main.instance.dataSupportManager;
 		}
 		
 		
@@ -145,7 +145,7 @@ package base.setup
 		 */
 		protected function registerDataType(dataTypeID:String, dataTypeParserClass:Class):void
 		{
-			_dataClassesFactory.mapDataType(dataTypeID, dataTypeParserClass);
+			_dsm.mapDataType(dataTypeID, dataTypeParserClass);
 			Log.debug("Registered datatype parser class for ID \"" + dataTypeID + "\".", this);
 		}
 		
@@ -170,7 +170,7 @@ package base.setup
 		 */
 		protected function registerEntityComponent(classID:String, componentClass:Class):void
 		{
-			_dataClassesFactory.mapComponentClass(classID, componentClass);
+			_dsm.mapComponentClass(classID, componentClass);
 			Log.debug("Registered entity component class for ID \"" + classID + "\".", this);
 		}
 	}

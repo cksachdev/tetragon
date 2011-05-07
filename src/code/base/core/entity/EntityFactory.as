@@ -29,7 +29,7 @@ package base.core.entity
 {
 	import base.Main;
 	import base.core.debug.Log;
-	import base.data.DataClassesFactory;
+	import base.data.DataSupportManager;
 	import base.io.resource.Resource;
 	import base.io.resource.ResourceIndex;
 	
@@ -46,7 +46,7 @@ package base.core.entity
 		/** @private */
 		private var _resourceIndex:ResourceIndex;
 		/** @private */
-		private var _dcFactory:DataClassesFactory;
+		private var _dsm:DataSupportManager;
 		/** @private */
 		private var _entityManager:EntityManager;
 		
@@ -60,7 +60,7 @@ package base.core.entity
 		 */
 		public function EntityFactory()
 		{
-			_dcFactory = DataClassesFactory.instance;
+			_dsm = Main.instance.dataSupportManager;
 			_entityManager = Main.instance.entityManager;
 		}
 		
@@ -97,7 +97,7 @@ package base.core.entity
 			/* Create components in entity and assign properties to them from template. */
 			for (var classID:String in mappings)
 			{
-				var c:IEntityComponent = _dcFactory.createComponent(classID);
+				var c:IEntityComponent = _dsm.createComponent(classID);
 				var m:Object = mappings[classID];
 				for (var property:String in m)
 				{

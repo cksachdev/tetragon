@@ -28,15 +28,32 @@
 package base.core.entity
 {
 	/**
-	 * IEntityComponent Interface
+	 * Base interface for entity componments. Implement this interface when writing
+	 * entity components!
 	 */
 	public interface IEntityComponent
 	{
+		//-----------------------------------------------------------------------------------------
+		// Public Methods
+		//-----------------------------------------------------------------------------------------
+		
 		/**
 		 * Returns a String representation of the component.
 		 * 
 		 * @return A String representation of the component.
 		 */
 		function toString():String;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Getters & Setters
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * The unique ID of the component. Component IDs are set automatically by the
+		 * component generating class.
+		 */
+		function get id():String;
+		function set id(v:String):void;
 	}
 }

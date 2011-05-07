@@ -31,10 +31,31 @@ package base.core.entity
 	
 	
 	/**
-	 * Abstract base class for entity components.
+	 * Abstract base class for entity components. Concrete entity component classes
+	 * can extend this class if they don't extend any other.
 	 */
 	public class EntityComponent implements IEntityComponent
 	{
+		//-----------------------------------------------------------------------------------------
+		// Properties
+		//-----------------------------------------------------------------------------------------
+		
+		/** @private */
+		private var _id:String;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Constructor
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Creates a new instance of the class.
+		 */
+		public function EntityComponent()
+		{
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
@@ -45,6 +66,23 @@ package base.core.entity
 		public function toString():String
 		{
 			return "[" + getQualifiedClassName(this).match("[^:]*$")[0] + "]";
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Getters & Setters
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get id():String
+		{
+			return _id;
+		}
+		public function set id(v:String):void
+		{
+			_id = v;
 		}
 	}
 }
