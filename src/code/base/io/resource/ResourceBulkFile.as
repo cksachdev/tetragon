@@ -41,6 +41,7 @@ package base.io.resource
 		
 		public var id:String;
 		public var path:String;
+		public var resourceFamily:String;
 		public var resourceType:String;
 		
 		internal var _bulk:ResourceBulk;
@@ -75,6 +76,7 @@ package base.io.resource
 		internal function addItem(item:ResourceBulkItem):void
 		{
 			if (path == null) path = item.resource.path;
+			if (resourceFamily == null) resourceFamily = item.resource.family;
 			if (resourceType == null) resourceType = item.resource.dataType;
 			
 			item.bulkFile = this;

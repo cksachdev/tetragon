@@ -244,9 +244,10 @@ package base.io.resource
 		{
 			var w:ResourceWrapper;
 			var item:ResourceBulkItem = bulkFile.item;
+			var clazz:Class = item.resource.wrapperClass;
 			try
 			{
-				w = new item.resource.wrapperClass();
+				w = new clazz();
 			}
 			catch (err:Error)
 			{
@@ -316,7 +317,16 @@ package base.io.resource
 				fail(bulkFile, "Data resource has no type defined.");
 				return;
 			}
-			var parser:IDataParser = _dsm.createParser(resourceType);
+			
+			/* Resources of family ResourceFamily.DATA use a parser that is mapped
+			 * with their data type. Other resources (entities) are always mapped
+			 * with their resource family name. */
+			var parser:IDataParser;
+			if (bulkFile.resourceFamily == ResourceFamily.DATA)
+				parser = _dsm.createParser(resourceType);
+			else
+				parser = _dsm.createParser(bulkFile.resourceFamily);
+			
 			if (!parser)
 			{
 				fail(bulkFile);
@@ -324,7 +334,7 @@ package base.io.resource
 			}
 			
 			/* Text data goes into the string index, other data into the resource index. */
-			if (resourceType == ResourceGroup.TEXT)
+			if (resourceType == ResourceFamily.TEXT)
 				parser.parse(w, resourceManager.stringIndex);
 			else
 				parser.parse(w, resourceManager.resourceIndex);

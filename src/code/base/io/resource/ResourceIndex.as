@@ -183,16 +183,17 @@ package base.io.resource
 		 * @param dataFileID The ID of the datafile in which this resource can be found.
 		 *        Media and textdata resources have no dataFileID.
 		 * @param resourceFileClass The resource class of the resource.
-		 * @param type The data type of the resource (if it's a data resource).
+		 * @param family The resource family of the resource.
+		 * @param type The data type of the resource (if it's a data or entity resource).
 		 * @param embedded Whether the resource is embedded or not.
 		 */
 		public function addResource(id:String, path:String, packageID:String, dataFileID:String,
-			resourceFileClass:Class, type:String, embedded:Boolean = false):void
+			resourceFileClass:Class, family:String, type:String, embedded:Boolean = false):void
 		{
 			if (_resources[id] == null) _size++;
 			else delete _resources[id];
 			_resources[id] = new Resource(id, path, packageID, dataFileID, resourceFileClass,
-				type, embedded);
+				family, type, embedded);
 		}
 		
 		
@@ -325,8 +326,8 @@ package base.io.resource
 		 */
 		public function dump(filter:String = "all"):String
 		{
-			var t:TabularText = new TabularText(7, true, "  ", null, "  ", 0,
-				["ID", "TYPE", "RESOURCECLASS", "PACKAGE", "PATH", "EMBEDDED", "REFCOUNT"]);
+			var t:TabularText = new TabularText(8, true, "  ", null, "  ", 0,
+				["ID", "FAMILY", "FTYPE", "TYPE", "PACKAGE", "PATH", "EMBEDDED", "REFCOUNT"]);
 			
 			for each (var e:Resource in _resources)
 			{
@@ -336,13 +337,15 @@ package base.io.resource
 				
 				/* Remove class part from class name. */
 				var rclass:String = String(e.wrapperClass);
-				if (rclass && rclass.substring(0, 7) == "[class ")
+				if (rclass && rclass.indexOf("[class ") != -1)
 				{
 					rclass = rclass.substr(7, rclass.length - 8);
+					var li:int = rclass.lastIndexOf("ResourceWrapper");
+					if (li != -1) rclass = rclass.substr(0, li);
 				}
 				
-				t.add([e.id, e.dataType, rclass, getPackagePath(e.packageID), e.path, e.embedded,
-					e.referenceCount]);
+				t.add([e.id, e.family, rclass, (e.dataType != null ? e.dataType : ""),
+					getPackagePath(e.packageID), e.path, e.embedded, e.referenceCount]);
 			}
 			return toString() + "\n" + t;
 		}

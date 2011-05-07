@@ -29,7 +29,7 @@ package base.io.file.loaders
 {
 	import base.core.debug.Log;
 	import base.data.Registry;
-	import base.io.resource.ResourceGroup;
+	import base.io.resource.ResourceFamily;
 	import base.io.resource.ResourceIndex;
 	import base.io.resource.resourceTypeMap;
 
@@ -277,12 +277,12 @@ package base.io.file.loaders
 						resourceClassID = topNodeName + "-" + s.name();
 						for each (var c:XML in s.children())
 						{
-							addResourceEntry(c, resourceClassID, ResourceGroup.MEDIA);
+							addResourceEntry(c, resourceClassID, ResourceFamily.MEDIA, null);
 						}
 					}
 					else
 					{
-						addResourceEntry(s, resourceClassID, ResourceGroup.MEDIA);
+						addResourceEntry(s, resourceClassID, ResourceFamily.MEDIA, null);
 					}
 				}
 			}
@@ -320,7 +320,7 @@ package base.io.file.loaders
 					
 					s.@path = dfp;
 					s.@packageID = _resourceIndex.getDataFilePackageID(fileID);
-					addResourceEntry(s, ResourceGroup.DATA, type);
+					addResourceEntry(s, ResourceFamily.DATA, ResourceFamily.DATA, type);
 				}
 			}
 		}
@@ -340,10 +340,6 @@ package base.io.file.loaders
 				{
 					if (s.name() != "resource") continue;
 					
-					/* If all resources of the group are in the same data file, the
-					 * data file ID can be specified globally for all resources instead
-					 * of having any resource repeat the same data file ID so if we got
-					 * a global data file ID use that one instead. */
 					var fileID:String = allFileID.length > 0 ? allFileID : s.@fileID;
 					var dfp:String = _resourceIndex.getDataFilePath(fileID);
 					
@@ -357,7 +353,7 @@ package base.io.file.loaders
 					
 					s.@path = dfp;
 					s.@packageID = _resourceIndex.getDataFilePackageID(fileID);
-					addResourceEntry(s, ResourceGroup.DATA, ResourceGroup.ENTITY);
+					addResourceEntry(s, ResourceFamily.DATA, ResourceFamily.ENTITY, type);
 				}
 			}
 		}
@@ -385,7 +381,7 @@ package base.io.file.loaders
 					}
 					
 					s.@id = id;
-					addResourceEntry(s, ResourceGroup.TEXT, ResourceGroup.TEXT);
+					addResourceEntry(s, ResourceFamily.TEXT, ResourceFamily.TEXT, null);
 				}
 			}
 		}
@@ -393,13 +389,19 @@ package base.io.file.loaders
 		
 		/**
 		 * @private
+		 * 
+		 * @param resourceXML
+		 * @param resourceClassID
+		 * @param resourceFamily
+		 * @param resourceType Only used for data and entity resource families.
 		 */
-		private function addResourceEntry(r:XML, resourceClassID:String, type:String = null):void
+		private function addResourceEntry(resourceXML:XML, resourceClassID:String,
+			resourceFamily:String, resourceType:String):void
 		{
-			var id:String = r.@id;
-			var path:String = r.@path;
-			var packageID:String = r.@packageID;
-			var dataFileID:String = r.@fileID;
+			var id:String = resourceXML.@id;
+			var path:String = resourceXML.@path;
+			var packageID:String = resourceXML.@packageID;
+			var dataFileID:String = resourceXML.@fileID;
 			var rc:Class = resourceTypeMap[resourceClassID];
 			
 			if (!rc)
@@ -408,7 +410,7 @@ package base.io.file.loaders
 					+ "\" (resourceClassID: " + resourceClassID + ").", this);
 			}
 			
-			_resourceIndex.addResource(id, path, packageID, dataFileID, rc, type);
+			_resourceIndex.addResource(id, path, packageID, dataFileID, rc, resourceFamily, resourceType);
 			_resCount++;
 		}
 	}

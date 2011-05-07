@@ -309,9 +309,9 @@ package base.io.resource
 				r.decreaseReferenceCount();
 				if (r.referenceCount < 1)
 				{
-					/* If to be removed resource is a text resource,
+					/* If the to be removed resource is a text resource,
 					 * also remove all of it's strings. */
-					if (r.dataType == ResourceGroup.TEXT)
+					if (r.dataType == ResourceFamily.TEXT)
 					{
 						_stringIndex.removeStrings(r.content);
 					}

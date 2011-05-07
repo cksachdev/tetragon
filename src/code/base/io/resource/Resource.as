@@ -47,6 +47,8 @@ package base.io.resource
 		/** @private */
 		private var _dataFileID:String;
 		/** @private */
+		private var _family:String;
+		/** @private */
 		private var _dataType:String;
 		/** @private */
 		private var _embedded:Boolean;
@@ -56,12 +58,8 @@ package base.io.resource
 		private var _status:String;
 		/** @private */
 		private var _content:*;
-		
-		/**
-		 * The resource wrapper class that is used to load the data for this resource.
-		 * @private
-		 */
-		public var wrapperClass:Class;
+		/** @private */
+		private var _wrapperClass:Class;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -76,20 +74,22 @@ package base.io.resource
 		 * @param k Package ID
 		 * @param d Data File ID
 		 * @param c Resource wrapper class
-		 * @param t Type (Parser ID)
+		 * @param f Resource Family
+		 * @param t Resource Type (Parser ID)
 		 * @param e Embedded
 		 */
-		public function Resource(i:String, p:String, k:String, d:String, c:Class, t:String,
-			e:Boolean)
+		public function Resource(i:String, p:String, k:String, d:String, c:Class, f:String,
+			t:String, e:Boolean)
 		{
 			_id = i;
 			_path = p;
 			_packageID = k;
 			_dataFileID = d;
+			_family = f;
 			_dataType = t;
 			_embedded = e;
 			_referenceCount = 0;
-			wrapperClass = c;
+			_wrapperClass = c;
 			_status = ResourceStatus.INIT;
 		}
 		
@@ -127,6 +127,15 @@ package base.io.resource
 		
 		
 		/**
+		 * The resource file wrapper class that is used to load the file for this resource.
+		 */
+		public function get wrapperClass():Class
+		{
+			return _wrapperClass;
+		}
+		
+		
+		/**
 		 * For data resources, the ID of the datafile in which the resource can be found.
 		 * Media and text resources have no dataFileID.
 		 */
@@ -137,9 +146,16 @@ package base.io.resource
 		
 		
 		/**
-		 * For data resources, the data type of the resource. Media resources are always
-		 * declared by the ResourceGroup.MEDIA constant and text resources are declared
-		 * by the ResourceGroup.TEXT constant.
+		 * The resource family that the resource is part of.
+		 */
+		public function get family():String
+		{
+			return _family;
+		}
+		
+		
+		/**
+		 * The data type of the resource, only used for data and entity resources.
 		 */
 		public function get dataType():String
 		{

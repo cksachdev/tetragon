@@ -28,10 +28,10 @@
 package base.io.resource
 {
 	/**
-	 * Contains constants for the resource index loader to determine of what basic type
-	 * a resource is.
+	 * Contains constants for the resource index loader and other classes to determine
+	 * to which resource family a resource belongs.
 	 */
-	public class ResourceGroup
+	public class ResourceFamily
 	{
 		//-----------------------------------------------------------------------------------------
 		// Constants

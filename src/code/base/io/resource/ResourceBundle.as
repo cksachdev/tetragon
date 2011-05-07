@@ -28,7 +28,9 @@
 package base.io.resource
 {
 	import base.core.debug.Log;
+
 	import com.hexagonstar.exception.FatalException;
+
 	import flash.utils.describeType;
 	import flash.utils.getDefinitionByName;
 
@@ -73,6 +75,7 @@ package base.io.resource
 			html:	"TextResource",
 			xml:	"XMLResource",
 			mp3:	"SoundResource",
+			obj:	"BinaryResource",
 			pbj:	"BinaryResource"
 		};
 		
@@ -101,6 +104,7 @@ package base.io.resource
 			var resName:String;
 			var resID:String;
 			var resType:String;
+			var resFamily:String;
 			var resPID:String;
 			var resPath:String;
 			var pkgType:String;
@@ -114,6 +118,7 @@ package base.io.resource
 				
 				resID = null;
 				resType = null;
+				resFamily = null;
 				resPID = null;
 				resPath = null;
 				pkgType = null;
@@ -135,6 +140,9 @@ package base.io.resource
 							{
 								case "id":
 									resID = a.@value;
+									break;
+								case "family":
+									resFamily = a.@value;
 									break;
 								case "type":
 									resType = a.@value;
@@ -216,7 +224,7 @@ package base.io.resource
 				/* Everything so far is hunky-dory -- go ahead and register the embedded
 				 * resource in the resource index! Embedded resources use the resource
 				 * variable name as the path. */
-				resourceIndex.addResource(resID, resName, null, null, clazz, resPID, true);
+				resourceIndex.addResource(resID, resName, null, null, clazz, resFamily, resPID, true);
 				_resourceCount++;
 			}
 			

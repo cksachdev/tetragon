@@ -34,7 +34,7 @@ package base.data
 	import base.data.parsers.NullDataParser;
 	import base.data.parsers.TextDataParser;
 	import base.data.parsers.XMLDataParser;
-	import base.io.resource.ResourceGroup;
+	import base.io.resource.ResourceFamily;
 
 	import com.hexagonstar.types.*;
 
@@ -107,10 +107,10 @@ package base.data
 			_componentIDCount = 0;
 			
 			/* Add default data types. */
-			mapDataType(ResourceGroup.NONE, NullDataParser);
-			mapDataType(ResourceGroup.TEXT, TextDataParser);
-			mapDataType(ResourceGroup.XML, XMLDataParser);
-			mapDataType(ResourceGroup.ENTITY, EntityDataParser);
+			mapDataType(ResourceFamily.NONE, NullDataParser);
+			mapDataType(ResourceFamily.TEXT, TextDataParser);
+			mapDataType(ResourceFamily.XML, XMLDataParser);
+			mapDataType(ResourceFamily.ENTITY, EntityDataParser);
 			
 			/* Add default complex types. */
 			mapComplexType("point", Point);

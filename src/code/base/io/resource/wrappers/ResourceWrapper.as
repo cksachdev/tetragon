@@ -39,17 +39,19 @@ package base.io.resource.wrappers
 	import flash.events.EventDispatcher;
 	import flash.utils.ByteArray;
 	import flash.utils.getQualifiedClassName;
-
-
 	
 	
 	/**
 	 * The base class for resource wrappers. A resource wrapper is used by the resource
 	 * manager and resource providers to temporarily wrap resource files that are being
 	 * loaded. Depending on the loaded resource file the method how it is loaded differs.
-	 * For example a sound file is loaded differently than an image file. The resource
-	 * wrappers take care that such files are loaded the way they need to be loaded.
-	 * Resource wrappers can load files from the filesystem as well as embedded files.
+	 * 
+	 * <p>For example the implementation for loading a sound file is different than that for
+	 * an image file. The resource wrappers take care that those files are loaded the way
+	 * they need to be loaded. In other words: A resource wrapper essentially represents
+	 * the resource file type.</p>
+	 * 
+	 * <p>Resource wrappers can load files from the filesystem as well as embedded files.</p>
 	 */
 	public class ResourceWrapper extends EventDispatcher
 	{
