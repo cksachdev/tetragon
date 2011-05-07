@@ -33,7 +33,7 @@ package extra.game.entity.components
 	
 	
 	/**
-	 * ParticleEmitterComponent class
+	 * Component for entities that feature a particle emitter.
 	 */
 	public class ParticleEmitterComponent extends EntityComponent
 	{

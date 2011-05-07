@@ -28,7 +28,11 @@
 package extra.game.entity.systems
 {
 	import base.core.entity.EntitySystem;
+	import base.core.entity.IEntity;
 	import base.core.entity.IEntitySystem;
+
+	import extra.game.entity.components.GraphicsComponent;
+	import extra.game.entity.components.Spacial2DComponent;
 	
 	
 	/**
@@ -39,6 +43,12 @@ package extra.game.entity.systems
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
+		
+		private var _entities:Vector.<IEntity>;
+		
+		//private var _bitmap:Bitmap;
+		//private var _buffer:BitmapData;
+		//private var _blankRect:Rectangle;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -62,16 +72,24 @@ package extra.game.entity.systems
 		 */
 		public function onRegister():void
 		{
+			//_bitmap = new Bitmap();
+			//main.contextView.addChild(_bitmap);
+			//_buffer = new BitmapData(800, 600, false, 0x000000);
+			//_bitmap.bitmapData = _buffer;
+			//_blankRect = new Rectangle(0, 0, 800, 600);
+			_entities = main.entityManager.getEntityFamily(GraphicsComponent, Spacial2DComponent).entities;
 		}
 		
 		
 		public function start():void
 		{
+			main.renderSignal.add(onRender);
 		}
 		
 		
 		public function dispose():void
 		{
+			main.renderSignal.remove(onRender);
 		}
 		
 		
@@ -83,6 +101,21 @@ package extra.game.entity.systems
 		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
+		
+		private function onRender():void
+		{
+			//_buffer.lock();
+			//_buffer.fillRect(_blankRect, 0x000000);
+			for each (var e:IEntity in _entities)
+			{
+				var spacial:Spacial2DComponent = e.getComponent(Spacial2DComponent);
+				var graphics:GraphicsComponent = e.getComponent(GraphicsComponent);
+				//Debug.trace("draw " + e + " at x" + spacial.position.x + " y" + spacial.position.y);
+				//var p:Point = new Point(spacial.position.x, spacial.position.y);
+				//_buffer.copyPixels(graphics.graphic.bitmapData, graphics.boundingRect, p, null, null, true);
+			}
+			//_buffer.unlock();
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------

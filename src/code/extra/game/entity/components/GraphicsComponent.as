@@ -27,13 +27,15 @@
  */
 package extra.game.entity.components
 {
+	import base.Main;
 	import base.core.entity.EntityComponent;
 
-	import flash.geom.Rectangle;
+	import flash.display.DisplayObject;
 	
 	
 	/**
-	 * GraphicsComponent class
+	 * A component representing a display object that can be drawn to the screen.
+	 * The graphic can be any kind of display object, e.g. Sprite, Shape, Bitmap etc.
 	 */
 	public class GraphicsComponent extends EntityComponent
 	{
@@ -42,7 +44,7 @@ package extra.game.entity.components
 		//-----------------------------------------------------------------------------------------
 		
 		private var _graphicID:String;
-		private var _boundingRect:Rectangle;
+		private var _graphic:DisplayObject;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -64,13 +66,14 @@ package extra.game.entity.components
 		}
 		
 		
-		public function get boundingRect():Rectangle
+		public function get graphic():DisplayObject
 		{
-			return _boundingRect;
-		}
-		public function set boundingRect(v:Rectangle):void
-		{
-			_boundingRect = v;
+			if (!_graphic)
+			{
+				// Temporary solution!
+				_graphic = Main.instance.resourceManager.resourceIndex.getResourceContent(_graphicID);
+			}
+			return _graphic;
 		}
 		
 		

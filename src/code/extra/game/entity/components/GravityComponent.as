@@ -33,7 +33,7 @@ package extra.game.entity.components
 	
 	
 	/**
-	 * GravityComponent class
+	 * A component for entities that should have gravity.
 	 */
 	public class GravityComponent extends EntityComponent
 	{

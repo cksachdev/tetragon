@@ -33,7 +33,7 @@ package extra.game.entity.components
 	
 	
 	/**
-	 * Spacial2DComponent class
+	 * A component for entities that are able to be placed at a two-dimensional position.
 	 */
 	public class Spacial2DComponent extends EntityComponent
 	{

@@ -33,7 +33,7 @@ package extra.game.entity.components
 	
 	
 	/**
-	 * Physics2DComponent class
+	 * A component for entities which have two-dimensional physics.
 	 */
 	public class Physics2DComponent extends EntityComponent
 	{
