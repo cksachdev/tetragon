@@ -48,11 +48,16 @@ package extra.game.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function registerScreens():void
+		override public function registerResourceFileTypes():void
 		{
-			registerScreen("gameMenuScreen", GameMenuScreen);
-			registerScreen("gameOptionsScreen", GameOptionsScreen);
-			registerScreen("gamePlayScreen", GamePlayScreen);
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registerComplexTypes():void
+		{
 		}
 		
 		
@@ -65,14 +70,6 @@ package extra.game.setup
 			registerDataType("Cell", CellDataParser);
 			registerDataType("TileSet", TileSetDataParser);
 			registerDataType("TileMap", TileMapDataParser);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerComplexTypes():void
-		{
 		}
 		
 		
@@ -98,6 +95,17 @@ package extra.game.setup
 			registerEntityComponent("particleEmitterComponent", ParticleEmitterComponent);
 			registerEntityComponent("physics2DComponent", Physics2DComponent);
 			registerEntityComponent("spacial2DComponent", Spacial2DComponent);
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registerScreens():void
+		{
+			registerScreen("gameMenuScreen", GameMenuScreen);
+			registerScreen("gameOptionsScreen", GameOptionsScreen);
+			registerScreen("gamePlayScreen", GamePlayScreen);
 		}
 	}
 }

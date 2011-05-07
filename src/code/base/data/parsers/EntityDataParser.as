@@ -68,7 +68,7 @@ package base.data.parsers
 				for each (var c:XML in x.components.component)
 				{
 					var componentClassID:String = extractString(c, "@classID");
-					var componentClass:Class = dsm.getComponentClass(componentClassID);
+					var componentClass:Class = dsm.getEntityComponentClass(componentClassID);
 					
 					if (componentClass)
 					{

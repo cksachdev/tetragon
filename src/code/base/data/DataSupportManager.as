@@ -35,6 +35,7 @@ package base.data
 	import base.data.parsers.TextDataParser;
 	import base.data.parsers.XMLDataParser;
 	import base.io.resource.ResourceFamily;
+	import base.io.resource.wrappers.*;
 
 	import com.hexagonstar.types.*;
 
@@ -55,25 +56,38 @@ package base.data
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Maps class definitions of type IResourceParser.
+		 * Maps resource file type wrapper class definitions by string key.
 		 * @private
 		 */
-		private var _parserMap:Object;
+		private var _resourceFileTypeMap:Object;
 		
 		/**
-		 * Maps class definitions of type IEntityComponent.
+		 * Maps resource file type wrapper class definitions by string file extensions.
+		 * @private
+		 */
+		private var _fileTypeExtensionMap:Object;
+		
+		/**
+		 * Maps class definitions of complex types that are used in entity component
+		 * definitions by a string key.
+		 * @private
+		 */
+		private var _complexTypeMap:Object;
+		
+		/**
+		 * Maps class definitions of type IResourceParser by datatype string keys.
+		 * @private
+		 */
+		private var _dataTypeMap:Object;
+		
+		/**
+		 * Maps class definitions of type IEntityComponent by class ID string keys.
 		 * @private
 		 */
 		private var _componentMap:Object;
 		
 		/**
-		 * Maps complex types that are used in entity component definitions.
-		 * @private
-		 */
-		private var _ctypesMap:Object;
-		
-		/**
-		 * Counter used to create unique component IDs.
+		 * Counter used to create unique entity component IDs.
 		 * @private
 		 */
 		private var _componentIDCount:uint;
@@ -101,23 +115,66 @@ package base.data
 		 */
 		public function init():void
 		{
-			_parserMap = {};
+			_resourceFileTypeMap = {};
+			_fileTypeExtensionMap = {};
+			_complexTypeMap = {};
+			_dataTypeMap = {};
 			_componentMap = {};
-			_ctypesMap = {};
 			_componentIDCount = 0;
 			
-			/* Add default data types. */
-			mapDataType(ResourceFamily.NONE, NullDataParser);
-			mapDataType(ResourceFamily.TEXT, TextDataParser);
-			mapDataType(ResourceFamily.XML, XMLDataParser);
-			mapDataType(ResourceFamily.ENTITY, EntityDataParser);
+			/* Map default resource file types. */
+			mapResourceFileType(ImageResourceWrapper, ["image", "image-opaque"], ["jpg", "jpeg", "gif"]);
+			mapResourceFileType(Image32ResourceWrapper, ["image-transparent", "image-vector"], ["png", "svg", "svgz"]);
+			mapResourceFileType(SWFResourceWrapper, ["swf"], ["swf"]);
+			mapResourceFileType(XMLResourceWrapper, ["data", "text"], ["xml", "txt", "ini", "css", "htm", "html"]);
+			mapResourceFileType(BinaryResourceWrapper, ["binary", "shader"], ["obj", "pbj", "bin"]);
+			mapResourceFileType(SoundResourceWrapper, ["audio-stream"], ["mp3"]);
+			mapResourceFileType(null, ["audio-module"], ["mod"]); // TODO
 			
-			/* Add default complex types. */
+			/* Map default complex types. */
+			mapComplexType("rectangle", Rectangle);
 			mapComplexType("point", Point);
 			mapComplexType("point2d", Point2D);
 			mapComplexType("point3d", Point3D);
 			mapComplexType("vector2d", Vector2D);
-			mapComplexType("rectangle", Rectangle);
+			
+			/* Map default data types. */
+			mapDataType(ResourceFamily.NONE, NullDataParser);
+			mapDataType(ResourceFamily.TEXT, TextDataParser);
+			mapDataType(ResourceFamily.XML, XMLDataParser);
+			mapDataType(ResourceFamily.ENTITY, EntityDataParser);
+		}
+		
+		
+		/**
+		 * Maps a resource file type wrapper class by one or more fileType ID strings.
+		 * Optionally they are also mapped by file extensions, if specified. File
+		 * extensions are only of importance for embedded resource files.
+		 * 
+		 * @param wrapperClass The class to map.
+		 * @param fileTypeIDs An array of keys to map the class under.
+		 * @param fileTypeExtensions An array of file extensions to map the class under.
+		 */
+		public function mapResourceFileType(wrapperClass:Class, fileTypeIDs:Array,
+			fileTypeExtensions:Array = null):void
+		{
+			var key:String;
+			for each (key in fileTypeIDs)
+				_resourceFileTypeMap[key] = wrapperClass;
+			for each (key in fileTypeExtensions)
+				_fileTypeExtensionMap[key] = wrapperClass;
+		}
+		
+		
+		/**
+		 * Maps complex data types by ID which are used in entity component definitions.
+		 * 
+		 * @param complexTypeID The ID of the compex data type.
+		 * @param clazz The class to map.
+		 */
+		public function mapComplexType(complexTypeID:String, clazz:Class):void
+		{
+			_complexTypeMap[complexTypeID.toLowerCase()] = clazz;
 		}
 		
 		
@@ -131,19 +188,7 @@ package base.data
 		 */
 		public function mapDataType(dataTypeID:String, parserClass:Class):void
 		{
-			_parserMap[dataTypeID] = parserClass;
-		}
-		
-		
-		/**
-		 * Maps complex data types by ID which are used in entity component definitions.
-		 * 
-		 * @param complexTypeID The ID of the compex data type.
-		 * @param clazz The class to map.
-		 */
-		public function mapComplexType(complexTypeID:String, clazz:Class):void
-		{
-			_ctypesMap[complexTypeID.toLowerCase()] = clazz;
+			_dataTypeMap[dataTypeID] = parserClass;
 		}
 		
 		
@@ -161,14 +206,27 @@ package base.data
 		
 		
 		/**
-		 * Returns a parser class definition that is mapped under the specified dataTypeID.
+		 * Returns a resource file type wrapper class that is mapped by the given ID.
 		 * 
-		 * @param dataTypeID The ID with that the parser class is mapped.
-		 * @return A parser class of type IResourceParser or null if the ID is not mapped.
+		 * @param fileTypeID
+		 * @return A resource wrapper class.
 		 */
-		public function getParserClass(dataTypeID:String):Class
+		public function getResourceWrapperClassByID(fileTypeID:String):Class
 		{
-			return _parserMap[dataTypeID];
+			return _resourceFileTypeMap[fileTypeID];
+		}
+		
+		
+		/**
+		 * Returns a resource file type wrapper class that is mapped by the given file
+		 * type extension.
+		 * 
+		 * @param fileExtension
+		 * @return A resource wrapper class.
+		 */
+		public function getResourceWrapperClassByExtension(fileExtension:String):Class
+		{
+			return _fileTypeExtensionMap[fileExtension];
 		}
 		
 		
@@ -181,7 +239,19 @@ package base.data
 		 */
 		public function getComplexTypeClass(complexTypeID:String):Class
 		{
-			return _ctypesMap[complexTypeID];
+			return _complexTypeMap[complexTypeID];
+		}
+		
+		
+		/**
+		 * Returns a parser class definition that is mapped under the specified dataTypeID.
+		 * 
+		 * @param dataTypeID The ID with that the parser class is mapped.
+		 * @return A parser class of type IResourceParser or null if the ID is not mapped.
+		 */
+		public function getDataTypeParserClass(dataTypeID:String):Class
+		{
+			return _dataTypeMap[dataTypeID];
 		}
 		
 		
@@ -191,7 +261,7 @@ package base.data
 		 * @param classID The ID with that the class is mapped.
 		 * @return A component class of type IEntityComponent or null if the ID is not mapped.
 		 */
-		public function getComponentClass(classID:String):Class
+		public function getEntityComponentClass(classID:String):Class
 		{
 			return _componentMap[classID];
 		}
@@ -203,9 +273,9 @@ package base.data
 		 * @param dataTypeID The ID of the data type for which to create a parser.
 		 * @return A parser of type IDataParser.
 		 */
-		public function createParser(dataTypeID:String):IDataParser
+		public function createDataTypeParser(dataTypeID:String):IDataParser
 		{
-			var clazz:* = _parserMap[dataTypeID];
+			var clazz:* = _dataTypeMap[dataTypeID];
 			var parser:IDataParser;
 			if (!clazz)
 			{
@@ -233,7 +303,7 @@ package base.data
 		 * @param classID The ID of the component class from which to create an instance.
 		 * @return A component of type IEntityComponent.
 		 */
-		public function createComponent(classID:String):IEntityComponent
+		public function createEntityComponent(classID:String):IEntityComponent
 		{
 			var clazz:* = _componentMap[classID];
 			var component:IEntityComponent;

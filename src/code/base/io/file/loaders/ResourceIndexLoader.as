@@ -27,11 +27,11 @@
  */
 package base.io.file.loaders
 {
+	import base.Main;
 	import base.core.debug.Log;
 	import base.data.Registry;
 	import base.io.resource.ResourceFamily;
 	import base.io.resource.ResourceIndex;
-	import base.io.resource.resourceTypeMap;
 
 	import com.hexagonstar.file.FileIOEvent;
 	import com.hexagonstar.file.types.IFile;
@@ -391,23 +391,23 @@ package base.io.file.loaders
 		 * @private
 		 * 
 		 * @param resourceXML
-		 * @param resourceClassID
+		 * @param wrapperClassID
 		 * @param resourceFamily
 		 * @param resourceType Only used for data and entity resource families.
 		 */
-		private function addResourceEntry(resourceXML:XML, resourceClassID:String,
+		private function addResourceEntry(resourceXML:XML, wrapperClassID:String,
 			resourceFamily:String, resourceType:String):void
 		{
 			var id:String = resourceXML.@id;
 			var path:String = resourceXML.@path;
 			var packageID:String = resourceXML.@packageID;
 			var dataFileID:String = resourceXML.@fileID;
-			var rc:Class = resourceTypeMap[resourceClassID];
+			var rc:Class = Main.instance.dataSupportManager.getResourceWrapperClassByID(wrapperClassID);
 			
 			if (!rc)
 			{
-				Log.warn("No resource class found for resource with ID \"" + id
-					+ "\" (resourceClassID: " + resourceClassID + ").", this);
+				Log.warn("No resource file type wrapper class found for resource with ID \"" + id
+					+ "\" (wrapperClassID: " + wrapperClassID + ").", this);
 			}
 			
 			_resourceIndex.addResource(id, path, packageID, dataFileID, rc, resourceFamily, resourceType);

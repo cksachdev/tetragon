@@ -46,16 +46,7 @@ package extra.tbs.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function registerScreens():void
-		{
-			registerScreen("tbsGamePlayScreen", TBSGamePlayScreen);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerDataTypes():void
+		override public function registerResourceFileTypes():void
 		{
 		}
 		
@@ -64,6 +55,14 @@ package extra.tbs.setup
 		 * @inheritDoc
 		 */
 		override public function registerComplexTypes():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registerDataTypes():void
 		{
 		}
 		
@@ -83,6 +82,15 @@ package extra.tbs.setup
 		{
 			registerEntityComponent("tbsUnitPropertiesComponent", TBSUnitPropertiesComponent);
 			registerEntityComponent("tbsUnitStatsComponent", TBSUnitStatsComponent);
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registerScreens():void
+		{
+			registerScreen("tbsGamePlayScreen", TBSGamePlayScreen);
 		}
 	}
 }

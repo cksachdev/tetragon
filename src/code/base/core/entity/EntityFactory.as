@@ -97,7 +97,7 @@ package base.core.entity
 			/* Create components in entity and assign properties to them from template. */
 			for (var classID:String in mappings)
 			{
-				var c:IEntityComponent = _dsm.createComponent(classID);
+				var c:IEntityComponent = _dsm.createEntityComponent(classID);
 				var m:Object = mappings[classID];
 				for (var property:String in m)
 				{

@@ -323,9 +323,9 @@ package base.io.resource
 			 * with their resource family name. */
 			var parser:IDataParser;
 			if (bulkFile.resourceFamily == ResourceFamily.DATA)
-				parser = _dsm.createParser(resourceType);
+				parser = _dsm.createDataTypeParser(resourceType);
 			else
-				parser = _dsm.createParser(bulkFile.resourceFamily);
+				parser = _dsm.createDataTypeParser(bulkFile.resourceFamily);
 			
 			if (!parser)
 			{

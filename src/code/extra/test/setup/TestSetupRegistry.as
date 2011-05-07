@@ -45,16 +45,7 @@ package extra.test.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function registerScreens():void
-		{
-			registerScreen("testScreen", TestScreen);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerDataTypes():void
+		override public function registerResourceFileTypes():void
 		{
 		}
 		
@@ -63,6 +54,14 @@ package extra.test.setup
 		 * @inheritDoc
 		 */
 		override public function registerComplexTypes():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registerDataTypes():void
 		{
 		}
 		
@@ -80,6 +79,15 @@ package extra.test.setup
 		 */
 		override public function registerEntityComponents():void
 		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registerScreens():void
+		{
+			registerScreen("testScreen", TestScreen);
 		}
 	}
 }

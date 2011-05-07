@@ -344,8 +344,11 @@ package base.io.resource
 					if (li != -1) rclass = rclass.substr(0, li);
 				}
 				
-				t.add([e.id, e.family, rclass, (e.dataType != null ? e.dataType : ""),
-					getPackagePath(e.packageID), e.path, e.embedded, e.referenceCount]);
+				var type:String = e.dataType != null ? e.dataType : "";
+				var pack:String = getPackagePath(e.packageID);
+				if (pack == null) pack = "";
+				
+				t.add([e.id, e.family, rclass, type, pack, e.path, e.embedded, e.referenceCount]);
 			}
 			return toString() + "\n" + t;
 		}

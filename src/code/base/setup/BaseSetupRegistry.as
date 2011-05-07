@@ -42,10 +42,16 @@ package base.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function registerScreens():void
+		override public function registerResourceFileTypes():void
 		{
-			registerScreen("splashScreen", SplashScreen);
-			registerScreen("dummyScreen", DummyScreen);
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registerComplexTypes():void
+		{
 		}
 		
 		
@@ -70,6 +76,16 @@ package base.setup
 		 */
 		override public function registerEntityComponents():void
 		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registerScreens():void
+		{
+			registerScreen("splashScreen", SplashScreen);
+			registerScreen("dummyScreen", DummyScreen);
 		}
 	}
 }

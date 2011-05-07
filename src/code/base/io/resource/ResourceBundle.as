@@ -27,15 +27,14 @@
  */
 package base.io.resource
 {
+	import base.Main;
 	import base.core.debug.Log;
+	import base.data.DataSupportManager;
 
 	import com.hexagonstar.exception.FatalException;
 
 	import flash.utils.describeType;
-	import flash.utils.getDefinitionByName;
-
-
-
+	
 	
 	/**
 	 * The resource bundle handles automatic loading and registering of embedded
@@ -48,43 +47,6 @@ package base.io.resource
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * ExtensionTypes associates filename extensions with the resource type that they
-		 * are to be loaded as. Each entry should be in the form of
-		 * 'xml:"com.hexagonstar.io.resource.XMLResource"' Where xml is the
-		 * filename extension that should be associated with this type, and where
-		 * "com.hexagonstar.io.resource.XMLResource" is the fully qualified
-		 * resource class name string, and xml is the (lower-case) extension. This array can
-		 * be extended at runtime, such as: ResourceBundle.extensionTypes.mycustomext =
-		 * "com.mydomain.customresource"
-		 */
-		public static var extensionTypes:Object =
-		{
-			gif:	"ImageResource",
-			jpg:	"ImageResource",
-			jpeg:	"ImageResource",
-			png:	"TrImageResource",
-			svg:	"TrImageResource",
-			svgz:	"TrImageResource",
-			swf:	"SWFResource",
-			txt:	"TextResource",
-			ini:	"TextResource",
-			css:	"TextResource",
-			htm:	"TextResource",
-			html:	"TextResource",
-			xml:	"XMLResource",
-			mp3:	"SoundResource",
-			obj:	"BinaryResource",
-			pbj:	"BinaryResource"
-		};
-		
-		/**
-		 * Package under which resource type classes are found. NOTE: this string
-		 * needs to be adapted in case the classes are being moved to any other package!
-		 * @private
-		 */
-		protected static const PACKAGE:String = "base.io.resource.resources";
 		
 		/** @private */
 		protected var _resourceCount:int = 0;
@@ -99,6 +61,7 @@ package base.io.resource
 		 */
 		public function init(resourceIndex:ResourceIndex):void
 		{
+			var dsm:DataSupportManager = Main.instance.dataSupportManager;
 			var xml:XML = describeType(this);
 			var res:Class;
 			var resName:String;
@@ -144,7 +107,7 @@ package base.io.resource
 								case "family":
 									resFamily = a.@value;
 									break;
-								case "type":
+								case "rtype":
 									resType = a.@value;
 									break;
 								case "parserID":
@@ -165,8 +128,13 @@ package base.io.resource
 					}
 				}
 				
+				// This seems to have changed with Flex 4.x compiler!? isEmbedded is
+				// false and resPath is null even though the resource has been embedded
+				// correctly. The [Embed] tag is removed by the compiler?
+				//if (!isEmbedded || res == null || resID == null || resPath == null)
+				
 				/* Sanity check */
-				if (!isEmbedded || res == null || resID == null || resPath == null)
+				if (res == null || resID == null)
 				{
 					Log.error("A resource in the resource bundle with the name \"" + resName
 						+ "\" has failed to embed properly. Please ensure that you have"
@@ -181,12 +149,11 @@ package base.io.resource
 				var clazz:Class;
 				if (resType && resType.length > 0)
 				{
-					clazz = resourceTypeMap[resType];
+					clazz = dsm.getResourceWrapperClassByID(resType);
 					if (!clazz)
 					{
-						Log.warn("No resource type class found for embedded resource with ID \""
-							+ resID + "\" (type: " + resType
-							+ "). Falling back to file extension detection.", this);
+						Log.warn("No resource file type wrapper class found for embedded resource with ID \""
+							+ resID + "\" (resID: " + resType + "). Falling back to file extension detection.", this);
 					}
 				}
 				
@@ -196,28 +163,13 @@ package base.io.resource
 					var ext:String = resPath.substring(resPath.lastIndexOf(".") + 1);
 					
 					/* Check if the extension type is recognized or not. */
-					if (!ResourceBundle.extensionTypes.hasOwnProperty(ext))
+					clazz = dsm.getResourceWrapperClassByExtension(ext);
+					if (clazz == null)
 					{
-						Log.warn("No resource type is specified for extension \"." + ext
-							+ "\". Defaulting to BinaryResource for \"" + resID + "\".", this);
-						pkgType = ResourceBundle.PACKAGE + ".BinaryResource";
-					}
-					else
-					{
-						pkgType = ResourceBundle.PACKAGE + "." + ResourceBundle.extensionTypes[ext];
-						try
-						{
-							clazz = Class(getDefinitionByName(pkgType));
-						}
-						catch (err:Error)
-						{
-							clazz = null;
-							Log.error("Could not determine the resource type class definition for "
-								+ pkgType + ". Please ensure that the class definition is correct"
-								+ " and that the class is explicity referenced somewhere in the"
-								+ " project. (Error message was: " + err.message + ")", this);
-							continue;
-						}
+						Log.error("Could not determine the resource file type class definition for"
+							+ " embedded file extension \"" + ext + "\". Please ensure that the"
+							+ " class definition is correctly mapped.", this);
+						continue;
 					}
 				}
 				

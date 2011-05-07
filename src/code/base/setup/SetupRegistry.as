@@ -69,41 +69,108 @@ package base.setup
 		// Internal Methods
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * Executes the setup registry.
+		 */
 		public function execute():void
 		{
-			registerScreens();
-			registerDataTypes();
+			registerResourceFileTypes();
 			registerComplexTypes();
+			registerDataTypes();
 			registerEntitySystems();
 			registerEntityComponents();
+			registerScreens();
 		}
 		
 		
-		public function registerScreens():void
+		/**
+		 * Used to register any resource file types to resource file type wrapper classes
+		 * for the extra package that this setup is part of. Use the
+		 * <code>registerFileType()</code> method inside this method to register any file
+		 * types.
+		 * 
+		 * <p>The engine already maps standard resource file types for image files, data
+		 * files, audio files etc. automatically but you can use this method to register
+		 * any additional file types.</p>
+		 * 
+		 * @example
+		 * <pre>
+		 *    // Register CustomResourceWrapper class to ID "custom" and to file
+		 *    // extensions "cst" and "cust" ...
+		 *    registerFileType(CustomResourceWrapper, ["custom"], ["cst", "cust"]);
+		 * </pre>
+		 */
+		public function registerResourceFileTypes():void
 		{
 			/* Abstract method! */
 		}
 		
 		
-		public function registerDataTypes():void
-		{
-			/* Abstract method! */
-		}
-		
-		
+		/**
+		 * Used to register any complex data type classes that are used in entity
+		 * component definitions. Complex data types are any data types other than the
+		 * basic types like String, Number, Boolean etc. For example Rectangle and Point
+		 * would be complex data types. Use the <code>registerComplexType()</code> method
+		 * inside this method to register any complex data types.
+		 * 
+		 * <p>The engine already maps standard complex data types such as Rectangle, Point
+		 * Point2D, Point3D etc. automatically but you can use this method to register
+		 * any additional types.</p>
+		 * 
+		 * @example
+		 * <pre>
+		 *    registerComplexType("customtype", CustomTypeClass);
+		 * </pre>
+		 */
 		public function registerComplexTypes():void
 		{
 			/* Abstract method! */
 		}
 		
 		
+		/**
+		 * Used to register any resource data types that require a parser to parse their
+		 * data into data objects for the engine. Registering data types is only relevant
+		 * for resources defined in the resource index file under the 'data' resource
+		 * family. Entity resources are all parsed by the <code>EntityDataParser</code>.
+		 * Use the <code>registerDataType</code> method inside this method to register
+		 * any custom data types.
+		 * 
+		 * @example
+		 * <pre>
+		 *    // Register a data resource type that is defined in the resource index
+		 *    // file with group type="MyGameDataResource" ...
+		 *    registerDataType("MyGameDataResource", MyGameDataResourceParser);
+		 * </pre>
+		 */
+		public function registerDataTypes():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Used to register entity systems.
+		 */
 		public function registerEntitySystems():void
 		{
 			/* Abstract method! */
 		}
 		
 		
+		/**
+		 * Used to register entity components.
+		 */
 		public function registerEntityComponents():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Used to register screens.
+		 */
+		public function registerScreens():void
 		{
 			/* Abstract method! */
 		}
@@ -127,13 +194,28 @@ package base.setup
 		/**
 		 * @private
 		 * 
-		 * @param screenID
-		 * @param screenClass
+		 * @param wrapperClass
+		 * @param fileTypeIDs
+		 * @param fileTypeExtensions
 		 */
-		protected function registerScreen(screenID:String, screenClass:Class):void
+		protected function registerFileType(wrapperClass:Class, fileTypeIDs:Array,
+			fileTypeExtensions:Array = null):void
 		{
-			_screenManager.registerScreen(screenID, screenClass);
-			Log.debug("Registered screen class for ID \"" + screenID + "\".", this);
+			_dsm.mapResourceFileType(wrapperClass, fileTypeIDs, fileTypeExtensions);
+			Log.debug("Registered resource file type for IDs \"" + fileTypeIDs + "\".", this);
+		}
+		
+		
+		/**
+		 * @private
+		 * 
+		 * @param complexTypeID
+		 * @param clazz
+		 */
+		protected function registerComplexType(complexTypeID:String, clazz:Class):void
+		{
+			_dsm.mapComplexType(complexTypeID, clazz);
+			Log.debug("Registered complex type for ID \"" + complexTypeID + "\".", this);
 		}
 		
 		
@@ -172,6 +254,19 @@ package base.setup
 		{
 			_dsm.mapComponentClass(classID, componentClass);
 			Log.debug("Registered entity component class for ID \"" + classID + "\".", this);
+		}
+		
+		
+		/**
+		 * @private
+		 * 
+		 * @param screenID
+		 * @param screenClass
+		 */
+		protected function registerScreen(screenID:String, screenClass:Class):void
+		{
+			_screenManager.registerScreen(screenID, screenClass);
+			Log.debug("Registered screen class for ID \"" + screenID + "\".", this);
 		}
 	}
 }

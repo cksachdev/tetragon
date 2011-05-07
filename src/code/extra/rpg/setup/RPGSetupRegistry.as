@@ -45,7 +45,15 @@ package extra.rpg.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function registerScreens():void
+		override public function registerResourceFileTypes():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registerComplexTypes():void
 		{
 		}
 		
@@ -63,14 +71,6 @@ package extra.rpg.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function registerComplexTypes():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
 		override public function registerEntitySystems():void
 		{
 		}
@@ -80,6 +80,14 @@ package extra.rpg.setup
 		 * @inheritDoc
 		 */
 		override public function registerEntityComponents():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registerScreens():void
 		{
 		}
 	}
