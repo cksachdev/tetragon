@@ -5,12 +5,12 @@
 		<components>
 			
 			<component classID="tbsUnitPropertiesComponent">
-				<nameID></nameID>
-				<nameShortID></nameShortID>
-				<designationID>nameInfantryUnit</designationID>
-				<designationShortID>nameShortInfantryUnit</designationShortID>
-				<descriptionID>descInfantryUnit</descriptionID>
-				<movementTypeID>movementTypeInfantry</movementTypeID>
+				<nameTID></nameTID>
+				<nameShortTID></nameShortTID>
+				<designationTID>nameInfantryUnit</designationTID>
+				<designationShortTID>nameShortInfantryUnit</designationShortTID>
+				<descriptionTID>descInfantryUnit</descriptionTID>
+				<movementTypeLID>movementTypes|movementTypeInfantry</movementTypeLID>
 				<price>1000</price>
 			</component>
 			
@@ -26,24 +26,24 @@
 			</component>
 			
 			<component classID="TBSUnitWeapons">
-				<primaryWeaponID></primaryWeaponID>
-				<secondaryWeaponID>weaponMachineGun</secondaryWeaponID>
+				<primaryWeaponDID></primaryWeaponDID>
+				<secondaryWeaponDID>weaponMachineGun</secondaryWeaponDID>
 			</component>
 			
 			<component classID="TBSUnitArmor">
-				<armorID>armorInfantry</armorID>
+				<armorDID>armorInfantry</armorDID>
 			</component>
 			
 			<component classID="TBSUnitAbilities">
 			</component>
 			
 			<component classID="TBSUnitAI">
-				<combatAI>aiInfantry</combatAI>
+				<combatAIDID>aiInfantry</combatAIDID>
 			</component>
 			
 			<component classID="TBSPrerequisites">
-				<technologyID>testTechnology</technologyID>
-				<resourceID>testResource</resourceID>
+				<technologyDID>testTechnology</technologyDID>
+				<resourceDID>testResource</resourceDID>
 			</component>
 			
 			<component classID="TBSUnitFlags">

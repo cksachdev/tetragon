@@ -50,6 +50,11 @@ package base.data.parsers
 		 */
 		protected var _xml:XML;
 		
+		/**
+		 * @private
+		 */
+		protected var _referencedIDs:Object;
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
@@ -75,7 +80,21 @@ package base.data.parsers
 		 */
 		public function toString():String
 		{
-			return getQualifiedClassName(this).match("[^:]*$")[0] + ":";
+			return getQualifiedClassName(this).match("[^:]*$")[0];
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Getters & Setters
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * If the parsed data contains any referenced IDs they will be mapped into
+		 * this object for using them with referenced resource loading.
+		 */
+		public function get referencedIDs():Object
+		{
+			return _referencedIDs;
 		}
 		
 		

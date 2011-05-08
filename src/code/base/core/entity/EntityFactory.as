@@ -176,7 +176,7 @@ package base.core.entity
 		 */
 		public function toString():String
 		{
-			return "EntityFactory:";
+			return "EntityFactory";
 		}
 		
 		

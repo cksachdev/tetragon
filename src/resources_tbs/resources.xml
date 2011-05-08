@@ -126,8 +126,8 @@
 	
 	<!-- ************************************************************************************** -->
 	<text>
-		<resource id="textUI">
-			<locale lang="en" path="text/en/ui_text.xml" packageID="resourcePackage"/>
+		<resource id="textUnits">
+			<locale lang="en" path="text/en/units_text.xml" packageID="resourcePackage"/>
 		</resource>
 	</text>
 	

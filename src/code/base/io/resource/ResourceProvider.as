@@ -339,6 +339,12 @@ package base.io.resource
 			else
 				parser.parse(w, resourceManager.resourceIndex);
 			
+			if (parser.referencedIDs != null)
+			{
+				// TODO check if the parser has valid referencedIDs and if so process them
+				// for loading of referenced resources.
+			}
+			
 			/* Mark all resources in the loaded bulk file as loaded. */
 			for (var i:int = 0; i < bulkFile.items.length; i++)
 			{

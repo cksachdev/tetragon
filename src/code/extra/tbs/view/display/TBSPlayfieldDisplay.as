@@ -27,6 +27,8 @@
  */
 package extra.tbs.view.display
 {
+	import base.core.debug.Console;
+	import base.core.debug.FPSMonitor;
 	import base.core.entity.IEntity;
 	import base.view.display.Display;
 
@@ -53,6 +55,12 @@ package extra.tbs.view.display
 		override public function start():void
 		{
 			super.start();
+			
+			var c:Console = main.console;
+			if (c) c.toggle();
+			
+			var f:FPSMonitor = main.fpsMonitor;
+			if (f) f.toggle();
 		}
 		
 		

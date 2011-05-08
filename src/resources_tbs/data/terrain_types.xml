@@ -5,6 +5,15 @@
 		
 		<item id="terrainGrassland">
 			<properties>
+				<nameID>nameTerrainGrassland</nameID>
+				<descriptionID>descTerrainGrassland</descriptionID>
+				<movementCost>1</movementCost>
+				<combatModifier>-20</combatModifier>
+			</properties>
+		</item>
+		
+		<item id="terrainGrassland">
+			<properties>
 				<property name="name" ref="text">nameTerrainGrassland</property>
 				<property name="description" ref="text">descTerrainGrassland</property>
 				<property name="movementCost">1</property>

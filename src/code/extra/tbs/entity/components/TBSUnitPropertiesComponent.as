@@ -68,7 +68,7 @@ package extra.tbs.entity.components
 		 */
 		public function get nameID():String
 		{
-			if (_nameID == null || _nameID.length < 1) return designationID;
+			//if (_nameID == null || _nameID.length < 1) return designationID;
 			return _nameID;
 		}
 		public function set nameID(v:String):void

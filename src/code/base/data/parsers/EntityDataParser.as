@@ -98,8 +98,33 @@ package base.data.parsers
 							}
 							else
 							{
-								if (value == "") map[key] = null;
-								else map[key] = value;
+								/* Check if we got a property that is an ID reference
+								 * to a text string (TID), a data resource (DID) or a
+								 * data list resource (LID). */
+								var s:String = key.substr(-3);
+								var sid:String = null;
+								switch (s)
+								{
+									case "TID":
+									case "DID":
+									case "LID":
+										sid = s.toLowerCase();
+										key = key.substr(0, key.length - 3) + "ID";
+								}
+								
+								if (value == null || value == "")
+								{
+									map[key] = null;
+								}
+								else
+								{
+									if (sid)
+									{
+										if (!_referencedIDs) _referencedIDs = {};
+										_referencedIDs[value] = sid;
+									}
+									map[key] = value;
+								}
 							}
 						}
 						

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data>
 	
-	<list id="listMovementTypes" dataType="movementType">
+	<list id="movementTypes" dataType="movementType">
 		
 		<item id="movementTypeInfantry">
 			<properties>
-				<property name="nameID" ref="text">nameMovementTypeInfantry</property>
-				<property name="domainID" ref="data">domainGround</property>
+				<nameTID>nameMovementTypeInfantry</nameTID>
+				<domainTID>domainGround</domainTID>
 			</properties>
 			<sets>
-				<set name="terrainModifiers">
+				<terrainModifiers>
 					<property name="terrainGrassland">0</property>
 					<property name="terrainPlains">0</property>
 					<property name="terrainTundra">0</property>
@@ -26,8 +26,8 @@
 					<property name="terrainRuins">0</property>
 					<property name="terrainRoad">0</property>
 					<property name="terrainBridge">0</property>
-				</set>
-				<set name="weatherModifiers">
+				</terrainModifiers>
+				<weatherModifiers>
 					<property name="weatherFair">0</property>
 					<property name="weatherOvercast">0</property>
 					<property name="weatherRain">0</property>
@@ -40,7 +40,7 @@
 					<property name="weatherSandstorm">-3</property>
 					<property name="weatherHeatWave">0</property>
 					<property name="weatherFallout">-3</property>
-				</set>
+				</weatherModifiers>
 			</sets>
 		</item>
 		
