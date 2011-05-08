@@ -28,12 +28,9 @@
 package extra.tbs.view.display
 {
 	import base.core.entity.IEntity;
-	import base.core.entity.IEntityComponent;
 	import base.view.display.Display;
 
 	import com.hexagonstar.util.debug.Debug;
-
-	import flash.utils.Dictionary;
 	
 	
 	/**
@@ -122,12 +119,7 @@ package extra.tbs.view.display
 		override protected function addChildren():void
 		{
 			var unit:IEntity = main.entityFactory.createEntity("unitInfantry");
-			Debug.trace(unit.toString());
-			var d:Dictionary = unit.getComponents();
-			for each (var c:IEntityComponent in d)
-			{
-				Debug.trace(c.toString());
-			}
+			Debug.trace(unit.dump());
 		}
 		
 		

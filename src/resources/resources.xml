@@ -21,11 +21,6 @@
 	<!-- ************************************************************************************** -->
 	<dataFiles>
 		<file id="testEntityFile" path="data/test/test_entities.xml" packageID="resourcePackage"/>
-		<file id="tbsUnitsFile" path="data/tbs/units.xml" packageID="resourcePackage"/>
-		<file id="tbsWeaponsFile" path="data/tbs/weapons.xml" packageID="resourcePackage"/>
-		<file id="tbsMovementTypesFile" path="data/tbs/movement_types.xml" packageID="resourcePackage"/>
-		<file id="tbsTerrainTypesFile" path="data/tbs/terrain_types.xml" packageID="resourcePackage"/>
-		<file id="tbsWeatherTypesFile" path="data/tbs/weather_types.xml" packageID="resourcePackage"/>
 		
 		<file id="settingsFile" path="data/settings.xml" packageID="resourcePackage"/>
 		<file id="worldSpaceFile" path="data/world/worldspaces.xml" packageID="resourcePackage"/>
@@ -95,67 +90,10 @@
 			<resource id="testParticle"/>
 		</group>
 		
-		<group type="TBSUnit" fileID="tbsUnitsFile">
-			<resource id="unitInfantry"/>
-		</group>
-		
 	</entities>
 	
 	<!-- ************************************************************************************** -->
 	<data>
-		
-		<group type="TBSWeapon" fileID="tbsWeaponsFile">
-			<resource id="weaponMachineGun"/>
-		</group>
-		
-		<group type="TBSMovementType" fileID="tbsMovementTypesFile">
-			<resource id="movementTypeInfantry"/>
-			<resource id="movementTypeTires"/>
-			<resource id="movementTypeTread"/>
-			<resource id="movementTypeSea"/>
-			<resource id="movementTypeHover"/>
-			<resource id="movementTypeAir"/>
-		</group>
-		
-		<group type="TBSTerrainType" fileID="tbsTerrainTypesFile">
-			<resource id="terrainGrassland"/>
-			<resource id="terrainPlains"/>
-			<resource id="terrainTundra"/>
-			<resource id="terrainDesert"/>
-			<resource id="terrainHills"/>
-			<resource id="terrainMountains"/>
-			<resource id="terrainSnow"/>
-			<resource id="terrainIce"/>
-			<resource id="terrainForest"/>
-			<resource id="terrainJungle"/>
-			<resource id="terrainMarsh"/>
-			<resource id="terrainSwamp"/>
-			<resource id="terrainUrban"/>
-			<resource id="terrainRuins"/>
-			<resource id="terrainRoad"/>
-			<resource id="terrainBridge"/>
-			<resource id="terrainCoast"/>
-			<resource id="terrainSeaShallow"/>
-			<resource id="terrainSeaDeep"/>
-			<resource id="terrainRoughSea"/>
-			<resource id="terrainReef"/>
-		</group>
-		
-		<group type="TBSWeatherType" fileID="tbsWeatherTypesFile">
-			<resource id="weatherFair"/>
-			<resource id="weatherOvercast"/>
-			<resource id="weatherRain"/>
-			<resource id="weatherHeavyRain"/>
-			<resource id="weatherHail"/>
-			<resource id="weatherSnow"/>
-			<resource id="weatherBlizzard"/>
-			<resource id="weatherFog"/>
-			<resource id="weatherThunderstorm"/>
-			<resource id="weatherSandstorm"/>
-			<resource id="weatherHeatWave"/>
-			<resource id="weatherFallout"/>
-		</group>
-		
 		
 		<group type="Settings">
 			<resource id="settings" fileID="settingsFile"/>

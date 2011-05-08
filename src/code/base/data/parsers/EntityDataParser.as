@@ -53,15 +53,16 @@ package base.data.parsers
 			var index:ResourceIndex = model;
 			var dsm:DataSupportManager = Main.instance.dataSupportManager;
 			
+			/* Loop through all items in data file. */
 			for each (var x:XML in _xml.item)
 			{
-				/* Get the item's ID. */
+				/* Get the current item's ID. */
 				var id:String = extractString(x, "@id");
 				
-				/* Only pick the item that we want! */
+				/* Only parse the item(s) that we want! */
 				if (!wrapper.hasResourceID(id)) continue;
 				
-				/* Create a new entity template for the data item. */
+				/* Create a new entity definition for the data item. */
 				var e:EntityDefinition = new EntityDefinition(id);
 				
 				/* Loop through the item's component definitions. */

@@ -571,7 +571,13 @@
 			<copy todir="${path.bin}/js" verbose="off">
 				<fileset dir="${templates.web}/js" excludes="**/.svn"/>
 			</copy>
-			<copy file="${templates.web}/app_web.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true"/>
+			<copy file="${templates.web}/app_web.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true">
+				<filterchain>
+					<replacetokens>
+						<token key="resource_folder" value="${resource.folder}"/>
+					</replacetokens>
+				</filterchain>
+			</copy>
 		</sequential>
 	</macrodef>
 	
@@ -585,6 +591,7 @@
 			<copy file="${templates.air.shared}/app_air.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true">
 				<filterchain>
 					<replacetokens>
+						<token key="resource_folder" value="${resource.folder}"/>
 						<token key="update_url" value="${air.desktop.updateurl}/${app.shortname}_update.xml"/>
 					</replacetokens>
 				</filterchain>
