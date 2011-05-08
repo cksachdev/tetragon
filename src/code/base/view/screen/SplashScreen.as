@@ -49,6 +49,10 @@ package base.view.screen
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
+		private var _allowSplashAbort:Boolean;
+		private var _splashScreenWaitTime:int;
+		private var _initialScreenID:String;
+		private var _backgroundColors:Array;
 		private var _background:RectangleGradientShape;
 		private var _display:SplashDisplay;
 		private var _timer:Timer;
@@ -100,8 +104,9 @@ package base.view.screen
 		private function onUserInput(e:Event):void
 		{
 			_timer.stop();
+			removeListeners();
 			Mouse.show();
-			screenManager.openScreen(Registry.config.initialScreenID, true, true);
+			screenManager.openScreen(_initialScreenID, true, true);
 		}
 		
 		
@@ -114,7 +119,7 @@ package base.view.screen
 			 * we might hang up somewhere so remove input listeners right here. */
 			removeListeners();
 			Mouse.show();
-			screenManager.openScreen(Registry.config.initialScreenID);
+			screenManager.openScreen(_initialScreenID);
 		}
 		
 		
@@ -127,8 +132,21 @@ package base.view.screen
 		 */
 		override protected function createChildren():void
 		{
-			_timer = new Timer(6000, 1);
+			_allowSplashAbort = Registry.settings.getSettings("allowSplashAbort");
+			_splashScreenWaitTime = Registry.settings.getSettings("splashScreenWaitTime");
+			_initialScreenID = Registry.settings.getSettings("initialScreenID");
+			_backgroundColors = Registry.settings.getSettings("splashBackgroundColors");
 			
+			if(_splashScreenWaitTime < 1)
+			{
+				_splashScreenWaitTime = 6;
+			}
+			if (_backgroundColors == null || !(_backgroundColors is Array))
+			{
+				_backgroundColors = [0x002C3F, 0x0181B8];
+			}
+			
+			_timer = new Timer(_splashScreenWaitTime * 1000, 1);
 			_background = new RectangleGradientShape();
 			_display = new SplashDisplay();
 			
@@ -171,9 +189,13 @@ package base.view.screen
 		override protected function addListeners():void
 		{
 			main.stage.addEventListener(Event.RESIZE, onStageResize);
-			main.stage.addEventListener(MouseEvent.CLICK, onUserInput);
-			main.stage.addEventListener(KeyboardEvent.KEY_DOWN, onUserInput);
 			_timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
+			
+			if (_allowSplashAbort)
+			{
+				main.stage.addEventListener(MouseEvent.CLICK, onUserInput);
+				main.stage.addEventListener(KeyboardEvent.KEY_DOWN, onUserInput);
+			}
 		}
 		
 		
@@ -183,9 +205,13 @@ package base.view.screen
 		override protected function removeListeners():void
 		{
 			main.stage.removeEventListener(Event.RESIZE, onStageResize);
-			main.stage.removeEventListener(MouseEvent.CLICK, onUserInput);
-			main.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onUserInput);
 			_timer.removeEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
+			
+			if (_allowSplashAbort)
+			{
+				main.stage.removeEventListener(MouseEvent.CLICK, onUserInput);
+				main.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onUserInput);
+			}
 		}
 		
 		
@@ -194,8 +220,7 @@ package base.view.screen
 		 */
 		override protected function layoutChildren():void
 		{
-			_background.draw(main.stage.stageWidth, main.stage.stageHeight, -90,
-				Registry.config.splashBackgroundColors);
+			_background.draw(main.stage.stageWidth, main.stage.stageHeight, -90, _backgroundColors);
 			_display.x = getHorizontalCenter(_display);
 			_display.y = getVerticalCenter(_display);
 		}

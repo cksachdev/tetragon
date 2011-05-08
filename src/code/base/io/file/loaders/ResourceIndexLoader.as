@@ -109,7 +109,7 @@ package base.io.file.loaders
 		 */
 		override public function toString():String
 		{
-			return "[ResourceIndexLoader]";
+			return "ResourceIndexLoader";
 		}
 		
 		

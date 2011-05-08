@@ -606,7 +606,13 @@
 			<copy todir="${path.bin}/icons" verbose="off">
 				<fileset dir="${templates.air.shared}/icons" excludes="**/.svn"/>
 			</copy>
-			<copy file="${templates.air.shared}/app_air.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true"/>
+			<copy file="${templates.air.shared}/app_air.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true">
+				<filterchain>
+					<replacetokens>
+						<token key="resource_folder" value="${resource.folder}"/>
+					</replacetokens>
+				</filterchain>
+			</copy>
 		</sequential>
 	</macrodef>
 	
@@ -617,7 +623,13 @@
 			<copy todir="${path.bin}/icons" verbose="off">
 				<fileset dir="${templates.air.shared}/icons" excludes="**/.svn"/>
 			</copy>
-			<copy file="${templates.air.shared}/app_air.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true"/>
+			<copy file="${templates.air.shared}/app_air.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true">
+				<filterchain>
+					<replacetokens>
+						<token key="resource_folder" value="${resource.folder}"/>
+					</replacetokens>
+				</filterchain>
+			</copy>
 		</sequential>
 	</macrodef>
 	

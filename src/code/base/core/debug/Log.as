@@ -314,8 +314,8 @@ package base.core.debug
 			
 			if (caller)
 			{
-				if (caller is String) data = caller + " " + data;
-				else if (caller["toString"]) data = caller["toString"]() + " " + data;
+				if (caller is String) data = caller + ": " + data;
+				else if (caller["toString"]) data = caller["toString"]() + ": " + data;
 			}
 			
 			if (_console) _console.log(data, level);

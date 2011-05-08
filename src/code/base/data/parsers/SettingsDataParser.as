@@ -25,54 +25,63 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.data
+package base.data.parsers
 {
+	import base.Main;
+	import base.core.debug.Log;
+	import base.data.DataSupportManager;
+	import base.data.Registry;
+	import base.data.Settings;
+	import base.io.resource.wrappers.XMLResourceWrapper;
+	
+	
 	/**
-	 * A global registry for data objects that should be easily accessible.
+	 * Parses settings data from a settings resource file into the settings map.
 	 */
-	public class Registry
+	public class SettingsDataParser extends DataParser implements IDataParser
 	{
-		//-----------------------------------------------------------------------------------------
-		// Properties
-		//-----------------------------------------------------------------------------------------
-		
-		public static var params:Params;
-		public static var config:Config;
-		public static var settings:Settings;
-		
-		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Initializes the Registry.
+		 * @inheritDoc
 		 */
-		public static function init():void
+		public function parse(wrapper:XMLResourceWrapper, model:*):void
 		{
-			config = new Config();
-			settings = new Settings();
+			_xml = wrapper.xml;
+			var dsm:DataSupportManager = Main.instance.dataSupportManager;
+			var settings:Settings = Registry.settings;
 			
-			clear();
+			for each (var x:XML in _xml.children())
+			{
+				var key:String = x.name();
+				var params:String = x.toString();
+				var value:Object = null;
+				
+				/* Check if property has a complex type assigned. */
+				var ctype:String = x.@ctype;
+				if (ctype && ctype.length > 0)
+				{
+					var clazz:Class = dsm.getComplexTypeClass(ctype);
+					if (!clazz)
+					{
+						Log.error("Could not create complex type class."
+							+ " Class for ctype \"" + ctype + "\" was not mapped.", this);
+						continue;
+					}
+					var type:Object = new clazz();
+					value = parseComplexTypeParams(type, params);
+				}
+				else
+				{
+					if (params != "") value = params;
+				}
+				
+				settings.addSettings(key, value);
+			}
+			
+			dispose();
 		}
-		
-		
-		/**
-		 * Clears and resets all data in the registry.
-		 */
-		public static function clear():void
-		{
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
 	}
 }

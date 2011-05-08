@@ -27,18 +27,32 @@
  */
 package base.data
 {
+	import com.hexagonstar.util.string.TabularText;
+	
+	
 	/**
-	 * A global registry for data objects that should be easily accessible.
+	 * A class that acts as the map for the application's settings.
 	 */
-	public class Registry
+	public class Settings
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		public static var params:Params;
-		public static var config:Config;
-		public static var settings:Settings;
+		private var _map:Object;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Constructor
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Creates a new instance of the class.
+		 */
+		public function Settings()
+		{
+			_map = {};
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -46,33 +60,50 @@ package base.data
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Initializes the Registry.
+		 * Adds a settings key-value pair to the settings map.
 		 */
-		public static function init():void
+		public function addSettings(key:String, value:Object):void
 		{
-			config = new Config();
-			settings = new Settings();
-			
-			clear();
+			_map[key] = value;
 		}
 		
 		
 		/**
-		 * Clears and resets all data in the registry.
+		 * Gets a mapped setting.
 		 */
-		public static function clear():void
+		public function getSettings(key:String):*
 		{
+			return _map[key];
+		}
+		
+		
+		/**
+		 * Returns a String Representation of the class.
+		 * 
+		 * @return A String Representation of the class.
+		 */
+		public function toString():String
+		{
+			return "[Settings]";
+		}
+		
+		
+		/**
+		 * Returns a string dump of the settings list.
+		 */
+		public function dump():String
+		{
+			var t:TabularText = new TabularText(2, true, "  ", null, "  ", 0, ["KEY", "VALUE"]);
+			for (var key:String in _map)
+			{
+				t.add([key, _map[key]]);
+			}
+			return toString() + "\n" + t;
 		}
 		
 		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
 	}
 }

@@ -143,14 +143,21 @@ package base.view.screen
 		 */
 		public function start():void
 		{
-			if (Registry.config.showSplashScreen && Registry.config.splashScreenID != null
-				&& Registry.config.splashScreenID.length > 0)
+			var showSplashScreen:Boolean = Registry.settings.getSettings("showSplashScreen");
+			var splashScreenID:String = Registry.settings.getSettings("splashScreenID");
+			var initialScreenID:String = Registry.settings.getSettings("initialScreenID");
+			
+			if (showSplashScreen && splashScreenID != null && splashScreenID.length > 0)
 			{
-				openScreen(Registry.config.splashScreenID, true);
+				openScreen(splashScreenID, true);
+			}
+			else if (initialScreenID != null && initialScreenID.length > 0)
+			{
+				openScreen(initialScreenID, true);
 			}
 			else
 			{
-				openScreen(Registry.config.initialScreenID, true);
+				Log.fatal("Cannot open initial screen! No initial screen ID defined.", this);
 			}
 		}
 		
@@ -257,12 +264,13 @@ package base.view.screen
 		 */
 		public function dumpScreenList():String
 		{
+			var initialScreenID:String = Registry.settings.getSettings("initialScreenID");
 			var t:TabularText = new TabularText(4, true, "  ", null, "  ", 100, ["ID", "CLASS", "OPEN", "INITIAL"]);
 			for (var id:String in _screenClasses)
 			{
 				var clazz:Class = _screenClasses[id];
 				var open:String = _screen is clazz ? "true" : "";
-				var initial:String = id == Registry.config.initialScreenID ? "true" : "";
+				var initial:String = id == initialScreenID ? "true" : "";
 				t.add([id, clazz, open, initial]);
 			}
 			return toString() + "\n" + t;
@@ -276,7 +284,7 @@ package base.view.screen
 		 */
 		override public function toString():String
 		{
-			return "[ScreenManager]";
+			return "ScreenManager";
 		}
 		
 		

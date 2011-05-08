@@ -86,13 +86,6 @@ package base.data
 		
 		public var backgroundFrameRate:int;
 		
-		public var splashBackgroundColors:Array;
-		public var splashLogoColor:uint;
-		
-		public var showSplashScreen:Boolean;
-		public var splashScreenID:String;
-		public var initialScreenID:String;
-		
 		
 		//-----------------------------------------------------------------------------------------
 		// Constructor
@@ -165,16 +158,6 @@ package base.data
 			updateFileUpdateVisible = true;
 			
 			backgroundFrameRate = -1;
-			
-			splashBackgroundColors = [0x002c3f, 0x0181b8];
-			splashLogoColor = 0xFFBF00;
-			
-			showSplashScreen = true;
-			splashScreenID = "splashScreen";
-			//initialScreenID = "dummyScreen";
-			//initialScreenID = "gamePlayScreen";
-			initialScreenID = "tbsGamePlayScreen";
-			//initialScreenID = "testScreen";
 		}
 	}
 }

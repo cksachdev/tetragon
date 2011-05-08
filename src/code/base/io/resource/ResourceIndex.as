@@ -53,6 +53,12 @@ package base.io.resource
 		internal var _packageFiles:Object;
 		
 		/**
+		 * A map that stores all settings file entries.
+		 * @private
+		 */
+		private var _settingsFiles:Object;
+		
+		/**
 		 * A map that stores all data file entries. Contains ResourceDataFileEntry objects.
 		 * @private
 		 */
@@ -93,6 +99,7 @@ package base.io.resource
 		public function clear():void
 		{
 			_packageFiles = {};
+			_settingsFiles = {};
 			_dataFiles = {};
 			_resources = {};
 			_size = 0;
@@ -167,6 +174,26 @@ package base.io.resource
 			}
 			Log.error("No packageID mapped for dataFileID \"" + id + "\".", this);
 			return null;
+		}
+		
+		
+		/**
+		 * Returns an array that contains the IDs of all settings file resources.
+		 * Used to load settings during application init.
+		 */
+		public function getSettingsFileIDs():Array
+		{
+			var a:Array = [];
+			var type:String = ResourceFamily.SETTINGS.toLowerCase();
+			for each (var e:Resource in _resources)
+			{
+				if (e.dataType == null) continue;
+				if (e.dataType.toLowerCase() == type)
+				{
+					a.push(e.id);
+				}
+			}
+			return a;
 		}
 		
 		

@@ -33,6 +33,10 @@ package base.command.env
 	import base.core.debug.Log;
 	import base.data.Registry;
 	import base.io.file.loaders.ConfigLoader;
+	import base.io.resource.Resource;
+	import base.io.resource.ResourceIndex;
+	import base.io.resource.ResourceManager;
+	import base.io.resource.ResourceStatus;
 	import base.setup.*;
 
 	import extra.game.setup.*;
@@ -65,6 +69,7 @@ package base.command.env
 		
 		private var _configLoader:ConfigLoader;
 		private var _setups:Vector.<Setup>;
+		private var _settingsFileIDs:Array;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -105,7 +110,18 @@ package base.command.env
 			_configLoader = null;
 			_setups = null;
 		}
-
+		
+		
+		/**
+		 * Returns a String Representation of the class.
+		 * 
+		 * @return A String Representation of the class.
+		 */
+		override public function toString():String
+		{
+			return "AppInit";
+		}
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
@@ -146,6 +162,36 @@ package base.command.env
 		private function onResourceManagerReady(e:Event):void 
 		{
 			main.resourceManager.removeEventListener(e.type, onResourceManagerReady);
+			loadSettings();
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		private function onSettingsLoadComplete():void
+		{
+			if (_settingsFileIDs && _settingsFileIDs.length > 0)
+			{
+				var rm:ResourceManager = main.resourceManager;
+				var ri:ResourceIndex = rm.resourceIndex;
+				for (var i:int = 0; i < _settingsFileIDs.length; i++)
+				{
+					var r:Resource = ri.getResource(_settingsFileIDs[i]);
+					if (r.status == ResourceStatus.FAILED)
+					{
+						Log.error("Failed loading settings: \"" + r.id + "\".", this);
+					}
+					else
+					{
+						Log.info("Loaded settings: \"" + r.id + "\".", this);
+						/* Settings have been parsed into settings map so their resource
+						 * can be unloaded again. */
+						rm.unload(_settingsFileIDs);
+					}
+				}
+			}
+			
 			postResourceSetup();
 		}
 		
@@ -263,6 +309,24 @@ package base.command.env
 		{
 			main.resourceManager.addEventListener(Event.COMPLETE, onResourceManagerReady);
 			main.resourceManager.init(main, AppResourceBundle);
+		}
+		
+		
+		/**
+		 * Loads the settings from the resources.
+		 * @private
+		 */
+		private function loadSettings():void
+		{
+			_settingsFileIDs = main.resourceManager.resourceIndex.getSettingsFileIDs();
+			if (_settingsFileIDs && _settingsFileIDs.length > 0)
+			{
+				main.resourceManager.load(_settingsFileIDs, onSettingsLoadComplete);
+			}
+			else
+			{
+				onSettingsLoadComplete();
+			}
 		}
 		
 		

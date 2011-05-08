@@ -32,6 +32,7 @@ package base.data
 	import base.data.parsers.EntityDataParser;
 	import base.data.parsers.IDataParser;
 	import base.data.parsers.NullDataParser;
+	import base.data.parsers.SettingsDataParser;
 	import base.data.parsers.TextDataParser;
 	import base.data.parsers.XMLDataParser;
 	import base.io.resource.ResourceFamily;
@@ -132,6 +133,7 @@ package base.data
 			mapResourceFileType(null, ["audio-module"], ["mod"]); // TODO
 			
 			/* Map default complex types. */
+			mapComplexType("array", Array);
 			mapComplexType("rectangle", Rectangle);
 			mapComplexType("point", Point);
 			mapComplexType("point2d", Point2D);
@@ -143,6 +145,7 @@ package base.data
 			mapDataType(ResourceFamily.TEXT, TextDataParser);
 			mapDataType(ResourceFamily.XML, XMLDataParser);
 			mapDataType(ResourceFamily.ENTITY, EntityDataParser);
+			mapDataType(ResourceFamily.SETTINGS, SettingsDataParser);
 		}
 		
 		
@@ -160,9 +163,9 @@ package base.data
 		{
 			var key:String;
 			for each (key in fileTypeIDs)
-				_resourceFileTypeMap[key] = wrapperClass;
+				_resourceFileTypeMap[key.toLowerCase()] = wrapperClass;
 			for each (key in fileTypeExtensions)
-				_fileTypeExtensionMap[key] = wrapperClass;
+				_fileTypeExtensionMap[key.toLowerCase()] = wrapperClass;
 		}
 		
 		
@@ -174,6 +177,7 @@ package base.data
 		 */
 		public function mapComplexType(complexTypeID:String, clazz:Class):void
 		{
+			if (complexTypeID == null || clazz == null) return;
 			_complexTypeMap[complexTypeID.toLowerCase()] = clazz;
 		}
 		
@@ -188,7 +192,8 @@ package base.data
 		 */
 		public function mapDataType(dataTypeID:String, parserClass:Class):void
 		{
-			_dataTypeMap[dataTypeID] = parserClass;
+			if (dataTypeID == null || parserClass == null) return;
+			_dataTypeMap[dataTypeID.toLowerCase()] = parserClass;
 		}
 		
 		
@@ -201,7 +206,8 @@ package base.data
 		 */
 		public function mapComponentClass(classID:String, componentClass:Class):void
 		{
-			_componentMap[classID] = componentClass;
+			if (classID == null || componentClass == null) return;
+			_componentMap[classID.toLowerCase()] = componentClass;
 		}
 		
 		
@@ -213,7 +219,8 @@ package base.data
 		 */
 		public function getResourceWrapperClassByID(fileTypeID:String):Class
 		{
-			return _resourceFileTypeMap[fileTypeID];
+			if (fileTypeID == null) return null;
+			return _resourceFileTypeMap[fileTypeID.toLowerCase()];
 		}
 		
 		
@@ -226,7 +233,8 @@ package base.data
 		 */
 		public function getResourceWrapperClassByExtension(fileExtension:String):Class
 		{
-			return _fileTypeExtensionMap[fileExtension];
+			if (fileExtension == null) return null;
+			return _fileTypeExtensionMap[fileExtension.toLowerCase()];
 		}
 		
 		
@@ -239,7 +247,8 @@ package base.data
 		 */
 		public function getComplexTypeClass(complexTypeID:String):Class
 		{
-			return _complexTypeMap[complexTypeID];
+			if (complexTypeID == null) return null;
+			return _complexTypeMap[complexTypeID.toLowerCase()];
 		}
 		
 		
@@ -251,7 +260,8 @@ package base.data
 		 */
 		public function getDataTypeParserClass(dataTypeID:String):Class
 		{
-			return _dataTypeMap[dataTypeID];
+			if (dataTypeID == null) return null;
+			return _dataTypeMap[dataTypeID.toLowerCase()];
 		}
 		
 		
@@ -263,7 +273,8 @@ package base.data
 		 */
 		public function getEntityComponentClass(classID:String):Class
 		{
-			return _componentMap[classID];
+			if (classID == null) return null;
+			return _componentMap[classID.toLowerCase()];
 		}
 		
 		
@@ -275,7 +286,8 @@ package base.data
 		 */
 		public function createDataTypeParser(dataTypeID:String):IDataParser
 		{
-			var clazz:* = _dataTypeMap[dataTypeID];
+			if (dataTypeID == null) return null;
+			var clazz:* = _dataTypeMap[dataTypeID.toLowerCase()];
 			var parser:IDataParser;
 			if (!clazz)
 			{
@@ -305,7 +317,8 @@ package base.data
 		 */
 		public function createEntityComponent(classID:String):IEntityComponent
 		{
-			var clazz:* = _componentMap[classID];
+			if (classID == null) return null;
+			var clazz:* = _componentMap[classID.toLowerCase()];
 			var component:IEntityComponent;
 			
 			if (!clazz)

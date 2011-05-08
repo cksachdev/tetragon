@@ -41,6 +41,7 @@ package base.io.resource
 		public static const ENTITY:String	= "entity";
 		public static const TEXT:String		= "text";
 		public static const XML:String		= "xml";
+		public static const SETTINGS:String	= "settings";
 		public static const MEDIA:String	= "media";
 		public static const NONE:String		= "none";
 	}

@@ -28,6 +28,7 @@
 package base.command.cli
 {
 	import base.command.CLICommand;
+	import base.data.Registry;
 
 	import com.hexagonstar.util.debug.LogLevel;
 
@@ -43,7 +44,7 @@ package base.command.cli
 		 */
 		override public function execute():void 
 		{
-			main.console.log("\n" + main.localSettingsManager.settings.dump(), LogLevel.INFO);
+			main.console.log("\n" + Registry.settings.dump(), LogLevel.INFO);
 			complete();
 		}
 		

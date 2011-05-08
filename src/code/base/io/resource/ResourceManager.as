@@ -65,18 +65,6 @@ package base.io.resource
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Constructor
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Creates a new instance of the class.
-		 */
-		public function ResourceManager()
-		{
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
@@ -395,7 +383,7 @@ package base.io.resource
 		 */
 		override public function toString():String
 		{
-			return "[ResourceManager]";
+			return "ResourceManager";
 		}
 		
 		

@@ -66,8 +66,8 @@
 	<!-- ************************************************************************************** -->
 	<data>
 		
-		<group type="Settings">
-			<resource id="settings" fileID="settingsFile"/>
+		<group type="Settings" fileID="settingsFile">
+			<resource id="settings"/>
 		</group>
 		
 		<group type="TBSMovementType" fileID="movementTypesFile">

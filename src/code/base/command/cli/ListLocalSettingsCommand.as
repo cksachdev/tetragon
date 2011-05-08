@@ -25,43 +25,26 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.data
+package base.command.cli
 {
-	/**
-	 * A global registry for data objects that should be easily accessible.
-	 */
-	public class Registry
+	import base.command.CLICommand;
+
+	import com.hexagonstar.util.debug.LogLevel;
+
+	
+	public class ListLocalSettingsCommand extends CLICommand
 	{
-		//-----------------------------------------------------------------------------------------
-		// Properties
-		//-----------------------------------------------------------------------------------------
-		
-		public static var params:Params;
-		public static var config:Config;
-		public static var settings:Settings;
-		
-		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Initializes the Registry.
+		 * @inheritDoc
 		 */
-		public static function init():void
+		override public function execute():void 
 		{
-			config = new Config();
-			settings = new Settings();
-			
-			clear();
-		}
-		
-		
-		/**
-		 * Clears and resets all data in the registry.
-		 */
-		public static function clear():void
-		{
+			main.console.log("\n" + main.localSettingsManager.settings.dump(), LogLevel.INFO);
+			complete();
 		}
 		
 		
@@ -69,10 +52,12 @@ package base.data
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
+		/**
+		 * @inheritDoc
+		 */
+		override public function get name():String 
+		{
+			return "listLocalSettings";
+		}
 	}
 }

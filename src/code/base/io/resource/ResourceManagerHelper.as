@@ -272,7 +272,7 @@ package base.io.resource
 		 */
 		private function toString():String
 		{
-			return "[ResourceManagerHelper]";
+			return "ResourceManagerHelper";
 		}
 	}
 }

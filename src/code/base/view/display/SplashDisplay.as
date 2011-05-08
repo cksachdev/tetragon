@@ -90,11 +90,14 @@ package base.view.display
 		 */
 		override protected function createChildren():void
 		{
+			var logoColor:* = Registry.settings.getSettings("splashLogoColor");
+			var splashLogoColor:uint = logoColor != null ? logoColor : 0xFFBF00;
+			
 			_tetragonLogo = new TetragonLogo();
 			var ds:DropShadowFilter = new DropShadowFilter(1.0, 45, 0x000000, 0.4, 8.0, 8.0, 2);
 			_tetragonLogo.filters = [ds];
 			_tetragonLogo.transform.colorTransform =
-				colorUintToColorTransform(Registry.config.splashLogoColor);
+				colorUintToColorTransform(splashLogoColor);
 		}
 		
 		
