@@ -41,7 +41,7 @@ package base.io.resource
 	
 	
 	/**
-	 * Abstract super class for resource providers.
+	 * Abstract base class for resource providers.
 	 */
 	public class ResourceProvider extends EventDispatcher implements IResourceProvider
 	{
@@ -340,7 +340,8 @@ package base.io.resource
 				}
 				else
 				{
-					fail(bulkFile, "Failed parsing data resource! Data parser not created.");
+					fail(bulkFile, "Failed parsing data resource from " + bulkFile.id
+						+ "! Data parser not created.");
 					return;
 				}
 			}
@@ -353,7 +354,8 @@ package base.io.resource
 				}
 				else
 				{
-					fail(bulkFile, "Failed parsing text resource! Text parser not created.");
+					fail(bulkFile, "Failed parsing text resource from " + bulkFile.id
+						+ "! Text parser not created.");
 					return;
 				}
 			}
@@ -365,7 +367,7 @@ package base.io.resource
 				var a:Array = [];
 				for (var refID:String in refIDs)
 				{
-					var refType:String = refIDs[refID];
+					var resID:String = refIDs[refID];
 					a.push(refID);
 					Log.debug(bulkFile.id + " requested referenced resource with ID \""
 						+ refID + "\".", this);

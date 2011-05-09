@@ -116,32 +116,19 @@ package base.data.parsers
 		 */
 		protected function checkReferencedID(key:String, value:String):KeyValuePair
 		{
-			var s:String = key.substr(-3);
-			var sid:String = null;
-			switch (s)
+			if (key.substr(-2) == ResourceIDType.ID)
 			{
-				case ResourceIDType.TID:
-				case ResourceIDType.DID:
-				case ResourceIDType.LID:
-					sid = s;
-					key = key.substr(0, key.length - 3) + ResourceIDType.ID;
-			}
-			
-			if (value != null && value != "" && sid)
-			{
-				if (!_referencedIDs) _referencedIDs = {};
-				if (value.indexOf(ResourceIDType.DIVIDER) != -1)
+				if (value != null && value != "")
 				{
-					var a:Array = value.split(ResourceIDType.DIVIDER);
-					_referencedIDs[String(a[0])] = sid;
-					return new KeyValuePair(key, a[1]);
-				}
-				else
-				{
-					_referencedIDs[value] = sid;
+					if (!_referencedIDs) _referencedIDs = {};
+					/* Check if the referenced ID has two parts. */
+					if (value.indexOf(ResourceIDType.DIVIDER) != -1)
+					{
+						value = value.split(ResourceIDType.DIVIDER)[0];
+					}
+					_referencedIDs[value] = key;
 				}
 			}
-			
 			return new KeyValuePair(key, value);
 		}
 		

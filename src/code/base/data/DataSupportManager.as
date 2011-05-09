@@ -350,7 +350,7 @@ package base.data
 		 */
 		public function toString():String
 		{
-			return "[DataSupportManager]";
+			return "DataSupportManager";
 		}
 		
 		

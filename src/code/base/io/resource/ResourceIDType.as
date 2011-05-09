@@ -37,9 +37,6 @@ package base.io.resource
 		//-----------------------------------------------------------------------------------------
 		
 		public static const ID:String = "ID";
-		public static const TID:String = "TID";
-		public static const DID:String = "DID";
-		public static const LID:String = "LID";
 		public static const DIVIDER:String = "/";
 	}
 }
