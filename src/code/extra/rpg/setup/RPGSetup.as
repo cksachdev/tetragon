@@ -58,7 +58,7 @@ package extra.rpg.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function postResourceSetup():void
+		override public function postSettingsSetup():void
 		{
 		}
 		

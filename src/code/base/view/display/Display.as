@@ -31,8 +31,9 @@ package base.view.display
 	import base.io.resource.ResourceManager;
 	import base.view.screen.BaseScreen;
 
+	import com.hexagonstar.util.reflection.getClassName;
+
 	import flash.display.Sprite;
-	import flash.utils.getQualifiedClassName;
 	
 	
 	/**
@@ -181,7 +182,7 @@ package base.view.display
 		 */
 		override public function toString():String
 		{
-			return "[" + getQualifiedClassName(this).match("[^:]*$")[0] + "]";
+			return getClassName(this);
 		}
 		
 		

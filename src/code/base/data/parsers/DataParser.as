@@ -29,11 +29,11 @@ package base.data.parsers
 {
 	import base.core.debug.Log;
 
+	import com.hexagonstar.util.reflection.getClassName;
 	import com.hexagonstar.util.string.createStringVector;
 	import com.hexagonstar.util.string.unwrapString;
 
 	import flash.system.System;
-	import flash.utils.getQualifiedClassName;
 	
 	
 	/**
@@ -80,7 +80,7 @@ package base.data.parsers
 		 */
 		public function toString():String
 		{
-			return getQualifiedClassName(this).match("[^:]*$")[0];
+			return getClassName(this);
 		}
 		
 		
@@ -101,6 +101,44 @@ package base.data.parsers
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Checks if the given key is a referenced resource ID and if necessary
+		 * modifies the key and stores the referenced ID in the referencedIDs map.
+		 * 
+		 * @private
+		 * 
+		 * @param key The resource ID property key to check.
+		 * @param value The resource property's value.
+		 * @return The modified or unmodified key.
+		 */
+		protected function checkReferencedID(key:String, value:String):String
+		{
+			var s:String = key.substr(-3);
+			var sid:String = null;
+			switch (s)
+			{
+				case "TID":
+				case "DID":
+				case "LID":
+					sid = s.toLowerCase();
+					key = key.substr(0, key.length - 3) + "ID";
+			}
+			
+			if (value == null || value == "")
+			{
+				return key;
+			}
+			
+			if (sid)
+			{
+				if (!_referencedIDs) _referencedIDs = {};
+				_referencedIDs[value] = sid;
+			}
+			
+			return key;
+		}
+		
 		
 		/**
 		 * Extracts the value that is stored under an XML node name or XML attribute name

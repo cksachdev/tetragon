@@ -33,7 +33,7 @@ package base.setup
 	import base.data.DataSupportManager;
 	import base.view.screen.ScreenManager;
 
-	import flash.utils.getQualifiedClassName;
+	import com.hexagonstar.util.reflection.getClassName;
 	
 	
 	/**
@@ -183,7 +183,7 @@ package base.setup
 		 */
 		public function toString():String
 		{
-			return getQualifiedClassName(this).match("[^:]*$")[0] + ":";
+			return getClassName(this);
 		}
 		
 		

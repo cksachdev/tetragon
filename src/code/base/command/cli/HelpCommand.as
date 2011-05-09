@@ -78,7 +78,8 @@ package base.command.cli
 					
 					if (cmd)
 					{
-						help = "\n\tCOMMAND: ||" + vo.trigger + "||\t\t\tGROUP: " + vo.group
+						help = "\n\tCOMMAND: " + Console.INV_START + vo.trigger + Console.INV_END
+							+ "\t\t\tGROUP: " + vo.group
 							+ "\n\n\tSUMMARY:\n\t\t"
 							+ (cmd.helpText ? cmd.helpText : vo.descr)
 							+ " Any arguments starting with + are optional."
@@ -113,7 +114,8 @@ package base.command.cli
 				keyHelp.add(["<ARROW UP>", "Step backward through command history"]);
 				keyHelp.add(["<ARROW DOWN>", "Step forward through command history"]);
 				
-				help = "\n  || CONSOLE HELP ||\n\n  KEYBOARD CONTROLS:\n" + keyHelp.toString();
+				help = "\n  " + Console.INV_START + " CONSOLE HELP " + Console.INV_END
+					+ "\n\n  KEYBOARD CONTROLS:\n" + keyHelp.toString();
 			}
 			
 			if (help)

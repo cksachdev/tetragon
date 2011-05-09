@@ -123,7 +123,7 @@ package base.io.resource
 		 */
 		override public function toString():String
 		{
-			return "[LoadedResourceProvider]";
+			return "LoadedResourceProvider";
 		}
 		
 		

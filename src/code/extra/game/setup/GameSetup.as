@@ -59,7 +59,7 @@ package extra.game.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function postResourceSetup():void
+		override public function postSettingsSetup():void
 		{
 		}
 		

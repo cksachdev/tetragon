@@ -7,10 +7,10 @@
 			<component classID="tbsUnitPropertiesComponent">
 				<nameTID></nameTID>
 				<nameShortTID></nameShortTID>
-				<designationTID>nameInfantryUnit</designationTID>
-				<designationShortTID>nameShortInfantryUnit</designationShortTID>
-				<descriptionTID>descInfantryUnit</descriptionTID>
-				<movementTypeLID>movementTypes|movementTypeInfantry</movementTypeLID>
+				<designationTID>textUnits/nameInfantryUnit</designationTID>
+				<designationShortTID>textUnits/nameShortInfantryUnit</designationShortTID>
+				<descriptionTID>textUnits/descInfantryUnit</descriptionTID>
+				<movementTypeLID>movementTypes/movementTypeInfantry</movementTypeLID>
 				<price>1000</price>
 			</component>
 			

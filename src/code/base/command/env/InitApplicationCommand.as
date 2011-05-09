@@ -30,6 +30,7 @@ package base.command.env
 	import base.AppInfo;
 	import base.AppResourceBundle;
 	import base.command.CLICommand;
+	import base.core.debug.Console;
 	import base.core.debug.Log;
 	import base.data.Registry;
 	import base.io.file.loaders.ConfigLoader;
@@ -192,7 +193,7 @@ package base.command.env
 				}
 			}
 			
-			postResourceSetup();
+			postSettingsSetup();
 		}
 		
 		
@@ -258,7 +259,7 @@ package base.command.env
 		 */
 		private function initialSetup():void
 		{
-			Log.debug("Initial setup ...");
+			Log.debug("Initial setup ...", this);
 			executeSetup("initial");
 		}
 		
@@ -295,7 +296,7 @@ package base.command.env
 		 */
 		private function postConfigSetup():void
 		{
-			Log.debug("Post-Config setup ...");
+			Log.debug("Post-Config setup ...", this);
 			executeSetup("postConfig");
 			initResourceManager();
 		}
@@ -333,10 +334,10 @@ package base.command.env
 		/**
 		 * @private
 		 */
-		private function postResourceSetup():void
+		private function postSettingsSetup():void
 		{
-			Log.debug("Post-Resource setup ...");
-			executeSetup("postResource");
+			Log.debug("Post-Settings setup ...", this);
+			executeSetup("postSettings");
 			finalSetup();
 		}
 		
@@ -346,16 +347,19 @@ package base.command.env
 		 */
 		private function finalSetup():void
 		{
-			Log.debug("Final setup ...");
+			Log.debug("Final setup ...", this);
 			executeSetup("final");
-			Log.info("Initialization complete.");
-			Log.info("^^" + AppInfo.NAME + " v" + AppInfo.VERSION
+			
+			Log.info("Initialization complete.", this);
+			Log.linefeed();
+			Log.info(Console.LINED + AppInfo.NAME + " v" + AppInfo.VERSION
 				+ " build #" + AppInfo.BUILD
 				+ (AppInfo.MILESTONE.length > 0 ? " \"" + AppInfo.MILESTONE + "\"" : "")
 				+ " " + AppInfo.RELEASE_STAGE
 				+ " (" + AppInfo.BUILD_TYPE
-				+ (AppInfo.IS_DEBUG ? " debug" : "") + ")^^");
+				+ (AppInfo.IS_DEBUG ? " debug" : "") + ")" + Console.LINED);
 			if (main.console) main.console.welcome();
+			Log.linefeed();
 			
 			complete();
 		}
@@ -368,7 +372,7 @@ package base.command.env
 		{
 			for (var i:int = 0; i < _setups.length; i++)
 			{
-				Log.debug("Executing " + step + " setup on " + _setups[i].name + " ...");
+				Log.debug("Executing " + step + " setup on " + _setups[i].name + " ...", this);
 				switch (step)
 				{
 					case "initial":
@@ -377,8 +381,8 @@ package base.command.env
 					case "postConfig":
 						_setups[i].postConfigSetup();
 						break;
-					case "postResource":
-						_setups[i].postResourceSetup();
+					case "postSettings":
+						_setups[i].postSettingsSetup();
 						break;
 					case "final":
 						_setups[i].finalSetup();

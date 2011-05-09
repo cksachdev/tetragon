@@ -54,11 +54,16 @@ package base.core.debug
 	 * to that found in many later games. By default the console - once instantiated and
 	 * added to the stage - is hidden and can be toggled visible with the toggle() method.
 	 */
-	public class Console extends Sprite
+	public final class Console extends Sprite
 	{
 		//-----------------------------------------------------------------------------------------
 		// Constants
 		//-----------------------------------------------------------------------------------------
+		
+		public static const LINED:String		= "\u2310";
+		public static const UL:String			= "\u02CD";
+		public static const INV_START:String	= "\u2320";
+		public static const INV_END:String		= "\u2321";
 		
 		private const FONT:String			= "Terminalscope";
 		private const FONT_INV:String		= "Terminalscope Inverse";
@@ -187,11 +192,9 @@ package base.core.debug
 		 */
 		public function welcome():void
 		{
-			linefeed();
 			log("Welcome to the backdoor! Today is " + new Date().toString(), LogLevel.INFO);
-			log("||Type 'help' for a console help summary.||", LogLevel.INFO);
-			log("||Type 'commands' for a list of all available commands.||", LogLevel.INFO);
-			linefeed();
+			log(INV_START + "Type 'help' for a console help summary." + INV_END, LogLevel.INFO);
+			log(INV_START + "Type 'commands' for a list of all available commands." + INV_END, LogLevel.INFO);
 		}
 		
 		
@@ -209,21 +212,10 @@ package base.core.debug
 			else if (level < 0) level = 0;
 			else if (level > _maxLevel) level = _maxLevel;
 			
-			/* Check if text should be wrapped by delimiter lines.
-			 * TODO move this code section somwhere else! */
-			if (text != null && text.substr(0, 2) == "^^" && text.substr(-2, 2) == "^^")
-			{
-				text = text.substring(2, text.length - 2);
-				delimiter(text.length, level);
-				log(text, level);
-				delimiter(text.length, level);
-				return;
-			}
-			
 			if (text != null)
 			{
 				text = convertHTMLTags(text);
-				text = replaceSpecialTags(text);
+				text = replaceSpecialTags(text, level);
 			}
 			
 			text = addLabel(text, level);
@@ -258,11 +250,7 @@ package base.core.debug
 		 */
 		public function delimiter(length:int = 20, level:int = 2):void
 		{
-			length = (length < 1) ? 1 : (length > 1024) ? 1024 : length;
-			var s:String = "";
-			var i:int = 0;
-			while (i++ < length) s += "-";
-			log(s, level);
+			log(makeLine(length), level);
 		}
 		
 		
@@ -673,9 +661,28 @@ package base.core.debug
 		/**
 		 * @private
 		 */
-		private function replaceSpecialTags(s:String):String
+		private function replaceSpecialTags(s:String, level:int):String
 		{
-			return s.replace(/\|\|(.+)\|\|/g, "<a>$1</a>").replace(/__(.+?)__/g, "<u>$1</u>");
+			/* Check if text should be wrapped by delimiter lines. */
+			if (s.substr(0, 1) == LINED && s.substr(-1, 1) == LINED)
+			{
+				var line:String = makeLine(s.length - 2);
+				s = line + "\n  " + s.substring(1, s.length - 1) + "\n  " + line;
+			}
+			return s.replace(/\u2320(.+)\u2321/g, "<a>$1</a>").replace(/\u02CD(.+?)\u02CD/g, "<u>$1</u>");
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		private function makeLine(length:int):String
+		{
+			length = (length < 1) ? 1 : (length > 1024) ? 1024 : length;
+			var s:String = "";
+			var i:int = 0;
+			while (i++ < length) s += "-";
+			return s;
 		}
 		
 		

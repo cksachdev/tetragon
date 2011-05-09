@@ -109,7 +109,7 @@ package base.io.resource
 		 */
 		override public function toString():String
 		{
-			return "[EmbeddedResourceProvider]";
+			return "EmbeddedResourceProvider";
 		}
 		
 		

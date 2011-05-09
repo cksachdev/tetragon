@@ -247,6 +247,7 @@ package base.core.debug
 		 */
 		public static function linefeed():void
 		{
+			if (_externalLog) _externalLog.trace("");
 			send("", LogLevel.INFO);
 		}
 		

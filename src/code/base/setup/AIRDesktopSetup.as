@@ -81,7 +81,7 @@ package base.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function postResourceSetup():void
+		override public function postSettingsSetup():void
 		{
 			/* Only create new setup helper if it's not already existing! */
 			if (!main.setupHelper)

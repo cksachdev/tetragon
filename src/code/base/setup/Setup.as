@@ -66,9 +66,9 @@ package base.setup
 		
 		
 		/**
-		 * Executes setup tasks that need to be done after resource manager is ready.
+		 * Executes setup tasks that need to be done after app settings have been loaded.
 		 */
-		public function postResourceSetup():void
+		public function postSettingsSetup():void
 		{
 			/* Abstract method! */
 		}

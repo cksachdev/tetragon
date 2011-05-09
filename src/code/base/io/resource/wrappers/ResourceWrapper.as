@@ -34,11 +34,11 @@ package base.io.resource.wrappers
 	import com.hexagonstar.constants.Status;
 	import com.hexagonstar.exception.IllegalArgumentException;
 	import com.hexagonstar.file.types.IFile;
+	import com.hexagonstar.util.reflection.getClassName;
 
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.ByteArray;
-	import flash.utils.getQualifiedClassName;
 	
 	
 	/**
@@ -110,7 +110,7 @@ package base.io.resource.wrappers
 		 */
 		override public function toString():String
 		{
-			return "[" + getQualifiedClassName(this).match("[^:]*$")[0] + "]";
+			return getClassName(this);
 		}
 		
 		

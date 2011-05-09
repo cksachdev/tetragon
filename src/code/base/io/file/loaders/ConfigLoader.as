@@ -111,7 +111,7 @@ package base.io.file.loaders
 		 */
 		override public function toString():String
 		{
-			return "[ConfigLoader]";
+			return "ConfigLoader";
 		}
 		
 		

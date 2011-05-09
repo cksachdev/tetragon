@@ -214,7 +214,7 @@ package base.io.resource
 		 */
 		public function toString():String
 		{
-			return "[ResourceBundle]";
+			return "ResourceBundle";
 		}
 		
 		

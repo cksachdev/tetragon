@@ -27,7 +27,7 @@
  */
 package base.core.entity
 {
-	import flash.utils.getQualifiedClassName;
+	import com.hexagonstar.util.reflection.getClassName;
 	
 	
 	/**
@@ -65,7 +65,7 @@ package base.core.entity
 		 */
 		public function toString():String
 		{
-			return "[" + getQualifiedClassName(this).match("[^:]*$")[0] + "]";
+			return getClassName(this);
 		}
 		
 		
