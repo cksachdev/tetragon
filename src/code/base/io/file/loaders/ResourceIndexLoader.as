@@ -225,6 +225,7 @@ package base.io.file.loaders
 			var xml:XML = xmlFile.contentAsXML;
 			parseReferences(xml);
 			parseMedia(xml);
+			parseLists(xml);
 			parseData(xml);
 			parseEntities(xml);
 			parseText(xml);
@@ -284,6 +285,39 @@ package base.io.file.loaders
 					{
 						addResourceEntry(s, resourceClassID, ResourceFamily.MEDIA, null);
 					}
+				}
+			}
+		}
+		
+		
+		/**
+		 * Parses list resource entries.
+		 * @private
+		 */
+		private function parseLists(xml:XML):void
+		{
+			for each (var x:XML in xml.lists.group)
+			{
+				var type:String = x.@type;
+				var allFileID:String = "" + x.@fileID;
+				for each (var s:XML in x.children())
+				{
+					if (s.name() != "resource") continue;
+					
+					var fileID:String = allFileID.length > 0 ? allFileID : s.@fileID;
+					var dfp:String = _resourceIndex.getDataFilePath(fileID);
+					
+					if (!dfp || dfp.length < 1)
+					{
+						Log.error("No data file with ID \"" + s.@fileID
+							+ "\" defined in resource index but the resource with ID \""
+							+ s.@id + "\" requires it.", this);
+						continue;
+					}
+					
+					s.@path = dfp;
+					s.@packageID = _resourceIndex.getDataFilePackageID(fileID);
+					addResourceEntry(s, ResourceFamily.DATA, ResourceFamily.LIST, type);
 				}
 			}
 		}

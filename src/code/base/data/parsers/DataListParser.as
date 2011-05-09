@@ -25,33 +25,45 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base
+package base.data.parsers
 {
+	import base.Main;
+	import base.data.DataSupportManager;
+	import base.io.resource.ResourceIndex;
+	import base.io.resource.wrappers.XMLResourceWrapper;
+
+	
 	/**
-	 * AppInfo
-	 * Ant auto-generated application information class. Do not edit!
+	 * 
 	 */
-	public final class AppInfo
+	public class DataListParser extends DataParser implements IDataParser
 	{
-		public static const ID:String				= "com.hexagonstar.tetragon";
-		public static const NAME:String				= "Tetragon Application";
-		public static const DESCRIPTION:String		= "Tetragon Application Test Build";
-		public static const VERSION:String			= "1.0.0";
-		public static const BUILD:String			= "5026";
-		public static const BUILD_DATE:String		= "10-May-2011 02:00";
-		public static const MILESTONE:String		= "foundation";
-		public static const BUILD_TYPE:String		= "desktop";
-		public static const RELEASE_STAGE:String	= "beta";
-		public static const COPYRIGHT:String		= "Hexagon Star Softworks";
-		public static const PUBLISHER:String		= "Hexagon Star Softworks";
-		public static const CREATOR:String			= "Hexagon Star Softworks";
-		public static const CONTRIBUTOR:String		= "Hexagon Star Softworks";
-		public static const YEAR:String				= "2011";
-		public static const WEBSITE:String			= "http://www.hexagonstar.com/";
-		public static const LANGUAGE:String			= "en";
-		public static const FILENAME:String			= "tetragon";
-		public static const DEFAULT_WIDTH:int		= 1024;
-		public static const DEFAULT_HEIGHT:int		= 640;
-		public static const IS_DEBUG:Boolean		= true;
+		//-----------------------------------------------------------------------------------------
+		// Public Methods
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function parse(wrapper:XMLResourceWrapper, model:*):void
+		{
+			_xml = wrapper.xml;
+			var index:ResourceIndex = model;
+			var dsm:DataSupportManager = Main.instance.dataSupportManager;
+			
+			/* Loop through all lists in data file. */
+			for each (var x:XML in _xml.list)
+			{
+				/* Get the current list's ID. */
+				var id:String = extractString(x, "@id");
+				
+				/* Only parse the list(s) that we want! */
+				if (!wrapper.hasResourceID(id)) continue;
+				
+				// TODO
+			}
+			
+			dispose();
+		}
 	}
 }

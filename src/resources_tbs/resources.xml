@@ -64,19 +64,19 @@
 	</entities>
 	
 	<!-- ************************************************************************************** -->
+	<lists>
+		
+		<group type="TBSMovementType" fileID="movementTypesFile">
+			<resource id="movementTypes"/>
+		</group>
+		
+	</lists>
+	
+	<!-- ************************************************************************************** -->
 	<data>
 		
 		<group type="Settings" fileID="settingsFile">
 			<resource id="settings"/>
-		</group>
-		
-		<group type="TBSMovementType" fileID="movementTypesFile">
-			<resource id="movementTypeInfantry"/>
-			<resource id="movementTypeTires"/>
-			<resource id="movementTypeTread"/>
-			<resource id="movementTypeSea"/>
-			<resource id="movementTypeHover"/>
-			<resource id="movementTypeAir"/>
 		</group>
 		
 		<group type="TBSTerrainType" fileID="terrainTypesFile">

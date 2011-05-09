@@ -29,6 +29,7 @@ package base.data
 {
 	import base.core.debug.Log;
 	import base.core.entity.IEntityComponent;
+	import base.data.parsers.DataListParser;
 	import base.data.parsers.EntityDataParser;
 	import base.data.parsers.IDataParser;
 	import base.data.parsers.NullDataParser;
@@ -145,6 +146,7 @@ package base.data
 			mapDataType(ResourceFamily.TEXT, TextDataParser);
 			mapDataType(ResourceFamily.XML, XMLDataParser);
 			mapDataType(ResourceFamily.ENTITY, EntityDataParser);
+			mapDataType(ResourceFamily.LIST, DataListParser);
 			mapDataType(ResourceFamily.SETTINGS, SettingsDataParser);
 		}
 		

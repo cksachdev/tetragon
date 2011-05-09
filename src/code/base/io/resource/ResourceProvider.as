@@ -317,7 +317,21 @@ package base.io.resource
 			var resourceFamily:String = bulkFile.resourceFamily;
 			var parser:IDataParser;
 			
-			if (resourceFamily == ResourceFamily.DATA || resourceFamily == ResourceFamily.ENTITY)
+			if (resourceFamily == ResourceFamily.TEXT)
+			{
+				parser = _dsm.createDataTypeParser(resourceFamily);
+				if (parser)
+				{
+					parser.parse(w, resourceManager.stringIndex);
+				}
+				else
+				{
+					fail(bulkFile, "Failed parsing text resource from " + bulkFile.id
+						+ "! Text parser not created.");
+					return;
+				}
+			}
+			else
 			{
 				if (!resourceType || resourceType.length < 1)
 				{
@@ -342,20 +356,6 @@ package base.io.resource
 				{
 					fail(bulkFile, "Failed parsing data resource from " + bulkFile.id
 						+ "! Data parser not created.");
-					return;
-				}
-			}
-			else if (resourceFamily == ResourceFamily.TEXT)
-			{
-				parser = _dsm.createDataTypeParser(resourceFamily);
-				if (parser)
-				{
-					parser.parse(w, resourceManager.stringIndex);
-				}
-				else
-				{
-					fail(bulkFile, "Failed parsing text resource from " + bulkFile.id
-						+ "! Text parser not created.");
 					return;
 				}
 			}
