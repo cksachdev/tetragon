@@ -28,6 +28,7 @@
 package base.io.resource
 {
 	import base.Main;
+	import base.core.debug.Log;
 	import base.data.DataSupportManager;
 	import base.data.parsers.IDataParser;
 	import base.event.ResourceEvent;
@@ -311,38 +312,65 @@ package base.io.resource
 				fail(bulkFile, w.status);
 				return;
 			}
+			
 			var resourceType:String = bulkFile.resourceType;
-			if (!resourceType || resourceType.length < 1)
-			{
-				fail(bulkFile, "Data resource has no type defined.");
-				return;
-			}
-			
-			/* Resources of family ResourceFamily.DATA use a parser that is mapped
-			 * with their data type. Other resources (entities) are always mapped
-			 * with their resource family name. */
+			var resourceFamily:String = bulkFile.resourceFamily;
 			var parser:IDataParser;
-			if (bulkFile.resourceFamily == ResourceFamily.DATA)
-				parser = _dsm.createDataTypeParser(resourceType);
-			else
-				parser = _dsm.createDataTypeParser(bulkFile.resourceFamily);
 			
-			if (!parser)
+			if (resourceFamily == ResourceFamily.DATA || resourceFamily == ResourceFamily.ENTITY)
 			{
-				fail(bulkFile);
-				return;
+				if (!resourceType || resourceType.length < 1)
+				{
+					fail(bulkFile, "Data resource has no type defined (ResourceBulkFile ID: "
+						+ bulkFile.id + ").");
+					return;
+				}
+				
+				/* Resources of family ResourceFamily.DATA use a parser that is mapped
+				 * with their data type. Other data resources (entities) are always mapped
+				 * with their resource family name. */
+				if (bulkFile.resourceFamily == ResourceFamily.DATA)
+					parser = _dsm.createDataTypeParser(resourceType);
+				else
+					parser = _dsm.createDataTypeParser(bulkFile.resourceFamily);
+				
+				if (parser)
+				{
+					parser.parse(w, resourceManager.resourceIndex);
+				}
+				else
+				{
+					fail(bulkFile, "Failed parsing data resource! Data parser not created.");
+					return;
+				}
+			}
+			else if (resourceFamily == ResourceFamily.TEXT)
+			{
+				parser = _dsm.createDataTypeParser(resourceFamily);
+				if (parser)
+				{
+					parser.parse(w, resourceManager.stringIndex);
+				}
+				else
+				{
+					fail(bulkFile, "Failed parsing text resource! Text parser not created.");
+					return;
+				}
 			}
 			
-			/* Text data goes into the string index, other data into the resource index. */
-			if (resourceType == ResourceFamily.TEXT)
-				parser.parse(w, resourceManager.stringIndex);
-			else
-				parser.parse(w, resourceManager.resourceIndex);
-			
+			/* Check for referenced resources. */
 			if (parser.referencedIDs != null)
 			{
-				// TODO check if the parser has valid referencedIDs and if so process them
-				// for loading of referenced resources.
+				var refIDs:Object = parser.referencedIDs;
+				var a:Array = [];
+				for (var refID:String in refIDs)
+				{
+					var refType:String = refIDs[refID];
+					a.push(refID);
+					Log.debug(bulkFile.id + " requested referenced resource with ID \""
+						+ refID + "\".", this);
+				}
+				resourceManager.load(a);
 			}
 			
 			/* Mark all resources in the loaded bulk file as loaded. */

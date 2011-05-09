@@ -31,7 +31,7 @@ package base.io.resource
 	 * Contains constants for the resource index loader and other classes to determine
 	 * to which resource family a resource belongs.
 	 */
-	public class ResourceFamily
+	public final class ResourceFamily
 	{
 		//-----------------------------------------------------------------------------------------
 		// Constants

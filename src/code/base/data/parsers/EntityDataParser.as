@@ -31,6 +31,7 @@ package base.data.parsers
 	import base.core.debug.Log;
 	import base.core.entity.EntityDefinition;
 	import base.data.DataSupportManager;
+	import base.data.types.KeyValuePair;
 	import base.io.resource.ResourceIndex;
 	import base.io.resource.wrappers.XMLResourceWrapper;
 
@@ -98,14 +99,14 @@ package base.data.parsers
 							}
 							else
 							{
-								key = checkReferencedID(key, value);
-								if (value == null || value == "")
+								var pair:KeyValuePair = checkReferencedID(key, value);
+								if (pair.value == null || pair.value == "")
 								{
-									map[key] = null;
+									map[pair.key] = null;
 								}
 								else
 								{
-									map[key] = value;
+									map[pair.key] = pair.value;
 								}
 							}
 						}

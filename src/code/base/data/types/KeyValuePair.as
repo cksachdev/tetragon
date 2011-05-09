@@ -25,73 +25,32 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.tbs.setup
+package base.data.types
 {
-	import base.setup.ISetupRegistry;
-	import base.setup.SetupRegistry;
-
-	import extra.tbs.entity.components.*;
-	import extra.tbs.view.screen.*;
-	
-	
 	/**
-	 * TBS setup registry class.
+	 * Simple KeyValuePair data type.
 	 */
-	public class TBSSetupRegistry extends SetupRegistry implements ISetupRegistry
+	public class KeyValuePair
 	{
 		//-----------------------------------------------------------------------------------------
-		// Public Methods
+		// Properties
+		//-----------------------------------------------------------------------------------------
+		
+		public var key:String;
+		public var value:*;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Constructor
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @inheritDoc
+		 * Creates a new instance of the class.
 		 */
-		override public function registerResourceFileTypes():void
+		public function KeyValuePair(key:String, value:*)
 		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerComplexTypes():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerDataTypes():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerEntitySystems():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerEntityComponents():void
-		{
-			registerEntityComponent("tbsUnitPropertiesComponent", TBSUnitPropertiesComponent);
-			registerEntityComponent("tbsUnitStatsComponent", TBSUnitStatsComponent);
-			registerEntityComponent("tbsUnitWeaponComponent", TBSUnitWeaponComponent);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerScreens():void
-		{
-			registerScreen("tbsGamePlayScreen", TBSGamePlayScreen);
+			this.key = key;
+			this.value = value;
 		}
 	}
 }

@@ -25,73 +25,21 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.tbs.setup
+package base.io.resource
 {
-	import base.setup.ISetupRegistry;
-	import base.setup.SetupRegistry;
-
-	import extra.tbs.entity.components.*;
-	import extra.tbs.view.screen.*;
-	
-	
 	/**
-	 * TBS setup registry class.
+	 * ResourceIDType class
 	 */
-	public class TBSSetupRegistry extends SetupRegistry implements ISetupRegistry
+	public final class ResourceIDType
 	{
 		//-----------------------------------------------------------------------------------------
-		// Public Methods
+		// Constants
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerResourceFileTypes():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerComplexTypes():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerDataTypes():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerEntitySystems():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerEntityComponents():void
-		{
-			registerEntityComponent("tbsUnitPropertiesComponent", TBSUnitPropertiesComponent);
-			registerEntityComponent("tbsUnitStatsComponent", TBSUnitStatsComponent);
-			registerEntityComponent("tbsUnitWeaponComponent", TBSUnitWeaponComponent);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerScreens():void
-		{
-			registerScreen("tbsGamePlayScreen", TBSGamePlayScreen);
-		}
+		public static const ID:String = "ID";
+		public static const TID:String = "TID";
+		public static const DID:String = "DID";
+		public static const LID:String = "LID";
+		public static const DIVIDER:String = "/";
 	}
 }

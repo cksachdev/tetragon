@@ -10,7 +10,7 @@
 				<designationTID>textUnits/nameInfantryUnit</designationTID>
 				<designationShortTID>textUnits/nameShortInfantryUnit</designationShortTID>
 				<descriptionTID>textUnits/descInfantryUnit</descriptionTID>
-				<movementTypeLID>movementTypes/movementTypeInfantry</movementTypeLID>
+				<movementTypeID>movementTypeInfantry</movementTypeID>
 				<price>1000</price>
 			</component>
 			
@@ -25,7 +25,7 @@
 				<xpValueDefense>3</xpValueDefense>
 			</component>
 			
-			<component classID="TBSUnitWeapons">
+			<component classID="tbsUnitWeaponComponent">
 				<primaryWeaponDID></primaryWeaponDID>
 				<secondaryWeaponDID>weaponMachineGun</secondaryWeaponDID>
 			</component>

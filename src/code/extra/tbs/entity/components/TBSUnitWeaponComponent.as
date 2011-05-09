@@ -25,73 +25,59 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.tbs.setup
+package extra.tbs.entity.components
 {
-	import base.setup.ISetupRegistry;
-	import base.setup.SetupRegistry;
-
-	import extra.tbs.entity.components.*;
-	import extra.tbs.view.screen.*;
+	import base.core.entity.EntityComponent;
+	import base.core.entity.IEntityComponent;
 	
 	
-	/**
-	 * TBS setup registry class.
-	 */
-	public class TBSSetupRegistry extends SetupRegistry implements ISetupRegistry
+	public class TBSUnitWeaponComponent extends EntityComponent implements IEntityComponent
 	{
+		//-----------------------------------------------------------------------------------------
+		// Properties
+		//-----------------------------------------------------------------------------------------
+		
+		private var _primaryWeaponID:String;
+		private var _secondaryWeaponID:String;
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerResourceFileTypes():void
+		
+		//-----------------------------------------------------------------------------------------
+		// Getters & Setters
+		//-----------------------------------------------------------------------------------------
+		
+		public function get primaryWeaponID():String
 		{
+			return _primaryWeaponID;
+		}
+		public function set primaryWeaponID(v:String):void
+		{
+			_primaryWeaponID = v;
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerComplexTypes():void
+		public function get secondaryWeaponID():String
 		{
+			return _secondaryWeaponID;
+		}
+		public function set secondaryWeaponID(v:String):void
+		{
+			_secondaryWeaponID = v;
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerDataTypes():void
-		{
-		}
+		//-----------------------------------------------------------------------------------------
+		// Callback Handlers
+		//-----------------------------------------------------------------------------------------
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerEntitySystems():void
-		{
-		}
+		//-----------------------------------------------------------------------------------------
+		// Private Methods
+		//-----------------------------------------------------------------------------------------
 		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerEntityComponents():void
-		{
-			registerEntityComponent("tbsUnitPropertiesComponent", TBSUnitPropertiesComponent);
-			registerEntityComponent("tbsUnitStatsComponent", TBSUnitStatsComponent);
-			registerEntityComponent("tbsUnitWeaponComponent", TBSUnitWeaponComponent);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerScreens():void
-		{
-			registerScreen("tbsGamePlayScreen", TBSGamePlayScreen);
-		}
 	}
 }

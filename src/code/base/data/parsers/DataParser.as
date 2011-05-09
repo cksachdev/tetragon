@@ -28,6 +28,8 @@
 package base.data.parsers
 {
 	import base.core.debug.Log;
+	import base.data.types.KeyValuePair;
+	import base.io.resource.ResourceIDType;
 
 	import com.hexagonstar.util.reflection.getClassName;
 	import com.hexagonstar.util.string.createStringVector;
@@ -110,33 +112,37 @@ package base.data.parsers
 		 * 
 		 * @param key The resource ID property key to check.
 		 * @param value The resource property's value.
-		 * @return The modified or unmodified key.
+		 * @return A KeyValuePair object.
 		 */
-		protected function checkReferencedID(key:String, value:String):String
+		protected function checkReferencedID(key:String, value:String):KeyValuePair
 		{
 			var s:String = key.substr(-3);
 			var sid:String = null;
 			switch (s)
 			{
-				case "TID":
-				case "DID":
-				case "LID":
-					sid = s.toLowerCase();
-					key = key.substr(0, key.length - 3) + "ID";
+				case ResourceIDType.TID:
+				case ResourceIDType.DID:
+				case ResourceIDType.LID:
+					sid = s;
+					key = key.substr(0, key.length - 3) + ResourceIDType.ID;
 			}
 			
-			if (value == null || value == "")
-			{
-				return key;
-			}
-			
-			if (sid)
+			if (value != null && value != "" && sid)
 			{
 				if (!_referencedIDs) _referencedIDs = {};
-				_referencedIDs[value] = sid;
+				if (value.indexOf(ResourceIDType.DIVIDER) != -1)
+				{
+					var a:Array = value.split(ResourceIDType.DIVIDER);
+					_referencedIDs[String(a[0])] = sid;
+					return new KeyValuePair(key, a[1]);
+				}
+				else
+				{
+					_referencedIDs[value] = sid;
+				}
 			}
 			
-			return key;
+			return new KeyValuePair(key, value);
 		}
 		
 		

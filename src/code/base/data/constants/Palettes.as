@@ -30,7 +30,7 @@ package base.data.constants
 	/**
 	 * Color palette constants.
 	 */
-	public class Palettes
+	public final class Palettes
 	{
 		//-----------------------------------------------------------------------------------------
 		// Constants
