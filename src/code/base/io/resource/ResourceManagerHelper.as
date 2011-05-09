@@ -66,6 +66,21 @@ package base.io.resource
 		
 		
 		//-----------------------------------------------------------------------------------------
+		// Public Methods
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Returns a String Representation of the class.
+		 * 
+		 * @return A String Representation of the class.
+		 */
+		public function toString():String
+		{
+			return "ResourceManagerHelper";
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
 		
@@ -262,17 +277,6 @@ package base.io.resource
 					_resourceManager.completeInitialization();
 				}
 			}
-		}
-		
-		
-		/**
-		 * Returns a String Representation of the class.
-		 * 
-		 * @return A String Representation of the class.
-		 */
-		private function toString():String
-		{
-			return "ResourceManagerHelper";
 		}
 	}
 }

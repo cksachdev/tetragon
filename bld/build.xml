@@ -654,7 +654,7 @@
 				excludes="**/.svn,${resource.index.file}"
 				update="false"
 				compress="true"/>
-			<zip destfile="${path.resources.target}/resources.tem"
+			<zip destfile="${path.resources.target}/resources.rif"
 				basedir="${path.resources.source}"
 				includes="${resource.index.file}"
 				update="false"

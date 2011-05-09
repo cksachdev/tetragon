@@ -188,7 +188,7 @@ package base.io.file.loaders
 			
 			/* Change file path to use the packed version. */
 			var f:IFile = _files.dequeue();
-			var path:String = f.path.substring(0, f.path.lastIndexOf(".")) + ".tem";
+			var path:String = f.path.substring(0, f.path.lastIndexOf(".")) + ".rif";
 			
 			Log.debug("\"" + f.path + "\" not found, trying to load \"" + path + "\" instead ...",
 				this);
