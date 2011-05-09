@@ -74,11 +74,8 @@ package base.core.debug
 		 */
 		public static function init():void 
 		{
-			_main = null;
-			_buffer = null;
-			_console = null;
-			_externalLog = null;
 			_initial = true;
+			_buffer = null;
 			_externalLog = new ExternalLogAdapter();
 		}
 		

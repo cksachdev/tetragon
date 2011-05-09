@@ -83,7 +83,7 @@ package base.command.env
 		override public function execute():void
 		{
 			Log.init();
-			Log.info("Initializing...");
+			Log.info("Initializing...", this);
 			
 			_setups = new Vector.<Setup>();
 			/* Add base setup ... */
@@ -94,7 +94,7 @@ package base.command.env
 			var s:String = "Used setups: ";
 			for (var i:int = 0; i < _setups.length; i++)
 				s += _setups[i].name + ", ";
-			Log.debug(s.substr(0, s.length - 2));
+			Log.debug(s.substr(0, s.length - 2), this);
 			
 			initialSetup();
 			loadApplicationConfig();

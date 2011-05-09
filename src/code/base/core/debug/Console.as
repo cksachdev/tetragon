@@ -72,10 +72,10 @@ package base.core.debug
 		private const PADDING:int			= 4;
 		
 		private const PROMPT:String			= "&gt; ";
-		private const LABEL_WARN:String		= "WARNING: ";
-		private const LABEL_ERROR:String	= "ERROR: ";
-		private const LABEL_FATAL:String	= "FATAL ERROR: ";
-		private const LABEL_SYSTEM:String	= "SYSTEM: ";
+		private const LABEL_WARN:String		= "[WARNING] ";
+		private const LABEL_ERROR:String	= "[ERROR] ";
+		private const LABEL_FATAL:String	= "[FATAL ERROR] ";
+		private const LABEL_SYSTEM:String	= "[SYSTEM] ";
 		
 		
 		//-----------------------------------------------------------------------------------------

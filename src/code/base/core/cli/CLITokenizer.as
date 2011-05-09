@@ -194,7 +194,7 @@ package base.core.cli
 		 */
 		public static function toString():String
 		{
-			return "[CLITokenizer]";
+			return "CLITokenizer";
 		}
 		
 		

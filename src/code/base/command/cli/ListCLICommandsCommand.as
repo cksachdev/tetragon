@@ -40,6 +40,13 @@ package base.command.cli
 	public class ListCLICommandsCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
+		// Properties
+		//-----------------------------------------------------------------------------------------
+		
+		private var _filter:String = "all";
+		
+		
+		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
@@ -56,6 +63,13 @@ package base.command.cli
 			for (var c:String in cmds)
 			{
 				var vo:CLICommandVO = cmds[c];
+				
+				/* Apply filters. */
+				if (_filter != "all")
+				{
+					if (vo.group != _filter) continue;
+				}
+				
 				t.add([c, vo.group, vo.descr]);
 			}
 			
@@ -74,6 +88,48 @@ package base.command.cli
 		override public function get name():String
 		{
 			return "listCLICommands";
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function get signature():Array
+		{
+			return ["+filter:Identifier"];
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function get helpText():String
+		{
+			return "Outputs a list of all CLI commands that can be used with the console. Optionally the output can be"
+				+ " filtered to a specific command group by using the command group's name as an argument:\n\n"
+				+ "\t\tall:      List all commands (default).\n"
+				+ "\t\tcli:      Only list commands that are part of the CLI group.\n"
+				+ "\t\tenv:      Only list commands that are part of the env group.\n"
+				+ "\t\tfile:     Only list commands that are part of the file group.\n\n";
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function get example():String
+		{
+			return "commands cli";
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// CLI Command Signature Arguments
+		//-----------------------------------------------------------------------------------------
+		
+		public function set filter(v:String):void
+		{
+			_filter = v;
 		}
 	}
 }
