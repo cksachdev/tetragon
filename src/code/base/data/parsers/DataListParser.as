@@ -28,15 +28,13 @@
 package base.data.parsers
 {
 	import base.data.DataList;
-	import base.data.DataListItem;
-	import base.data.DataListItemSet;
 	import base.data.types.KeyValuePair;
 	import base.io.resource.ResourceIndex;
 	import base.io.resource.wrappers.XMLResourceWrapper;
 
 	
 	/**
-	 * 
+	 * Parser for data list objects.
 	 */
 	public class DataListParser extends DataObjectParser implements IDataParser
 	{
@@ -70,34 +68,32 @@ package base.data.parsers
 				for each (var i:XML in l.item)
 				{
 					/* Create new data list item object. */
-					var item:DataListItem = new DataListItem(extractString(i, "@id"));
+					var itemID:String = extractString(i, "@id");
+					list.createItem(itemID);
 					
 					/* Parse the item's properties. */
 					for each (p in i.properties.children())
 					{
 						pair = parseProperty(p);
 						pair = checkReferencedID(pair.key, pair.value);
-						item.addProperty(pair.key, pair.value);
+						list.mapProperty(itemID, pair.key, pair.value);
 					}
 					
 					/* Parse the item's sets. */
 					for each (var s:XML in i.sets.children())
 					{
 						/* Create new dataset object. */
-						var ds:DataListItemSet = new DataListItemSet(s.name());
+						var setID:String = s.name();
+						list.createSet(itemID, setID);
+						
 						/* Parse through all the set's properties. */
 						for each (p in s.children())
 						{
 							pair = parseProperty(p);
 							pair = checkReferencedID(pair.key, pair.value);
-							ds.addProperty(pair.key, pair.value);
+							list.mapSetProperty(itemID, setID, pair.key, pair.value);
 						}
-						/* Add parsed set to the current data list item. */
-						item.addSet(ds);
 					}
-					
-					/* Add the parsed item to the current data list. */
-					list.addItem(item);
 				}
 				
 				/* add the parsed list to the resource index. */
