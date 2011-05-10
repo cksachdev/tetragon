@@ -1,187 +1,197 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data>
 	
-	<list id="listTerrainTypes" dataType="terrainType">
+	<list id="terrainTypes">
 		
 		<item id="terrainGrassland">
 			<properties>
-				<nameID>nameTerrainGrassland</nameID>
-				<descriptionID>descTerrainGrassland</descriptionID>
+				<nameID>textLists/nameTerrainGrassland</nameID>
+				<descriptionID>textLists/descTerrainGrassland</descriptionID>
 				<movementCost>1</movementCost>
 				<combatModifier>-20</combatModifier>
 			</properties>
 		</item>
 		
-		<item id="terrainGrassland">
-			<properties>
-				<property name="name" ref="text">nameTerrainGrassland</property>
-				<property name="description" ref="text">descTerrainGrassland</property>
-				<property name="movementCost">1</property>
-				<property name="combatModifier">-20</property>
-			</properties>
-		</item>
-		
 		<item id="terrainPlains">
-			<textRefs>
-				<nameID>nameTerrainPlains</nameID>
-				<descriptionID>descTerrainPlains</descriptionID>
-			</textRefs>
-			<dataRefs/>
 			<properties>
-				<property name="movementCost">1</property>
-				<property name="combatModifier">-25</property>
+				<nameID>textLists/nameTerrainPlains</nameID>
+				<descriptionID>textLists/descTerrainPlains</descriptionID>
+				<movementCost>1</movementCost>
+				<combatModifier>-25</combatModifier>
 			</properties>
 		</item>
 		
 		<item id="terrainTundra">
-			<textRefs>
-				<nameID>nameTerrainTundra</nameID>
-				<descriptionID>descTerrainTundra</descriptionID>
-			</textRefs>
-			<dataRefs/>
 			<properties>
-				<property name="movementCost">1</property>
-				<property name="combatModifier">-25</property>
+				<nameID>textLists/nameTerrainTundra</nameID>
+				<descriptionID>textLists/descTerrainTundra</descriptionID>
+				<movementCost>1</movementCost>
+				<combatModifier>-25</combatModifier>
 			</properties>
 		</item>
 		
 		<item id="terrainDesert">
-			<textRefs>
-				<nameID>nameTerrainDesert</nameID>
-				<descriptionID>descTerrainDesert</descriptionID>
-			</textRefs>
-			<dataRefs/>
 			<properties>
-				<property name="movementCost">1</property>
-				<property name="combatModifier">-33</property>
+				<nameID>textLists/nameTerrainDesert</nameID>
+				<descriptionID>textLists/descTerrainDesert</descriptionID>
+				<movementCost>1</movementCost>
+				<combatModifier>-33</combatModifier>
 			</properties>
 		</item>
 		
 		<item id="terrainHills">
-			<textRefs>
-				<nameID>nameTerrainHills</nameID>
-				<descriptionID>descTerrainHills</descriptionID>
-			</textRefs>
-			<dataRefs/>
 			<properties>
-				<property name="movementCost">2</property>
-				<property name="combatModifier">20</property>
+				<nameID>textLists/nameTerrainHills</nameID>
+				<descriptionID>textLists/descTerrainHills</descriptionID>
+				<movementCost>2</movementCost>
+				<combatModifier>20</combatModifier>
+			</properties>
+		</item>
+	
+		<item id="terrainMountains">
+			<properties>
+				<nameID>textLists/nameTerrainMountains</nameID>
+				<descriptionID>textLists/descTerrainMountains</descriptionID>
+				<movementCost>4</movementCost>
+				<combatModifier>25</combatModifier>
 			</properties>
 		</item>
 		
-	</list>
+		<item id="terrainSnow">
+			<properties>
+				<nameID>textLists/nameTerrainSnow</nameID>
+				<descriptionID>textLists/descTerrainSnow</descriptionID>
+				<movementCost>1</movementCost>
+				<combatModifier>-20</combatModifier>
+			</properties>
+		</item>
+		
+		<item id="terrainIce">
+			<properties>
+				<nameID>textLists/nameTerrainIce</nameID>
+				<descriptionID>textLists/descTerrainIce</descriptionID>
+				<movementCost>2</movementCost>
+				<combatModifier>-25</combatModifier>
+			</properties>
+		</item>
+		
+		<item id="terrainForest">
+			<properties>
+				<nameID>textLists/nameTerrainForest</nameID>
+				<descriptionID>textLists/descTerrainForest</descriptionID>
+				<movementCost>2</movementCost>
+				<combatModifier>25</combatModifier>
+			</properties>
+		</item>
+		
+		<item id="terrainJungle">
+			<properties>
+				<nameID>textLists/nameTerrainJungle</nameID>
+				<descriptionID>textLists/descTerrainJungle</descriptionID>
+				<movementCost>3</movementCost>
+				<combatModifier>25</combatModifier>
+			</properties>
+		</item>
+		
+		<item id="terrainMarsh">
+			<properties>
+				<nameID>textLists/nameTerrainMarsh</nameID>
+				<descriptionID>textLists/descTerrainMarsh</descriptionID>
+				<movementCost>2</movementCost>
+				<combatModifier>-20</combatModifier>
+			</properties>
+		</item>
+		
+		<item id="terrainSwamp">
+			<properties>
+				<nameID>textLists/nameTerrainSwamp</nameID>
+				<descriptionID>textLists/descTerrainSwamp</descriptionID>
+				<movementCost>3</movementCost>
+				<combatModifier>-20</combatModifier>
+			</properties>
+		</item>
+		
+		<item id="terrainUrban">
+			<properties>
+				<nameID>textLists/nameTerrainUrban</nameID>
+				<descriptionID>textLists/descTerrainUrban</descriptionID>
+				<movementCost>1</movementCost>
+				<combatModifier>33</combatModifier>
+			</properties>
+		</item>
+		
+		<item id="terrainRuins">
+			<properties>
+				<nameID>textLists/nameTerrainRuins</nameID>
+				<descriptionID>textLists/descTerrainRuins</descriptionID>
+				<movementCost>2</movementCost>
+				<combatModifier>25</combatModifier>
+			</properties>
+		</item>
+		
+		<item id="terrainRoad">
+			<properties>
+				<nameID>textLists/nameTerrainRoad</nameID>
+				<descriptionID>textLists/descTerrainRoad</descriptionID>
+				<movementCost>1</movementCost>
+				<combatModifier>-25</combatModifier>
+			</properties>
+		</item>
+		
+		<item id="terrainBridge">
+			<properties>
+				<nameID>textLists/nameTerrainBridge</nameID>
+				<descriptionID>textLists/descTerrainBridge</descriptionID>
+				<movementCost>1</movementCost>
+				<combatModifier>-33</combatModifier>
+			</properties>
+		</item>
+		
+		<item id="terrainCoast">
+			<properties>
+				<nameID>textLists/nameTerrainCoast</nameID>
+				<descriptionID>textLists/descTerrainCoast</descriptionID>
+				<movementCost>1</movementCost>
+				<combatModifier>0</combatModifier>
+			</properties>
+		</item>
+		
+		<item id="terrainSeaShallow">
+			<properties>
+				<nameID>textLists/nameTerrainSeaShallow</nameID>
+				<descriptionID>textLists/descTerrainSeaShallow</descriptionID>
+				<movementCost>1</movementCost>
+				<combatModifier>0</combatModifier>
+			</properties>
+		</item>
+		
+		<item id="terrainSeaDeep">
+			<properties>
+				<nameID>textLists/nameTerrainSeaDeep</nameID>
+				<descriptionID>textLists/descTerrainSeaDeep</descriptionID>
+				<movementCost>1</movementCost>
+				<combatModifier>0</combatModifier>
+			</properties>
+		</item>
+		
+		<item id="terrainSeaRough">
+			<properties>
+				<nameID>textLists/nameTerrainSeaRough</nameID>
+				<descriptionID>textLists/descTerrainSeaRough</descriptionID>
+				<movementCost>2</movementCost>
+				<combatModifier>15</combatModifier>
+			</properties>
+		</item>
+		
+		<item id="terrainReef">
+			<properties>
+				<nameID>textLists/nameTerrainReef</nameID>
+				<descriptionID>textLists/descTerrainReef</descriptionID>
+				<movementCost>2</movementCost>
+				<combatModifier>20</combatModifier>
+			</properties>
+		</item>
 	
-	<terrainType
-		id="terrainMountains"
-		nameID="nameTerrainMountains"
-		descriptionID="descTerrainMountains"
-		movementCost="4"
-		combatModifier="25"
-	/>
-	<terrainType
-		id="terrainSnow"
-		nameID="nameTerrainSnow"
-		descriptionID="descTerrainSnow"
-		movementCost="1"
-		combatModifier="-20"
-	/>
-	<terrainType
-		id="terrainIce"
-		nameID="nameTerrainIce"
-		descriptionID="descTerrainIce"
-		movementCost="2"
-		combatModifier="-25"
-	/>
-	<terrainType
-		id="terrainForest"
-		nameID="nameTerrainForest"
-		descriptionID="descTerrainForest"
-		movementCost="2"
-		combatModifier="25"
-	/>
-	<terrainType
-		id="terrainJungle"
-		nameID="nameTerrainJungle"
-		descriptionID="descTerrainJungle"
-		movementCost="3"
-		combatModifier="25"
-	/>
-	<terrainType
-		id="terrainMarsh"
-		nameID="nameTerrainMarsh"
-		descriptionID="descTerrainMarsh"
-		movementCost="2"
-		combatModifier="-20"
-	/>
-	<terrainType
-		id="terrainSwamp"
-		nameID="nameTerrainSwamp"
-		descriptionID="descTerrainSwamp"
-		movementCost="3"
-		combatModifier="-20"
-	/>
-	<terrainType
-		id="terrainUrban"
-		nameID="nameTerrainUrban"
-		descriptionID="descTerrainUrban"
-		movementCost="1"
-		combatModifier="33"
-	/>
-	<terrainType
-		id="terrainRuins"
-		nameID="nameTerrainRuins"
-		descriptionID="descTerrainRuins"
-		movementCost="2"
-		combatModifier="25"
-	/>
-	<terrainType
-		id="terrainRoad"
-		nameID="nameTerrainRoad"
-		descriptionID="descTerrainRoad"
-		movementCost="1"
-		combatModifier="-25"
-	/>
-	<terrainType
-		id="terrainBridge"
-		nameID="nameTerrainBridge"
-		descriptionID="descTerrainBridge"
-		movementCost="1"
-		combatModifier="-33"
-	/>
-	<terrainType
-		id="terrainCoast"
-		nameID="nameTerrainCoast"
-		descriptionID="descTerrainCoast"
-		movementCost="1"
-		combatModifier="0"
-	/>
-	<terrainType
-		id="terrainSeaShallow"
-		nameID="nameTerrainSeaShallow"
-		descriptionID="descTerrainSeaShallow"
-		movementCost="1"
-		combatModifier="0"
-	/>
-	<terrainType
-		id="terrainSeaDeep"
-		nameID="nameTerrainSeaDeep"
-		descriptionID="descTerrainSeaDeep"
-		movementCost="1"
-		combatModifier="0"
-	/>
-	<terrainType
-		id="terrainRoughSea"
-		nameID="nameTerrainRoughSea"
-		descriptionID="descTerrainRoughSea"
-		movementCost="2"
-		combatModifier="15"
-	/>
-	<terrainType
-		id="terrainReef"
-		nameID="nameTerrainReef"
-		descriptionID="descTerrainReef"
-		movementCost="2"
-		combatModifier="20"
-	/>
+	</list>
 	
 </data>

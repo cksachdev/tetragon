@@ -150,9 +150,9 @@ package base.io.resource
 			var t:TabularText = new TabularText(2, true, "  ", null, "  ", 100, ["ID", "STRING"]);
 			for (var s:String in _strings)
 			{
-				t.add([s, _strings[s]]);
+				t.add([s, "\"" + _strings[s] + "\""]);
 			}
-			return toString() + "\n" + t;
+			return toString() + " (size: " + _size + ")\n" + t;
 		}
 		
 		
@@ -163,7 +163,7 @@ package base.io.resource
 		 */
 		public function toString():String
 		{
-			return "[StringIndex, size=" + _size + "]";
+			return "StringIndex";
 		}
 		
 		

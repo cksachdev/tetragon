@@ -52,16 +52,5 @@ package base.data.parsers
 		 * Disposes the parser.
 		 */
 		function dispose():void
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * If the parsed data contains any referenced IDs they will be mapped into
-		 * this object for using them with referenced resource loading.
-		 */
-		function get referencedIDs():Object;
 	}
 }

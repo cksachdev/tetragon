@@ -25,6 +25,11 @@
 				<xpValueDefense>3</xpValueDefense>
 			</component>
 			
+			<component classID="spacial2DComponent">
+				<position ctype="Vector2D">x: 55, y: 300</position>
+				<rotation>90</rotation>
+			</component>
+			
 			<component classID="tbsUnitWeaponComponent">
 				<primaryWeaponID></primaryWeaponID>
 				<secondaryWeaponID>weaponMachineGun</secondaryWeaponID>

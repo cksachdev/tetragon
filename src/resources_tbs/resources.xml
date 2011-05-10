@@ -18,6 +18,7 @@
 		<file id="settingsFile" path="data/settings.xml" packageID="resourcePackage"/>
 		<file id="unitsFile" path="data/units.xml" packageID="resourcePackage"/>
 		<file id="weaponsFile" path="data/weapons.xml" packageID="resourcePackage"/>
+		<file id="domainTypesFile" path="data/domain_types.xml" packageID="resourcePackage"/>
 		<file id="movementTypesFile" path="data/movement_types.xml" packageID="resourcePackage"/>
 		<file id="terrainTypesFile" path="data/terrain_types.xml" packageID="resourcePackage"/>
 		<file id="weatherTypesFile" path="data/weather_types.xml" packageID="resourcePackage"/>
@@ -66,8 +67,20 @@
 	<!-- ************************************************************************************** -->
 	<lists>
 		
+		<group type="TBSDomainType" fileID="domainTypesFile">
+			<resource id="domainTypes"/>
+		</group>
+		
 		<group type="TBSMovementType" fileID="movementTypesFile">
 			<resource id="movementTypes"/>
+		</group>
+		
+		<group type="TBSTerrainType" fileID="terrainTypesFile">
+			<resource id="terrainTypes"/>
+		</group>
+		
+		<group type="TBSWeatherType" fileID="weatherTypesFile">
+			<resource id="weatherTypes"/>
 		</group>
 		
 	</lists>
@@ -79,44 +92,6 @@
 			<resource id="settings"/>
 		</group>
 		
-		<group type="TBSTerrainType" fileID="terrainTypesFile">
-			<resource id="terrainGrassland"/>
-			<resource id="terrainPlains"/>
-			<resource id="terrainTundra"/>
-			<resource id="terrainDesert"/>
-			<resource id="terrainHills"/>
-			<resource id="terrainMountains"/>
-			<resource id="terrainSnow"/>
-			<resource id="terrainIce"/>
-			<resource id="terrainForest"/>
-			<resource id="terrainJungle"/>
-			<resource id="terrainMarsh"/>
-			<resource id="terrainSwamp"/>
-			<resource id="terrainUrban"/>
-			<resource id="terrainRuins"/>
-			<resource id="terrainRoad"/>
-			<resource id="terrainBridge"/>
-			<resource id="terrainCoast"/>
-			<resource id="terrainSeaShallow"/>
-			<resource id="terrainSeaDeep"/>
-			<resource id="terrainRoughSea"/>
-			<resource id="terrainReef"/>
-		</group>
-		
-		<group type="TBSWeatherType" fileID="weatherTypesFile">
-			<resource id="weatherFair"/>
-			<resource id="weatherOvercast"/>
-			<resource id="weatherRain"/>
-			<resource id="weatherHeavyRain"/>
-			<resource id="weatherHail"/>
-			<resource id="weatherSnow"/>
-			<resource id="weatherBlizzard"/>
-			<resource id="weatherFog"/>
-			<resource id="weatherThunderstorm"/>
-			<resource id="weatherSandstorm"/>
-			<resource id="weatherHeatWave"/>
-			<resource id="weatherFallout"/>
-		</group>
 		
 	</data>
 	
@@ -126,6 +101,9 @@
 	
 	<!-- ************************************************************************************** -->
 	<text>
+		<resource id="textLists">
+			<locale lang="en" path="text/en/lists_text.xml" packageID="resourcePackage"/>
+		</resource>
 		<resource id="textUnits">
 			<locale lang="en" path="text/en/units_text.xml" packageID="resourcePackage"/>
 		</resource>

@@ -46,6 +46,9 @@ package base.data.types
 		
 		/**
 		 * Creates a new instance of the class.
+		 * 
+		 * @param key
+		 * @param value
 		 */
 		public function KeyValuePair(key:String, value:*)
 		{

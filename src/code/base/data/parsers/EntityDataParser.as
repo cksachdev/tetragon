@@ -27,10 +27,8 @@
  */
 package base.data.parsers
 {
-	import base.Main;
 	import base.core.debug.Log;
 	import base.core.entity.EntityDefinition;
-	import base.data.DataSupportManager;
 	import base.data.types.KeyValuePair;
 	import base.io.resource.ResourceIndex;
 	import base.io.resource.wrappers.XMLResourceWrapper;
@@ -39,7 +37,7 @@ package base.data.parsers
 	/**
 	 * A data parser that parses entity data and creates entity definitions from it.
 	 */
-	public class EntityDataParser extends DataParser implements IDataParser
+	public class EntityDataParser extends DataObjectParser implements IDataParser
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
@@ -52,7 +50,6 @@ package base.data.parsers
 		{
 			_xml = wrapper.xml;
 			var index:ResourceIndex = model;
-			var dsm:DataSupportManager = Main.instance.dataSupportManager;
 			
 			/* Loop through all items in data file. */
 			for each (var x:XML in _xml.item)
@@ -70,7 +67,7 @@ package base.data.parsers
 				for each (var c:XML in x.components.component)
 				{
 					var componentClassID:String = extractString(c, "@classID");
-					var componentClass:Class = dsm.getEntityComponentClass(componentClassID);
+					var componentClass:Class = dataSupportManager.getEntityComponentClass(componentClassID);
 					
 					if (componentClass)
 					{
@@ -80,38 +77,19 @@ package base.data.parsers
 						/* Map all properties found in the component definition. */
 						for each (var p:XML in c.children())
 						{
-							var key:String = p.name();
-							var value:String = p.toString();
-							
-							/* Check if property has a complex type assigned. */
-							var ctype:String = p.@ctype;
-							if (ctype && ctype.length > 0)
+							var pair:KeyValuePair = parseProperty(p);
+							pair = checkReferencedID(pair.key, pair.value);
+							if (pair.value == null || pair.value == "")
 							{
-								var clazz:Class = dsm.getComplexTypeClass(ctype);
-								if (!clazz)
-								{
-									Log.error("Could not create complex type class."
-										+ " Class for ctype \"" + ctype + "\" was not mapped.", this);
-									continue;
-								}
-								var type:Object = new clazz();
-								map[key] = parseComplexTypeParams(type, value);
+								map[pair.key] = null;
 							}
 							else
 							{
-								var pair:KeyValuePair = checkReferencedID(key, value);
-								if (pair.value == null || pair.value == "")
-								{
-									map[pair.key] = null;
-								}
-								else
-								{
-									map[pair.key] = pair.value;
-								}
+								map[pair.key] = pair.value;
 							}
 						}
 						
-						/* Add component property map to entity template. */
+						/* Add component property map to entity definition. */
 						e.addComponentMapping(componentClassID, map);
 					}
 					else
@@ -121,6 +99,7 @@ package base.data.parsers
 					}
 				}
 				
+				/* Store entity definition in resource index. */
 				index.addDataResource(e);
 			}
 			

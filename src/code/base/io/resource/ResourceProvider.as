@@ -30,6 +30,7 @@ package base.io.resource
 	import base.Main;
 	import base.core.debug.Log;
 	import base.data.DataSupportManager;
+	import base.data.parsers.DataObjectParser;
 	import base.data.parsers.IDataParser;
 	import base.event.ResourceEvent;
 	import base.io.resource.wrappers.ResourceWrapper;
@@ -361,18 +362,22 @@ package base.io.resource
 			}
 			
 			/* Check for referenced resources. */
-			if (parser.referencedIDs != null)
+			if (parser is DataObjectParser)
 			{
-				var refIDs:Object = parser.referencedIDs;
-				var a:Array = [];
-				for (var refID:String in refIDs)
+				var doParser:DataObjectParser = DataObjectParser(parser);
+				if (doParser.referencedIDs != null)
 				{
-					var resID:String = refIDs[refID];
-					a.push(refID);
-					Log.debug(bulkFile.id + " requested referenced resource with ID \""
-						+ refID + "\".", this);
+					var refIDs:Object = doParser.referencedIDs;
+					var a:Array = [];
+					for (var refID:String in refIDs)
+					{
+						var resID:String = refIDs[refID];
+						a.push(refID);
+						Log.debug(bulkFile.id + " requested referenced resource with ID \""
+							+ refID + "\".", this);
+					}
+					resourceManager.load(a);
 				}
-				resourceManager.load(a);
 			}
 			
 			/* Mark all resources in the loaded bulk file as loaded. */

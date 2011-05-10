@@ -1,89 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<weatherTypes>
+<data>
 	
-	<weatherType
-		id="weatherFair"
-		nameID="nameWeatherFair"
-		descriptionID="descWeatherFair"
-		combatModifier="0"
-		visionModifier="0"
-	/>
-	<weatherType
-		id="weatherOvercast"
-		nameID="nameWeatherOvercast"
-		descriptionID="descWeatherOvercast"
-		combatModifier="0"
-		visionModifier="0"
-	/>
-	<weatherType
-		id="weatherRain"
-		nameID="nameWeatherRain"
-		descriptionID="descWeatherRain"
-		combatModifier="-1"
-		visionModifier="0"
-	/>
-	<weatherType
-		id="weatherHeavyRain"
-		nameID="nameWeatherHeavyRain"
-		descriptionID="descWeatherHeavyRain"
-		combatModifier="-2"
-		visionModifier="-1"
-	/>
-	<weatherType
-		id="weatherHail"
-		nameID="nameWeatherHail"
-		descriptionID="descWeatherHail"
-		combatModifier="-1"
-		visionModifier="-2"
-	/>
-	<weatherType
-		id="weatherSnow"
-		nameID="nameWeatherSnow"
-		descriptionID="descWeatherSnow"
-		combatModifier="-1"
-		visionModifier="0"
-	/>
-	<weatherType
-		id="weatherBlizzard"
-		nameID="nameWeatherBlizzard"
-		descriptionID="descWeatherBlizzard"
-		combatModifier="-2"
-		visionModifier="-2"
-	/>
-	<weatherType
-		id="weatherFog"
-		nameID="nameWeatherFog"
-		descriptionID="descWeatherFog"
-		combatModifier="-2"
-		visionModifier="-2"
-	/>
-	<weatherType
-		id="weatherThunderstorm"
-		nameID="nameWeatherThunderstorm"
-		descriptionID="descWeatherThunderstorm"
-		combatModifier="-1"
-		visionModifier="-1"
-	/>
-	<weatherType
-		id="weatherSandstorm"
-		nameID="nameWeatherSandstorm"
-		descriptionID="descWeatherSandstorm"
-		combatModifier="-3"
-		visionModifier="-2"
-	/>
-	<weatherType
-		id="weatherHeatWave"
-		nameID="nameWeatherHeatWave"
-		descriptionID="descWeatherHeatWave"
-		combatModifier="-1"
-		visionModifier="0"
-	/>
-	<weatherType
-		id="weatherFallout"
-		nameID="nameWeatherFallout"
-		descriptionID="descWeatherFallout"
-		combatModifier="-2"
-		visionModifier="0"
-	/>
+	<list id="weatherTypes">
+		
+		<item id="weatherFair">
+			<properties>
+				<nameID>textLists/nameWeatherFair</nameID>
+				<descriptionID>textLists/descWeatherFair</descriptionID>
+				<combatModifier>0</combatModifier>
+				<visionModifier>0</visionModifier>
+			</properties>
+		</item>
+		
+		<item id="weatherOvercast">
+			<properties>
+				<nameID>textLists/nameWeatherOvercast</nameID>
+				<descriptionID>textLists/descWeatherOvercast</descriptionID>
+				<combatModifier>0</combatModifier>
+				<visionModifier>0</visionModifier>
+			</properties>
+		</item>
+		
+		<item id="weatherRain">
+			<properties>
+				<nameID>textLists/nameWeatherRain</nameID>
+				<descriptionID>textLists/descWeatherRain</descriptionID>
+				<combatModifier>-1</combatModifier>
+				<visionModifier>0</visionModifier>
+			</properties>
+		</item>
+		
+		<item id="weatherHeavyRain">
+			<properties>
+				<nameID>textLists/nameWeatherHeavyRain</nameID>
+				<descriptionID>textLists/descWeatherHeavyRain</descriptionID>
+				<combatModifier>-2</combatModifier>
+				<visionModifier>-1</visionModifier>
+			</properties>
+		</item>
+		
+		<item id="weatherHail">
+			<properties>
+				<nameID>textLists/nameWeatherHail</nameID>
+				<descriptionID>textLists/descWeatherHail</descriptionID>
+				<combatModifier>-1</combatModifier>
+				<visionModifier>-2</visionModifier>
+			</properties>
+		</item>
+		
+		<item id="weatherSnow">
+			<properties>
+				<nameID>textLists/nameWeatherSnow</nameID>
+				<descriptionID>textLists/descWeatherSnow</descriptionID>
+				<combatModifier>-1</combatModifier>
+				<visionModifier>0</visionModifier>
+			</properties>
+		</item>
+		
+		<item id="weatherBlizzard">
+			<properties>
+				<nameID>textLists/nameWeatherBlizzard</nameID>
+				<descriptionID>textLists/descWeatherBlizzard</descriptionID>
+				<combatModifier>-2</combatModifier>
+				<visionModifier>-2</visionModifier>
+			</properties>
+		</item>
+		
+		<item id="weatherFog">
+			<properties>
+				<nameID>textLists/nameWeatherFog</nameID>
+				<descriptionID>textLists/descWeatherFog</descriptionID>
+				<combatModifier>-2</combatModifier>
+				<visionModifier>-2</visionModifier>
+			</properties>
+		</item>
+		
+		<item id="weatherThunderstorm">
+			<properties>
+				<nameID>textLists/nameWeatherThunderstorm</nameID>
+				<descriptionID>textLists/descWeatherThunderstorm</descriptionID>
+				<combatModifier>-1</combatModifier>
+				<visionModifier>-1</visionModifier>
+			</properties>
+		</item>
+		
+		<item id="weatherSandstorm">
+			<properties>
+				<nameID>textLists/nameWeatherSandstorm</nameID>
+				<descriptionID>textLists/descWeatherSandstorm</descriptionID>
+				<combatModifier>-3</combatModifier>
+				<visionModifier>-2</visionModifier>
+			</properties>
+		</item>
+		
+		<item id="weatherHeatWave">
+			<properties>
+				<nameID>textLists/nameWeatherHeatWave</nameID>
+				<descriptionID>textLists/descWeatherHeatWave</descriptionID>
+				<combatModifier>-1</combatModifier>
+				<visionModifier>0</visionModifier>
+			</properties>
+		</item>
+		
+		<item id="weatherFallout">
+			<properties>
+				<nameID>textLists/nameWeatherFallout</nameID>
+				<descriptionID>textLists/descWeatherFallout</descriptionID>
+				<combatModifier>-2</combatModifier>
+				<visionModifier>0</visionModifier>
+			</properties>
+		</item>
 	
-</weatherTypes>
+	</list>
+	
+</data>

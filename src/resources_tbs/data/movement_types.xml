@@ -3,264 +3,258 @@
 	
 	<list id="movementTypes">
 		
+		<!-- INFANTRY ===================================================================== -->
 		<item id="movementTypeInfantry">
 			<properties>
-				<nameTID>nameMovementTypeInfantry</nameTID>
-				<domainTID>domainGround</domainTID>
+				<nameID>textLists/nameMovementTypeInfantry</nameID>
+				<domainID>domainTypes/domainGround</domainID>
 			</properties>
 			<sets>
 				<terrainModifiers>
-					<property name="terrainGrassland">0</property>
-					<property name="terrainPlains">0</property>
-					<property name="terrainTundra">0</property>
-					<property name="terrainDesert">0</property>
-					<property name="terrainHills">0</property>
-					<property name="terrainMountains">-3</property>
-					<property name="terrainSnow">-1</property>
-					<property name="terrainIce">-1</property>
-					<property name="terrainForest">-1</property>
-					<property name="terrainJungle">-1</property>
-					<property name="terrainMarsh">-1</property>
-					<property name="terrainSwamp">-2</property>
-					<property name="terrainUrban">0</property>
-					<property name="terrainRuins">0</property>
-					<property name="terrainRoad">0</property>
-					<property name="terrainBridge">0</property>
+					<terrainGrassland>0</terrainGrassland>
+					<terrainPlains>0</terrainPlains>
+					<terrainTundra>0</terrainTundra>
+					<terrainDesert>0</terrainDesert>
+					<terrainHills>0</terrainHills>
+					<terrainMountains>-3</terrainMountains>
+					<terrainSnow>-1</terrainSnow>
+					<terrainIce>-1</terrainIce>
+					<terrainForest>-1</terrainForest>
+					<terrainJungle>-1</terrainJungle>
+					<terrainMarsh>-1</terrainMarsh>
+					<terrainSwamp>-2</terrainSwamp>
+					<terrainUrban>0</terrainUrban>
+					<terrainRuins>0</terrainRuins>
+					<terrainRoad>0</terrainRoad>
+					<terrainBridge>0</terrainBridge>
 				</terrainModifiers>
 				<weatherModifiers>
-					<property name="weatherFair">0</property>
-					<property name="weatherOvercast">0</property>
-					<property name="weatherRain">0</property>
-					<property name="weatherHeavyRain">-1</property>
-					<property name="weatherHail">-1</property>
-					<property name="weatherSnow">0</property>
-					<property name="weatherBlizzard">-3</property>
-					<property name="weatherFog">0</property>
-					<property name="weatherThunderstorm">0</property>
-					<property name="weatherSandstorm">-3</property>
-					<property name="weatherHeatWave">0</property>
-					<property name="weatherFallout">-3</property>
+					<weatherFair>0</weatherFair>
+					<weatherOvercast>0</weatherOvercast>
+					<weatherRain>0</weatherRain>
+					<weatherHeavyRain>-1</weatherHeavyRain>
+					<weatherHail>-1</weatherHail>
+					<weatherSnow>0</weatherSnow>
+					<weatherBlizzard>-3</weatherBlizzard>
+					<weatherFog>0</weatherFog>
+					<weatherThunderstorm>0</weatherThunderstorm>
+					<weatherSandstorm>-3</weatherSandstorm>
+					<weatherHeatWave>0</weatherHeatWave>
+					<weatherFallout>-3</weatherFallout>
 				</weatherModifiers>
 			</sets>
 		</item>
 		
+		<!-- TIRES ======================================================================== -->
+		<item id="movementTypeTires">
+			<properties>
+				<nameID>textLists/nameMovementTypeTires</nameID>
+				<domainID>domainTypes/domainGround</domainID>
+			</properties>
+			<sets>
+				<terrainModifiers>
+					<terrainGrassland>0</terrainGrassland>
+					<terrainPlains>0</terrainPlains>
+					<terrainTundra>0</terrainTundra>
+					<terrainDesert>0</terrainDesert>
+					<terrainHills>-1</terrainHills>
+					<terrainMountains>-10</terrainMountains>
+					<terrainSnow>0</terrainSnow>
+					<terrainIce>-2</terrainIce>
+					<terrainForest>-2</terrainForest>
+					<terrainJungle>-3</terrainJungle>
+					<terrainMarsh>-2</terrainMarsh>
+					<terrainSwamp>-3</terrainSwamp>
+					<terrainUrban>1</terrainUrban>
+					<terrainRuins>-1</terrainRuins>
+					<terrainRoad>2</terrainRoad>
+					<terrainBridge>2</terrainBridge>
+				</terrainModifiers>
+				<weatherModifiers>
+					<weatherFair>0</weatherFair>
+					<weatherOvercast>0</weatherOvercast>
+					<weatherRain>0</weatherRain>
+					<weatherHeavyRain>0</weatherHeavyRain>
+					<weatherHail>0</weatherHail>
+					<weatherSnow>-1</weatherSnow>
+					<weatherBlizzard>-2</weatherBlizzard>
+					<weatherFog>0</weatherFog>
+					<weatherThunderstorm>0</weatherThunderstorm>
+					<weatherSandstorm>-2</weatherSandstorm>
+					<weatherHeatWave>0</weatherHeatWave>
+					<weatherFallout>-2</weatherFallout>
+				</weatherModifiers>
+			</sets>
+		</item>
+		
+		<!-- TREAD ======================================================================== -->
+		<item id="movementTypeTread">
+			<properties>
+				<nameID>textLists/nameMovementTypeTread</nameID>
+				<domainID>domainTypes/domainGround</domainID>
+			</properties>
+			<sets>
+				<terrainModifiers>
+					<terrainGrassland>1</terrainGrassland>
+					<terrainPlains>1</terrainPlains>
+					<terrainTundra>1</terrainTundra>
+					<terrainDesert>0</terrainDesert>
+					<terrainHills>0</terrainHills>
+					<terrainMountains>-8</terrainMountains>
+					<terrainSnow>0</terrainSnow>
+					<terrainIce>0</terrainIce>
+					<terrainForest>-1</terrainForest>
+					<terrainJungle>-2</terrainJungle>
+					<terrainMarsh>-1</terrainMarsh>
+					<terrainSwamp>-2</terrainSwamp>
+					<terrainUrban>1</terrainUrban>
+					<terrainRuins>0</terrainRuins>
+					<terrainRoad>2</terrainRoad>
+					<terrainBridge>2</terrainBridge>
+				</terrainModifiers>
+				<weatherModifiers>
+					<weatherFair>0</weatherFair>
+					<weatherOvercast>0</weatherOvercast>
+					<weatherRain>0</weatherRain>
+					<weatherHeavyRain>0</weatherHeavyRain>
+					<weatherHail>0</weatherHail>
+					<weatherSnow>0</weatherSnow>
+					<weatherBlizzard>0</weatherBlizzard>
+					<weatherFog>0</weatherFog>
+					<weatherThunderstorm>0</weatherThunderstorm>
+					<weatherSandstorm>0</weatherSandstorm>
+					<weatherHeatWave>0</weatherHeatWave>
+					<weatherFallout>-1</weatherFallout>
+				</weatherModifiers>
+			</sets>
+		</item>
+		
+		<!-- SEA ========================================================================== -->
+		<item id="movementTypeSea">
+			<properties>
+				<nameID>textLists/nameMovementTypeSea</nameID>
+				<domainID>domainTypes/domainSea</domainID>
+			</properties>
+			<sets>
+				<terrainModifiers>
+					<terrainBridge>0</terrainBridge>
+					<terrainCoast>0</terrainCoast>
+					<terrainSeaShallow>0</terrainSeaShallow>
+					<terrainSeaDeep>0</terrainSeaDeep>
+					<terrainSeaRough>-1</terrainSeaRough>
+					<terrainReef>0</terrainReef>
+				</terrainModifiers>
+				<weatherModifiers>
+					<weatherFair>0</weatherFair>
+					<weatherOvercast>0</weatherOvercast>
+					<weatherRain>0</weatherRain>
+					<weatherHeavyRain>0</weatherHeavyRain>
+					<weatherHail>0</weatherHail>
+					<weatherSnow>0</weatherSnow>
+					<weatherBlizzard>-1</weatherBlizzard>
+					<weatherFog>0</weatherFog>
+					<weatherThunderstorm>0</weatherThunderstorm>
+					<weatherSandstorm>0</weatherSandstorm>
+					<weatherHeatWave>0</weatherHeatWave>
+					<weatherFallout>-1</weatherFallout>
+				</weatherModifiers>
+			</sets>
+		</item>
+		
+		<!-- HOVER ======================================================================== -->
+		<item id="movementTypeHover">
+			<properties>
+				<nameID>textLists/nameMovementTypeHover</nameID>
+				<domainID>domainTypes/domainGroundSea</domainID>
+			</properties>
+			<sets>
+				<terrainModifiers>
+					<terrainGrassland>0</terrainGrassland>
+					<terrainPlains>0</terrainPlains>
+					<terrainTundra>0</terrainTundra>
+					<terrainDesert>0</terrainDesert>
+					<terrainHills>-1</terrainHills>
+					<terrainMountains>-10</terrainMountains>
+					<terrainSnow>0</terrainSnow>
+					<terrainIce>0</terrainIce>
+					<terrainForest>-2</terrainForest>
+					<terrainJungle>-3</terrainJungle>
+					<terrainMarsh>1</terrainMarsh>
+					<terrainSwamp>1</terrainSwamp>
+					<terrainUrban>0</terrainUrban>
+					<terrainRuins>-1</terrainRuins>
+					<terrainRoad>0</terrainRoad>
+					<terrainBridge>0</terrainBridge>
+					<terrainCoast>0</terrainCoast>
+					<terrainSeaShallow>0</terrainSeaShallow>
+					<terrainSeaDeep>0</terrainSeaDeep>
+					<terrainSeaRough>-2</terrainSeaRough>
+					<terrainReef>0</terrainReef>
+				</terrainModifiers>
+				<weatherModifiers>
+					<weatherFair>0</weatherFair>
+					<weatherOvercast>0</weatherOvercast>
+					<weatherRain>0</weatherRain>
+					<weatherHeavyRain>0</weatherHeavyRain>
+					<weatherHail>0</weatherHail>
+					<weatherSnow>0</weatherSnow>
+					<weatherBlizzard>-1</weatherBlizzard>
+					<weatherFog>0</weatherFog>
+					<weatherThunderstorm>0</weatherThunderstorm>
+					<weatherSandstorm>-2</weatherSandstorm>
+					<weatherHeatWave>0</weatherHeatWave>
+					<weatherFallout>-2</weatherFallout>
+				</weatherModifiers>
+			</sets>
+		</item>
+		
+		<!-- AIR ========================================================================== -->
+		<item id="movementTypeAir">
+			<properties>
+				<nameID>textLists/nameMovementTypeAir</nameID>
+				<domainID>domainTypes/domainAir</domainID>
+			</properties>
+			<sets>
+				<terrainModifiers>
+					<terrainGrassland>0</terrainGrassland>
+					<terrainPlains>0</terrainPlains>
+					<terrainTundra>0</terrainTundra>
+					<terrainDesert>0</terrainDesert>
+					<terrainHills>0</terrainHills>
+					<terrainMountains>0</terrainMountains>
+					<terrainSnow>0</terrainSnow>
+					<terrainIce>0</terrainIce>
+					<terrainForest>0</terrainForest>
+					<terrainJungle>0</terrainJungle>
+					<terrainMarsh>0</terrainMarsh>
+					<terrainSwamp>0</terrainSwamp>
+					<terrainUrban>0</terrainUrban>
+					<terrainRuins>0</terrainRuins>
+					<terrainRoad>0</terrainRoad>
+					<terrainBridge>0</terrainBridge>
+					<terrainCoast>0</terrainCoast>
+					<terrainSeaShallow>0</terrainSeaShallow>
+					<terrainSeaDeep>0</terrainSeaDeep>
+					<terrainSeaRough>0</terrainSeaRough>
+					<terrainReef>0</terrainReef>
+				</terrainModifiers>
+				<weatherModifiers>
+					<weatherFair>0</weatherFair>
+					<weatherOvercast>0</weatherOvercast>
+					<weatherRain>0</weatherRain>
+					<weatherHeavyRain>-1</weatherHeavyRain>
+					<weatherHail>-1</weatherHail>
+					<weatherSnow>-1</weatherSnow>
+					<weatherBlizzard>-2</weatherBlizzard>
+					<weatherFog>0</weatherFog>
+					<weatherThunderstorm>-1</weatherThunderstorm>
+					<weatherSandstorm>-1</weatherSandstorm>
+					<weatherHeatWave>0</weatherHeatWave>
+					<weatherFallout>-1</weatherFallout>
+				</weatherModifiers>
+			</sets>
+		</item>
 		
 	</list>
-	
-	<!-- INFANTRY ========================================================================= -->
-	<movementType id="movementTypeInfantry" nameID="nameMovementTypeInfantry" domain="ground">
-		<terrainModifiers>
-			<terrain id="terrainGrassland"		mod="0"/>
-			<terrain id="terrainPlains"			mod="0"/>
-			<terrain id="terrainTundra"			mod="0"/>
-			<terrain id="terrainDesert"			mod="0"/>
-			<terrain id="terrainHills"			mod="0"/>
-			<terrain id="terrainMountains"		mod="-3"/>
-			<terrain id="terrainSnow"			mod="-1"/>
-			<terrain id="terrainIce"			mod="-1"/>
-			<terrain id="terrainForest"			mod="-1"/>
-			<terrain id="terrainJungle"			mod="-1"/>
-			<terrain id="terrainMarsh"			mod="-1"/>
-			<terrain id="terrainSwamp"			mod="-2"/>
-			<terrain id="terrainUrban"			mod="0"/>
-			<terrain id="terrainRuins"			mod="0"/>
-			<terrain id="terrainRoad"			mod="0"/>
-			<terrain id="terrainBridge"			mod="0"/>
-		</terrainModifiers>
-		<weatherModifiers>
-			<weather id="weatherFair"			mod="0"/>
-			<weather id="weatherOvercast"		mod="0"/>
-			<weather id="weatherRain"			mod="0"/>
-			<weather id="weatherHeavyRain"		mod="-1"/>
-			<weather id="weatherHail"			mod="-1"/>
-			<weather id="weatherSnow"			mod="0"/>
-			<weather id="weatherBlizzard"		mod="-3"/>
-			<weather id="weatherFog"			mod="0"/>
-			<weather id="weatherThunderstorm"	mod="0"/>
-			<weather id="weatherSandstorm"		mod="-3"/>
-			<weather id="weatherHeatWave"		mod="0"/>
-			<weather id="weatherFallout"		mod="-3"/>
-		</weatherModifiers>
-	</movementType>
-	
-	<!-- TIRES ============================================================================ -->
-	<movementType id="movementTypeTires" nameID="nameMovementTypeTires" domain="ground">
-		<terrainModifiers>
-			<terrain id="terrainGrassland"		mod="0"/>
-			<terrain id="terrainPlains"			mod="0"/>
-			<terrain id="terrainTundra"			mod="0"/>
-			<terrain id="terrainDesert"			mod="0"/>
-			<terrain id="terrainHills"			mod="-1"/>
-			<terrain id="terrainMountains"		mod="-10"/>
-			<terrain id="terrainSnow"			mod="0"/>
-			<terrain id="terrainIce"			mod="-2"/>
-			<terrain id="terrainForest"			mod="-2"/>
-			<terrain id="terrainJungle"			mod="-3"/>
-			<terrain id="terrainMarsh"			mod="-2"/>
-			<terrain id="terrainSwamp"			mod="-3"/>
-			<terrain id="terrainUrban"			mod="1"/>
-			<terrain id="terrainRuins"			mod="-1"/>
-			<terrain id="terrainRoad"			mod="2"/>
-			<terrain id="terrainBridge"			mod="2"/>
-		</terrainModifiers>
-		<weatherModifiers>
-			<weather id="weatherFair"			mod="0"/>
-			<weather id="weatherOvercast"		mod="0"/>
-			<weather id="weatherRain"			mod="0"/>
-			<weather id="weatherHeavyRain"		mod="0"/>
-			<weather id="weatherHail"			mod="0"/>
-			<weather id="weatherSnow"			mod="-1"/>
-			<weather id="weatherBlizzard"		mod="-2"/>
-			<weather id="weatherFog"			mod="0"/>
-			<weather id="weatherThunderstorm"	mod="0"/>
-			<weather id="weatherSandstorm"		mod="-2"/>
-			<weather id="weatherHeatWave"		mod="0"/>
-			<weather id="weatherFallout"		mod="-2"/>
-		</weatherModifiers>
-	</movementType>
-	
-	<!-- TREAD ============================================================================ -->
-	<movementType id="movementTypeTread" nameID="nameMovementTypeTread" domain="ground">
-		<terrainModifiers>
-			<terrain id="terrainGrassland"		mod="1"/>
-			<terrain id="terrainPlains"			mod="1"/>
-			<terrain id="terrainTundra"			mod="1"/>
-			<terrain id="terrainDesert"			mod="0"/>
-			<terrain id="terrainHills"			mod="0"/>
-			<terrain id="terrainMountains"		mod="-8"/>
-			<terrain id="terrainSnow"			mod="0"/>
-			<terrain id="terrainIce"			mod="0"/>
-			<terrain id="terrainForest"			mod="-1"/>
-			<terrain id="terrainJungle"			mod="-2"/>
-			<terrain id="terrainMarsh"			mod="-1"/>
-			<terrain id="terrainSwamp"			mod="-2"/>
-			<terrain id="terrainUrban"			mod="1"/>
-			<terrain id="terrainRuins"			mod="0"/>
-			<terrain id="terrainRoad"			mod="2"/>
-			<terrain id="terrainBridge"			mod="2"/>
-		</terrainModifiers>
-		<weatherModifiers>
-			<weather id="weatherFair"			mod="0"/>
-			<weather id="weatherOvercast"		mod="0"/>
-			<weather id="weatherRain"			mod="0"/>
-			<weather id="weatherHeavyRain"		mod="0"/>
-			<weather id="weatherHail"			mod="0"/>
-			<weather id="weatherSnow"			mod="0"/>
-			<weather id="weatherBlizzard"		mod="0"/>
-			<weather id="weatherFog"			mod="0"/>
-			<weather id="weatherThunderstorm"	mod="0"/>
-			<weather id="weatherSandstorm"		mod="0"/>
-			<weather id="weatherHeatWave"		mod="0"/>
-			<weather id="weatherFallout"		mod="-1"/>
-		</weatherModifiers>
-	</movementType>
-	
-	<!-- SEA ============================================================================== -->
-	<movementType id="movementTypeSea" nameID="nameMovementTypeSea" domain="sea">
-		<terrainModifiers>
-			<terrain id="terrainBridge"			mod="0"/>
-			<terrain id="terrainCoast"			mod="0"/>
-			<terrain id="terrainSeaShallow"		mod="0"/>
-			<terrain id="terrainSeaDeep"		mod="0"/>
-			<terrain id="terrainRoughSea"		mod="-1"/>
-			<terrain id="terrainReef"			mod="0"/>
-		</terrainModifiers>
-		<weatherModifiers>
-			<weather id="weatherFair"			mod="0"/>
-			<weather id="weatherOvercast"		mod="0"/>
-			<weather id="weatherRain"			mod="0"/>
-			<weather id="weatherHeavyRain"		mod="0"/>
-			<weather id="weatherHail"			mod="0"/>
-			<weather id="weatherSnow"			mod="0"/>
-			<weather id="weatherBlizzard"		mod="-1"/>
-			<weather id="weatherFog"			mod="0"/>
-			<weather id="weatherThunderstorm"	mod="0"/>
-			<weather id="weatherSandstorm"		mod="0"/>
-			<weather id="weatherHeatWave"		mod="0"/>
-			<weather id="weatherFallout"		mod="-1"/>
-		</weatherModifiers>
-	</movementType>
-	
-	<!-- HOVER ============================================================================ -->
-	<movementType id="movementTypeHover" nameID="nameMovementTypeHover" domain="groundsea">
-		<terrainModifiers>
-			<terrain id="terrainGrassland"		mod="0"/>
-			<terrain id="terrainPlains"			mod="0"/>
-			<terrain id="terrainTundra"			mod="0"/>
-			<terrain id="terrainDesert"			mod="0"/>
-			<terrain id="terrainHills"			mod="-1"/>
-			<terrain id="terrainMountains"		mod="-10"/>
-			<terrain id="terrainSnow"			mod="0"/>
-			<terrain id="terrainIce"			mod="0"/>
-			<terrain id="terrainForest"			mod="-2"/>
-			<terrain id="terrainJungle"			mod="-3"/>
-			<terrain id="terrainMarsh"			mod="1"/>
-			<terrain id="terrainSwamp"			mod="1"/>
-			<terrain id="terrainUrban"			mod="0"/>
-			<terrain id="terrainRuins"			mod="-1"/>
-			<terrain id="terrainRoad"			mod="0"/>
-			<terrain id="terrainBridge"			mod="0"/>
-			<terrain id="terrainCoast"			mod="0"/>
-			<terrain id="terrainSeaShallow"		mod="0"/>
-			<terrain id="terrainSeaDeep"		mod="0"/>
-			<terrain id="terrainRoughSea"		mod="-1"/>
-			<terrain id="terrainReef"			mod="0"/>
-		</terrainModifiers>
-		<weatherModifiers>
-			<weather id="weatherFair"			mod="0"/>
-			<weather id="weatherOvercast"		mod="0"/>
-			<weather id="weatherRain"			mod="0"/>
-			<weather id="weatherHeavyRain"		mod="0"/>
-			<weather id="weatherHail"			mod="0"/>
-			<weather id="weatherSnow"			mod="0"/>
-			<weather id="weatherBlizzard"		mod="-1"/>
-			<weather id="weatherFog"			mod="0"/>
-			<weather id="weatherThunderstorm"	mod="0"/>
-			<weather id="weatherSandstorm"		mod="-2"/>
-			<weather id="weatherHeatWave"		mod="0"/>
-			<weather id="weatherFallout"		mod="-2"/>
-		</weatherModifiers>
-	</movementType>
-	
-	<!-- AIR ============================================================================== -->
-	<movementType id="movementTypeAir" nameID="nameMovementTypeAir" domain="air">
-		<terrainModifiers>
-			<terrain id="terrainGrassland"		mod="0"/>
-			<terrain id="terrainPlains"			mod="0"/>
-			<terrain id="terrainTundra"			mod="0"/>
-			<terrain id="terrainDesert"			mod="0"/>
-			<terrain id="terrainHills"			mod="0"/>
-			<terrain id="terrainMountains"		mod="0"/>
-			<terrain id="terrainSnow"			mod="0"/>
-			<terrain id="terrainIce"			mod="0"/>
-			<terrain id="terrainForest"			mod="0"/>
-			<terrain id="terrainJungle"			mod="0"/>
-			<terrain id="terrainMarsh"			mod="0"/>
-			<terrain id="terrainSwamp"			mod="0"/>
-			<terrain id="terrainUrban"			mod="0"/>
-			<terrain id="terrainRuins"			mod="0"/>
-			<terrain id="terrainRoad"			mod="0"/>
-			<terrain id="terrainBridge"			mod="0"/>
-			<terrain id="terrainCoast"			mod="0"/>
-			<terrain id="terrainSeaShallow"		mod="0"/>
-			<terrain id="terrainSeaDeep"		mod="0"/>
-			<terrain id="terrainRoughSea"		mod="0"/>
-			<terrain id="terrainReef"			mod="0"/>
-		</terrainModifiers>
-		<weatherModifiers>
-			<weather id="weatherFair"			mod="0"/>
-			<weather id="weatherOvercast"		mod="0"/>
-			<weather id="weatherRain"			mod="0"/>
-			<weather id="weatherHeavyRain"		mod="-1"/>
-			<weather id="weatherHail"			mod="-1"/>
-			<weather id="weatherSnow"			mod="-1"/>
-			<weather id="weatherBlizzard"		mod="-2"/>
-			<weather id="weatherFog"			mod="0"/>
-			<weather id="weatherThunderstorm"	mod="-1"/>
-			<weather id="weatherSandstorm"		mod="-1"/>
-			<weather id="weatherHeatWave"		mod="0"/>
-			<weather id="weatherFallout"		mod="-1"/>
-		</weatherModifiers>
-	</movementType>
 	
 </data>

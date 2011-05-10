@@ -28,7 +28,6 @@
 package base.io.resource
 {
 	import base.core.debug.Log;
-	import base.core.entity.EntityDefinition;
 	import base.data.DataObject;
 
 	import com.hexagonstar.util.string.TabularText;
@@ -233,14 +232,13 @@ package base.io.resource
 			if (content is DataObject)
 			{
 				var o:DataObject = DataObject(content);
+				if (o.id == null)
+				{
+					Log.error("Tried to add a resource whose ID is null.", this);
+					return;
+				}
 				r = _resources[o.id];
 				r.setContent(o);
-			}
-			else if (content is EntityDefinition)
-			{
-				var et:EntityDefinition = EntityDefinition(content);
-				r = _resources[et.id];
-				r.setContent(et);
 			}
 		}
 		
@@ -377,7 +375,7 @@ package base.io.resource
 				
 				t.add([e.id, e.family, rclass, type, pack, e.path, e.embedded, e.referenceCount]);
 			}
-			return toString() + "\n" + t;
+			return toString() + " (size: " + _size + ")\n" + t;
 		}
 		
 		
@@ -388,7 +386,7 @@ package base.io.resource
 		 */
 		public function toString():String
 		{
-			return "[ResourceIndex, size=" + _size + "]";
+			return "ResourceIndex";
 		}
 	}
 }

@@ -30,13 +30,15 @@ package base.data
 	/**
 	 * DataListItem class
 	 */
-	public class DataListItem extends DataObject
+	public class DataListItem
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
+		private var _id:String;
 		private var _properties:Object;
+		private var _sets:Object;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -46,8 +48,9 @@ package base.data
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function DataListItem()
+		public function DataListItem(id:String)
 		{
+			_id = id;
 			_properties = {};
 		}
 		
@@ -56,10 +59,33 @@ package base.data
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * 
+		 */
+		public function addProperty(key:String, value:*):void
+		{
+			_properties[key] = value;
+		}
+		
+		
+		/**
+		 * 
+		 */
+		public function addSet(dataSet:DataListItemSet):void
+		{
+			if (!_sets) _sets = {};
+			_sets[dataSet.name] = dataSet;
+		}
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
+		
+		public function get id():String
+		{
+			return _id;
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------

@@ -28,17 +28,17 @@
 package base.data.parsers
 {
 	import base.Main;
-	import base.core.debug.Log;
 	import base.data.DataSupportManager;
 	import base.data.Registry;
 	import base.data.Settings;
+	import base.data.types.KeyValuePair;
 	import base.io.resource.wrappers.XMLResourceWrapper;
 	
 	
 	/**
 	 * Parses settings data from a settings resource file into the settings map.
 	 */
-	public class SettingsDataParser extends DataParser implements IDataParser
+	public class SettingsDataParser extends DataObjectParser implements IDataParser
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
@@ -53,32 +53,10 @@ package base.data.parsers
 			var dsm:DataSupportManager = Main.instance.dataSupportManager;
 			var settings:Settings = Registry.settings;
 			
-			for each (var x:XML in _xml.children())
+			for each (var p:XML in _xml.children())
 			{
-				var key:String = x.name();
-				var params:String = x.toString();
-				var value:Object = null;
-				
-				/* Check if property has a complex type assigned. */
-				var ctype:String = x.@ctype;
-				if (ctype && ctype.length > 0)
-				{
-					var clazz:Class = dsm.getComplexTypeClass(ctype);
-					if (!clazz)
-					{
-						Log.error("Could not create complex type class."
-							+ " Class for ctype \"" + ctype + "\" was not mapped.", this);
-						continue;
-					}
-					var type:Object = new clazz();
-					value = parseComplexTypeParams(type, params);
-				}
-				else
-				{
-					if (params != "") value = params;
-				}
-				
-				settings.addSettings(key, value);
+				var pair:KeyValuePair = parseProperty(p);
+				settings.addSettings(pair.key, pair.value);
 			}
 			
 			dispose();

@@ -25,31 +25,33 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base
+package base.data
 {
-	import base.core.preload.IPreloadable;
-	import base.core.preload.Preloader;
-	
-	
-	[SWF(width="1024", height="640", backgroundColor="#000000", frameRate="60")]
-	
 	/**
-	 * Entry acts as the entry point and base display object container (or: context view) for
-	 * the application. This is the class that the compiler is being told to compile and from
-	 * which all other application logic is being initiated, in particular Main which acts as
-	 * the main hub for the application.
-	 * 
-	 * IMPORTANT: Auto-generated file. Do not edit!
+	 * DataListItemSet class
 	 */
-	[Frame(factoryClass="base.AppPreloader")]
-	public final class Entry implements IPreloadable
+	public class DataListItemSet
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
-		private var _main:Main;
+		private var _name:String;
+		private var _properties:Object;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Constructor
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Creates a new instance of the class.
+		 */
+		public function DataListItemSet(name:String)
+		{
+			_name = name;
+			_properties = {};
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -57,14 +59,32 @@ package base
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Invoked by the preloader after the application has been fully preloaded.
 		 * 
-		 * @param preloader a reference to the preloader.
 		 */
-		public function onApplicationPreloaded(preloader:Preloader):void
+		public function addProperty(key:String, value:*):void
 		{
-			_main = Main.instance;
-			_main.init(preloader);
+			_properties[key] = value;
 		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Getters & Setters
+		//-----------------------------------------------------------------------------------------
+		
+		public function get name():String
+		{
+			return _name;
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Callback Handlers
+		//-----------------------------------------------------------------------------------------
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Private Methods
+		//-----------------------------------------------------------------------------------------
+		
 	}
 }

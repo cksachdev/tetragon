@@ -56,8 +56,9 @@ package base.data
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function DataList()
+		public function DataList(id:String)
 		{
+			_id = id;
 			_items = {};
 		}
 		

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<text>
+	
+	<string id="nameDomainGround"><![CDATA[Ground]]></string>
+	<string id="nameDomainSea"><![CDATA[Sea]]></string>
+	<string id="nameDomainGroundSea"><![CDATA[Ground & Sea]]></string>
+	<string id="nameDomainAir"><![CDATA[Air]]></string>
+	
+	<string id="nameMovementTypeInfantry"><![CDATA[Infantry]]></string>
+	<string id="nameMovementTypeTires"><![CDATA[Tires]]></string>
+	<string id="nameMovementTypeTread"><![CDATA[Tread]]></string>
+	<string id="nameMovementTypeSea"><![CDATA[Sea]]></string>
+	<string id="nameMovementTypeHover"><![CDATA[Hover]]></string>
+	<string id="nameMovementTypeAir"><![CDATA[Air]]></string>
+	
+	<string id="nameTerrainGrassland"><![CDATA[Grassland]]></string>
+	<string id="nameTerrainPlains"><![CDATA[Plains]]></string>
+	<string id="nameTerrainTundra"><![CDATA[Tundra]]></string>
+	<string id="nameTerrainDesert"><![CDATA[Desert]]></string>
+	<string id="nameTerrainHills"><![CDATA[Hills]]></string>
+	<string id="nameTerrainMountains"><![CDATA[Mountains]]></string>
+	<string id="nameTerrainSnow"><![CDATA[Snow]]></string>
+	<string id="nameTerrainIce"><![CDATA[Ice]]></string>
+	<string id="nameTerrainForest"><![CDATA[Forest]]></string>
+	<string id="nameTerrainJungle"><![CDATA[Jungle]]></string>
+	<string id="nameTerrainMarsh"><![CDATA[Marsh]]></string>
+	<string id="nameTerrainSwamp"><![CDATA[Swamp]]></string>
+	<string id="nameTerrainUrban"><![CDATA[Urban]]></string>
+	<string id="nameTerrainRuins"><![CDATA[Ruins]]></string>
+	<string id="nameTerrainRoad"><![CDATA[Road]]></string>
+	<string id="nameTerrainBridge"><![CDATA[Bridge]]></string>
+	<string id="nameTerrainCoast"><![CDATA[Coast]]></string>
+	<string id="nameTerrainSeaShallow"><![CDATA[Shallow Sea]]></string>
+	<string id="nameTerrainSeaDeep"><![CDATA[Deep Sea]]></string>
+	<string id="nameTerrainSeaRough"><![CDATA[Rough Sea]]></string>
+	<string id="nameTerrainReef"><![CDATA[Reef]]></string>
+	
+	<string id="descTerrainGrassland"><![CDATA[]]></string>
+	<string id="descTerrainPlains"><![CDATA[]]></string>
+	<string id="descTerrainTundra"><![CDATA[]]></string>
+	<string id="descTerrainDesert"><![CDATA[]]></string>
+	<string id="descTerrainHills"><![CDATA[]]></string>
+	<string id="descTerrainMountains"><![CDATA[]]></string>
+	<string id="descTerrainSnow"><![CDATA[]]></string>
+	<string id="descTerrainIce"><![CDATA[]]></string>
+	<string id="descTerrainForest"><![CDATA[]]></string>
+	<string id="descTerrainJungle"><![CDATA[]]></string>
+	<string id="descTerrainMarsh"><![CDATA[]]></string>
+	<string id="descTerrainSwamp"><![CDATA[]]></string>
+	<string id="descTerrainUrban"><![CDATA[]]></string>
+	<string id="descTerrainRuins"><![CDATA[]]></string>
+	<string id="descTerrainRoad"><![CDATA[]]></string>
+	<string id="descTerrainBridge"><![CDATA[]]></string>
+	<string id="descTerrainCoast"><![CDATA[]]></string>
+	<string id="descTerrainSeaShallow"><![CDATA[]]></string>
+	<string id="descTerrainSeaDeep"><![CDATA[]]></string>
+	<string id="descTerrainSeaRough"><![CDATA[]]></string>
+	<string id="descTerrainReef"><![CDATA[]]></string>
+	
+	<string id="nameWeatherFair"><![CDATA[Fair]]></string>
+	<string id="nameWeatherOvercast"><![CDATA[Overcast]]></string>
+	<string id="nameWeatherRain"><![CDATA[Rain]]></string>
+	<string id="nameWeatherHeavyRain"><![CDATA[Heavy Rain]]></string>
+	<string id="nameWeatherHail"><![CDATA[Hail]]></string>
+	<string id="nameWeatherSnow"><![CDATA[Snow]]></string>
+	<string id="nameWeatherBlizzard"><![CDATA[Blizzard]]></string>
+	<string id="nameWeatherFog"><![CDATA[Fog]]></string>
+	<string id="nameWeatherThunderstorm"><![CDATA[Thunderstorm]]></string>
+	<string id="nameWeatherSandstorm"><![CDATA[Sandstorm]]></string>
+	<string id="nameWeatherHeatWave"><![CDATA[Heat Wave]]></string>
+	<string id="nameWeatherFallout"><![CDATA[Fallout]]></string>
+	
+	<string id="descWeatherFair"><![CDATA[]]></string>
+	<string id="descWeatherOvercast"><![CDATA[]]></string>
+	<string id="descWeatherRain"><![CDATA[]]></string>
+	<string id="descWeatherHeavyRain"><![CDATA[]]></string>
+	<string id="descWeatherHail"><![CDATA[]]></string>
+	<string id="descWeatherSnow"><![CDATA[]]></string>
+	<string id="descWeatherBlizzard"><![CDATA[]]></string>
+	<string id="descWeatherFog"><![CDATA[]]></string>
+	<string id="descWeatherThunderstorm"><![CDATA[]]></string>
+	<string id="descWeatherSandstorm"><![CDATA[]]></string>
+	<string id="descWeatherHeatWave"><![CDATA[]]></string>
+	<string id="descWeatherFallout"><![CDATA[]]></string>
+	
+</text>

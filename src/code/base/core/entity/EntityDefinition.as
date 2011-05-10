@@ -27,17 +27,18 @@
  */
 package base.core.entity
 {
+	import base.data.DataObject;
+	
+	
 	/**
 	 * Represents an entity definition. Entity instances are created from this class.
 	 */
-	public class EntityDefinition
+	public class EntityDefinition extends DataObject
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
-		protected var _id:String;
 		/** @private */
 		protected var _componentMappings:Object;
 		/** @private */
@@ -89,28 +90,17 @@ package base.core.entity
 		
 		
 		/**
-		 * Returns a String Representation of the class.
-		 * 
-		 * @return A String Representation of the class.
+		 * @inheritDoc
 		 */
-		public function toString():String
+		override public function toString(...args):String
 		{
-			return "[EntityDefinition, id=" + _id + ", componentCount=" + _componentCount + "]";
+			return super.toString("id=" + _id + ", componentCount=" + _componentCount);
 		}
 		
 		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function get id():String
-		{
-			return _id;
-		}
-		
 		
 		/**
 		 * @inheritDoc
