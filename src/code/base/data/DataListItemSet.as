@@ -67,6 +67,20 @@ package base.data
 		}
 		
 		
+		/**
+		 * dump
+		 */
+		public function dump():String
+		{
+			var s:String = "\n\t\tDataListItemSet (name: " + _name + ")";
+			for (var key:String in _properties)
+			{
+				s += "\n\t\t\t" + key + ": " + _properties[key];
+			}
+			return s;
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------

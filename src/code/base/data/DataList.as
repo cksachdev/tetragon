@@ -85,6 +85,20 @@ package base.data
 		}
 		
 		
+		/**
+		 * dump
+		 */
+		public function dump():String
+		{
+			var s:String = "\nDataList (id: " + _id + ", datatype: " + _dataType + ")";
+			for each (var i:DataListItem in _items)
+			{
+				s += i.dump();
+			}
+			return s;
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------

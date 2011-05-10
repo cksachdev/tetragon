@@ -155,9 +155,15 @@ package base.data.parsers
 					/* Check if the referenced ID has two parts. */
 					if (String(value).indexOf(ResourceIDType.DIVIDER) != -1)
 					{
-						value = String(value).split(ResourceIDType.DIVIDER)[0];
+						var a:Array = String(value).split(ResourceIDType.DIVIDER);
+						var refID:String = a[0];
+						value = a[1];
+						_referencedIDs[refID] = key;
 					}
-					_referencedIDs[value] = key;
+					else
+					{
+						_referencedIDs[value] = key;
+					}
 				}
 			}
 			return new KeyValuePair(key, value);

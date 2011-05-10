@@ -30,6 +30,7 @@ package extra.tbs.view.display
 	import base.core.debug.Console;
 	import base.core.debug.FPSMonitor;
 	import base.core.entity.IEntity;
+	import base.data.DataList;
 	import base.view.display.Display;
 
 	import com.hexagonstar.util.debug.Debug;
@@ -61,6 +62,9 @@ package extra.tbs.view.display
 			
 			var f:FPSMonitor = main.fpsMonitor;
 			if (f) f.toggle();
+			
+			var list:DataList = getResource("movementTypes");
+			Debug.trace(list.dump());
 		}
 		
 		
