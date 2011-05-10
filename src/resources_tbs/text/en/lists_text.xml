@@ -70,7 +70,9 @@
 	<string id="nameWeatherHeatWave"><![CDATA[Heat Wave]]></string>
 	<string id="nameWeatherFallout"><![CDATA[Fallout]]></string>
 	
-	<string id="descWeatherFair"><![CDATA[]]></string>
+	<string id="descWeatherFair"><![CDATA[Lorem ipsum dolor sit <b>amet</b>,
+	consectetur adipiscing elit.<br/>
+	Etiam faucibus.]]></string>
 	<string id="descWeatherOvercast"><![CDATA[]]></string>
 	<string id="descWeatherRain"><![CDATA[]]></string>
 	<string id="descWeatherHeavyRain"><![CDATA[]]></string>
