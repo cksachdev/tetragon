@@ -37,10 +37,10 @@ package base
 		public static const NAME:String				= "Tetragon Application";
 		public static const DESCRIPTION:String		= "Tetragon Application Test Build";
 		public static const VERSION:String			= "1.0.0";
-		public static const BUILD:String			= "5064";
-		public static const BUILD_DATE:String		= "10-May-2011 22:36";
+		public static const BUILD:String			= "5070";
+		public static const BUILD_DATE:String		= "10-May-2011 23:31";
 		public static const MILESTONE:String		= "foundation";
-		public static const BUILD_TYPE:String		= "desktop";
+		public static const BUILD_TYPE:String		= "ios";
 		public static const RELEASE_STAGE:String	= "beta";
 		public static const COPYRIGHT:String		= "Hexagon Star Softworks";
 		public static const PUBLISHER:String		= "Hexagon Star Softworks";
@@ -52,6 +52,6 @@ package base
 		public static const FILENAME:String			= "tetragon";
 		public static const DEFAULT_WIDTH:int		= 1024;
 		public static const DEFAULT_HEIGHT:int		= 640;
-		public static const IS_DEBUG:Boolean		= true;
+		public static const IS_DEBUG:Boolean		= false;
 	}
 }

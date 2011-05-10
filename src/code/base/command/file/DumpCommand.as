@@ -25,23 +25,22 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.tbs.view.display
+package base.command.file
 {
-	import base.core.debug.Console;
-	import base.core.debug.FPSMonitor;
-	import base.core.entity.IEntity;
+	import base.command.CLICommand;
+	import base.core.debug.Log;
+	import base.core.entity.EntityDefinition;
 	import base.data.DataList;
-	import base.view.display.Display;
+	import base.io.resource.Resource;
 	
 	
-	/**
-	 * Playfield display for turn-based strategy games.
-	 */
-	public class TBSPlayfieldDisplay extends Display
+	public class DumpCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
+		
+		private var _resourceID:String;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -51,54 +50,50 @@ package extra.tbs.view.display
 		/**
 		 * @inheritDoc
 		 */
-		override public function start():void
+		override public function execute():void 
 		{
-			super.start();
+			var r:Resource = main.resourceManager.resourceIndex.getResource(_resourceID);
+			if (r)
+			{
+				var content:* = r.content;
+				var s:String;
+				if (content)
+				{
+					if (content is EntityDefinition)
+					{
+						var et:EntityDefinition = EntityDefinition(content);
+						s = et.dump();
+					}
+					else if (content is DataList)
+					{
+						var dl:DataList = DataList(content);
+						s = dl.dump();
+					}
+					else
+					{
+						try
+						{
+							s = content["dump"]();
+						}
+						catch (err:Error)
+						{
+							Log.error("Resource object with ID \"" + _resourceID + "\" has no dump() method!");
+						}
+					}
+				}
+				else
+				{
+					Log.error("The content of resource with ID \"" + _resourceID + "\" is null. Try loading the resource first.");
+				}
+				
+				if (s) Log.info(s);
+			}
+			else
+			{
+				Log.error("no resource with ID \"" + _resourceID + "\" found!");
+			}
 			
-			var c:Console = main.console;
-			if (c) c.toggle();
-			
-			var f:FPSMonitor = main.fpsMonitor;
-			if (f) f.toggle();
-			
-			var unit:IEntity = main.entityFactory.createEntity("unitInfantry");
-			var list:DataList = getResource("movementTypes");
-			//Debug.trace(list.dump());
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function stop():void
-		{
-			super.stop();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function reset():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function update():void
-		{
-			super.update();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function dispose():void
-		{
-			super.dispose();
+			complete();
 		}
 		
 		
@@ -106,93 +101,49 @@ package extra.tbs.view.display
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * @inheritDoc
+		 */
+		override public function get name():String 
+		{
+			return "dump";
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function get signature():Array
+		{
+			return ["resourceID:String"];
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function get helpText():String
+		{
+			return "Outputs a string dump of the resource with the specified resource ID.";
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function get example():String
+		{
+			return "dump \"resourceID\"";
+		}
+		
 		
 		//-----------------------------------------------------------------------------------------
-		// Callback Handlers
+		// CLI Command Signature Arguments
 		//-----------------------------------------------------------------------------------------
 		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function createChildren():void
+		public function set resourceID(v:String):void
 		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function addChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function addListeners():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function removeListeners():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function enableChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function disableChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function pauseChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function unpauseChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function updateDisplayText():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function layoutChildren():void
-		{
+			_resourceID = v;
 		}
 	}
 }

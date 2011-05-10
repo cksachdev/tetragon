@@ -98,6 +98,25 @@ package base.core.entity
 		}
 		
 		
+		/**
+		 * @inheritDoc
+		 */
+		public function dump():String
+		{
+			var s:String = "\n" + toString();
+			for (var classID:String in _componentMappings)
+			{
+				s += "\n\t" + classID;
+				var obj:Object = _componentMappings[classID];
+				for (var k:String in obj)
+				{
+					s += "\n\t\t" + k + ": " + obj[k];
+				}
+			}
+			return s;
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
