@@ -314,7 +314,7 @@ package base.view.screen
 		 */
 		public function onResourceProgress(e:ResourceEvent):void
 		{
-			progressSignal.dispatch(e);
+			if (progressSignal) progressSignal.dispatch(e);
 		}
 		
 		
@@ -325,7 +325,7 @@ package base.view.screen
 		public function onResourceLoadComplete():void
 		{
 			loaded = true;
-			loadedSignal.dispatch(this);
+			if (loadedSignal) loadedSignal.dispatch(this);
 			init();
 		}
 		
@@ -338,7 +338,7 @@ package base.view.screen
 		private function onFramePassed(e:Event):void
 		{
 			removeEventListener(Event.ENTER_FRAME, onFramePassed);
-			createdSignal.dispatch();
+			if (createdSignal) createdSignal.dispatch();
 			disposeSignals();
 		}
 		

@@ -28,10 +28,11 @@
 package base.command.file
 {
 	import base.command.CLICommand;
-	import base.core.debug.Log;
 	import base.core.entity.EntityDefinition;
 	import base.data.DataList;
 	import base.io.resource.Resource;
+
+	import com.hexagonstar.util.debug.LogLevel;
 	
 	
 	public class DumpCommand extends CLICommand
@@ -77,20 +78,20 @@ package base.command.file
 						}
 						catch (err:Error)
 						{
-							Log.error("Resource object with ID \"" + _resourceID + "\" has no dump() method!");
+							main.console.log("Resource object with ID \"" + _resourceID + "\" has no dump() method!", LogLevel.ERROR);
 						}
 					}
 				}
 				else
 				{
-					Log.error("The content of resource with ID \"" + _resourceID + "\" is null. Try loading the resource first.");
+					main.console.log("The content of resource with ID \"" + _resourceID + "\" is null. Try loading the resource first.", LogLevel.ERROR);
 				}
 				
-				if (s) Log.info(s);
+				if (s) main.console.log(s, LogLevel.INFO);
 			}
 			else
 			{
-				Log.error("no resource with ID \"" + _resourceID + "\" found!");
+				main.console.log("no resource with ID \"" + _resourceID + "\" found!", LogLevel.ERROR);
 			}
 			
 			complete();

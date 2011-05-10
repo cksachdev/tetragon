@@ -28,10 +28,10 @@
 package base.command.file
 {
 	import base.command.CLICommand;
-	import base.core.debug.Log;
 	import base.io.resource.Resource;
 
 	import com.hexagonstar.types.Byte;
+	import com.hexagonstar.util.debug.LogLevel;
 
 	import flash.display.BitmapData;
 	import flash.media.Sound;
@@ -105,11 +105,11 @@ package base.command.file
 					+ (size ? "\n\tsize:           " + size : "")
 					+ "\n\twrapperClass:   " + r.wrapperClass
 					+ "";
-				Log.info(s);
+				main.console.log(s, LogLevel.INFO);
 			}
 			else
 			{
-				Log.error("no resource with ID \"" + _resourceID + "\" found!");
+				main.console.log("no resource with ID \"" + _resourceID + "\" found!", LogLevel.ERROR);
 			}
 			
 			complete();

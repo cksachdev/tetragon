@@ -376,6 +376,7 @@ package base.io.resource
 						Log.debug(bulkFile.id + " requested referenced resource with ID \""
 							+ refID + "\".", this);
 					}
+					// TODO fix ref loading bug!
 					resourceManager.load(a);
 				}
 			}

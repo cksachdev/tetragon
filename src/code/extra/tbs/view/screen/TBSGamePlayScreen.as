@@ -104,6 +104,8 @@ package extra.tbs.view.screen
 		override protected function registerResources():void
 		{
 			registerResource("unitInfantry");
+			registerResource("unitShockTrooper");
+			registerResource("unitLightTank");
 		}
 		
 		

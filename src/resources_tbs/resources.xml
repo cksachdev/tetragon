@@ -56,10 +56,15 @@
 		
 		<group type="TBSUnit" fileID="unitsFile">
 			<resource id="unitInfantry"/>
+			<resource id="unitShockTrooper"/>
+			<resource id="unitLightTank"/>
 		</group>
 		
 		<group type="TBSWeapon" fileID="weaponsFile">
+			<resource id="weaponAssaultRifle"/>
 			<resource id="weaponMachineGun"/>
+			<resource id="weaponFlameThrower"/>
+			<resource id="weaponCanon"/>
 		</group>
 		
 	</entities>
@@ -106,6 +111,9 @@
 		</resource>
 		<resource id="textUnits">
 			<locale lang="en" path="text/en/units_text.xml" packageID="resourcePackage"/>
+		</resource>
+		<resource id="textWeapons">
+			<locale lang="en" path="text/en/weapons_text.xml" packageID="resourcePackage"/>
 		</resource>
 	</text>
 	

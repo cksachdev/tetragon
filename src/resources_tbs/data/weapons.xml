@@ -1,22 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <weapons>
 	
-	<weapon id="weaponMachineGun">
+	<weapon id="weaponAssaultRifle">
 		<components>
-			
 			<tbsWeaponProperties>
-				<nameID>nameWeaponMachineGun</nameID>
-				<nameShortID>nameShortWeaponMachineGun</nameShortID>
-				<descriptionID>descWeaponMachineGun</descriptionID>
+				<nameID>textWeapons/nameWeaponAssaultRifle</nameID>
+				<descriptionID>textWeapons/descWeaponAssaultRifle</descriptionID>
 				<weaponType></weaponType>
 			</tbsWeaponProperties>
-			
 			<tbsWeaponStats>
 				<minRange>1</minRange>
 				<maxRange>1</maxRange>
 				<ammo>-1</ammo>
 			</tbsWeaponStats>
-			
+		</components>
+	</weapon>
+	
+	<weapon id="weaponMachineGun">
+		<components>
+			<tbsWeaponProperties>
+				<nameID>textWeapons/nameWeaponMachineGun</nameID>
+				<descriptionID>textWeapons/descWeaponMachineGun</descriptionID>
+				<weaponType></weaponType>
+			</tbsWeaponProperties>
+			<tbsWeaponStats>
+				<minRange>1</minRange>
+				<maxRange>1</maxRange>
+				<ammo>-1</ammo>
+			</tbsWeaponStats>
+		</components>
+	</weapon>
+	
+	<weapon id="weaponFlameThrower">
+		<components>
+			<tbsWeaponProperties>
+				<nameID>textWeapons/nameWeaponFlameThrower</nameID>
+				<descriptionID>textWeapons/descWeaponFlameThrower</descriptionID>
+				<weaponType></weaponType>
+			</tbsWeaponProperties>
+			<tbsWeaponStats>
+				<minRange>1</minRange>
+				<maxRange>1</maxRange>
+				<ammo>-1</ammo>
+			</tbsWeaponStats>
+		</components>
+	</weapon>
+	
+	<weapon id="weaponCanon">
+		<components>
+			<tbsWeaponProperties>
+				<nameID>textWeapons/nameWeaponCanon</nameID>
+				<descriptionID>textWeapons/descWeaponCanon</descriptionID>
+				<weaponType></weaponType>
+			</tbsWeaponProperties>
+			<tbsWeaponStats>
+				<minRange>1</minRange>
+				<maxRange>1</maxRange>
+				<ammo>-1</ammo>
+			</tbsWeaponStats>
 		</components>
 	</weapon>
 	

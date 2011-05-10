@@ -3,7 +3,6 @@
 	
 	<item id="unitInfantry">
 		<components>
-			
 			<component classID="tbsUnitPropertiesComponent">
 				<nameID></nameID>
 				<nameShortID></nameShortID>
@@ -13,7 +12,6 @@
 				<movementTypeID>movementTypes/movementTypeInfantry</movementTypeID>
 				<price>1000</price>
 			</component>
-			
 			<component classID="tbsUnitStatsComponent">
 				<movementPoints>2</movementPoints>
 				<mobility>3</mobility>
@@ -24,33 +22,22 @@
 				<xpValueAttack>3</xpValueAttack>
 				<xpValueDefense>3</xpValueDefense>
 			</component>
-			
-			<component classID="spacial2DComponent">
-				<position ctype="Vector2D">x: 55, y: 300</position>
-				<rotation>90</rotation>
-			</component>
-			
 			<component classID="tbsUnitWeaponComponent">
 				<primaryWeaponID></primaryWeaponID>
-				<secondaryWeaponID>weaponMachineGun</secondaryWeaponID>
+				<secondaryWeaponID>weaponAssaultRifle</secondaryWeaponID>
 			</component>
-			
 			<component classID="TBSUnitArmor">
 				<armorID>armorInfantry</armorID>
 			</component>
-			
 			<component classID="TBSUnitAbilities">
 			</component>
-			
 			<component classID="TBSUnitAI">
 				<combatAIID>aiInfantry</combatAIID>
 			</component>
-			
 			<component classID="TBSPrerequisites">
 				<technologyID>testTechnology</technologyID>
 				<resourceID>testResource</resourceID>
 			</component>
-			
 			<component classID="TBSUnitFlags">
 				<canCaptureUnits>true</canCaptureUnits>
 				<canCaptureFacilities>true</canCaptureFacilities>
@@ -58,10 +45,106 @@
 				<canFortify>true</canFortify>
 				<canRebase>false</canRebase>
 			</component>
-			
 			<component classID="TBSUnitArt">
 			</component>
-			
+		</components>
+	</item>
+	
+	<item id="unitShockTrooper">
+		<components>
+			<component classID="tbsUnitPropertiesComponent">
+				<nameID></nameID>
+				<nameShortID></nameShortID>
+				<designationID>textUnits/nameShockTrooperUnit</designationID>
+				<designationShortID>textUnits/nameShortShockTrooperUnit</designationShortID>
+				<descriptionID>textUnits/descShockTrooperUnit</descriptionID>
+				<movementTypeID>movementTypes/movementTypeInfantry</movementTypeID>
+				<price>1200</price>
+			</component>
+			<component classID="tbsUnitStatsComponent">
+				<movementPoints>2</movementPoints>
+				<mobility>3</mobility>
+				<vision>2</vision>
+				<strength>6</strength>
+				<fuel>-1</fuel>
+				<xp>0</xp>
+				<xpValueAttack>3</xpValueAttack>
+				<xpValueDefense>3</xpValueDefense>
+			</component>
+			<component classID="tbsUnitWeaponComponent">
+				<primaryWeaponID></primaryWeaponID>
+				<secondaryWeaponID>weaponFlameThrower</secondaryWeaponID>
+			</component>
+			<component classID="TBSUnitArmor">
+				<armorID>armorInfantry</armorID>
+			</component>
+			<component classID="TBSUnitAbilities">
+			</component>
+			<component classID="TBSUnitAI">
+				<combatAIID>aiInfantry</combatAIID>
+			</component>
+			<component classID="TBSPrerequisites">
+				<technologyID>testTechnology</technologyID>
+				<resourceID>testResource</resourceID>
+			</component>
+			<component classID="TBSUnitFlags">
+				<canCaptureUnits>true</canCaptureUnits>
+				<canCaptureFacilities>true</canCaptureFacilities>
+				<canPillage>true</canPillage>
+				<canFortify>true</canFortify>
+				<canRebase>false</canRebase>
+			</component>
+			<component classID="TBSUnitArt">
+			</component>
+		</components>
+	</item>
+	
+	<item id="unitLightTank">
+		<components>
+			<component classID="tbsUnitPropertiesComponent">
+				<nameID></nameID>
+				<nameShortID></nameShortID>
+				<designationID>textUnits/nameLightTankUnit</designationID>
+				<designationShortID>textUnits/nameShortLightTankUnit</designationShortID>
+				<descriptionID>textUnits/descLightTankUnit</descriptionID>
+				<movementTypeID>movementTypes/movementTypeTread</movementTypeID>
+				<price>2400</price>
+			</component>
+			<component classID="tbsUnitStatsComponent">
+				<movementPoints>2</movementPoints>
+				<mobility>3</mobility>
+				<vision>2</vision>
+				<strength>6</strength>
+				<fuel>-1</fuel>
+				<xp>0</xp>
+				<xpValueAttack>3</xpValueAttack>
+				<xpValueDefense>3</xpValueDefense>
+			</component>
+			<component classID="tbsUnitWeaponComponent">
+				<primaryWeaponID>weaponCanon</primaryWeaponID>
+				<secondaryWeaponID>weaponMachineGun</secondaryWeaponID>
+			</component>
+			<component classID="TBSUnitArmor">
+				<armorID>armorLightTank</armorID>
+			</component>
+			<component classID="TBSUnitAbilities">
+			</component>
+			<component classID="TBSUnitAI">
+				<combatAIID>aiTank</combatAIID>
+			</component>
+			<component classID="TBSPrerequisites">
+				<technologyID>testTechnology</technologyID>
+				<resourceID>testResource</resourceID>
+			</component>
+			<component classID="TBSUnitFlags">
+				<canCaptureUnits>true</canCaptureUnits>
+				<canCaptureFacilities>false</canCaptureFacilities>
+				<canPillage>true</canPillage>
+				<canFortify>true</canFortify>
+				<canRebase>false</canRebase>
+			</component>
+			<component classID="TBSUnitArt">
+			</component>
 		</components>
 	</item>
 	

@@ -190,6 +190,7 @@ package base.io.resource
 				if (r.status == ResourceStatus.LOADING)
 				{
 					Log.debug("Resource \"" + r.id + "\" is already loading.", this);
+					r.increaseReferenceCount();
 					var vo:HandlerVO = new HandlerVO(completeHandler, loadedHandler, failedHandler,
 						progressHandler);
 					if (_waitingHandlers[r.id] == null) _waitingHandlers[r.id] = [];
@@ -320,7 +321,7 @@ package base.io.resource
 		
 		
 		/**
-		 * Check if a resource is loaded and ready to go.
+		 * Checks if a resource is loaded and ready to go.
 		 * 
 		 * @param resourceID
 		 * @return true or false.
@@ -330,6 +331,20 @@ package base.io.resource
 			var r:Resource = _resourceIndex.getResource(resourceID);
 			if (!r) return false;
 			return r.status == ResourceStatus.LOADED;
+		}
+		
+		
+		/**
+		 * Checks if a resource is currently in the process of being loaded.
+		 * 
+		 * @param resourceID
+		 * @return true or false.
+		 */
+		public function isResourceLoading(resourceID:String):Boolean
+		{
+			var r:Resource = _resourceIndex.getResource(resourceID);
+			if (!r) return false;
+			return r.status == ResourceStatus.LOADING;
 		}
 		
 		
@@ -473,6 +488,7 @@ package base.io.resource
 		{
 			var bf:ResourceBulkFile = e.bulkFile;
 			if (!bf) return;
+			
 			for (var i:int = 0; i < bf.items.length; i++)
 			{
 				var item:ResourceBulkItem = bf.items[i];
