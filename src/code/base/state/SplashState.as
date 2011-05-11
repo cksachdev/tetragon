@@ -28,11 +28,14 @@
 package base.state
 {
 	import base.data.Registry;
+	import base.view.screen.BaseScreen;
 
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
+	import flash.media.Sound;
+	import flash.media.SoundChannel;
 	import flash.ui.Mouse;
 	import flash.utils.Timer;
 	
@@ -50,6 +53,7 @@ package base.state
 		private var _allowSplashAbort:Boolean;
 		private var _splashScreenWaitTime:int;
 		private var _initialStateID:String;
+		private var _tetragonLogoSoundChannel:SoundChannel;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -61,7 +65,7 @@ package base.state
 		 */
 		override public function start():void
 		{
-			_timer.start();
+			openScreen("splashScreen");
 		}
 		
 		
@@ -79,6 +83,10 @@ package base.state
 		override public function stop():void
 		{
 			_timer.stop();
+			if (_tetragonLogoSoundChannel)
+			{
+				_tetragonLogoSoundChannel.stop();
+			}
 		}
 		
 		
@@ -98,6 +106,20 @@ package base.state
 		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function onScreenOpened(screen:BaseScreen):void
+		{
+			_timer.start();
+			var sound:Sound = getResource("audioLogoTetragon");
+			if (sound)
+			{
+				_tetragonLogoSoundChannel = sound.play();
+			}
+		}
+		
 		
 		/**
 		 * @private
@@ -183,6 +205,15 @@ package base.state
 				main.stage.removeEventListener(MouseEvent.CLICK, onUserInput);
 				main.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onUserInput);
 			}
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function dispose():void
+		{
+			_tetragonLogoSoundChannel = null;
 		}
 	}
 }

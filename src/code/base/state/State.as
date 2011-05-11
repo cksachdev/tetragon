@@ -31,6 +31,8 @@ package base.state
 	import base.event.ResourceEvent;
 	import base.io.resource.Resource;
 	import base.io.resource.ResourceManager;
+	import base.view.screen.BaseScreen;
+	import base.view.screen.ScreenManager;
 
 	import com.hexagonstar.signals.Signal;
 	import com.hexagonstar.util.reflection.getClassName;
@@ -53,8 +55,6 @@ package base.state
 		
 		/** @private */
 		private var _main:Main;
-		/** @private */
-		private var _resourceManager:ResourceManager;
 		/** @private */
 		private var _loaded:Boolean = false;
 		
@@ -92,7 +92,6 @@ package base.state
 		public function State()
 		{
 			_main = Main.instance;
-			_resourceManager = _main.resourceManager;
 			
 			enteredSignal = new Signal();
 			progressSignal = new Signal();
@@ -205,7 +204,7 @@ package base.state
 		 */
 		protected function get resourceManager():ResourceManager
 		{
-			return _resourceManager;
+			return _main.resourceManager;
 		}
 		
 		
@@ -218,6 +217,15 @@ package base.state
 		}
 		
 		
+		/**
+		 * A reference to the screen manager for use in sub-classes.
+		 */
+		protected function get screenManager():ScreenManager
+		{
+			return _main.screenManager;
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
@@ -226,7 +234,7 @@ package base.state
 		 * Invoked after a resource has been loaded for this state.
 		 * @private
 		 */
-		public function onResourceLoaded(resource:Resource):void
+		protected function onResourceLoaded(resource:Resource):void
 		{
 			/* Abstract method! */
 		}
@@ -236,7 +244,7 @@ package base.state
 		 * Invoked if a resource for this state has failed to loaded.
 		 * @private
 		 */
-		public function onResourceLoadError(resource:Resource):void
+		protected function onResourceLoadError(resource:Resource):void
 		{
 			/* Abstract method! */
 		}
@@ -245,7 +253,7 @@ package base.state
 		/**
 		 * @private
 		 */
-		public function onResourceProgress(e:ResourceEvent):void
+		protected function onResourceProgress(e:ResourceEvent):void
 		{
 			if (progressSignal) progressSignal.dispatch(e);
 		}
@@ -255,12 +263,39 @@ package base.state
 		 * Invoked after all resource loading for this state has been completed.
 		 * @private
 		 */
-		public function onResourceLoadComplete():void
+		protected function onResourceLoadComplete():void
 		{
 			setup();
+			// TODO Where is addListeners() best placed?
 			addListeners();
 			_loaded = true;
 			enteredSignal.dispatch();
+		}
+		
+		
+		/**
+		 * Signal handler that is called if a screen has been opened after using the
+		 * <code>openScreen()<code> helper method.
+		 * 
+		 * @private
+		 * @param screen The screen that has been opened.
+		 */
+		protected function onScreenOpened(screen:BaseScreen):void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Signal handler that is called if a screen has been closed after opening
+		 * another screen by using the <code>openScreen()<code> helper method.
+		 * 
+		 * @private
+		 * @param screen The screen that has been closed.
+		 */
+		protected function onScreenClosed(screen:BaseScreen):void
+		{
+			/* Abstract method! */
 		}
 		
 		
@@ -390,7 +425,7 @@ package base.state
 		
 		
 		/**
-		 * Quick helper method that can be used to enter another state from within
+		 * Helper method that can be used to enter another state from within
 		 * this state.
 		 * 
 		 * @private
@@ -399,6 +434,44 @@ package base.state
 		protected function enterState(stateID:String):void
 		{
 			stateManager.enterState(stateID);
+		}
+		
+		
+		/**
+		 * Helper method that can be used to open a screen.
+		 * 
+		 * @private
+		 * @param screenID The ID of the screen to open.
+		 * @param fastTransition Whether the screen transition should be fast or not.
+		 */
+		protected function openScreen(screenID:String, fastTransition:Boolean = false):void
+		{
+			screenManager.screenOpenedSignal.addOnce(onScreenOpened);
+			screenManager.screenClosedSignal.addOnce(onScreenClosed);
+			screenManager.openScreen(screenID, true, fastTransition);
+		}
+		
+		
+		/**
+		 * Helper method to get a resource's content from the resource index. The type
+		 * depends on the content type of the resource.
+		 * 
+		 * @private
+		 */
+		protected function getResource(resourceID:String):*
+		{
+			return resourceManager.resourceIndex.getResourceContent(resourceID);
+		}
+		
+		
+		/**
+		 * Helper method to get a string from the string index.
+		 * 
+		 * @private
+		 */
+		protected function getString(stringID:String):String
+		{
+			return resourceManager.stringIndex.get(stringID);
 		}
 	}
 }

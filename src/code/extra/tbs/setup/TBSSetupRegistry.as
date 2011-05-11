@@ -31,6 +31,7 @@ package extra.tbs.setup
 	import base.setup.SetupRegistry;
 
 	import extra.tbs.entity.components.*;
+	import extra.tbs.state.*;
 	import extra.tbs.view.screen.*;
 	
 	
@@ -92,7 +93,7 @@ package extra.tbs.setup
 		 */
 		override public function registerStates():void
 		{
-			/* Abstract method! */
+			registerState("tbsGamePlayState", TBSGamePlayState);
 		}
 		
 		

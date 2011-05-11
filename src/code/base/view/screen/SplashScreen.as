@@ -33,11 +33,6 @@ package base.view.screen
 	import com.hexagonstar.display.shape.RectangleGradientShape;
 
 	import flash.events.Event;
-	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
-	import flash.events.TimerEvent;
-	import flash.ui.Mouse;
-	import flash.utils.Timer;
 	
 	
 	/**
@@ -49,10 +44,6 @@ package base.view.screen
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _timer:Timer;
-		private var _allowSplashAbort:Boolean;
-		private var _splashScreenWaitTime:int;
-		private var _initialScreenID:String;
 		private var _backgroundColors:Array;
 		private var _background:RectangleGradientShape;
 		private var _display:SplashDisplay;
@@ -68,7 +59,6 @@ package base.view.screen
 		override public function start():void
 		{
 			super.start();
-			_timer.start();
 		}
 		
 		
@@ -98,31 +88,6 @@ package base.view.screen
 		}
 		
 		
-		/**
-		 * @private
-		 */
-		private function onUserInput(e:Event):void
-		{
-			_timer.stop();
-			removeListeners();
-			Mouse.show();
-			screenManager.openScreen(_initialScreenID, true, true);
-		}
-		
-		
-		/**
-		 * @private
-		 */
-		private function onTimerComplete(e:TimerEvent):void
-		{
-			/* Once the screen fades out, the user should not be able to interrupt, otherwise
-			 * we might hang up somewhere so remove input listeners right here. */
-			removeListeners();
-			Mouse.show();
-			screenManager.openScreen(_initialScreenID);
-		}
-		
-		
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
@@ -132,26 +97,14 @@ package base.view.screen
 		 */
 		override protected function createChildren():void
 		{
-			_allowSplashAbort = Registry.settings.getSettings("allowSplashAbort");
-			_splashScreenWaitTime = Registry.settings.getSettings("splashScreenWaitTime");
-			_initialScreenID = Registry.settings.getSettings("initialScreenID");
 			_backgroundColors = Registry.settings.getSettings("splashBackgroundColors");
-			
-			if(_splashScreenWaitTime < 1)
-			{
-				_splashScreenWaitTime = 6;
-			}
 			if (_backgroundColors == null || !(_backgroundColors is Array))
 			{
 				_backgroundColors = [0x002C3F, 0x0181B8];
 			}
 			
-			_timer = new Timer(_splashScreenWaitTime * 1000, 1);
 			_background = new RectangleGradientShape();
 			_display = new SplashDisplay();
-			
-			/* Hide mouse during splash screen if fullscreen. */
-			if (main.isFullscreen) Mouse.hide();
 		}
 		
 		
@@ -160,7 +113,6 @@ package base.view.screen
 		 */
 		override protected function registerResources():void
 		{
-			registerResource("audioLogoTetragon");
 		}
 		
 		
@@ -189,13 +141,6 @@ package base.view.screen
 		override protected function addListeners():void
 		{
 			main.stage.addEventListener(Event.RESIZE, onStageResize);
-			_timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
-			
-			if (_allowSplashAbort)
-			{
-				main.stage.addEventListener(MouseEvent.CLICK, onUserInput);
-				main.stage.addEventListener(KeyboardEvent.KEY_DOWN, onUserInput);
-			}
 		}
 		
 		
@@ -205,13 +150,6 @@ package base.view.screen
 		override protected function removeListeners():void
 		{
 			main.stage.removeEventListener(Event.RESIZE, onStageResize);
-			_timer.removeEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
-			
-			if (_allowSplashAbort)
-			{
-				main.stage.removeEventListener(MouseEvent.CLICK, onUserInput);
-				main.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onUserInput);
-			}
 		}
 		
 		

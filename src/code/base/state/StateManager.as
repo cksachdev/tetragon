@@ -207,7 +207,7 @@ package base.state
 		 */
 		private function onStateExited():void
 		{
-			Log.debug("Exited " + _currentState.toString() + ".", this);
+			Log.debug("--- Exited " + _currentState.toString() + " ---", this);
 			enterNextState();
 		}
 		
@@ -217,7 +217,7 @@ package base.state
 		 */
 		private function onStateEntered():void
 		{
-			Log.debug("Entered " + _currentState.toString() + ".", this);
+			Log.debug("--- Entered " + _currentState.toString() + " ---", this);
 			_currentState.start();
 			_isSwitching = false;
 		}

@@ -32,8 +32,6 @@ package base.view.display
 	import com.hexagonstar.util.color.colorUintToColorTransform;
 
 	import flash.filters.DropShadowFilter;
-	import flash.media.Sound;
-	import flash.media.SoundChannel;
 
 	
 	/**
@@ -46,7 +44,6 @@ package base.view.display
 		//-----------------------------------------------------------------------------------------
 		
 		private var _tetragonLogo:TetragonLogo;
-		private var _tetragonLogoSoundChannel:SoundChannel;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -59,11 +56,6 @@ package base.view.display
 		override public function start():void
 		{
 			super.start();
-			var sound:Sound = getResource("audioLogoTetragon");
-			if (sound)
-			{
-				_tetragonLogoSoundChannel = sound.play();
-			}
 		}
 		
 		
@@ -73,11 +65,6 @@ package base.view.display
 		override public function stop():void
 		{
 			super.stop();
-			if (_tetragonLogoSoundChannel)
-			{
-				_tetragonLogoSoundChannel.stop();
-				_tetragonLogoSoundChannel = null;
-			}
 		}
 		
 		

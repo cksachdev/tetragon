@@ -25,31 +25,20 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base
+package extra.tbs.state
 {
-	import base.core.preload.IPreloadable;
-	import base.core.preload.Preloader;
+	import base.state.State;
+	import base.view.screen.BaseScreen;
 	
-	
-	[SWF(width="1024", height="640", backgroundColor="#000000", frameRate="60")]
 	
 	/**
-	 * Entry acts as the entry point and base display object container (or: context view) for
-	 * the application. This is the class that the compiler is being told to compile and from
-	 * which all other application logic is being initiated, in particular Main which acts as
-	 * the main hub for the application.
-	 * 
-	 * IMPORTANT: Auto-generated file. Do not edit!
+	 * SplashState class
 	 */
-	[Frame(factoryClass="base.AppPreloader")]
-	public final class Entry implements IPreloadable
+	public class TBSGamePlayState extends State
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
-		
-		/** @private */
-		private var _main:Main;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -57,14 +46,91 @@ package base
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Invoked by the preloader after the application has been fully preloaded.
-		 * 
-		 * @param preloader a reference to the preloader.
+		 * @inheritDoc
 		 */
-		public function onApplicationPreloaded(preloader:Preloader):void
+		override public function start():void
 		{
-			_main = Main.instance;
-			_main.init(preloader);
+			openScreen("tbsGamePlayScreen");
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function update():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function stop():void
+		{
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Getters & Setters
+		//-----------------------------------------------------------------------------------------
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Callback Handlers
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function onScreenOpened(screen:BaseScreen):void
+		{
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Private Methods
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function registerResources():void
+		{
+			registerResource("unitInfantry");
+			registerResource("unitShockTrooper");
+			registerResource("unitLightTank");
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function setup():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function addListeners():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function removeListeners():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override protected function dispose():void
+		{
 		}
 	}
 }
