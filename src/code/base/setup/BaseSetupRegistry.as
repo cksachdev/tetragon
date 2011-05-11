@@ -27,7 +27,7 @@
  */
 package base.setup
 {
-	import base.state.DummyState;
+	import base.state.*;
 	import base.view.screen.*;
 	
 	
@@ -85,6 +85,7 @@ package base.setup
 		 */
 		override public function registerStates():void
 		{
+			registerState("splashState", SplashState);
 			registerState("dummyState", DummyState);
 		}
 		

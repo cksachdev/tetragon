@@ -88,8 +88,15 @@ package base.state
 		 */
 		public function start():void
 		{
+			var showSplashScreen:Boolean = Registry.settings.getSettings("showSplashScreen");
+			var splashStateID:String = Registry.settings.getSettings("splashStateID");
 			var initialStateID:String = Registry.settings.getSettings("initialStateID");
-			if (initialStateID != null && initialStateID.length > 0)
+			
+			if (showSplashScreen && splashStateID != null && splashStateID.length > 0)
+			{
+				enterState(splashStateID);
+			}
+			else if (initialStateID != null && initialStateID.length > 0)
 			{
 				enterState(initialStateID);
 			}
@@ -101,7 +108,7 @@ package base.state
 		
 		
 		/**
-		 * 
+		 * Enters the state with the specified stateID.
 		 */
 		public function enterState(stateID:String):void
 		{
@@ -227,7 +234,7 @@ package base.state
 		{
 			if (_currentState)
 			{
-				_currentState.stop();
+				Log.debug("Exiting " + _currentState.toString() + " ...", this);
 				_currentState.exitedSignal.add(onStateExited);
 				_currentState.exit();
 			}
@@ -246,6 +253,7 @@ package base.state
 			if (_nextState)
 			{
 				_currentState = _nextState;
+				Log.debug("Entering " + _currentState.toString() + " ...", this);
 				_currentState.enteredSignal.add(onStateEntered);
 				_currentState.enter();
 			}

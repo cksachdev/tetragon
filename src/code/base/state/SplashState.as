@@ -25,12 +25,9 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.view.screen
+package base.state
 {
 	import base.data.Registry;
-	import base.view.display.SplashDisplay;
-
-	import com.hexagonstar.display.shape.RectangleGradientShape;
 
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -41,9 +38,9 @@ package base.view.screen
 	
 	
 	/**
-	 * A screen that shows the SplashDisplay.
+	 * SplashState class
 	 */
-	public class SplashScreen extends BaseScreen
+	public class SplashState extends State
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -52,10 +49,7 @@ package base.view.screen
 		private var _timer:Timer;
 		private var _allowSplashAbort:Boolean;
 		private var _splashScreenWaitTime:int;
-		private var _initialScreenID:String;
-		private var _backgroundColors:Array;
-		private var _background:RectangleGradientShape;
-		private var _display:SplashDisplay;
+		private var _initialStateID:String;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -67,8 +61,24 @@ package base.view.screen
 		 */
 		override public function start():void
 		{
-			super.start();
 			_timer.start();
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function update():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function stop():void
+		{
+			_timer.stop();
 		}
 		
 		
@@ -92,21 +102,12 @@ package base.view.screen
 		/**
 		 * @private
 		 */
-		private function onStageResize(e:Event):void
-		{
-			layoutChildren();
-		}
-		
-		
-		/**
-		 * @private
-		 */
 		private function onUserInput(e:Event):void
 		{
 			_timer.stop();
 			removeListeners();
 			Mouse.show();
-			screenManager.openScreen(_initialScreenID, true, true);
+			enterState(_initialStateID);
 		}
 		
 		
@@ -119,41 +120,13 @@ package base.view.screen
 			 * we might hang up somewhere so remove input listeners right here. */
 			removeListeners();
 			Mouse.show();
-			screenManager.openScreen(_initialScreenID);
+			enterState(_initialStateID);
 		}
 		
 		
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function createChildren():void
-		{
-			_allowSplashAbort = Registry.settings.getSettings("allowSplashAbort");
-			_splashScreenWaitTime = Registry.settings.getSettings("splashScreenWaitTime");
-			_initialScreenID = Registry.settings.getSettings("initialScreenID");
-			_backgroundColors = Registry.settings.getSettings("splashBackgroundColors");
-			
-			if(_splashScreenWaitTime < 1)
-			{
-				_splashScreenWaitTime = 6;
-			}
-			if (_backgroundColors == null || !(_backgroundColors is Array))
-			{
-				_backgroundColors = [0x002C3F, 0x0181B8];
-			}
-			
-			_timer = new Timer(_splashScreenWaitTime * 1000, 1);
-			_background = new RectangleGradientShape();
-			_display = new SplashDisplay();
-			
-			/* Hide mouse during splash screen if fullscreen. */
-			if (main.isFullscreen) Mouse.hide();
-		}
-		
 		
 		/**
 		 * @inheritDoc
@@ -167,19 +140,21 @@ package base.view.screen
 		/**
 		 * @inheritDoc
 		 */
-		override protected function registerDisplays():void
+		override protected function setup():void
 		{
-			registerDisplay(_display);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function addChildren():void 
-		{
-			addChild(_background);
-			addChild(_display);
+			_allowSplashAbort = Registry.settings.getSettings("allowSplashAbort");
+			_splashScreenWaitTime = Registry.settings.getSettings("splashScreenWaitTime");
+			_initialStateID = Registry.settings.getSettings("initialStateID");
+			
+			if(_splashScreenWaitTime < 1)
+			{
+				_splashScreenWaitTime = 6;
+			}
+			
+			_timer = new Timer(_splashScreenWaitTime * 1000, 1);
+			
+			/* Hide mouse during splash state if fullscreen. */
+			if (main.isFullscreen) Mouse.hide();
 		}
 		
 		
@@ -188,9 +163,7 @@ package base.view.screen
 		 */
 		override protected function addListeners():void
 		{
-			main.stage.addEventListener(Event.RESIZE, onStageResize);
 			_timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
-			
 			if (_allowSplashAbort)
 			{
 				main.stage.addEventListener(MouseEvent.CLICK, onUserInput);
@@ -204,25 +177,12 @@ package base.view.screen
 		 */
 		override protected function removeListeners():void
 		{
-			main.stage.removeEventListener(Event.RESIZE, onStageResize);
 			_timer.removeEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
-			
 			if (_allowSplashAbort)
 			{
 				main.stage.removeEventListener(MouseEvent.CLICK, onUserInput);
 				main.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onUserInput);
 			}
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function layoutChildren():void
-		{
-			_background.draw(main.stage.stageWidth, main.stage.stageHeight, -90, _backgroundColors);
-			_display.x = getHorizontalCenter(_display);
-			_display.y = getVerticalCenter(_display);
 		}
 	}
 }
