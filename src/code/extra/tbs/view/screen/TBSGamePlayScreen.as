@@ -60,19 +60,6 @@ package extra.tbs.view.screen
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function get showLoadProgress():Boolean
-		{
-			return true;
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
 		
@@ -95,14 +82,6 @@ package extra.tbs.view.screen
 		override protected function createChildren():void
 		{
 			_playfieldDisplay = new TBSPlayfieldDisplay();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function registerResources():void
-		{
 		}
 		
 		

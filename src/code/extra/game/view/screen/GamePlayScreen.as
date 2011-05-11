@@ -141,23 +141,23 @@ package extra.game.view.screen
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function registerResources():void
-		{
-			registerResource("tileSet1Image");
-			registerResource("tileSet2Image");
-			registerResource("tileSet3Image");
-			registerResource("fontDina08x16Image");
-			
-			registerResource("testTileSet");
-			registerResource("bdTileSet");
-			registerResource("hnTileSet");
-			registerResource("tileSetDina08x16");
-			
-			registerResource("testTileMap");
-		}
+//		/**
+//		 * @inheritDoc
+//		 */
+//		override protected function registerResources():void
+//		{
+//			registerResource("tileSet1Image");
+//			registerResource("tileSet2Image");
+//			registerResource("tileSet3Image");
+//			registerResource("fontDina08x16Image");
+//			
+//			registerResource("testTileSet");
+//			registerResource("bdTileSet");
+//			registerResource("hnTileSet");
+//			registerResource("tileSetDina08x16");
+//			
+//			registerResource("testTileMap");
+//		}
 		
 		
 		/**
@@ -211,9 +211,9 @@ package extra.game.view.screen
 		/**
 		 * @inheritDoc
 		 */
-		override protected function unload():void
-		{
-			super.unload();
-		}
+//		override protected function unload():void
+//		{
+//			super.unload();
+//		}
 	}
 }

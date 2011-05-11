@@ -30,24 +30,20 @@ package base.view.screen
 	import base.Main;
 	import base.core.debug.Log;
 	import base.data.Registry;
-	import base.event.ResourceEvent;
-	import base.view.display.LoadProgressDisplay;
 
 	import com.greensock.TweenLite;
 	import com.hexagonstar.signals.Signal;
-	import com.hexagonstar.util.display.StageReference;
 	import com.hexagonstar.util.string.TabularText;
 
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
-	import flash.events.EventDispatcher;
 	import flash.utils.setTimeout;
 	
 	
 	/**
 	 * Manages the creation, opening and closing as well as updating of screens.
 	 */
-	public class ScreenManager extends EventDispatcher
+	public class ScreenManager
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -56,11 +52,9 @@ package base.view.screen
 		/** @private */
 		private var _screenContainer:Sprite;
 		/** @private */
-		private var _loadProgressDisplay:LoadProgressDisplay;
-		/** @private */
 		private var _screenClasses:Object;
 		/** @private */
-		private var _screen:BaseScreen;
+		private var _currentScreen:BaseScreen;
 		/** @private */
 		private var _nextScreen:DisplayObject;
 		/** @private */
@@ -72,7 +66,7 @@ package base.view.screen
 		/** @private */
 		private var _tweenDuration:Number = 0.4;
 		/** @private */
-		private var _fastDuration:Number = 0.14;
+		private var _fastDuration:Number = 0.2;
 		/** @private */
 		private var _backupDuration:Number;
 		/** @private */
@@ -80,11 +74,10 @@ package base.view.screen
 		/** @private */
 		private var _backupCloseDelay:Number;
 		/** @private */
-		private var _isLoading:Boolean = false;
+		private var _isSwitching:Boolean = false;
 		/** @private */
 		private var _isAutoStart:Boolean = false;
-		/** @private */
-		private var _showLoadProgress:Boolean = false;
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Signals
@@ -138,31 +131,6 @@ package base.view.screen
 		
 		
 		/**
-		 * Starts the screen manager by automatically opening the splash screen screen or
-		 * the initial screen in case the splash screen should not be shown (as set in config).
-		 */
-		public function start():void
-		{
-			var showSplashScreen:Boolean = Registry.settings.getSettings("showSplashScreen");
-			var splashScreenID:String = Registry.settings.getSettings("splashScreenID");
-			var initialScreenID:String = Registry.settings.getSettings("initialScreenID");
-			
-			if (showSplashScreen && splashScreenID != null && splashScreenID.length > 0)
-			{
-				openScreen(splashScreenID, true);
-			}
-			else if (initialScreenID != null && initialScreenID.length > 0)
-			{
-				openScreen(initialScreenID, true);
-			}
-			else
-			{
-				Log.fatal("Cannot open initial screen! No initial screen ID defined.", this);
-			}
-		}
-		
-		
-		/**
 		 * Opens the screen of the specified ID. Any currently opened screen is closed
 		 * before the new screen is opened. The screen needs to implement IScreen.
 		 * 
@@ -200,19 +168,14 @@ package base.view.screen
 			{
 				var bs:BaseScreen = BaseScreen(screen);
 				
-				_isLoading = true;
+				_isSwitching = true;
 				_isAutoStart = autoStart;
 				_openScreenClass = screenClass;
-				_showLoadProgress = bs.showLoadProgress;
 				_nextScreen = bs;
 				
 				if (fastTransition)
 				{
-					_backupDuration = _tweenDuration;
-					_backupOpenDelay = _screenOpenDelay;
-					_backupCloseDelay = _screenCloseDelay;
-					_tweenDuration = _fastDuration;
-					_screenOpenDelay = _screenCloseDelay = 0;
+					fastTransitionOnNext();
 				}
 				
 				/* Only change screen alpha if we're actually using tweens! */
@@ -237,10 +200,10 @@ package base.view.screen
 		 */
 		public function updateScreen():void
 		{
-			if (_screen && !_isLoading)
+			if (_currentScreen && !_isSwitching)
 			{
-				_screen.update();
-				Log.debug("Updated " + _screen.toString(), this);
+				_currentScreen.update();
+				Log.debug("Updated " + _currentScreen.toString(), this);
 			}
 		}
 		
@@ -253,9 +216,22 @@ package base.view.screen
 		 */
 		public function closeScreen(noTween:Boolean = false):void
 		{
-			if (!_screen) return;
+			if (!_currentScreen) return;
 			_nextScreen = null;
 			closeLastScreen(noTween);
+		}
+		
+		
+		/**
+		 * If called the next opening screen will open with a fast tween transition.
+		 */
+		public function fastTransitionOnNext():void
+		{
+			_backupDuration = _tweenDuration;
+			_backupOpenDelay = _screenOpenDelay;
+			_backupCloseDelay = _screenCloseDelay;
+			_tweenDuration = _fastDuration;
+			_screenOpenDelay = _screenCloseDelay = 0;
 		}
 		
 		
@@ -265,13 +241,13 @@ package base.view.screen
 		public function dumpScreenList():String
 		{
 			var initialScreenID:String = Registry.settings.getSettings("initialScreenID");
-			var t:TabularText = new TabularText(4, true, "  ", null, "  ", 100, ["ID", "CLASS", "OPEN", "INITIAL"]);
+			var t:TabularText = new TabularText(4, true, "  ", null, "  ", 100, ["ID", "CLASS", "CURRENT", "INITIAL"]);
 			for (var id:String in _screenClasses)
 			{
 				var clazz:Class = _screenClasses[id];
-				var open:String = _screen is clazz ? "true" : "";
+				var current:String = _currentScreen is clazz ? "true" : "";
 				var initial:String = id == initialScreenID ? "true" : "";
-				t.add([id, clazz, open, initial]);
+				t.add([id, clazz, current, initial]);
 			}
 			return toString() + "\n" + t;
 		}
@@ -282,7 +258,7 @@ package base.view.screen
 		 * 
 		 * @return A String Representation of ScreenManager.
 		 */
-		override public function toString():String
+		public function toString():String
 		{
 			return "ScreenManager";
 		}
@@ -297,7 +273,7 @@ package base.view.screen
 		 */
 		public function get currentScreen():BaseScreen
 		{
-			return _screen;
+			return _currentScreen;
 		}
 		
 		
@@ -353,42 +329,41 @@ package base.view.screen
 		/**
 		 * @private
 		 */
-		private function onScreenProgress(e:ResourceEvent):void
-		{
-			if (!_loadProgressDisplay) return;
-			
-			/* If we got more than four resources use file count rather than bytes. Not really
-			 * a good indicator but does the job for now, besides bytesLoaded is still buggy. */
-			if (e.totalCount > 3) _loadProgressDisplay.update(e.currentCount, e.totalCount);
-			else _loadProgressDisplay.update(e.bytesLoaded, e.bytesTotal);
-		}
+//		private function onScreenProgress(e:ResourceEvent):void
+//		{
+//			if (!_loadProgressDisplay) return;
+//			
+//			/* If we got more than four resources use file count rather than bytes. Not really
+//			 * a good indicator but does the job for now, besides bytesLoaded is still buggy. */
+//			if (e.totalCount > 3) _loadProgressDisplay.update(e.currentCount, e.totalCount);
+//			else _loadProgressDisplay.update(e.bytesLoaded, e.bytesTotal);
+//		}
 		
 		
 		/**
 		 * @private
 		 */
-		private function onScreenLoaded():void
+		private function onScreenOpened():void
 		{
-			if (!_screen)
+			if (!_currentScreen)
 			{
 				/* this should not happen unless you quickly repeat app init in the CLI! */
-				Log.warn("onScreenLoaded: screen is null.", this);
+				Log.warn("onScreenOpened: screen is null.", this);
 				return;
 			}
 			
 			/* Disable screen display objects while fading in. */
-			_screen.enabled = false;
+			_currentScreen.enabled = false;
 			
-			/* Screen is loaded and child objects have been created, time to lay out
+			/* Screen is opened and child objects have been created, time to lay out
 			 * children and update the screen text. */
-			_screen.update();
+			_currentScreen.update();
 			
-			_isLoading = false;
+			_isSwitching = false;
 			
-			removeLoadProgressDisplay();
 			if (_tweenDuration > 0)
 			{
-				TweenLite.to(_screen, _tweenDuration, {alpha: 1.0, onComplete: onTweenInComplete});
+				TweenLite.to(_currentScreen, _tweenDuration, {alpha: 1.0, onComplete: onTweenInComplete});
 			}
 			else
 			{
@@ -406,24 +381,24 @@ package base.view.screen
 			_screenOpenDelay = _backupOpenDelay;
 			_screenCloseDelay = _backupCloseDelay;
 			
-			if (!_screen)
+			if (!_currentScreen)
 			{
 				/* this should not happen unless you quickly repeat app init in the CLI! */
 				Log.warn("onTweenInComplete: screen is null", this);
 				return;
 			}
 			
-			Log.debug("Opened " + _screen.toString(), this);
-			screenOpenedSignal.dispatch(_screen);
+			Log.debug("Opened " + _currentScreen.toString(), this);
+			screenOpenedSignal.dispatch(_currentScreen);
 			
 			/* Everythings' done, screen is faded in! Let's grant user interaction. */
-			_screen.enabled = true;
+			_currentScreen.enabled = true;
 			
 			/* If autoStart, now is the time to call start on the screen. */
 			if (_isAutoStart)
 			{
 				_isAutoStart = false;
-				_screen.start();
+				_currentScreen.start();
 			}
 		}
 		
@@ -433,15 +408,13 @@ package base.view.screen
 		 */
 		private function onTweenOutComplete():void
 		{
-			Log.debug("Closed " + _screen.toString(), this);
+			Log.debug("Closed " + _currentScreen.toString(), this);
 			
-			var oldScreen:BaseScreen = _screen;
-			_screenContainer.removeChild(_screen);
-			_screen.dispose();
-			_screen = null;
-			_openScreenClass = null;
+			var oldScreen:BaseScreen = _currentScreen;
+			_screenContainer.removeChild(_currentScreen);
+			_currentScreen.close();
 			screenClosedSignal.dispatch(oldScreen);
-			loadNextScreen();
+			openNextScreen();
 		}
 		
 		
@@ -450,14 +423,13 @@ package base.view.screen
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * closeLastScreen
 		 * @private
 		 */
 		private function closeLastScreen(noTween:Boolean = false):void
 		{
-			if (_screen)
+			if (_currentScreen)
 			{
-				_screen.enabled = false;
+				_currentScreen.enabled = false;
 				
 				if (noTween)
 				{
@@ -467,7 +439,7 @@ package base.view.screen
 				
 				if (_tweenDuration > 0)
 				{
-					TweenLite.to(_screen, _tweenDuration, {alpha: 0.0, onComplete:
+					TweenLite.to(_currentScreen, _tweenDuration, {alpha: 0.0, onComplete:
 						onTweenOutComplete, delay: _screenCloseDelay});
 				}
 				else
@@ -477,26 +449,23 @@ package base.view.screen
 			}
 			else
 			{
-				loadNextScreen();
+				openNextScreen();
 			}
 		}
 		
 		
 		/**
-		 * loadNextScreen
 		 * @private
 		 */
-		private function loadNextScreen():void
+		private function openNextScreen():void
 		{
 			if (_nextScreen)
 			{
-				addLoadProgressDisplay();
 				setTimeout(function():void
 				{
-					_screen = BaseScreen(_nextScreen);
-					_screen.progressSignal.add(onScreenProgress);
-					_screen.createdSignal.add(onScreenLoaded);
-					_screen.load();
+					_currentScreen = BaseScreen(_nextScreen);
+					_currentScreen.openedSignal.add(onScreenOpened);
+					_currentScreen.open();
 				}, _screenOpenDelay * 1000);
 			}
 		}
@@ -505,30 +474,30 @@ package base.view.screen
 		/**
 		 * @private
 		 */
-		private function addLoadProgressDisplay():void
-		{
-			if (!_showLoadProgress) return;
-			_loadProgressDisplay = new LoadProgressDisplay();
-			_loadProgressDisplay.x = StageReference.hCenter - (_loadProgressDisplay.width * 0.5);
-			_loadProgressDisplay.y = StageReference.vCenter - (_loadProgressDisplay.height * 0.5);
-			_loadProgressDisplay.alpha = 0;
-			_screenContainer.addChild(_loadProgressDisplay);
-			TweenLite.to(_loadProgressDisplay, 0.6, {alpha: 1.0});
-		}
-		
-		
-		/**
-		 * @private
-		 */
-		private function removeLoadProgressDisplay():void
-		{
-			if (!_loadProgressDisplay) return;
-			_screenContainer.swapChildren(_screen, _loadProgressDisplay);
-			TweenLite.to(_loadProgressDisplay, 1.0, {alpha: 0.0, onComplete: function():void
-			{
-				_screenContainer.removeChild(_loadProgressDisplay);
-				_loadProgressDisplay = null;
-			}});
-		}
+//		private function addLoadProgressDisplay():void
+//		{
+//			if (!_showLoadProgress) return;
+//			_loadProgressDisplay = new LoadProgressDisplay();
+//			_loadProgressDisplay.x = StageReference.hCenter - (_loadProgressDisplay.width * 0.5);
+//			_loadProgressDisplay.y = StageReference.vCenter - (_loadProgressDisplay.height * 0.5);
+//			_loadProgressDisplay.alpha = 0;
+//			_screenContainer.addChild(_loadProgressDisplay);
+//			TweenLite.to(_loadProgressDisplay, 0.6, {alpha: 1.0});
+//		}
+//		
+//		
+//		/**
+//		 * @private
+//		 */
+//		private function removeLoadProgressDisplay():void
+//		{
+//			if (!_loadProgressDisplay) return;
+//			_screenContainer.swapChildren(_screen, _loadProgressDisplay);
+//			TweenLite.to(_loadProgressDisplay, 1.0, {alpha: 0.0, onComplete: function():void
+//			{
+//				_screenContainer.removeChild(_loadProgressDisplay);
+//				_loadProgressDisplay = null;
+//			}});
+//		}
 	}
 }

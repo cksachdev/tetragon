@@ -55,8 +55,6 @@ package base.state
 		
 		/** @private */
 		private var _main:Main;
-		/** @private */
-		private var _loaded:Boolean = false;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -92,11 +90,9 @@ package base.state
 		public function State()
 		{
 			_main = Main.instance;
-			
 			enteredSignal = new Signal();
 			progressSignal = new Signal();
 			exitedSignal = new Signal();
-			
 			registerResources();
 		}
 		
@@ -106,8 +102,11 @@ package base.state
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Enters the state. You normally don't call this method manually. Instead
-		 * the state manager calls it when the state is requested to be entered.
+		 * Enters the state. This method initiates loading of any resources that are
+		 * registered in the <code>registerResources()</code> method of the state.
+		 * 
+		 * <p>You normally don't call this method manually. Instead the state manager
+		 * calls it automatically when the state is requested to be entered.</p>
 		 */
 		public function enter():void
 		{
@@ -116,32 +115,54 @@ package base.state
 		
 		
 		/**
-		 * Starts the state.
+		 * Starts the state after it has been entered. You normally don't call this method
+		 * manually. Instead the state manager calls it automatically after the state has
+		 * been loaded and opened.
+		 * 
+		 * <p>This is an abstract method. Override this method in your state sub-class and
+		 * place any instructions into it that need to be done after the state has been
+		 * started, for example opening a screen with the screen manager.</p>
 		 */
 		public function start():void
 		{
+			/* Abstract method! */
 		}
 		
 		
 		/**
-		 * Updates the state.
+		 * Updates the state. You normally don't call this method manually. Instead the
+		 * state manager calls it automatically on the current state when the
+		 * <code>updateState()</code> method in the screen manager is called.
+		 * 
+		 * <p>This is an abstract method. You can override this method in your state
+		 * sub-class if your state class requires the updating of any child objects.</p>
 		 */
 		public function update():void
 		{
+			/* Abstract method! */
 		}
 		
 		
 		/**
-		 * Stops the state.
+		 * Stops the state if it has been started. You normally don't call this method
+		 * manually. Instead the state manager calls it automatically when the state is
+		 * being exited.
+		 * 
+		 * <p>This is an abstract method. You can override this method in your state
+		 * sub-class and place any instructions into it that need to be done to stop the
+		 * state, for example stopping a timer.</p>
 		 */
 		public function stop():void
 		{
+			/* Abstract method! */
 		}
 		
 		
 		/**
-		 * Exits the state. You normally don't call this method manually. Instead
-		 * the state manager calls it when the state is requested to be exited.
+		 * Exits the state. This method will stop the state if it's started, then removes
+		 * any listeners, unloads it's resources if necessary and disposes the state
+		 * afterwards. You normally don't call this method manually. Instead the state
+		 * manager calls it automatically when the state is requested to be exited.
 		 */
 		public function exit():void
 		{
@@ -154,9 +175,9 @@ package base.state
 		
 		
 		/**
-		 * Returns a String representation of the object.
+		 * Returns a String representation of the state.
 		 * 
-		 * @return A String representation of the object.
+		 * @return A String representation of the state.
 		 */
 		public function toString():String
 		{
@@ -165,7 +186,7 @@ package base.state
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
+		// Accessors
 		//-----------------------------------------------------------------------------------------
 		
 		/**
@@ -177,16 +198,6 @@ package base.state
 		public function get showLoadProgress():Boolean
 		{
 			return true;
-		}
-		
-		
-		/**
-		 * Determines whether the state has been fully loaded, i.e  whether all of it's
-		 * registered resources have been loaded.
-		 */
-		public function get loaded():Boolean
-		{
-			return _loaded;
 		}
 		
 		
@@ -232,6 +243,10 @@ package base.state
 		
 		/**
 		 * Invoked after a resource has been loaded for this state.
+		 * 
+		 * <p>This is an abstract method. You need to override this method in your state
+		 * sub-class to use it.</p>
+		 * 
 		 * @private
 		 */
 		protected function onResourceLoaded(resource:Resource):void
@@ -241,7 +256,11 @@ package base.state
 		
 		
 		/**
-		 * Invoked if a resource for this state has failed to loaded.
+		 * Invoked if a resource for this state has failed to load.
+		 * 
+		 * <p>This is an abstract method. You need to override this method in your state
+		 * sub-class to use it.</p>
+		 * 
 		 * @private
 		 */
 		protected function onResourceLoadError(resource:Resource):void
@@ -251,6 +270,8 @@ package base.state
 		
 		
 		/**
+		 * Invoked while a resource for this state is being loaded.
+		 * 
 		 * @private
 		 */
 		protected function onResourceProgress(e:ResourceEvent):void
@@ -261,6 +282,7 @@ package base.state
 		
 		/**
 		 * Invoked after all resource loading for this state has been completed.
+		 * 
 		 * @private
 		 */
 		protected function onResourceLoadComplete():void
@@ -268,7 +290,6 @@ package base.state
 			setup();
 			// TODO Where is addListeners() best placed?
 			addListeners();
-			_loaded = true;
 			enteredSignal.dispatch();
 		}
 		
@@ -276,6 +297,9 @@ package base.state
 		/**
 		 * Signal handler that is called if a screen has been opened after using the
 		 * <code>openScreen()<code> helper method.
+		 * 
+		 * <p>This is an abstract method. You need to override this method in your state
+		 * sub-class to use it.</p>
 		 * 
 		 * @private
 		 * @param screen The screen that has been opened.
@@ -289,6 +313,9 @@ package base.state
 		/**
 		 * Signal handler that is called if a screen has been closed after opening
 		 * another screen by using the <code>openScreen()<code> helper method.
+		 * 
+		 * <p>This is an abstract method. You need to override this method in your state
+		 * sub-class to use it.</p>
 		 * 
 		 * @private
 		 * @param screen The screen that has been closed.
@@ -304,16 +331,18 @@ package base.state
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Registers required resources for loading. Override this method in your sub-state
-		 * class and add as many resources as you need for the state. The resources are being
-		 * preloaded before the state is entered by the state manager.
+		 * Registers resources for loading that are required for the state.
+		 * 
+		 * <p>This is an abstract method. Override this method in your state sub-class and
+		 * register as many resources as you need for the state. The resources are being
+		 * preloaded before the state is entered by the state manager.</p>
 		 * 
 		 * @private
-		 * 
+		 * @see registerResource
 		 * @example
 		 * <pre>
-		 *    registerResource("resource1");
-		 *    registerResource("resource2");
+		 *     registerResource("resource1");
+		 *     registerResource("resource2");
 		 * </pre>
 		 */
 		protected function registerResources():void
@@ -325,9 +354,11 @@ package base.state
 		/**
 		 * Registers a resource that is going to be loaded for the state. All resources
 		 * that are registered with their ID are being loaded before the state is being
-		 * entered.
+		 * entered. Call this method inside the overriden <code>registerResources()</code>
+		 * method.
 		 * 
 		 * @private
+		 * @see registerResources
 		 */
 		protected function registerResource(resourceID:String):void
 		{
@@ -337,14 +368,13 @@ package base.state
 		
 		
 		/**
-		 * Loads all resources that the state requires.
+		 * Loads all resources that are registered in the state for loading.
 		 * 
 		 * @private
+		 * @see registerResources
 		 */
 		protected function load():void
 		{
-			/* If there are no resources to load for this state, we have to move
-			 * onwards here or the state would never fire the loaded signal! */
 			if (!_resourceIDs || _resourceIDs.length < 1)
 			{
 				onResourceLoadComplete();
@@ -356,9 +386,12 @@ package base.state
 		
 		
 		/**
-		 * Sets up the state. Override this method in your state sub-class and place
-		 * any code in it that creates objects needed by the state. Setup is automatically
-		 * called after the state has been loaded.
+		 * Sets up the state. You use this method to instanciate any child objects that
+		 * are needed by the state or to assign initial property values etc.
+		 * 
+		 * <p>This is an abstract method. Override it in your state sub-class and place
+		 * any code inside it that creates objects needed by the state. setup is
+		 * automatically called after the state has been loaded.</p>
 		 * 
 		 * @private
 		 */
@@ -370,9 +403,11 @@ package base.state
 		
 		/**
 		 * Used to add any event or signal listeners to child objects of the state that
-		 * were created in <code>setup()</code>. Override this method and add any listeners
-		 * to objects that require event/signal listening. Called automatically after the
-		 * state has been set up.
+		 * were created in <code>setup()</code>. Called automatically after the state has
+		 * been set up.
+		 * 
+		 * <p>This is an abstract method. Override this method and add any listeners to
+		 * objects that require event/signal listening.</p>
 		 * 
 		 * @private
 		 * @see removeListeners
@@ -385,9 +420,11 @@ package base.state
 		
 		/**
 		 * Used to remove any event or signal listeners from child objects that were added
-		 * inside the <code>addListeners()</code> method. Override this method and remove
-		 * any event/signal listeners here that were added in <code>addListeners()</code>.
-		 * Called automatically when the state is being exited.
+		 * inside the <code>addListeners()</code> method. Called automatically when the
+		 * state is being exited.
+		 * 
+		 * <p>This is an abstract method. Override this method and remove any event/signal
+		 * listeners here that were added in <code>addListeners()</code>.</p>
 		 * 
 		 * @private
 		 * @see addListeners
@@ -399,8 +436,8 @@ package base.state
 		
 		
 		/**
-		 * Used to unload any resources that have been loaded for the state.
-		 * Called automatically after a state has been exited.
+		 * Used to unload any resources that have been loaded for the state. Called
+		 * automatically after a state has been exited.
 		 * 
 		 * @private
 		 */
@@ -412,9 +449,11 @@ package base.state
 		
 		
 		/**
-		 * Disposes the state. Called automatically after a state has been exited
-		 * and unloaded. Override this method in your state sub-class and dispose
-		 * any objects that require to be disposed.
+		 * Disposes the state. Called automatically after a state has been exited and
+		 * unloaded.
+		 * 
+		 * <p>This is an abstract method. Override this method in your state sub-class and
+		 * dispose any objects that require to be disposed.</p>
 		 * 
 		 * @private
 		 */
@@ -424,9 +463,12 @@ package base.state
 		}
 		
 		
+		//-----------------------------------------------------------------------------------------
+		// Helper Methods
+		//-----------------------------------------------------------------------------------------
+		
 		/**
-		 * Helper method that can be used to enter another state from within
-		 * this state.
+		 * Helper method that can be used to enter another state from within this state.
 		 * 
 		 * @private
 		 * @param stateID The ID of the state to enter.
@@ -457,6 +499,8 @@ package base.state
 		 * depends on the content type of the resource.
 		 * 
 		 * @private
+		 * @param resourceID The ID of the resource.
+		 * @return The resource content or <code>null</code>.
 		 */
 		protected function getResource(resourceID:String):*
 		{
@@ -468,6 +512,8 @@ package base.state
 		 * Helper method to get a string from the string index.
 		 * 
 		 * @private
+		 * @param stringID The ID of the string.
+		 * @return The requested string.
 		 */
 		protected function getString(stringID:String):String
 		{

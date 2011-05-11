@@ -63,19 +63,6 @@ package base.view.screen
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function get showLoadProgress():Boolean
-		{
-			return false;
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
 		
@@ -105,14 +92,6 @@ package base.view.screen
 			
 			_background = new RectangleGradientShape();
 			_display = new SplashDisplay();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function registerResources():void
-		{
 		}
 		
 		

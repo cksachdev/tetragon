@@ -60,19 +60,6 @@ package extra.game.view.screen
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function get showLoadProgress():Boolean
-		{
-			return false;
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
 		
@@ -95,14 +82,6 @@ package extra.game.view.screen
 		override protected function createChildren():void
 		{
 			_display = new GameOptionsDisplay();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function registerResources():void
-		{
 		}
 		
 		

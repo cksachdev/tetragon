@@ -43,18 +43,5 @@ package base.view.screen
 		{
 			super.start();
 		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function get showLoadProgress():Boolean
-		{
-			return false;
-		}
 	}
 }

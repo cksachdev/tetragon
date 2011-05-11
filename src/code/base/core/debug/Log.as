@@ -327,7 +327,8 @@ package base.core.debug
 		private static function flushBuffer():void
 		{
 			_initial = false;
-			for (var i:int = 0; i < _buffer.length; i++)
+			if (!_buffer) return;
+			for (var i:uint = 0; i < _buffer.length; i++)
 			{
 				var o:Object = _buffer[i];
 				send(o["data"], o["level"], o["caller"]);

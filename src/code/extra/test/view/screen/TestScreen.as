@@ -68,19 +68,6 @@ package extra.test.view.screen
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function get showLoadProgress():Boolean
-		{
-			return false;
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
 		
@@ -109,13 +96,13 @@ package extra.test.view.screen
 		/**
 		 * @inheritDoc
 		 */
-		override protected function registerResources():void
-		{
-			registerResource("unitInfantry");
-			registerResource("testParticleEmitter");
-			registerResource("testParticle");
-			registerResource("particleSymbol");
-		}
+//		override protected function registerResources():void
+//		{
+//			registerResource("unitInfantry");
+//			registerResource("testParticleEmitter");
+//			registerResource("testParticle");
+//			registerResource("particleSymbol");
+//		}
 		
 		
 		/**

@@ -205,21 +205,21 @@ package base.state
 		/**
 		 * @private
 		 */
-		private function onStateExited():void
+		private function onStateEntered():void
 		{
-			Log.debug("--- Exited " + _currentState.toString() + " ---", this);
-			enterNextState();
+			Log.debug("--- Entered " + _currentState.toString() + " ---", this);
+			_currentState.start();
+			_isSwitching = false;
 		}
 		
 		
 		/**
 		 * @private
 		 */
-		private function onStateEntered():void
+		private function onStateExited():void
 		{
-			Log.debug("--- Entered " + _currentState.toString() + " ---", this);
-			_currentState.start();
-			_isSwitching = false;
+			Log.debug("--- Exited " + _currentState.toString() + " ---", this);
+			enterNextState();
 		}
 		
 		

@@ -50,10 +50,10 @@ package base.state
 		//-----------------------------------------------------------------------------------------
 		
 		private var _timer:Timer;
+		private var _tetragonLogoSoundChannel:SoundChannel;
 		private var _allowSplashAbort:Boolean;
 		private var _splashScreenWaitTime:int;
 		private var _initialStateID:String;
-		private var _tetragonLogoSoundChannel:SoundChannel;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -129,6 +129,7 @@ package base.state
 			_timer.stop();
 			removeListeners();
 			Mouse.show();
+			screenManager.fastTransitionOnNext();
 			enterState(_initialStateID);
 		}
 		
@@ -213,6 +214,7 @@ package base.state
 		 */
 		override protected function dispose():void
 		{
+			_timer = null;
 			_tetragonLogoSoundChannel = null;
 		}
 	}
