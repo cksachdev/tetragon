@@ -43,6 +43,7 @@ package base
 	import base.io.resource.ResourceManager;
 	import base.signals.RenderSignal;
 	import base.signals.TickSignal;
+	import base.state.StateManager;
 	import base.view.screen.ScreenManager;
 
 	import com.hexagonstar.exception.SingletonException;
@@ -87,6 +88,8 @@ package base
 		private var _commandManager:CommandManager;
 		/** @private */
 		private var _resourceManager:ResourceManager;
+		/** @private */
+		private var _stateManager:StateManager;
 		/** @private */
 		private var _screenManager:ScreenManager;
 		/** @private */
@@ -246,6 +249,15 @@ package base
 		
 		
 		/**
+		 * A reference to the state manager.
+		 */
+		public function get stateManager():StateManager
+		{
+			return _stateManager;
+		}
+		
+		
+		/**
 		 * A reference to the screen manager.
 		 */
 		public function get screenManager():ScreenManager
@@ -272,18 +284,27 @@ package base
 		}
 		
 		
+		/**
+		 * A reference to the entity factory.
+		 */
 		public function get entityFactory():EntityFactory
 		{
 			return _entityFactory;
 		}
 		
 		
+		/**
+		 * A reference to the entity manager.
+		 */
 		public function get entityManager():EntityManager
 		{
 			return _entityManager;
 		}
 		
 		
+		/**
+		 * A reference to the entity system manager.
+		 */
 		public function get entitySystemManager():EntitySystemManager
 		{
 			return _entitySystemManager;
@@ -299,8 +320,9 @@ package base
 		 */
 		private function onAppInitComplete(command:Command):void 
 		{
-			/* Time to open the first screen. */
-			screenManager.start();
+			/* Time to open the initial application state. */
+			stateManager.start();
+			//screenManager.start();
 		}
 		
 		
@@ -395,6 +417,7 @@ package base
 			_dataSupportManager = new DataSupportManager();
 			_commandManager = new CommandManager();
 			_resourceManager = new ResourceManager();
+			_stateManager = new StateManager();
 			_screenManager = new ScreenManager();
 			_localSettingsManager = new LocalSettingsManager();
 			_keyManager = new KeyManager();

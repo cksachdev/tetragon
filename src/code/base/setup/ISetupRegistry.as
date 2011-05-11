@@ -33,9 +33,12 @@ package base.setup
 	public interface ISetupRegistry
 	{
 		function execute():void;
-		function registerScreens():void;
+		function registerResourceFileTypes():void;
+		function registerComplexTypes():void;
 		function registerDataTypes():void;
 		function registerEntitySystems():void;
 		function registerEntityComponents():void;
+		function registerStates():void;
+		function registerScreens():void;
 	}
 }

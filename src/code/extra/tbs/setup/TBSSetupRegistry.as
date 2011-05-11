@@ -90,6 +90,15 @@ package extra.tbs.setup
 		/**
 		 * @inheritDoc
 		 */
+		override public function registerStates():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
 		override public function registerScreens():void
 		{
 			registerScreen("tbsGamePlayScreen", TBSGamePlayScreen);

@@ -33,6 +33,7 @@ package extra.game.setup
 	import extra.game.data.parsers.*;
 	import extra.game.entity.components.*;
 	import extra.game.entity.systems.*;
+	import extra.game.state.GameState;
 	import extra.game.view.screen.*;
 	
 	
@@ -95,6 +96,15 @@ package extra.game.setup
 			registerEntityComponent("particleEmitterComponent", ParticleEmitterComponent);
 			registerEntityComponent("physics2DComponent", Physics2DComponent);
 			registerEntityComponent("spacial2DComponent", Spacial2DComponent);
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registerStates():void
+		{
+			registerState("gameState", GameState);
 		}
 		
 		

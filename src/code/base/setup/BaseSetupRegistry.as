@@ -27,6 +27,7 @@
  */
 package base.setup
 {
+	import base.state.DummyState;
 	import base.view.screen.*;
 	
 	
@@ -76,6 +77,15 @@ package base.setup
 		 */
 		override public function registerEntityComponents():void
 		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registerStates():void
+		{
+			registerState("dummyState", DummyState);
 		}
 		
 		

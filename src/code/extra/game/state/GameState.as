@@ -25,78 +25,52 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.test.setup
+package extra.game.state
 {
-	import base.setup.ISetupRegistry;
-	import base.setup.SetupRegistry;
-
-	import extra.test.view.screen.*;
+	import base.state.State;
 	
 	
 	/**
-	 * Test setup registry class.
+	 * GameState class
 	 */
-	public class TestSetupRegistry extends SetupRegistry implements ISetupRegistry
+	public class GameState extends State
 	{
+		//-----------------------------------------------------------------------------------------
+		// Properties
+		//-----------------------------------------------------------------------------------------
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Constructor
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Creates a new instance of the class.
+		 */
+		public function GameState()
+		{
+			super();
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerResourceFileTypes():void
-		{
-		}
+		
+		//-----------------------------------------------------------------------------------------
+		// Getters & Setters
+		//-----------------------------------------------------------------------------------------
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerComplexTypes():void
-		{
-		}
+		//-----------------------------------------------------------------------------------------
+		// Callback Handlers
+		//-----------------------------------------------------------------------------------------
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerDataTypes():void
-		{
-		}
+		//-----------------------------------------------------------------------------------------
+		// Private Methods
+		//-----------------------------------------------------------------------------------------
 		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerEntitySystems():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerEntityComponents():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerStates():void
-		{
-			/* Abstract method! */
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerScreens():void
-		{
-			registerScreen("testScreen", TestScreen);
-		}
 	}
 }

@@ -31,6 +31,7 @@ package base.setup
 	import base.core.debug.Log;
 	import base.core.entity.EntitySystemManager;
 	import base.data.DataSupportManager;
+	import base.state.StateManager;
 	import base.view.screen.ScreenManager;
 
 	import com.hexagonstar.util.reflection.getClassName;
@@ -45,6 +46,7 @@ package base.setup
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
+		private var _stateManager:StateManager;
 		private var _screenManager:ScreenManager;
 		private var _entitySystemManager:EntitySystemManager;
 		private var _dsm:DataSupportManager;
@@ -59,6 +61,7 @@ package base.setup
 		 */
 		public function SetupRegistry()
 		{
+			_stateManager = Main.instance.stateManager;
 			_screenManager = Main.instance.screenManager;
 			_entitySystemManager = Main.instance.entitySystemManager;
 			_dsm = Main.instance.dataSupportManager;
@@ -79,6 +82,7 @@ package base.setup
 			registerDataTypes();
 			registerEntitySystems();
 			registerEntityComponents();
+			registerStates();
 			registerScreens();
 		}
 		
@@ -162,6 +166,15 @@ package base.setup
 		 * Used to register entity components.
 		 */
 		public function registerEntityComponents():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Used to register states.
+		 */
+		public function registerStates():void
 		{
 			/* Abstract method! */
 		}
@@ -254,6 +267,19 @@ package base.setup
 		{
 			_dsm.mapComponentClass(classID, componentClass);
 			Log.debug("Registered entity component class for ID \"" + classID + "\".", this);
+		}
+		
+		
+		/**
+		 * @private
+		 * 
+		 * @param stateID
+		 * @param stateClass
+		 */
+		protected function registerState(stateID:String, stateClass:Class):void
+		{
+			_stateManager.registerState(stateID, stateClass);
+			Log.debug("Registered state class for ID \"" + stateID + "\".", this);
 		}
 		
 		

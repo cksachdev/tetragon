@@ -226,7 +226,7 @@ package base.view.screen
 			}
 			else
 			{
-				Log.fatal("Tried to open a screen that is not of type IScreen (" + screenClass
+				Log.fatal("Tried to open a screen that is not of type BaseScreen (" + screenClass
 					+ ").", this);
 			}
 		}

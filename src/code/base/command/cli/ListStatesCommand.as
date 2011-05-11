@@ -25,18 +25,14 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.test.setup
+package base.command.cli
 {
-	import base.setup.ISetupRegistry;
-	import base.setup.SetupRegistry;
+	import base.command.CLICommand;
 
-	import extra.test.view.screen.*;
+	import com.hexagonstar.util.debug.LogLevel;
+
 	
-	
-	/**
-	 * Test setup registry class.
-	 */
-	public class TestSetupRegistry extends SetupRegistry implements ISetupRegistry
+	public class ListStatesCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
@@ -45,58 +41,23 @@ package extra.test.setup
 		/**
 		 * @inheritDoc
 		 */
-		override public function registerResourceFileTypes():void
+		override public function execute():void 
 		{
+			main.console.log(main.stateManager.dumpStateList(), LogLevel.INFO);
+			complete();
 		}
 		
+		
+		//-----------------------------------------------------------------------------------------
+		// Getters & Setters
+		//-----------------------------------------------------------------------------------------
 		
 		/**
 		 * @inheritDoc
 		 */
-		override public function registerComplexTypes():void
+		override public function get name():String 
 		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerDataTypes():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerEntitySystems():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerEntityComponents():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerStates():void
-		{
-			/* Abstract method! */
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerScreens():void
-		{
-			registerScreen("testScreen", TestScreen);
+			return "listStates";
 		}
 	}
 }
