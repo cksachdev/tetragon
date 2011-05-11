@@ -27,6 +27,7 @@
  */
 package base.data.parsers
 {
+	import base.core.debug.Log;
 	import base.data.DataList;
 	import base.data.types.KeyValuePair;
 	import base.io.resource.ResourceIndex;
@@ -60,6 +61,8 @@ package base.data.parsers
 				
 				/* Only parse the list(s) that we want! */
 				if (!wrapper.hasResourceID(id)) continue;
+				
+				Log.debug("Parsing list data for " + id + " ...", this);
 				
 				/* Create new data list object. */
 				var list:DataList = new DataList(id);

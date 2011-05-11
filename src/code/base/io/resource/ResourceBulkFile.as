@@ -44,7 +44,7 @@ package base.io.resource
 		public var resourceFamily:String;
 		public var resourceType:String;
 		
-		internal var _bulk:ResourceBulk;
+		private var _bulk:ResourceBulk;
 		private var _wrapper:ResourceWrapper;
 		private var _items:Vector.<ResourceBulkItem>;
 		

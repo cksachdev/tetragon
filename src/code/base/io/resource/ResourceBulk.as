@@ -47,8 +47,8 @@ package base.io.resource
 		internal var completeHandler:Function;
 		internal var progressHandler:Function;
 		
-		internal var _fileCount:int;
-		internal var _completeCount:int;
+		private var _fileCount:int;
+		private var _completeCount:int;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -111,6 +111,24 @@ package base.io.resource
 		
 		
 		/**
+		 * Increases the bulk's file complete count.
+		 */
+		internal function increaseCompleteCount():void
+		{
+			_completeCount++;
+		}
+		
+		
+		/**
+		 * Decreases the bulk's file count. Used when bulk files failed to load.
+		 */
+		internal function decreaseFileCount():void
+		{
+			_fileCount--;
+		}
+		
+		
+		/**
 		 * Returns a String Representation of the class.
 		 * 
 		 * @return A String Representation of the class.
@@ -132,6 +150,10 @@ package base.io.resource
 		public function get completeCount():int
 		{
 			return _completeCount + 1;
+		}
+		public function get isComplete():Boolean
+		{
+			return _completeCount == _fileCount;
 		}
 	}
 }

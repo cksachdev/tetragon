@@ -375,7 +375,8 @@ package base.io.resource
 				
 				t.add([e.id, e.family, rclass, type, pack, e.path, e.embedded, e.referenceCount]);
 			}
-			return toString() + " (size: " + _size + ")\n" + t;
+			return toString() + " (size: " + _size + ", unloaded: " + unloadedResourceCount
+				+ ", loaded: " + loadedResourceCount + ", totalRefs: " + totalRefs + ")\n" + t;
 		}
 		
 		
@@ -387,6 +388,58 @@ package base.io.resource
 		public function toString():String
 		{
 			return "ResourceIndex";
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Getters & Setters
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Returns the total amount of resources that are currently not loaded.
+		 */
+		public function get unloadedResourceCount():uint
+		{
+			var c:uint = 0;
+			for each (var r:Resource in _resources)
+			{
+				if (r.status != ResourceStatus.LOADED)
+				{
+					c++;
+				}
+			}
+			return c;
+		}
+		
+		
+		/**
+		 * Returns the total amount of resources that are currently loaded.
+		 */
+		public function get loadedResourceCount():uint
+		{
+			var c:uint = 0;
+			for each (var r:Resource in _resources)
+			{
+				if (r.status == ResourceStatus.LOADED)
+				{
+					c++;
+				}
+			}
+			return c;
+		}
+		
+		
+		/**
+		 * Returns the total amount of resource reference counts.
+		 */
+		public function get totalRefs():uint
+		{
+			var c:uint = 0;
+			for each (var r:Resource in _resources)
+			{
+				c += r.referenceCount;
+			}
+			return c;
 		}
 	}
 }

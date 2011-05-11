@@ -60,6 +60,8 @@ package base.data.parsers
 				/* Only parse the item(s) that we want! */
 				if (!wrapper.hasResourceID(id)) continue;
 				
+				Log.debug("Parsing entity data for " + id + " ...", this);
+				
 				/* Create a new entity definition for the data item. */
 				var e:EntityDefinition = new EntityDefinition(id);
 				

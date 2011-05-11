@@ -57,7 +57,8 @@ package base.io.resource
 		private var _bulkIDCount:uint;
 		/** @private */
 		private var _waitingHandlers:Object;
-		
+		/** @private */
+		private var _referencedIDQueue:Queue;
 		/** @private */
 		private var _resourceIndex:ResourceIndex;
 		/** @private */
@@ -434,19 +435,19 @@ package base.io.resource
 		private function onResourceFileLoaded(e:ResourceEvent):void
 		{
 			var bf:ResourceBulkFile = e.bulkFile;
-			for (var i:int = 0; i < bf.items.length; i++)
+			for (var i:uint = 0; i < bf.items.length; i++)
 			{
 				var item:ResourceBulkItem = bf.items[i];
 				var r:Resource = item.resource;
 				r.increaseReferenceCount();
-				notifyLoaded(item, bf._bulk.loadedHandler);
+				notifyLoaded(item, bf.bulk.loadedHandler);
 				
 				/* Call any waiting handlers that might have been
 				 * added while the resource was loading. */
 				if (_waitingHandlers[r.id])
 				{
 					var a:Array = _waitingHandlers[r.id];
-					for (var j:int = 0; j < a.length; j++)
+					for (var j:uint = 0; j < a.length; j++)
 					{
 						notifyLoaded(item, HandlerVO(a[j]).loadedHandler);
 					}
@@ -461,18 +462,18 @@ package base.io.resource
 		private function onResourceFileFailed(e:ResourceEvent):void
 		{
 			var bf:ResourceBulkFile = e.bulkFile;
-			for (var i:int = 0; i < bf.items.length; i++)
+			for (var i:uint = 0; i < bf.items.length; i++)
 			{
 				var item:ResourceBulkItem = bf.items[i];
 				var r:Resource = item.resource;
-				notifyFailed(item, bf._bulk.failedHandler, e.text);
+				notifyFailed(item, bf.bulk.failedHandler, e.text);
 				
 				/* Call any waiting handlers that might have been
 				 * added while the resource was loading. */
 				if (_waitingHandlers[r.id])
 				{
 					var a:Array = _waitingHandlers[r.id];
-					for (var j:int = 0; j < a.length; j++)
+					for (var j:uint = 0; j < a.length; j++)
 					{
 						notifyFailed(item, HandlerVO(a[j]).failedHandler, e.text);
 					}
@@ -489,18 +490,18 @@ package base.io.resource
 			var bf:ResourceBulkFile = e.bulkFile;
 			if (!bf) return;
 			
-			for (var i:int = 0; i < bf.items.length; i++)
+			for (var i:uint = 0; i < bf.items.length; i++)
 			{
 				var item:ResourceBulkItem = bf.items[i];
 				var r:Resource = item.resource;
-				notifyProgress(bf._bulk.progressHandler, e);
+				notifyProgress(bf.bulk.progressHandler, e);
 				
 				/* Call any waiting handlers that might have been
 				 * added while the resource was loading. */
 				if (_waitingHandlers[r.id])
 				{
 					var a:Array = _waitingHandlers[r.id];
-					for (var j:int = 0; j < a.length; j++)
+					for (var j:uint = 0; j < a.length; j++)
 					{
 						notifyProgress(HandlerVO(a[j]).progressHandler, e);
 					}
@@ -515,11 +516,31 @@ package base.io.resource
 		private function onResourceBulkLoaded(e:ResourceEvent):void
 		{
 			var bf:ResourceBulkFile = e.bulkFile;
-			notifyComplete(bf._bulk.completeHandler);
+			var b:ResourceBulk = bf.bulk;
+			var a:Array;
+			
+			/* We can decrease the bulk ID anytime a bulk completed loading. */
+			if (_bulkIDCount > 1) _bulkIDCount--;
+			
+			/* If we got queued referenced resources, load these before we finish. */
+			if (_referencedIDQueue && _referencedIDQueue.size > 0)
+			{
+				a = [];
+				while (_referencedIDQueue.size > 0)
+				{
+					a.push(_referencedIDQueue.dequeue());
+				}
+				Log.debug("Loading " + a.length + " referenced resources ...", this);
+				load(a, b.completeHandler, b.loadedHandler, b.failedHandler, b.progressHandler);
+				return;
+			}
+			
+			_referencedIDQueue = null;
+			notifyComplete(bf.bulk.completeHandler);
 			
 			/* We still need to check if any of the bulk file's resource items has any
 			 * waiting handlers assigned, call them and then remove the handlers. */
-			for (var i:int = 0; i < bf.items.length; i++)
+			for (var i:uint = 0; i < bf.items.length; i++)
 			{
 				var item:ResourceBulkItem = bf.items[i];
 				var r:Resource = item.resource;
@@ -528,10 +549,10 @@ package base.io.resource
 				 * added while the resource was loading. */
 				if (_waitingHandlers[r.id])
 				{
-					var a:Array = _waitingHandlers[r.id];
+					a = _waitingHandlers[r.id];
 					_waitingHandlers[r.id] = null;
 					delete _waitingHandlers[r.id];
-					for (var j:int = 0; j < a.length; j++)
+					for (var j:uint = 0; j < a.length; j++)
 					{
 						notifyComplete(HandlerVO(a[j]).completeHandler);
 					}
@@ -543,6 +564,19 @@ package base.io.resource
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @private
+		 */
+		internal function enqueueReferencedResources(ids:Array):void
+		{
+			if (!_referencedIDQueue) _referencedIDQueue = new Queue();
+			for (var i:uint = 0; i < ids.length; i++)
+			{
+				_referencedIDQueue.enqueue(ids[i]);
+			}
+		}
+		
 		
 		/**
 		 * Sends an event that the Resource Manager initialization has been completed.
@@ -593,8 +627,7 @@ package base.io.resource
 		 */
 		private function createBulkID():String
 		{
-			_bulkIDCount++;
-			return "bulk" + _bulkIDCount;
+			return "bulk" + (_bulkIDCount++);
 		}
 		
 		
@@ -647,8 +680,6 @@ package base.io.resource
 		 */
 		private function notifyComplete(completeHandler:Function):void
 		{
-			/* We can decrease the bulk ID anytime a bulk completed loading. */
-			if (_bulkIDCount > 1) _bulkIDCount--;
 			if (completeHandler != null) completeHandler();
 		}
 	}

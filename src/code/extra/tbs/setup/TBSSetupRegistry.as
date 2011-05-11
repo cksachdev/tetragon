@@ -83,6 +83,7 @@ package extra.tbs.setup
 			registerEntityComponent("tbsUnitPropertiesComponent", TBSUnitPropertiesComponent);
 			registerEntityComponent("tbsUnitStatsComponent", TBSUnitStatsComponent);
 			registerEntityComponent("tbsUnitWeaponComponent", TBSUnitWeaponComponent);
+			registerEntityComponent("tbsWeaponProperties", TBSWeaponPropertiesComponent);
 		}
 		
 		

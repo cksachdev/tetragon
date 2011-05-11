@@ -345,9 +345,13 @@ package base.io.resource
 				 * with their data type. Other data resources (entities) are always mapped
 				 * with their resource family name. */
 				if (bulkFile.resourceFamily == ResourceFamily.DATA)
+				{
 					parser = _dsm.createDataTypeParser(resourceType);
+				}
 				else
+				{
 					parser = _dsm.createDataTypeParser(bulkFile.resourceFamily);
+				}
 				
 				if (parser)
 				{
@@ -361,34 +365,20 @@ package base.io.resource
 				}
 			}
 			
-			/* Check for referenced resources. */
+			/* Check if referenced resources need to be loaded. */
 			if (parser is DataObjectParser)
 			{
-				var doParser:DataObjectParser = DataObjectParser(parser);
-				if (doParser.referencedIDs != null)
-				{
-					var refIDs:Object = doParser.referencedIDs;
-					var a:Array = [];
-					for (var refID:String in refIDs)
-					{
-						var resID:String = refIDs[refID];
-						a.push(refID);
-						Log.debug(bulkFile.id + " requested referenced resource with ID \""
-							+ refID + "\".", this);
-					}
-					// TODO fix ref loading bug!
-					resourceManager.load(a);
-				}
+				loadReferencedResources(DataObjectParser(parser).referencedIDs, bulkFile);
 			}
 			
 			/* Mark all resources in the loaded bulk file as loaded. */
-			for (var i:int = 0; i < bulkFile.items.length; i++)
+			for (var i:uint = 0; i < bulkFile.items.length; i++)
 			{
 				bulkFile.items[i].resource.setStatus(ResourceStatus.LOADED);
 			}
 			
 			dispatchEvent(new ResourceEvent(ResourceEvent.FILE_LOADED, bulkFile));
-			increaseCompleteCount(bulkFile);
+			bulkFile.bulk.increaseCompleteCount();
 			checkComplete(bulkFile);
 		}
 		
@@ -402,8 +392,25 @@ package base.io.resource
 			r.setContent(bulkFile.wrapper.content);
 			r.setStatus(ResourceStatus.LOADED);
 			dispatchEvent(new ResourceEvent(ResourceEvent.FILE_LOADED, bulkFile));
-			increaseCompleteCount(bulkFile);
+			bulkFile.bulk.increaseCompleteCount();
 			checkComplete(bulkFile);
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		protected function loadReferencedResources(referencedIDs:Object, bf:ResourceBulkFile):void
+		{
+			if (!referencedIDs) return;
+			var a:Array = [];
+			for (var refID:String in referencedIDs)
+			{
+				var resID:String = referencedIDs[refID];
+				a.push(refID);
+				Log.debug(bf.id + " requested referenced resource with ID \"" + refID + "\".", this);
+			}
+			resourceManager.enqueueReferencedResources(a);
 		}
 		
 		
@@ -414,11 +421,9 @@ package base.io.resource
 		protected function checkComplete(bulkFile:ResourceBulkFile):void
 		{
 			/* Finished files can be removed from temporary map now. */
-			_bulkFiles[bulkFile.id] = null;
 			delete _bulkFiles[bulkFile.id];
 			
-			var bulk:ResourceBulk = bulkFile._bulk;
-			if (bulk._completeCount == bulk._fileCount)
+			if (bulkFile.bulk.isComplete)
 			{
 				_bulkComplete = true;
 				if (_loaderComplete) reset();
@@ -433,22 +438,13 @@ package base.io.resource
 		protected function fail(bulkFile:ResourceBulkFile, message:String = null):void
 		{
 			/* Mark all resources in the failed bulk file as failed. */
-			for (var i:int = 0; i < bulkFile.items.length; i++)
+			for (var i:uint = 0; i < bulkFile.items.length; i++)
 			{
 				bulkFile.items[i].resource.setStatus(ResourceStatus.FAILED);
 			}
-			bulkFile._bulk._fileCount--;
+			bulkFile.bulk.decreaseFileCount();
 			dispatchEvent(new ResourceEvent(ResourceEvent.FILE_FAILED, bulkFile, message));
 			checkComplete(bulkFile);
-		}
-		
-		
-		/**
-		 * @private
-		 */
-		protected function increaseCompleteCount(bulkFile:ResourceBulkFile):void
-		{
-			bulkFile._bulk._completeCount++;
 		}
 	}
 }
