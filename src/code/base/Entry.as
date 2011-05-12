@@ -40,7 +40,7 @@ package base
 	 * which all other application logic is being initiated, in particular Main which acts as
 	 * the main hub for the application.
 	 * 
-	 * IMPORTANT: Auto-generated file. Do not edit!
+	 * <p>IMPORTANT: Auto-generated class. Do not edit!</p>
 	 */
 	public final class Entry extends Sprite
 	{

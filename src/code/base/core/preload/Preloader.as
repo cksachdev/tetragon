@@ -45,18 +45,19 @@ package base.core.preload
 	 * actual Document class and will be located in frame 1 of the SWF movie
 	 * while the Main class and all its linked assets are placed on frame 2.
 	 * After the preloader is finished it jumps to frame 2 and instanciates
-	 * the Main class.<p>
+	 * the Main class.
 	 * 
 	 * For optimal use this class should be extended by a custom preloader
 	 * class and the application class and preloader parameters should be
 	 * set by use of super().
 	 * 
 	 * @example
-	 * <p>The following class is an example of a custom Preloader class. Note
+	 * The following class is an example of a custom Preloader class. Note
 	 * the package used as the first super argument. If the application class
 	 * resides in a package, also the package name needs to be specified
 	 * otherwise the Flash Player throws a Reference Error.
-	 * <p><pre>
+	 * 
+	 * <pre>
 	 * // examples.preloader.CustomPreloader.as:
 	 *	package examples.preloader {
 	 *		import com.hexagonstar.app.preload.Preloader;
@@ -71,8 +72,10 @@ package base.core.preload
 	 *		}
 	 *	}
 	 * </pre>
-	 * <p>Whereas the application class could be written like this ...
-	 * <p><pre>
+	 * 
+	 * Whereas the application class could be written like this ...
+	 * 
+	 * <pre>
 	 * // examples.preloader.PreloaderExample.as:
 	 *	package examples.preloader {
 	 *		import flash.display.Sprite;

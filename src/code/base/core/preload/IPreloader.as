@@ -31,7 +31,7 @@ package base.core.preload
 	 * An interface that needs to be implemented by concrete preloader classes
 	 * that should be wrapped by the base.core.preload.Preloader class.
 	 * 
-	 * @see #Preloader
+	 * @see Preloader
 	 */
 	public interface IPreloader
 	{

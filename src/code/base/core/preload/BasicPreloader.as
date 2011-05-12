@@ -43,6 +43,7 @@ package base.core.preload
 		
 		/**
 		 * A reference to the Preloader (which wraps this preloader).
+		 * 
 		 * @private
 		 */
 		protected var _preloader:Preloader;

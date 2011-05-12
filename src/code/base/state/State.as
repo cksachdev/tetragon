@@ -56,11 +56,9 @@ package base.state
 		
 		/**
 		 * Keeps a list of IDs for resources that need to be loaded for this state.
-		 * @private
 		 */
 		private var _resourceIDs:Array;
 		
-		/** @private */
 		private var _main:Main;
 		
 		
@@ -70,19 +68,16 @@ package base.state
 		
 		/**
 		 * Signal that is broadcasted after the state has been loaded and entered.
-		 * @private
 		 */
 		public var enteredSignal:Signal;
 		
 		/**
 		 * Signal that is broadcasted while resorces for the state are being loaded.
-		 * @private
 		 */
 		public var progressSignal:Signal;
 		
 		/**
 		 * Signal that is broadcasted after the state has been unloaded and exited.
-		 * @private
 		 */
 		public var exitedSignal:Signal;
 		
@@ -253,8 +248,6 @@ package base.state
 		 * 
 		 * <p>This is an abstract method. You need to override this method in your state
 		 * sub-class to use it.</p>
-		 * 
-		 * @private
 		 */
 		protected function onResourceLoaded(resource:Resource):void
 		{
@@ -267,8 +260,6 @@ package base.state
 		 * 
 		 * <p>This is an abstract method. You need to override this method in your state
 		 * sub-class to use it.</p>
-		 * 
-		 * @private
 		 */
 		protected function onResourceLoadError(resource:Resource):void
 		{
@@ -278,8 +269,6 @@ package base.state
 		
 		/**
 		 * Invoked while a resource for this state is being loaded.
-		 * 
-		 * @private
 		 */
 		protected function onResourceProgress(e:ResourceEvent):void
 		{
@@ -289,8 +278,6 @@ package base.state
 		
 		/**
 		 * Invoked after all resource loading for this state has been completed.
-		 * 
-		 * @private
 		 */
 		protected function onResourceLoadComplete():void
 		{
@@ -303,12 +290,11 @@ package base.state
 		
 		/**
 		 * Signal handler that is called if a screen has been opened after using the
-		 * <code>openScreen()<code> helper method.
+		 * <code>openScreen()</code> helper method.
 		 * 
 		 * <p>This is an abstract method. You need to override this method in your state
 		 * sub-class to use it.</p>
 		 * 
-		 * @private
 		 * @param screen The screen that has been opened.
 		 */
 		protected function onScreenOpened(screen:BaseScreen):void
@@ -319,12 +305,11 @@ package base.state
 		
 		/**
 		 * Signal handler that is called if a screen has been closed after opening
-		 * another screen by using the <code>openScreen()<code> helper method.
+		 * another screen by using the <code>openScreen()</code> helper method.
 		 * 
 		 * <p>This is an abstract method. You need to override this method in your state
 		 * sub-class to use it.</p>
 		 * 
-		 * @private
 		 * @param screen The screen that has been closed.
 		 */
 		protected function onScreenClosed(screen:BaseScreen):void
@@ -344,8 +329,8 @@ package base.state
 		 * register as many resources as you need for the state. The resources are being
 		 * preloaded before the state is entered by the state manager.</p>
 		 * 
-		 * @private
 		 * @see registerResource
+		 * 
 		 * @example
 		 * <pre>
 		 *     registerResource("resource1");
@@ -364,7 +349,6 @@ package base.state
 		 * entered. Call this method inside the overriden <code>registerResources()</code>
 		 * method.
 		 * 
-		 * @private
 		 * @see registerResources
 		 */
 		protected function registerResource(resourceID:String):void
@@ -377,7 +361,6 @@ package base.state
 		/**
 		 * Loads all resources that are registered in the state for loading.
 		 * 
-		 * @private
 		 * @see registerResources
 		 */
 		protected function load():void
@@ -399,8 +382,6 @@ package base.state
 		 * <p>This is an abstract method. Override it in your state sub-class and place
 		 * any code inside it that creates objects needed by the state. setup is
 		 * automatically called after the state has been loaded.</p>
-		 * 
-		 * @private
 		 */
 		protected function setup():void
 		{
@@ -416,7 +397,6 @@ package base.state
 		 * <p>This is an abstract method. Override this method and add any listeners to
 		 * objects that require event/signal listening.</p>
 		 * 
-		 * @private
 		 * @see removeListeners
 		 */
 		protected function addListeners():void
@@ -433,7 +413,6 @@ package base.state
 		 * <p>This is an abstract method. Override this method and remove any event/signal
 		 * listeners here that were added in <code>addListeners()</code>.</p>
 		 * 
-		 * @private
 		 * @see addListeners
 		 */
 		protected function removeListeners():void
@@ -445,8 +424,6 @@ package base.state
 		/**
 		 * Used to unload any resources that have been loaded for the state. Called
 		 * automatically after a state has been exited.
-		 * 
-		 * @private
 		 */
 		protected function unload():void
 		{
@@ -461,8 +438,6 @@ package base.state
 		 * 
 		 * <p>This is an abstract method. Override this method in your state sub-class and
 		 * dispose any objects that require to be disposed.</p>
-		 * 
-		 * @private
 		 */
 		protected function dispose():void
 		{
@@ -477,7 +452,6 @@ package base.state
 		/**
 		 * Helper method that can be used to enter another state from within this state.
 		 * 
-		 * @private
 		 * @param stateID The ID of the state to enter.
 		 */
 		protected function enterState(stateID:String):void
@@ -489,7 +463,6 @@ package base.state
 		/**
 		 * Helper method that can be used to open a screen.
 		 * 
-		 * @private
 		 * @param screenID The ID of the screen to open.
 		 * @param fastTransition Whether the screen transition should be fast or not.
 		 */
@@ -505,7 +478,6 @@ package base.state
 		 * Helper method to get a resource's content from the resource index. The type
 		 * depends on the content type of the resource.
 		 * 
-		 * @private
 		 * @param resourceID The ID of the resource.
 		 * @return The resource content or <code>null</code>.
 		 */
@@ -518,7 +490,6 @@ package base.state
 		/**
 		 * Helper method to get a string from the string index.
 		 * 
-		 * @private
 		 * @param stringID The ID of the string.
 		 * @return The requested string.
 		 */

@@ -49,13 +49,9 @@ package base.view.display
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
 		private var _main:Main;
-		/** @private */
 		private var _screen:BaseScreen;
-		/** @private */
 		private var _enabled:Boolean = true;
-		/** @private */
 		private var _paused:Boolean = false;
 		
 		
@@ -81,8 +77,6 @@ package base.view.display
 		 * 
 		 * <p>You normally don't call this method manually. Instead the parent screen
 		 * calls it automatically when the screen is being opened.</p>
-		 * 
-		 * @private
 		 */
 		public function init():void
 		{
@@ -228,8 +222,6 @@ package base.view.display
 		 * A reference to the display's parent screen, for use in sub-classes. This
 		 * property is set automatically by the display's parent screen when the display
 		 * is registered with the screen by using <code>registerDisplay()</code>.
-		 * 
-		 * @private
 		 */
 		public function get screen():BaseScreen
 		{
@@ -243,8 +235,6 @@ package base.view.display
 		
 		/**
 		 * A reference to Main for use in sub-classes.
-		 * 
-		 * @private
 		 */
 		protected function get main():Main
 		{
@@ -254,8 +244,6 @@ package base.view.display
 		
 		/**
 		 * A reference to the resource manager for use in sub-classes.
-		 * 
-		 * @private
 		 */
 		protected function get resourceManager():ResourceManager
 		{
@@ -274,8 +262,6 @@ package base.view.display
 		 * 
 		 * <p>This is an abstract method. Override it in your sub-display class and create
 		 * any display child objects here that are part of the display.</p>
-		 * 
-		 * @private
 		 */
 		protected function createChildren():void
 		{
@@ -289,8 +275,6 @@ package base.view.display
 		 * 
 		 * <p>This is an abstract method. Override it in your sub-display class and add
 		 * any display children to the display list here that are part of the display.</p>
-		 * 
-		 * @private
 		 */
 		protected function addChildren():void
 		{
@@ -304,7 +288,6 @@ package base.view.display
 		 * <p>This is an abstract method. Override this method and add any listeners to
 		 * objects that require event/signal listening.</p>
 		 * 
-		 * @private
 		 * @see removeListeners
 		 */
 		protected function addListeners():void
@@ -321,7 +304,6 @@ package base.view.display
 		 * <p>This is an abstract method. Override this method and remove any event/signal
 		 * listeners here that were added in <code>addListeners()</code>.</p>
 		 * 
-		 * @private
 		 * @see addListeners
 		 */
 		protected function removeListeners():void
@@ -338,8 +320,6 @@ package base.view.display
 		 * 
 		 * <p>This is an abstract method. Override it in your sub-display class and set
 		 * strings from text resources to any text displays if they require it.</p>
-		 * 
-		 * @private
 		 */
 		protected function updateDisplayText():void
 		{
@@ -355,8 +335,6 @@ package base.view.display
 		 * 
 		 * <p>This is an abstract method. Override it in your sub-display class and set
 		 * the position and size of all child display objects here.</p>
-		 * 
-		 * @private
 		 */
 		protected function layoutChildren():void
 		{
@@ -372,7 +350,6 @@ package base.view.display
 		 * any child display objects here that should be enabled when the display is being
 		 * enabled.</p>
 		 * 
-		 * @private
 		 * @see enabled
 		 * @see disableChildren
 		 */
@@ -390,7 +367,6 @@ package base.view.display
 		 * any child display objects here that should be disabled when the display is being
 		 * disabled.</p>
 		 * 
-		 * @private
 		 * @see enabled
 		 * @see enableChildren
 		 */
@@ -408,7 +384,6 @@ package base.view.display
 		 * any child display objects here that should be paused when the display is being
 		 * put into paused mode.</p>
 		 * 
-		 * @private
 		 * @see paused
 		 * @see unpauseChildren
 		 */
@@ -426,7 +401,6 @@ package base.view.display
 		 * any child display objects here that should be unpaused when the display is being
 		 * put into unpaused mode.</p>
 		 * 
-		 * @private
 		 * @see paused
 		 * @see pauseChildren
 		 */
@@ -444,7 +418,6 @@ package base.view.display
 		 * Helper method to get a resource's content from the resource index. The type
 		 * depends on the content type of the resource.
 		 * 
-		 * @private
 		 * @param resourceID The ID of the resource.
 		 * @return The resource content or <code>null</code>.
 		 */
@@ -457,7 +430,6 @@ package base.view.display
 		/**
 		 * Helper method to get a string from the string index.
 		 * 
-		 * @private
 		 * @param stringID The ID of the string.
 		 * @return The requested string.
 		 */

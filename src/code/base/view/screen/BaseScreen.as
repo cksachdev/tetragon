@@ -37,7 +37,24 @@ package base.view.screen
 
 	
 	/**
-	 * BaseScreen Class
+	 * Abstract base class for screens.
+	 * 
+	 * <p>A screen is a display object that acts as a container for other display objects.
+	 * It represents the whole area of the Flash display stage and contains objects of
+	 * type <code>Display</code> which are placed inside the screen.</p>
+	 * 
+	 * <p>Screens are normally not used directly. Instead you use the ScreenManager class
+	 * to open and close screens by specifying the ID with that the screen has been
+	 * registered during the application init phase.</p>
+	 * 
+	 * <p>There is ever only one screen opened at a time. If a new screen is being opened
+	 * with the screen manager, the currently opened screen is being closed.</p>
+	 * 
+	 * <p>To create new screen classes you extend this class and then override any
+	 * abstract methods that might be used in your screen class.</p>
+	 * 
+	 * @see base.view.display.Display
+	 * @see base.view.screen.ScreenManager
 	 */
 	public class BaseScreen extends Display
 	{
@@ -47,7 +64,6 @@ package base.view.screen
 		
 		/**
 		 * Stores all child displays of this screen.
-		 * @private
 		 */
 		private var _displays:Vector.<Display>;
 		
@@ -85,8 +101,6 @@ package base.view.screen
 		
 		/**
 		 * Not used by screen classes!
-		 * 
-		 * @private
 		 */
 		override public final function init():void
 		{
@@ -190,8 +204,6 @@ package base.view.screen
 		
 		/**
 		 * The displays of the screen.
-		 * 
-		 * @private
 		 */
 		protected function get displays():Vector.<Display>
 		{
@@ -201,8 +213,6 @@ package base.view.screen
 		
 		/**
 		 * A reference to the screen manager for use in sub-classes.
-		 * 
-		 * @private
 		 */
 		protected function get screenManager():ScreenManager
 		{
@@ -217,8 +227,6 @@ package base.view.screen
 		/**
 		 * Used to wait exatcly one frame after the display has been created and before
 		 * the loaded event is broadcasted. This is to prevent abrupt blend-ins.
-		 * 
-		 * @private
 		 */
 		private function onFramePassed(e:Event):void
 		{
@@ -257,7 +265,6 @@ package base.view.screen
 		 * <code>reset()</code>, <code>update()</code>, <code>dispose()</code>,
 		 * <code>enabled</code> and <code>paused</code>.</p>
 		 * 
-		 * @private
 		 * @see base.view.display.Display
 		 * 
 		 * @example
@@ -278,7 +285,6 @@ package base.view.screen
 		 * registered with the screen have several methods and setters automatically
 		 * called if these methods are called on the screen.
 		 * 
-		 * @private
 		 * @param display The display instance to register.
 		 */
 		protected function registerDisplay(display:Display):void
@@ -294,8 +300,6 @@ package base.view.screen
 		 * this method will automatically add all registered displays to the display list
 		 * in the same order they were registered. You can override this method if you
 		 * want to add the display children manually.
-		 * 
-		 * @private
 		 */
 		override protected function addChildren():void
 		{
@@ -312,7 +316,6 @@ package base.view.screen
 		
 		/**
 		 * Calls a method on all registered displays of the screen.
-		 * @private
 		 * 
 		 * @param func The function that should be called on the display.
 		 * @param value An optional value used when calling setters.
@@ -346,7 +349,6 @@ package base.view.screen
 		 * Calculates and returns the horizontal center of the specified display object in
 		 * regard to the application stage.
 		 * 
-		 * @private
 		 * @param d The display object for which to calculate the horizontal center.
 		 * @return The horizontal center of d.
 		 */
@@ -360,7 +362,6 @@ package base.view.screen
 		 * Calculates and returns the vertical center of the specified display object in
 		 * regard to the application stage.
 		 * 
-		 * @private
 		 * @param d The display object for which to calculate the vertical center.
 		 * @return The vertical center of d.
 		 */

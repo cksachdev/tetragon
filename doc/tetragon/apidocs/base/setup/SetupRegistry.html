@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><!-- saved from url=(0014)about:internet --><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" href="../../style.css" type="text/css" media="screen"><link rel="stylesheet" href="../../print.css" type="text/css" media="print"><link rel="stylesheet" href="../../override.css" type="text/css"><meta name="keywords" content="SetupRegistry,base.setup.SetupRegistry,execute,execute,finalSetup,finalSetup,finalSetup,finalSetup,finalSetup,initialSetup,initialSetup,initialSetup,initialSetup,initialSetup,postConfigSetup,postConfigSetup,postConfigSetup,postConfigSetup,postConfigSetup,postSettingsSetup,postSettingsSetup,postSettingsSetup,postSettingsSetup,postSettingsSetup,registerComplexTypes,registerComplexTypes,registerComplexTypes,registerDataTypes,registerDataTypes,registerDataTypes,registerEntityComponents,registerEntityComponents,registerEntityComponents,registerEntitySystems,registerEntitySystems,registerEntitySystems,registerResourceFileTypes,registerResourceFileTypes,registerResourceFileTypes,registerScreens,registerScreens,registerScreens,registerStates,registerStates,registerStates,registrySetup,registrySetup,toString"><title>base.setup.SetupRegistry</title></head><body><script language="javascript" type="text/javascript" src="../../asdoc.js"></script><script language="javascript" type="text/javascript" src="../../help.js"></script><script language="javascript" type="text/javascript" src="../../cookies.js"></script><script language="javascript" type="text/javascript"><!--
+				asdocTitle = 'SetupRegistry - tetragon API Documentation';
+				var baseRef = '../../';
+				window.onload = configPage;
+			--></script>
+<script type="text/javascript">
+			scrollToNameAnchor();
+		</script><table class="titleTable" cellpadding="0" cellspacing="0" id="titleTable" style="display:none"><tr><td class="titleTableTitle" align="left">tetragon API Documentation</td><td class="titleTableTopNav" align="right"><a href="../../package-summary.html" onclick="loadClassListFrame('../../all-classes.html')">All Packages</a>&nbsp;|&nbsp;<a href="../../class-summary.html" onclick="loadClassListFrame('../../all-classes.html')">All Classes</a>&nbsp;|&nbsp;<a href="../../all-index-A.html" onclick="loadClassListFrame('../../index-list.html')">Index</a>&nbsp;|&nbsp;<a id="framesLink1" href="../../index.html?base/setup/SetupRegistry.html&amp;base/setup/class-list.html">Frames</a><a id="noFramesLink1" style="display:none" href="" onclick="parent.location=document.location"> No Frames </a></td><td class="titleTableLogo" align="right" rowspan="3"><img src="../../images/logo.jpg" class="logoImage" alt=" Adobe Logo " title=" Adobe Logo "></td></tr><tr class="titleTableRow2"><td class="titleTableSubTitle" id="subTitle" align="left">SetupRegistry</td><td class="titleTableSubNav" id="subNav" align="right"><a href="#methodSummary">Methods</a></td></tr><tr class="titleTableRow3"><td colspan="3">&nbsp;</td></tr></table><script language="javascript" type="text/javascript" xml:space="preserve">
+				<!--
+				
+					if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("SetupRegistry"); titleBar_setSubNav(false,false,false,false,false,false,false,false,true,false,false	,false,false,false,false,false);}	
+				-->
+			</script><div xmlns:fn="http://www.w3.org/2005/xpath-functions" class="MainContent"><table class="classHeaderTable" cellpadding="0" cellspacing="0"><tr><td class="classHeaderTableLabel">Package</td><td><a href="package-detail.html" onclick="javascript:loadClassListFrame('class-list.html')">base.setup</a></td></tr><tr><td class="classHeaderTableLabel">Class</td><td class="classSignature">public  class  SetupRegistry</td></tr><tr><td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">SetupRegistry  <img src="../../images/inherit-arrow.gif" title="Inheritance" alt="Inheritance" class="inheritArrow"> Object</td></tr><tr><td class="classHeaderTableLabel">Subclasses</td><td> <a href="../../base/setup/BaseSetupRegistry.html">BaseSetupRegistry</a>,  <a href="../../extra/game/setup/GameSetupRegistry.html">GameSetupRegistry</a>,  <a href="../../extra/rpg/setup/RPGSetupRegistry.html">RPGSetupRegistry</a>,  <a href="../../extra/tbs/setup/TBSSetupRegistry.html">TBSSetupRegistry</a>,  <a href="../../extra/test/setup/TestSetupRegistry.html">TestSetupRegistry</a></td></tr></table><p></p><p></p><p></p>
+	 Abstract base class for setup registry classes.
+	 <p></p><br/><hr></div><a name="methodSummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Methods </div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableMethod"><tr><th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#SetupRegistry()" class="signatureLink">SetupRegistry</a>()</div><div class="summaryTableDescription">
+		 Creates a new instance of the class.</div></td><td class="summaryTableOwnerCol">SetupRegistry</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#execute()" class="signatureLink">execute</a>():void</div><div class="summaryTableDescription">
+		 Executes the setup registry.</div></td><td class="summaryTableOwnerCol">SetupRegistry</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#registerComplexTypes()" class="signatureLink">registerComplexTypes</a>():void</div><div class="summaryTableDescription">
+		 Used to register any complex data type classes that are used in entity
+		 component definitions.</div></td><td class="summaryTableOwnerCol">SetupRegistry</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#registerDataTypes()" class="signatureLink">registerDataTypes</a>():void</div><div class="summaryTableDescription">
+		 Used to register any resource data types that require a parser to parse their
+		 data into data objects for the engine.</div></td><td class="summaryTableOwnerCol">SetupRegistry</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#registerEntityComponents()" class="signatureLink">registerEntityComponents</a>():void</div><div class="summaryTableDescription">
+		 Used to register entity components.</div></td><td class="summaryTableOwnerCol">SetupRegistry</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#registerEntitySystems()" class="signatureLink">registerEntitySystems</a>():void</div><div class="summaryTableDescription">
+		 Used to register entity systems.</div></td><td class="summaryTableOwnerCol">SetupRegistry</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#registerResourceFileTypes()" class="signatureLink">registerResourceFileTypes</a>():void</div><div class="summaryTableDescription">
+		 Used to register any resource file types to resource file type wrapper classes
+		 for the extra package that this setup is part of.</div></td><td class="summaryTableOwnerCol">SetupRegistry</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#registerScreens()" class="signatureLink">registerScreens</a>():void</div><div class="summaryTableDescription">
+		 Used to register screens.</div></td><td class="summaryTableOwnerCol">SetupRegistry</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#registerStates()" class="signatureLink">registerStates</a>():void</div><div class="summaryTableDescription">
+		 Used to register states.</div></td><td class="summaryTableOwnerCol">SetupRegistry</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#toString()" class="signatureLink">toString</a>():String</div><div class="summaryTableDescription">
+		 Returns a String Representation of the class.</div></td><td class="summaryTableOwnerCol">SetupRegistry</td></tr></table></div><script language="javascript" type="text/javascript"><!--
+										showHideInherited();
+										--></script><div class="MainContent"><a name="constructorDetail"></a><div class="detailSectionHeader">Constructor Detail</div><a name="SetupRegistry()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">SetupRegistry</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">Constructor</td></tr></table><div class="detailBody"><code>public function SetupRegistry()</code><p></p><p>
+		 Creates a new instance of the class.
+		 </p></div><a name="methodDetail"></a><div class="detailSectionHeader">Method Detail</div><a name="execute()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">execute</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td></tr></table><div class="detailBody"><code> public function execute():void</code><p></p><p></p><p>
+		 Executes the setup registry.
+		 </p></div><a name="registerComplexTypes()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">registerComplexTypes</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function registerComplexTypes():void</code><p></p><p></p><p>
+		 Used to register any complex data type classes that are used in entity
+		 component definitions. Complex data types are any data types other than the
+		 basic types like String, Number, Boolean etc. For example Rectangle and Point
+		 would be complex data types. Use the <code>registerComplexType()</code> method
+		 inside this method to register any complex data types.
+		 
+		 <p>The engine already maps standard complex data types such as Rectangle, Point
+		 Point2D, Point3D etc. automatically but you can use this method to register
+		 any additional types.</p>
+		 
+		 </p><br/><span class="label"> Example </span><br/>
+		 <pre>
+		    registerComplexType("customtype", CustomTypeClass);
+		 </pre>
+		 </div><a name="registerDataTypes()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">registerDataTypes</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function registerDataTypes():void</code><p></p><p></p><p>
+		 Used to register any resource data types that require a parser to parse their
+		 data into data objects for the engine. Registering data types is only relevant
+		 for resources defined in the resource index file under the 'data' resource
+		 family. Entity resources are all parsed by the <code>EntityDataParser</code>.
+		 Use the <code>registerDataType</code> method inside this method to register
+		 any custom data types.
+		 
+		 </p><br/><span class="label"> Example </span><br/>
+		 <pre>
+		    // Register a data resource type that is defined in the resource index
+		    // file with group type="MyGameDataResource" ...
+		    registerDataType("MyGameDataResource", MyGameDataResourceParser);
+		 </pre>
+		 </div><a name="registerEntityComponents()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">registerEntityComponents</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function registerEntityComponents():void</code><p></p><p></p><p>
+		 Used to register entity components.
+		 </p></div><a name="registerEntitySystems()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">registerEntitySystems</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function registerEntitySystems():void</code><p></p><p></p><p>
+		 Used to register entity systems.
+		 </p></div><a name="registerResourceFileTypes()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">registerResourceFileTypes</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function registerResourceFileTypes():void</code><p></p><p></p><p>
+		 Used to register any resource file types to resource file type wrapper classes
+		 for the extra package that this setup is part of. Use the
+		 <code>registerFileType()</code> method inside this method to register any file
+		 types.
+		 
+		 <p>The engine already maps standard resource file types for image files, data
+		 files, audio files etc. automatically but you can use this method to register
+		 any additional file types.</p>
+		 
+		 </p><br/><span class="label"> Example </span><br/>
+		 <pre>
+		    // Register CustomResourceWrapper class to ID "custom" and to file
+		    // extensions "cst" and "cust" ...
+		    registerFileType(CustomResourceWrapper, ["custom"], ["cst", "cust"]);
+		 </pre>
+		 </div><a name="registerScreens()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">registerScreens</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function registerScreens():void</code><p></p><p></p><p>
+		 Used to register screens.
+		 </p></div><a name="registerStates()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">registerStates</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function registerStates():void</code><p></p><p></p><p>
+		 Used to register states.
+		 </p></div><a name="toString()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">toString</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function toString():String</code><p></p><p></p><p>
+		 Returns a String Representation of the class.
+		 
+		 </p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>String</code> &mdash; A String Representation of the class.
+		 </td></tr></table></div><br/><br/><hr><br/><p></p><center class="copyright"><footer></footer><br/>Thu May 12 2011, 10:42 PM +09:00  </center></div></body></html><!--<br/>Thu May 12 2011, 10:42 PM +09:00  -->

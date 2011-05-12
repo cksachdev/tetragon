@@ -60,26 +60,17 @@ package base.state
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
 		override public function start():void
 		{
 			openScreen("splashScreen");
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override public function update():void
 		{
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override public function stop():void
 		{
 			_timer.stop();
@@ -94,9 +85,6 @@ package base.state
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
 		override public function get showLoadProgress():Boolean
 		{
 			return false;
@@ -107,9 +95,6 @@ package base.state
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function onScreenOpened(screen:BaseScreen):void
 		{
 			_timer.start();
@@ -121,9 +106,6 @@ package base.state
 		}
 		
 		
-		/**
-		 * @private
-		 */
 		private function onUserInput(e:Event):void
 		{
 			_timer.stop();
@@ -134,9 +116,6 @@ package base.state
 		}
 		
 		
-		/**
-		 * @private
-		 */
 		private function onTimerComplete(e:TimerEvent):void
 		{
 			/* Once the screen fades out, the user should not be able to interrupt, otherwise
@@ -151,18 +130,12 @@ package base.state
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function registerResources():void
 		{
 			registerResource("audioLogoTetragon");
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function setup():void
 		{
 			_allowSplashAbort = Registry.settings.getSettings("allowSplashAbort");
@@ -181,9 +154,6 @@ package base.state
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function addListeners():void
 		{
 			_timer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
@@ -195,9 +165,6 @@ package base.state
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function removeListeners():void
 		{
 			_timer.removeEventListener(TimerEvent.TIMER_COMPLETE, onTimerComplete);
@@ -209,9 +176,6 @@ package base.state
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function dispose():void
 		{
 			_timer = null;

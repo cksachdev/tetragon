@@ -36,36 +36,36 @@ package base.core.settings
 	
 	
 	/**
-	 * This is a singleton class that manages LocalSharedObject settings. You can use this
-	 * class to store and recall persistent data to the users harddisk into a local shared
-	 * object.<p>
-	 * To store local settings with the LocalSettingsManager you first create a LocalSettings
-	 * object and put all settings values into it that need to be stored. Then you use the
-	 * store() method to store the settings to disk.
+	 * This is a class that manages LocalSharedObject settings. You can use this class to
+	 * store and recall persistent data to the users harddisk into a local shared object.
+	 * 
+	 * <p>To store local settings with the LocalSettingsManager you first create a
+	 * LocalSettings object and put all settings values into it that need to be stored.
+	 * Then you use the <code>store()</code> method to store the settings to disk.</p>
 	 * 
 	 * @example
-	 * <p><pre>
-	 *	// Create a new settings object:
-	 *	var ls:LocalSettings = new LocalSettings();
-	 *	ls.put("windowPosX", 200);
-	 *	ls.put("windowPosY", 150);
-	 *	ls.put("dataPath", "c:/user/documents/test/");
-	 *	
-	 *	// Create the LocalSettingsManager, add signal listeners and store the settings:
-	 *	var lsm:LocalSettingsManager = LocalSettingsManager.instance;
-	 *	lsm.store(ls);
+	 * <pre>
+	 *     // Create a new settings object:
+	 *     var ls:LocalSettings = new LocalSettings();
+	 *     ls.put("windowPosX", 200);
+	 *     ls.put("windowPosY", 150);
+	 *     ls.put("dataPath", "c:/user/documents/test/");
+	 * 
+	 *     // Create the LocalSettingsManager, add signal listeners and store the settings:
+	 *     var lsm:LocalSettingsManager = LocalSettingsManager.instance;
+	 *     lsm.store(ls);
 	 * </pre>
 	 * 
-	 * <p>At any time you can recall either single or all settings by using the recall()
-	 * or recallAll() method:
+	 * <p>At any time you can recall either single or all settings by using the
+	 * <code>recall()</code> or <code>recallAll()</code> method:</p>
 	 * 
 	 * @example
-	 * <p><pre>
-	 *	var windowPosX:int = int(LocalSettingsManager.instance.recall("windowPosX"));
-	 *	var ls:LocalSettings = LocalSettingsManager.instance.recallAll();
+	 * <pre>
+	 *     var windowPosX:int = int(LocalSettingsManager.instance.recall("windowPosX"));
+	 *     var ls:LocalSettings = LocalSettingsManager.instance.recallAll();
 	 * </pre>
 	 * 
-	 * @see #LocalSettings
+	 * @see LocalSettings
 	 */
 	public class LocalSettingsManager
 	{
@@ -135,7 +135,7 @@ package base.core.settings
 		 * the specified key.
 		 * 
 		 * @example
-		 * <p><pre>
+		 * <pre>
 		 *	var ls:LocalSettings = new LocalSettings();
 		 *	ls.put("windowPosX", 200);
 		 *	ls.put("windowPosY", 150);
@@ -251,7 +251,7 @@ package base.core.settings
 		 */
 		public function toString():String
 		{
-			return "[LocalSettingsManager]";
+			return "LocalSettingsManager";
 		}
 		
 		

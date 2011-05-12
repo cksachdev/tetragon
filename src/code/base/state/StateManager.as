@@ -42,15 +42,10 @@ package base.state
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
 		private var _stateClasses:Object;
-		/** @private */
 		private var _currentStateClass:Class;
-		/** @private */
 		private var _currentState:State;
-		/** @private */
 		private var _nextState:State;
-		/** @private */
 		private var _isSwitching:Boolean = false;
 		
 		
@@ -202,9 +197,6 @@ package base.state
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @private
-		 */
 		private function onStateEntered():void
 		{
 			Log.debug("--- Entered " + _currentState.toString() + " ---", this);
@@ -213,9 +205,6 @@ package base.state
 		}
 		
 		
-		/**
-		 * @private
-		 */
 		private function onStateExited():void
 		{
 			Log.debug("--- Exited " + _currentState.toString() + " ---", this);
@@ -227,9 +216,6 @@ package base.state
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @private
-		 */
 		private function exitLastState():void
 		{
 			if (_currentState)
@@ -245,9 +231,6 @@ package base.state
 		}
 		
 		
-		/**
-		 * @private
-		 */
 		private function enterNextState():void
 		{
 			if (_nextState)

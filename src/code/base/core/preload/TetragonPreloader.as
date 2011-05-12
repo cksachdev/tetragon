@@ -151,8 +151,6 @@ package base.core.preload
 		
 		/**
 		 * Determines how the preloader is positioned horizontally.
-		 * 
-		 * @see #com.hexagonstar.data.constants.Alignment
 		 */
 		public function set horizontalAlignment(v:String):void
 		{
@@ -161,8 +159,6 @@ package base.core.preload
 		
 		/**
 		 * Determines how the preloader is positioned vertically.
-		 * 
-		 * @see #com.hexagonstar.data.constants.Alignment
 		 */
 		public function set verticalAlignment(v:String):void
 		{

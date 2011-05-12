@@ -34,7 +34,7 @@ package base.core.settings
 	 * A data storage object for use with the LocalSettingsManager in that key-value
 	 * pairs are stored that are meant to be stored persistenly to harddisk.
 	 * 
-	 * @see #LocalSettingsManager
+	 * @see LocalSettingsManager
 	 */
 	public class LocalSettings
 	{
@@ -68,7 +68,7 @@ package base.core.settings
 		 * the specified key.
 		 * 
 		 * @example
-		 * <p><pre>
+		 * <pre>
 		 *	var ls:LocalSettings = new LocalSettings();
 		 *	ls.put("windowPosX", 200);
 		 *	ls.put("windowPosY", 150);

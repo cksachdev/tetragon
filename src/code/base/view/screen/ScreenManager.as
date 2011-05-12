@@ -49,33 +49,19 @@ package base.view.screen
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
 		private var _screenContainer:Sprite;
-		/** @private */
 		private var _screenClasses:Object;
-		/** @private */
 		private var _currentScreen:BaseScreen;
-		/** @private */
 		private var _nextScreen:DisplayObject;
-		/** @private */
 		private var _openScreenClass:Class;
-		/** @private */
 		private var _screenOpenDelay:Number = 0.2;
-		/** @private */
 		private var _screenCloseDelay:Number = 0.2;
-		/** @private */
 		private var _tweenDuration:Number = 0.4;
-		/** @private */
 		private var _fastDuration:Number = 0.2;
-		/** @private */
 		private var _backupDuration:Number;
-		/** @private */
 		private var _backupOpenDelay:Number;
-		/** @private */
 		private var _backupCloseDelay:Number;
-		/** @private */
 		private var _isSwitching:Boolean = false;
-		/** @private */
 		private var _isAutoStart:Boolean = false;
 		
 		
@@ -83,9 +69,7 @@ package base.view.screen
 		// Signals
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
 		public var screenOpenedSignal:Signal;
-		/** @private */
 		public var screenClosedSignal:Signal;
 		
 		
@@ -326,9 +310,6 @@ package base.view.screen
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @private
-		 */
 //		private function onScreenProgress(e:ResourceEvent):void
 //		{
 //			if (!_loadProgressDisplay) return;
@@ -340,9 +321,6 @@ package base.view.screen
 //		}
 		
 		
-		/**
-		 * @private
-		 */
 		private function onScreenOpened():void
 		{
 			if (!_currentScreen)
@@ -372,9 +350,6 @@ package base.view.screen
 		}
 		
 		
-		/**
-		 * @private
-		 */
 		private function onTweenInComplete():void
 		{
 			_tweenDuration = _backupDuration;
@@ -403,9 +378,6 @@ package base.view.screen
 		}
 		
 		
-		/**
-		 * @private
-		 */
 		private function onTweenOutComplete():void
 		{
 			Log.debug("Closed " + _currentScreen.toString(), this);
@@ -422,9 +394,6 @@ package base.view.screen
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @private
-		 */
 		private function closeLastScreen(noTween:Boolean = false):void
 		{
 			if (_currentScreen)
@@ -454,9 +423,6 @@ package base.view.screen
 		}
 		
 		
-		/**
-		 * @private
-		 */
 		private function openNextScreen():void
 		{
 			if (_nextScreen)
@@ -471,9 +437,6 @@ package base.view.screen
 		}
 		
 		
-		/**
-		 * @private
-		 */
 //		private function addLoadProgressDisplay():void
 //		{
 //			if (!_showLoadProgress) return;
@@ -486,9 +449,6 @@ package base.view.screen
 //		}
 //		
 //		
-//		/**
-//		 * @private
-//		 */
 //		private function removeLoadProgressDisplay():void
 //		{
 //			if (!_loadProgressDisplay) return;
