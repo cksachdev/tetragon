@@ -28,7 +28,6 @@
 package base
 {
 	import @top_package@.core.preload.IPreloadable;
-	import @top_package@.core.preload.Preloader;
 	
 	
 	[SWF(width="@app_width@", height="@app_height@", backgroundColor="#@app_bgcolor@", frameRate="@app_framerate@")]
@@ -41,7 +40,7 @@ package base
 	 * 
 	 * <p>IMPORTANT: Auto-generated class. Do not edit!</p>
 	 */
-	[Frame(factoryClass="@top_package@.AppPreloader")]
+	[Frame(factoryClass="@top_package@.Preloader")]
 	public final class Entry implements IPreloadable
 	{
 		//-----------------------------------------------------------------------------------------

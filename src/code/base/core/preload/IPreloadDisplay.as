@@ -28,18 +28,38 @@
 package base.core.preload
 {
 	/**
-	 * An interface that needs to be implemented by concrete preloader classes
-	 * that should be wrapped by the base.core.preload.Preloader class.
+	 * An interface that needs to be implemented by concrete preload display classes that
+	 * are being wrapped by the <code>Preloader</code> class.
+	 * 
+	 * <p>A preload display is a display object class that is used by the engine's preload
+	 * architecture to show preload progress while the application is being preloaded from
+	 * a web server.</p>
+	 * 
+	 * <p>To create your own preload display class you need to implement this interface in
+	 * your class and then provide an instance of it to the preloadDisplay property in the
+	 * <code>AppPreloader</code> class.</p>
 	 * 
 	 * @see Preloader
+	 * @see BasicPreloader
+	 * @see TetragonPreloader
+	 * @see base.AppPreloader
 	 */
-	public interface IPreloader
+	public interface IPreloadDisplay
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * Starts the preload display. Called automatically by the wrapping Preloader.
+		 */
 		function start():void;
+		
+		
+		/**
+		 * Disposes the preload display. Called automatically by the wrapping Preloader
+		 * after preloading is finished.
+		 */
 		function dispose():void;
 		
 		
@@ -47,11 +67,37 @@ package base.core.preload
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * This value determines how many frames to wait before the preload display is
+		 * actually starting to fade out. This is useful to make the transition between
+		 * preloader and main application less abrupt.
+		 */
 		function set fadeOutDelay(v:int):void;
+		
+		/**
+		 * Sets the color value used for text and graphics in the preload display.
+		 */
 		function set color(v:uint):void;
+		
+		/**
+		 * Determines how the preload display is positioned horizontally.
+		 */
 		function set horizontalAlignment(v:String):void;
+		
+		/**
+		 * Determines how the preload display is positioned vertically.
+		 */
 		function set verticalAlignment(v:String):void;
+		
+		/**
+		 * Determines the distance of the preload display from the stage border.
+		 */
 		function set padding(v:int):void;
+		
+		/**
+		 * If set to true the preload display is in test mode so it is visible
+		 * even when run locally.
+		 */
 		function set testMode(v:Boolean):void;
 	}
 }

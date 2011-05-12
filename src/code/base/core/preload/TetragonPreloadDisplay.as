@@ -27,26 +27,46 @@
  */
 package base.core.preload
 {
-	import flash.events.Event;
+	import base.Preloader;
 
+	import com.hexagonstar.constants.Alignment;
+
+	import flash.display.Sprite;
+	import flash.events.Event;
+	
 	
 	/**
-	 * A very basic implementation of IPreloader. The BasicPreloader only waits until
-	 * the application is fully loaded and doesn't show any indication about the load
-	 * progress.
+	 * The default preload display implementation for tetragon which displays a simple
+	 * progress bar while the application is being preloaded.
 	 */
-	public class BasicPreloader implements IPreloader
+	public class TetragonPreloadDisplay extends Sprite implements IPreloadDisplay
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * A reference to the Preloader (which wraps this preloader).
-		 * 
-		 * @private
+		 * A reference to the Preloader (which wraps this preload display).
 		 */
 		protected var _preloader:Preloader;
+		
+		/**
+		 * How many frames to wait before initiating the preloader. This is a threshold
+		 * used to wait for several frames before displaying the preloader bar and text in
+		 * case the SWF is already in the cache or locally loaded in which case the
+		 * preloader doesn't need to appear. Setting this value to 0 will always display
+		 * the preloader.
+		 */
+		protected var _skipDelay:int = 10;
+		
+		protected var _bar:LoadProgressBar;
+		protected var _hAlignment:String = Alignment.LEFT;
+		protected var _vAlignment:String = Alignment.TOP;
+		protected var _color:uint = 0xFFFFFF;
+		protected var _fadeOutDelay:int = 40;
+		protected var _padding:int = 20;
+		protected var _factor:Number;
+		protected var _percentage:Number;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -54,12 +74,12 @@ package base.core.preload
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Creates a new BasicPreloader instance. This class does not need
+		 * Creates a new TetragonPreloadDisplay instance. This class does not need
 		 * to be instatiated directly. The Preloader class does this on it's own.
 		 * 
 		 * @param preloader A reference to the wrapping Preloader.
 		 */
-		public function BasicPreloader(preloader:Preloader)
+		public function TetragonPreloadDisplay(preloader:Preloader)
 		{
 			super();
 			_preloader = preloader;
@@ -71,7 +91,7 @@ package base.core.preload
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Starts the preloader.
+		 * @inheritDoc
 		 */
 		public function start():void
 		{
@@ -80,13 +100,11 @@ package base.core.preload
 
 		
 		/**
-		 * Disposes the object. Called automatically by the wrapping Preloader
-		 * after preloading is finished.
+		 * @inheritDoc
 		 */
 		public function dispose():void
 		{
 			_preloader.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
-			_preloader = null;
 		}
 		
 		
@@ -95,45 +113,51 @@ package base.core.preload
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Not used.
+		 * @inheritDoc
 		 */
 		public function set fadeOutDelay(v:int):void
 		{
+			_fadeOutDelay = v;
 		}
 		
 		/**
-		 * Not used.
+		 * @inheritDoc
 		 */
 		public function set color(v:uint):void
 		{
+			_color = v;
 		}
 		
 		/**
-		 * Not used.
+		 * @inheritDoc
 		 */
 		public function set horizontalAlignment(v:String):void
 		{
+			_hAlignment = v;
 		}
 		
 		/**
-		 * Not used.
+		 * @inheritDoc
 		 */
 		public function set verticalAlignment(v:String):void
 		{
+			_vAlignment = v;
 		}
 		
 		/**
-		 * Not used.
+		 * @inheritDoc
 		 */
 		public function set padding(v:int):void
 		{
+			_padding = v;
 		}
 		
 		/**
-		 * Not used.
+		 * @inheritDoc
 		 */
 		public function set testMode(v:Boolean):void
 		{
+			if (v) _skipDelay = 0;
 		}
 		
 		
@@ -141,14 +165,101 @@ package base.core.preload
 		// Event Handlers
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @private
-		 */
 		protected function onEnterFrame(e:Event):void
 		{
-			if (_preloader.framesLoaded == _preloader.totalFrames)
+			if (_skipDelay > 0)
 			{
-				_preloader.finish();
+				if (_preloader.framesLoaded == _preloader.totalFrames)
+				{
+					_preloader.finish();
+				}
+				_skipDelay -= 1;
+			}
+			else if (_skipDelay == 0)
+			{
+				draw();
+				_skipDelay = -1;
+			}
+			else
+			{
+				if (_preloader.framesLoaded == _preloader.totalFrames)
+				{
+					if (_fadeOutDelay > 0)
+					{
+						_percentage = 100;
+						updateDisplay();
+						_fadeOutDelay--;
+					}
+					else
+					{
+						if (alpha > 0)
+						{
+							alpha -= 0.05;
+						}
+						else
+						{
+							alpha = 0.0;
+							_preloader.finish();
+						}
+					}
+				}
+				else
+				{
+					_percentage = (_preloader.loaderInfo.bytesLoaded
+						/ _preloader.loaderInfo.bytesTotal * 100);
+					updateDisplay();
+				}
+			}
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Private Methods
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Updates the loader bar and info text.
+		 */
+		protected function updateDisplay():void
+		{
+			_bar.bar.width = _percentage * _factor;
+		}
+		
+		
+		/**
+		 * Draws the visual preloader assets on the stage.
+		 */
+		protected function draw():void
+		{
+			_bar = new LoadProgressBar();
+			_factor = _bar.bar.width / 100;
+			_bar.bar.width = 1;
+			addChild(_bar);
+			
+			if (_hAlignment == Alignment.LEFT)
+			{
+				x = _padding;
+			}
+			else if (_hAlignment == Alignment.RIGHT)
+			{
+				x = _preloader.stage.stageWidth - width - _padding;
+			}
+			else
+			{
+				x = Math.floor((_preloader.stage.stageWidth / 2) - (width / 2));
+			}
+			
+			if (_vAlignment == Alignment.TOP)
+			{
+				y = _padding;
+			}
+			else if (_vAlignment == Alignment.BOTTOM)
+			{
+				y = _preloader.stage.stageHeight - height - _padding;
+			}
+			else
+			{
+				y = Math.floor((_preloader.stage.stageHeight / 2) - (height / 2));
 			}
 		}
 	}

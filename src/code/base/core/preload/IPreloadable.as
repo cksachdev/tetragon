@@ -27,15 +27,18 @@
  */
 package base.core.preload
 {
+	import base.Preloader;
+	
+	
 	/**
-	 * IPreloadable Interface, to be implemented by Main classes that use the
-	 * Preloader class for preloading.
+	 * IPreloadable Interface, to be implemented by classes that use the
+	 * Preloader class for preloading. The Entry class implements this.
 	 */
 	public interface IPreloadable
 	{
 		/**
 		 * Invoked by a Preloader class after it has finished preloading
-		 * the application. You should initiate your application from here.
+		 * the application. The web-based application is initiated from here.
 		 */
 		function onApplicationPreloaded(preloader:Preloader):void;
 	}
