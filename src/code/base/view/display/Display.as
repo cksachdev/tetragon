@@ -40,8 +40,8 @@ package base.view.display
 	 * The abstract base class for all display classes, inclusive screens.
 	 * 
 	 * A Display is a container that can contain any kind and number of other display
-	 * objects (Sprites, MovieClips, Shapes, Bitmaps etc.) and which is placed for
-	 * display in a screen.
+	 * objects (Sprites, MovieClips, Shapes, Bitmaps etc.) and which is added for
+	 * display on a screen.
 	 */
 	public class Display extends Sprite
 	{
@@ -54,12 +54,7 @@ package base.view.display
 		/** @private */
 		private var _screen:BaseScreen;
 		/** @private */
-		private var _resourceManager:ResourceManager;
-		
-		/** @private */
 		private var _enabled:Boolean = true;
-		/** @private */
-		private var _started:Boolean = false;
 		/** @private */
 		private var _paused:Boolean = false;
 		
@@ -74,7 +69,6 @@ package base.view.display
 		public function Display()
 		{
 			_main = Main.instance;
-			_resourceManager = _main.resourceManager;
 		}
 		
 		
@@ -83,87 +77,10 @@ package base.view.display
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Can be called to start the display in case the display has any child objects that
-		 * need to be started. For example a display might contain animated display children
-		 * that should not start playing right after the display has been opened but only
-		 * after this method has been called.<br><br>
+		 * Used to initialize the display.
 		 * 
-		 * <p>For displays that are children of a Screen <code>start</code> gets called
-		 * automatically by the screen if the start method of the screen has been called by
-		 * the ScreenManager.</p>
-		 * 
-		 * <p>When overriding this method make sure to call super.start() at the beginning of
-		 * your start method!</p>
-		 */
-		public function start():void
-		{
-			if (_started) return;
-			_started = true;
-		}
-		
-		
-		/**
-		 * Can be called to stop the display and it's child objects after it has been started
-		 * by calling the start method.
-		 * 
-		 * <p>When overriding this method make sure to call super.stop() at the beginning of
-		 * your stop method!</p>
-		 */
-		public function stop():void
-		{
-			if (!_started) return;
-			_started = false;
-		}
-		
-		
-		/**
-		 * Used to put the display into it's initial state as it was right after the display
-		 * has been instantiated for the first time. This method can be called to reset
-		 * properties and child objects in case the display should be re-used without the need
-		 * to re-instantiate it.
-		 */
-		public function reset():void
-		{
-			/* Abstract method! */
-		}
-		
-		
-		/**
-		 * Updates the display. This method can be called if child objects of the display
-		 * need to be updated, e.g. after localization has been changed or if the display
-		 * children need to be re-layouted.
-		 * 
-		 * <p>For displays that are children of a Screen <code>update</code> gets called
-		 * automatically by the screen if the update method of the screen has been called by
-		 * the ScreenManager.</p>
-		 * 
-		 * <p>When overriding this method make sure to call super.update() at the end of
-		 * your update method!</p>
-		 */
-		public function update():void
-		{
-			updateDisplayText();
-			layoutChildren();
-		}
-		
-		
-		/**
-		 * Disposes the display to clean up resources that are no longer needed. A call to
-		 * this method stops the display, removes it's listeners and then unloads it.
-		 * 
-		 * <p>When overriding this method make sure to call super.dispose() at the start of
-		 * your dispose method!</p>
-		 */
-		public function dispose():void
-		{
-			stop();
-			removeListeners();
-		}
-		
-		
-		/**
-		 * Used to initialize the display. Called by it's parent screen after the screen
-		 * is ready. Don't call manually!
+		 * <p>You normally don't call this method manually. Instead the parent screen
+		 * calls it automatically when the screen is being opened.</p>
 		 * 
 		 * @private
 		 */
@@ -176,9 +93,88 @@ package base.view.display
 		
 		
 		/**
-		 * Returns a String representation of the object.
+		 * Starts the display after it has been initialized. You normally don't call this
+		 * method manually. Instead the parent screen calls it automatically when the
+		 * screen is being started.
 		 * 
-		 * @return A String representation of the object.
+		 * <p>This is an abstract method. Override this method in your state sub-class and
+		 * place any instructions into it that need to be done when the state is being
+		 * started, for example a display might contain animated display children that
+		 * should start playing after this method has been called.</p>
+		 */
+		public function start():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Updates the display. This method is called automatically by the parent screen
+		 * before it is being started. It updates any display text that the display might
+		 * contain and lays out it's display children.
+		 * 
+		 * <p>This method can be called if child objects of the display need to be
+		 * updated, e.g. after localization has been changed or if the display children
+		 * need to be re-layouted.</p>
+		 */
+		public function update():void
+		{
+			updateDisplayText();
+			layoutChildren();
+		}
+		
+		
+		/**
+		 * Used to put the display into it's initial state as it was right after the
+		 * display has been instantiated for the first time. This method can be called to
+		 * reset properties and child objects in case the display should be re-used
+		 * without the need to re-instantiate it.
+		 * 
+		 * <p>This is an abstract method. You can override this method in your display
+		 * sub-class and place any instructions into it that need to be done to reset the
+		 * display.</p>
+		 */
+		public function reset():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Stops the display if it has been started. You normally don't call this method
+		 * manually. Instead the parent screen calls it automatically when the screen is
+		 * being stopped.
+		 * 
+		 * <p>This is an abstract method. You can override this method in your display
+		 * sub-class and place any instructions into it that need to be done to stop the
+		 * display, for example stopping an animation.</p>
+		 */
+		public function stop():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Disposes the display to clean up resources that are no longer needed. A call to
+		 * this method stops the display and removes any event/signal listeners. You
+		 * normally don't call this method manually. Instead the parent screen calls it
+		 * automatically when the screen is being disposed.
+		 * 
+		 * <p>If you want to override this method make sure to call super.dispose() at the
+		 * start of your overriden dispose method.</p>
+		 */
+		public function dispose():void
+		{
+			stop();
+			removeListeners();
+		}
+		
+		
+		/**
+		 * Returns a String representation of the display.
+		 * 
+		 * @return A String representation of the display.
 		 */
 		override public function toString():String
 		{
@@ -193,8 +189,8 @@ package base.view.display
 		/**
 		 * Determines if the display is enabled or disabled. On a disabled display any
 		 * display children are disabled so that no user interaction may occur until the
-		 * display is enabled again. Set this property to either <code>true</code> (enabled)
-		 * or <code>false</code> (disabled).
+		 * display is enabled again. Set this property to either <code>true</code>
+		 * (enabled) or <code>false</code> (disabled).
 		 */
 		public function get enabled():Boolean
 		{
@@ -210,22 +206,10 @@ package base.view.display
 		
 		
 		/**
-		 * Determines if the display has been started, i.e. if it's start method has been
-		 * called. Returns <code>true<code> if the display has been started or
-		 * <code>false<code> if the display has either been stopped by calling
-		 * <code>stop()</code> or has not yet been started.
-		 */
-		public function get started():Boolean
-		{
-			return _started;
-		}
-		
-		
-		/**
-		 * Determines whether the display is in paused state or not. If paused any child
-		 * objects are being paused too, if possible. This property should be used if the
-		 * display needs to be pausable, for example if it contains any animation that should
-		 * not play while the application is in a paused state.
+		 * Determines whether the display is in paused state or not. If paused, any child
+		 * objects of the display are being paused too, if possible. This property should
+		 * be used if the display needs to be pausable, for example if it contains any
+		 * animation that should not play while the application is in a paused state.
 		 */
 		public function get paused():Boolean
 		{
@@ -241,9 +225,11 @@ package base.view.display
 		
 		
 		/**
-		 * A reference to the display's parent screen, for use in sub-classes.
-		 * This property is set automatically by the display's parent screen when the
-		 * display is registered with the screen by using registerDisplay().
+		 * A reference to the display's parent screen, for use in sub-classes. This
+		 * property is set automatically by the display's parent screen when the display
+		 * is registered with the screen by using <code>registerDisplay()</code>.
+		 * 
+		 * @private
 		 */
 		public function get screen():BaseScreen
 		{
@@ -257,6 +243,8 @@ package base.view.display
 		
 		/**
 		 * A reference to Main for use in sub-classes.
+		 * 
+		 * @private
 		 */
 		protected function get main():Main
 		{
@@ -266,16 +254,13 @@ package base.view.display
 		
 		/**
 		 * A reference to the resource manager for use in sub-classes.
+		 * 
+		 * @private
 		 */
 		protected function get resourceManager():ResourceManager
 		{
-			return _resourceManager;
+			return _main.resourceManager;
 		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Callback Handlers
-		//-----------------------------------------------------------------------------------------
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -283,9 +268,12 @@ package base.view.display
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Used to create any display children (and other objects) that the display
-		 * might need. Note that child display objects should not be added to the display
+		 * Used to create any display children (and other objects) that the display might
+		 * contain. Note that child display objects should not be added to the display
 		 * list here. Instead they are added in the <code>addChildren()</code> method.
+		 * 
+		 * <p>This is an abstract method. Override it in your sub-display class and create
+		 * any display child objects here that are part of the display.</p>
 		 * 
 		 * @private
 		 */
@@ -296,8 +284,11 @@ package base.view.display
 		
 		
 		/**
-		 * Used to add display objects to the display list that were created in the
+		 * Used to add child display objects to the display list that were created in the
 		 * <code>createChildren()</code> method.
+		 * 
+		 * <p>This is an abstract method. Override it in your sub-display class and add
+		 * any display children to the display list here that are part of the display.</p>
 		 * 
 		 * @private
 		 */
@@ -308,8 +299,13 @@ package base.view.display
 		
 		
 		/**
-		 * Used to add any required event/signal listeners to the display and/or it's children.
+		 * Used to add any event or signal listeners to child objects of the display.
+		 * 
+		 * <p>This is an abstract method. Override this method and add any listeners to
+		 * objects that require event/signal listening.</p>
+		 * 
 		 * @private
+		 * @see removeListeners
 		 */
 		protected function addListeners():void
 		{
@@ -318,11 +314,15 @@ package base.view.display
 		
 		
 		/**
-		 * Used to remove any event/signal listeners that have been added with
-		 * <code>addListeners()</code>. This method is automatically called by the
-		 * <code>dispose()</code> method.
+		 * Used to remove any event or signal listeners from child objects that were added
+		 * inside the <code>addListeners()</code> method. Called automatically when the
+		 * display is being disposed.
+		 * 
+		 * <p>This is an abstract method. Override this method and remove any event/signal
+		 * listeners here that were added in <code>addListeners()</code>.</p>
 		 * 
 		 * @private
+		 * @see addListeners
 		 */
 		protected function removeListeners():void
 		{
@@ -331,49 +331,13 @@ package base.view.display
 		
 		
 		/**
-		 * Used to enable all child objects.
-		 * @private
-		 */
-		protected function enableChildren():void
-		{
-			/* Abstract method! */
-		}
-		
-		
-		/**
-		 * Used to disable all child objects.
-		 * @private
-		 */
-		protected function disableChildren():void
-		{
-			/* Abstract method! */
-		}
-		
-		
-		/**
-		 * Used to pause all child objects.
-		 * @private
-		 */
-		protected function pauseChildren():void
-		{
-			/* Abstract method! */
-		}
-		
-		
-		/**
-		 * Used to unpause all child objects.
-		 * @private
-		 */
-		protected function unpauseChildren():void
-		{
-			/* Abstract method! */
-		}
-		
-		
-		/**
-		 * Used to update any display text of the display if it contains any children that
-		 * are used to display text. Typically any textfield text should be set here with
-		 * strings from the application's currently used text resources.
+		 * Used to update any display text that the display might contain. Typically any
+		 * textfield text should be set here with strings from the application's currently
+		 * used text resources. Called whenever the display's <code>update()</code> method
+		 * is called.
+		 * 
+		 * <p>This is an abstract method. Override it in your sub-display class and set
+		 * strings from text resources to any text displays if they require it.</p>
 		 * 
 		 * @private
 		 */
@@ -385,9 +349,12 @@ package base.view.display
 		
 		/**
 		 * Used to layout the display children of the display. This method is called
-		 * initially to set the position and size of any child objects and is called
-		 * whenever the children need to update their position or size because the layout
-		 * has changed, for example after the application window has been resized.
+		 * initially to set the position and size of any child objects and should be
+		 * called whenever the children need to update their position or size because the
+		 * layout has changed, for example after the application window has been resized.
+		 * 
+		 * <p>This is an abstract method. Override it in your sub-display class and set
+		 * the position and size of all child display objects here.</p>
 		 * 
 		 * @private
 		 */
@@ -398,24 +365,105 @@ package base.view.display
 		
 		
 		/**
+		 * Used to enable any child display objects. Called whenever the
+		 * <code>enabled</code> property of the display is set to <code>true</code>.
+		 * 
+		 * <p>This is an abstract method. Override it in your sub-display class and enable
+		 * any child display objects here that should be enabled when the display is being
+		 * enabled.</p>
+		 * 
+		 * @private
+		 * @see enabled
+		 * @see disableChildren
+		 */
+		protected function enableChildren():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Used to disable any child display objects. Called whenever the
+		 * <code>enabled</code> property of the display is set to <code>false</code>.
+		 * 
+		 * <p>This is an abstract method. Override it in your sub-display class and disable
+		 * any child display objects here that should be disabled when the display is being
+		 * disabled.</p>
+		 * 
+		 * @private
+		 * @see enabled
+		 * @see enableChildren
+		 */
+		protected function disableChildren():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Used to pause any child display objects. Called whenever the
+		 * <code>paused</code> property of the display is set to <code>true</code>.
+		 * 
+		 * <p>This is an abstract method. Override it in your sub-display class and pause
+		 * any child display objects here that should be paused when the display is being
+		 * put into paused mode.</p>
+		 * 
+		 * @private
+		 * @see paused
+		 * @see unpauseChildren
+		 */
+		protected function pauseChildren():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Used to unpause any child display objects that were paused. Called whenever the
+		 * <code>paused</code> property of the display is set to <code>false</code>.
+		 * 
+		 * <p>This is an abstract method. Override it in your sub-display class and unpause
+		 * any child display objects here that should be unpaused when the display is being
+		 * put into unpaused mode.</p>
+		 * 
+		 * @private
+		 * @see paused
+		 * @see pauseChildren
+		 */
+		protected function unpauseChildren():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Helper Methods
+		//-----------------------------------------------------------------------------------------
+		
+		/**
 		 * Helper method to get a resource's content from the resource index. The type
 		 * depends on the content type of the resource.
 		 * 
 		 * @private
+		 * @param resourceID The ID of the resource.
+		 * @return The resource content or <code>null</code>.
 		 */
-		protected function getResource(id:String):*
+		protected static function getResource(resourceID:String):*
 		{
-			return resourceManager.resourceIndex.getResourceContent(id);
+			return Main.instance.resourceManager.resourceIndex.getResourceContent(resourceID);
 		}
 		
 		
 		/**
 		 * Helper method to get a string from the string index.
+		 * 
 		 * @private
+		 * @param stringID The ID of the string.
+		 * @return The requested string.
 		 */
-		protected function getString(id:String):String
+		protected static function getString(stringID:String):String
 		{
-			return resourceManager.stringIndex.get(id);
+			return Main.instance.resourceManager.stringIndex.get(stringID);
 		}
 	}
 }

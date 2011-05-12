@@ -151,7 +151,7 @@
 		<fdt.launch.application
 			projectname="${FDTProject}"
 			mainclass="${path.src.code}/${top.package}/${entry.class}.as"
-			debug="true"
+			debug="false"
 			profile="true"
 			compilerarguments="
 				-static-link-runtime-shared-libraries=true
@@ -190,7 +190,8 @@
 				-creator='${meta.creator}'
 				-contributor='${meta.contributor}'"
 			target="${path.bin}/${app.swfname.full}"
-			startswf="false"
+			startswf="true"
+			swflauncher="AIR Debug Launcher"
 			swflocation="${path.bin}/${app.swfname.full}"
 		/>
 		<fdt.startProfiler
@@ -201,7 +202,6 @@
 			projectname="${proj.name}"
 			targetswf="${path.bin}/${app.swfname.full}"
 		/>
-		<LaunchDesktop/>
 	</target>
 	
 	

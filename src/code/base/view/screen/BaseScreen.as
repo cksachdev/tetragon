@@ -72,8 +72,8 @@ package base.view.screen
 		 */
 		public function BaseScreen()
 		{
+			super();
 			openedSignal = new Signal();
-			
 			createChildren();
 			registerDisplays();
 		}
@@ -84,12 +84,22 @@ package base.view.screen
 		//-----------------------------------------------------------------------------------------
 		
 		/**
+		 * Not used by screen classes!
+		 * 
+		 * @private
+		 */
+		override public final function init():void
+		{
+		}
+		
+		
+		/**
 		 * Opens the screen. You normally don't call this method manually. Instead
 		 * the screen manager calls it when the screen is requested to be opened.
 		 */
 		public function open():void
 		{
-			callOnRegisteredDisplays("init");
+			executeOnDisplays("init");
 			addChildren();
 			addListeners();
 			/* Wait one frame before showing the screen. */
@@ -102,8 +112,7 @@ package base.view.screen
 		 */
 		override public function start():void
 		{
-			super.start();
-			callOnRegisteredDisplays("start");
+			executeOnDisplays("start");
 		}
 		
 		
@@ -112,7 +121,7 @@ package base.view.screen
 		 */
 		override public function update():void
 		{
-			callOnRegisteredDisplays("update");
+			executeOnDisplays("update");
 			super.update();
 		}
 		
@@ -122,7 +131,7 @@ package base.view.screen
 		 */
 		override public function reset():void
 		{
-			callOnRegisteredDisplays("reset");
+			executeOnDisplays("reset");
 		}
 		
 		
@@ -131,19 +140,16 @@ package base.view.screen
 		 */
 		override public function stop():void
 		{
-			super.stop();
-			callOnRegisteredDisplays("stop");
+			executeOnDisplays("stop");
 		}
 		
 		
 		/**
-		 * @private
+		 * Closes the screen.
 		 */
 		public function close():void
 		{
 			stop();
-			removeListeners();
-			callOnRegisteredDisplays("dispose");
 			dispose();
 		}
 		
@@ -153,17 +159,8 @@ package base.view.screen
 		 */
 		override public function dispose():void
 		{
-		}
-		
-		
-		/**
-		 * Used to initialize the screen. Called by the screen manager after all of the
-		 * screen resources have been loaded. Do not call manually!
-		 * 
-		 * @private
-		 */
-		override public function init():void
-		{
+			executeOnDisplays("dispose");
+			removeListeners();
 		}
 		
 		
@@ -176,8 +173,8 @@ package base.view.screen
 		 */
 		override public function set enabled(v:Boolean):void
 		{
+			executeOnDisplays("enabled", v);
 			super.enabled = v;
-			callOnRegisteredDisplays("enabled", v);
 		}
 		
 		
@@ -186,13 +183,15 @@ package base.view.screen
 		 */
 		override public function set paused(v:Boolean):void
 		{
+			executeOnDisplays("paused", v);
 			super.paused = v;
-			callOnRegisteredDisplays("paused", v);
 		}
 		
 		
 		/**
 		 * The displays of the screen.
+		 * 
+		 * @private
 		 */
 		protected function get displays():Vector.<Display>
 		{
@@ -202,6 +201,8 @@ package base.view.screen
 		
 		/**
 		 * A reference to the screen manager for use in sub-classes.
+		 * 
+		 * @private
 		 */
 		protected function get screenManager():ScreenManager
 		{
@@ -216,6 +217,7 @@ package base.view.screen
 		/**
 		 * Used to wait exatcly one frame after the display has been created and before
 		 * the loaded event is broadcasted. This is to prevent abrupt blend-ins.
+		 * 
 		 * @private
 		 */
 		private function onFramePassed(e:Event):void
@@ -232,7 +234,11 @@ package base.view.screen
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @inheritDoc
+		 * Used to create all display children that are part of the screen. Called
+		 * right after the screen has been created.
+		 * 
+		 * <p>This is an abstract method. Override it in your sub-screen class and
+		 * instanciate any display child objects here that are part of the screen.</p>
 		 */
 		override protected function createChildren():void
 		{
@@ -241,31 +247,26 @@ package base.view.screen
 		
 		
 		/**
-		 * Registers displays for use with the screen. Override this method in your sub-screen
-		 * class and register the displays by using the <code>registerDisplay()</code> method.
+		 * Registers displays for use with the screen.
+		 * 
+		 * <p>This is an abstract method. Override this method in your sub-screen class and
+		 * register the displays by using the <code>registerDisplay()</code> method.
 		 * Displays that are registered with the screen have most of their methods called
 		 * automatically when these methods are called on the screen. These methods are:
-		 * <code>init()</code>, <code>start()</code>, <code>stop()</code>, <code>reset()</code>,
-		 * <code>update()</code>, <code>dispose()</code>, <code>enabled</code> and
-		 * <code>paused</code>.
+		 * <code>init()</code>, <code>start()</code>, <code>stop()</code>,
+		 * <code>reset()</code>, <code>update()</code>, <code>dispose()</code>,
+		 * <code>enabled</code> and <code>paused</code>.</p>
 		 * 
 		 * @private
+		 * @see base.view.display.Display
+		 * 
 		 * @example
 		 * <pre>
-		 *    registerDisplay("display1");
-		 *    registerDisplay("display2");
+		 *     registerDisplay("display1");
+		 *     registerDisplay("display2");
 		 * </pre>
 		 */
 		protected function registerDisplays():void
-		{
-			/* Abstract method! */
-		}
-		
-		
-		/**
-		 * @private
-		 */
-		override protected function addChildren():void
 		{
 			/* Abstract method! */
 		}
@@ -278,6 +279,7 @@ package base.view.screen
 		 * called if these methods are called on the screen.
 		 * 
 		 * @private
+		 * @param display The display instance to register.
 		 */
 		protected function registerDisplay(display:Display):void
 		{
@@ -288,13 +290,34 @@ package base.view.screen
 		
 		
 		/**
+		 * Used to add all display children to the display list of the screen. By default
+		 * this method will automatically add all registered displays to the display list
+		 * in the same order they were registered. You can override this method if you
+		 * want to add the display children manually.
+		 * 
+		 * @private
+		 */
+		override protected function addChildren():void
+		{
+			if (_displays)
+			{
+				var len:uint = _displays.length;
+				for (var i:uint = 0; i < len; i++)
+				{
+					addChild(_displays[i]);
+				}
+			}
+		}
+		
+		
+		/**
 		 * Calls a method on all registered displays of the screen.
 		 * @private
 		 * 
-		 * @param func Function that should be called on the display.
-		 * @param value Optional value used when calling setters.
+		 * @param func The function that should be called on the display.
+		 * @param value An optional value used when calling setters.
 		 */
-		private function callOnRegisteredDisplays(func:String, value:* = null):void
+		private function executeOnDisplays(func:String, value:* = null):void
 		{
 			if (!_displays) return;
 			var len:uint = _displays.length;
@@ -302,34 +325,22 @@ package base.view.screen
 			{
 				switch (func)
 				{
-					case "init":
-						_displays[i].init();
-						break;
-					case "start":
-						_displays[i].start();
-						break;
-					case "stop":
-						_displays[i].stop();
-						break;
-					case "reset":
-						_displays[i].reset();
-						break;
-					case "update":
-						_displays[i].update();
-						break;
-					case "dispose":
-						_displays[i].dispose();
-						break;
-					case "enabled":
-						_displays[i].enabled = value;
-						break;
-					case "paused":
-						_displays[i].paused = value;
-						break;
+					case "init":	_displays[i].init(); break;
+					case "start":	_displays[i].start(); break;
+					case "update":	_displays[i].update(); break;
+					case "reset":	_displays[i].reset(); break;
+					case "stop":	_displays[i].stop(); break;
+					case "dispose":	_displays[i].dispose(); break;
+					case "enabled":	_displays[i].enabled = value; break;
+					case "paused":	_displays[i].paused = value; break;
 				}
 			}
 		}
 		
+		
+		//-----------------------------------------------------------------------------------------
+		// Helper Methods
+		//-----------------------------------------------------------------------------------------
 		
 		/**
 		 * Calculates and returns the horizontal center of the specified display object in

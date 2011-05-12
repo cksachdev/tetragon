@@ -40,6 +40,13 @@ package base.state
 	
 	/**
 	 * Abstract base class for state classes.
+	 * 
+	 * <p>States are used to organize the execution of the application into several
+	 * 'abstract' areas. For example in a game the intro, main menu, gameplay and hi-score
+	 * display could be categorized as states. A state often represents a screen but it is
+	 * not a requirement that a state represents a single screen. A state could also span
+	 * over several screens or could not be related to any screen at all. On the other
+	 * hand several states could also share the same screen.</p>
 	 */
 	public class State
 	{
