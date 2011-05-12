@@ -39,13 +39,9 @@ package base.data
 		
 		/**
 		 * A map that stores objects of type DataListItem.
-		 * @private
 		 */
 		private var _items:Object;
 		
-		/**
-		 * @private
-		 */
 		private var _dataType:String;
 		
 		
@@ -211,9 +207,6 @@ package base.data
 }
 
 
-/**
- * @private
- */
 final class DataListItem
 {
 	private var _properties:Object;
@@ -276,9 +269,6 @@ final class DataListItem
 }
 
 
-/**
- * @private
- */
 final class DataListItemSet
 {
 	private var _properties:Object;

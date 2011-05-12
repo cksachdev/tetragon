@@ -52,13 +52,9 @@ package base.io.file.loaders
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
 		private var _resourceIndex:ResourceIndex;
-		/** @private */
 		private var _locale:String;
-		/** @private */
 		private var _state:int;
-		/** @private */
 		private var _resCount:int;
 		
 		
@@ -93,7 +89,7 @@ package base.io.file.loaders
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Disposes the loader.
+		 * @inheritDoc
 		 */
 		override public function dispose():void
 		{
@@ -103,9 +99,7 @@ package base.io.file.loaders
 		
 		
 		/**
-		 * Returns a string representation of ResourceIndexLoader.
-		 * 
-		 * @return A string representation of ResourceIndexLoader.
+		 * @inheritDoc
 		 */
 		override public function toString():String
 		{
@@ -119,7 +113,8 @@ package base.io.file.loaders
 		
 		/**
 		 * Called everytime after a file load has been completed.
-		 * @private
+		 * 
+		 * @param e
 		 */
 		override public function onFileComplete(e:FileIOEvent):void
 		{
@@ -129,7 +124,8 @@ package base.io.file.loaders
 		
 		/**
 		 * Called after all file loads have been completed.
-		 * @private
+		 * 
+		 * @param e
 		 */
 		override public function onAllFilesComplete(e:FileIOEvent):void
 		{
@@ -155,7 +151,7 @@ package base.io.file.loaders
 		
 		
 		/**
-		 * Abstract Method.
+		 * @param e
 		 */
 		override public function onFileIOError(e:FileIOEvent):void
 		{
@@ -179,8 +175,6 @@ package base.io.file.loaders
 		/**
 		 * Loads the packed version of the resource index file in case the non-packed
 		 * version was not found.
-		 * 
-		 * @private
 		 */
 		private function loadPacked():void
 		{
@@ -201,7 +195,6 @@ package base.io.file.loaders
 		
 		/**
 		 * Initiates parsing of different resource index entries.
-		 * @private
 		 */
 		private function parse(file:IFile):void
 		{
@@ -242,7 +235,6 @@ package base.io.file.loaders
 		
 		/**
 		 * Parses the package file and data file reference entries.
-		 * @private
 		 */
 		private function parseReferences(xml:XML):void
 		{
@@ -262,7 +254,6 @@ package base.io.file.loaders
 		
 		/**
 		 * Parses media resource entries.
-		 * @private
 		 */
 		private function parseMedia(xml:XML):void
 		{
@@ -292,7 +283,6 @@ package base.io.file.loaders
 		
 		/**
 		 * Parses list resource entries.
-		 * @private
 		 */
 		private function parseLists(xml:XML):void
 		{
@@ -325,7 +315,6 @@ package base.io.file.loaders
 		
 		/**
 		 * Parses data resource entries.
-		 * @private
 		 */
 		private function parseData(xml:XML):void
 		{
@@ -362,7 +351,6 @@ package base.io.file.loaders
 		
 		/**
 		 * Parses entity resource entries.
-		 * @private
 		 */
 		private function parseEntities(xml:XML):void
 		{
@@ -395,7 +383,6 @@ package base.io.file.loaders
 		
 		/**
 		 * Parses text resource entries.
-		 * @private
 		 */
 		private function parseText(xml:XML):void
 		{
@@ -422,8 +409,6 @@ package base.io.file.loaders
 		
 		
 		/**
-		 * @private
-		 * 
 		 * @param resourceXML
 		 * @param wrapperClassID
 		 * @param resourceFamily

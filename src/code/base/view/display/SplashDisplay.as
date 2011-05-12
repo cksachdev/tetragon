@@ -47,50 +47,21 @@ package base.view.display
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Public Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function start():void
-		{
-			super.start();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function stop():void
-		{
-			super.stop();
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function createChildren():void
 		{
 			var logoColor:* = Registry.settings.getSettings("splashLogoColor");
 			var splashLogoColor:uint = logoColor != null ? logoColor : 0xFFBF00;
+			var ds:DropShadowFilter = new DropShadowFilter(1.0, 45, 0x000000, 0.4, 8.0, 8.0, 2);
 			
 			_tetragonLogo = new TetragonLogo();
-			var ds:DropShadowFilter = new DropShadowFilter(1.0, 45, 0x000000, 0.4, 8.0, 8.0, 2);
 			_tetragonLogo.filters = [ds];
-			_tetragonLogo.transform.colorTransform =
-				colorUintToColorTransform(splashLogoColor);
+			_tetragonLogo.transform.colorTransform = colorUintToColorTransform(splashLogoColor);
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function addChildren():void
 		{
 			addChild(_tetragonLogo);

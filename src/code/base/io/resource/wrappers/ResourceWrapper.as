@@ -59,11 +59,8 @@ package base.io.resource.wrappers
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
 		protected var _bulkFile:ResourceBulkFile;
-		/** @private */
 		protected var _status:String = Status.OK;
-		/** @private */
 		protected var _file:IFile;
 		
 		
@@ -177,7 +174,6 @@ package base.io.resource.wrappers
 		 * Returning true from this method means the load was successful. False indicates
 		 * failure. Subclasses must implement this method.
 		 * 
-		 * @private
 		 * @param content The fully conditioned data for this resource.
 		 * @return true if content contains valid data, false otherwise.
 		 */
@@ -192,7 +188,6 @@ package base.io.resource.wrappers
 		 * must be called by, and only by, subclasses that override the initialize
 		 * method.
 		 * 
-		 * @private
 		 * @param event This can be ignored by subclasses.
 		 */
 		protected function onLoadComplete(e:Event = null):void
@@ -222,7 +217,7 @@ package base.io.resource.wrappers
 		
 		
 		/**
-		 * @private
+		 * @param message
 		 */
 		protected function onFailed(message:String):void
 		{
@@ -237,7 +232,6 @@ package base.io.resource.wrappers
 		
 		/**
 		 * Initializes the resource file with data from a loaded file.
-		 * @private
 		 */
 		protected function initializeFromLoaded():void
 		{
@@ -247,7 +241,6 @@ package base.io.resource.wrappers
 		
 		/**
 		 * Initializes the resource file with data from an embedded file.
-		 * @private
 		 */
 		protected function initializeFromEmbedded(embeddedData:*):void
 		{

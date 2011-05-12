@@ -41,9 +41,6 @@ package base.io.resource
 		// Constants
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @private
-		 */
 		public static const ID:String = "embeddedResourceProvider";
 		
 		
@@ -51,9 +48,6 @@ package base.io.resource
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @private
-		 */
 		private var _resourceBundle:ResourceBundle;
 		
 		
@@ -118,20 +112,18 @@ package base.io.resource
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @private
+		 * Not used for EmbeddedResourceProvider!
 		 */
 		override protected function onBulkFileLoaded(e:FileIOEvent):void
 		{
-			/* Not used for EmbeddedResourceProvider! */
 		}
 		
 		
 		/**
-		 * @private
+		 * Not used for EmbeddedResourceProvider!
 		 */
 		override protected function onBulkFileError(e:FileIOEvent):void
 		{
-			/* Not used for EmbeddedResourceProvider! */
 		}
 		
 		

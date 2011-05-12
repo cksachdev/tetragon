@@ -81,7 +81,7 @@ package base.io.file.loaders
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @inheritDoc
+		 * Adds a file to the loader.
 		 */
 		public function addFile(filePath:String, fileID:String = null):void
 		{
@@ -102,7 +102,7 @@ package base.io.file.loaders
 		
 		
 		/**
-		 * abort
+		 * Aborts the loader.
 		 */
 		public function abort():void
 		{
@@ -134,6 +134,7 @@ package base.io.file.loaders
 			//Debug.trace(toString() + " Opened: " + e.file.path);
 		}
 		
+		
 		/**
 		 * Abstract Method.
 		 */
@@ -141,6 +142,7 @@ package base.io.file.loaders
 		{
 			//Debug.trace(toString() + " Load Progress: " + e.file.path);
 		}
+		
 		
 		/**
 		 * Abstract Method.
@@ -150,6 +152,7 @@ package base.io.file.loaders
 			Log.debug("Loaded \"" + e.file.path + "\".", this);
 		}
 		
+		
 		/**
 		 * Abstract Method.
 		 */
@@ -158,6 +161,7 @@ package base.io.file.loaders
 			//Debug.trace(toString() + " onComplete");
 		}
 		
+		
 		/**
 		 * Abstract Method.
 		 */
@@ -165,6 +169,7 @@ package base.io.file.loaders
 		{
 			Log.debug("Aborted after \"" + e.file.path + "\".", this);
 		}
+		
 		
 		/**
 		 * Abstract Method.
@@ -182,6 +187,7 @@ package base.io.file.loaders
 			}
 		}
 		
+		
 		/**
 		 * Abstract Method.
 		 */
@@ -189,6 +195,7 @@ package base.io.file.loaders
 		{
 			notifyLoadError(e);
 		}
+		
 		
 		/**
 		 * Abstract Method.
@@ -204,7 +211,7 @@ package base.io.file.loaders
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @private
+		 * @param e
 		 */
 		protected function notifyLoadError(e:FileIOEvent):void
 		{
@@ -221,7 +228,6 @@ package base.io.file.loaders
 		
 		/**
 		 * Notifies any listener that an error occured during loading/checking the config.
-		 * @private
 		 * 
 		 * @param msg the error message.
 		 */
@@ -240,7 +246,8 @@ package base.io.file.loaders
 		
 		/**
 		 * Trims whitespace from the start and end of the specified string.
-		 * @private
+		 * 
+		 * @param s
 		 */
 		protected static function trim(s:String):String
 		{

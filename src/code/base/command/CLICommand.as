@@ -40,9 +40,7 @@ package base.command
 		// Properties
 		// -----------------------------------------------------------------------------------------
 		
-		/** @private */
 		private var _main:Main;
-		/** @private */
 		private var _commandManager:CommandManager;
 		
 		
@@ -52,7 +50,6 @@ package base.command
 
 		/**
 		 * A reference to main, for internal command use only!
-		 * @private
 		 */
 		public function get main():Main
 		{
@@ -66,7 +63,6 @@ package base.command
 		
 		/**
 		 * A reference to the command manager, for internal command use only!
-		 * @private
 		 */
 		public function get commandManager():CommandManager
 		{

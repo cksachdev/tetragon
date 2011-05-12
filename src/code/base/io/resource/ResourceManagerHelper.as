@@ -51,17 +51,11 @@ package base.io.resource
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
 		private var _resourceManager:ResourceManager;
-		/** @private */
 		private var _indexLoader:ResourceIndexLoader;
-		/** @private */
 		private var _packedResourceProviderCount:int;
-		/** @private */
 		internal var _usePackages:Boolean;
-		/** @private */
 		internal var _resourceProviders:Dictionary;
-		/** @private */
 		internal var _resourceIndex:ResourceIndex;
 		
 		
@@ -89,7 +83,7 @@ package base.io.resource
 		 * handler is also called if no resource index file should be loaded (i.e if no
 		 * filename for it was found in the config).
 		 * 
-		 * @private
+		 * @param e
 		 */
 		private function onResourceIndexFileProcessed(e:Event):void
 		{
@@ -117,7 +111,7 @@ package base.io.resource
 		/**
 		 * Invoked after a PackedResourceProvider has been prepared for a resource pack.
 		 * 
-		 * @private
+		 * @param e
 		 */
 		private function onPackedResourceProviderEvent(e:Event):void
 		{
@@ -146,6 +140,8 @@ package base.io.resource
 		
 		/**
 		 * Initializes and starts the ResourceManagerHelper.
+		 * 
+		 * @param resourceBundleClass
 		 */
 		internal function init(resourceBundleClass:Class = null):void
 		{
@@ -167,7 +163,7 @@ package base.io.resource
 		 * embedded with the Embed meta tag so they can easily be loaded with the resource
 		 * manager.
 		 * 
-		 * @private
+		 * @param resourceBundleClass
 		 */
 		private function processResourceBundle(resourceBundleClass:Class):void
 		{
@@ -211,8 +207,6 @@ package base.io.resource
 		 * This method loads the resource index file (resources.xml or resources.tem) and
 		 * haves all resources listed in the index file being registered so they can be
 		 * loaded with the Resource Manager.
-		 * 
-		 * @private
 		 */
 		private function loadResourceIndex():void
 		{
@@ -248,8 +242,6 @@ package base.io.resource
 		/**
 		 * Creates a PackedResourceProvider for every resource package file and opens the
 		 * associated resource package file so that resources can be loaded from it.
-		 * 
-		 * @private
 		 */
 		private function preparePackageFiles():void
 		{

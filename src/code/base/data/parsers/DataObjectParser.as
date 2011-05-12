@@ -44,9 +44,7 @@ package base.data.parsers
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
 		private var _dataSupportManager:DataSupportManager;
-		/** @private */
 		protected var _referencedIDs:Object;
 		
 		
@@ -84,7 +82,6 @@ package base.data.parsers
 		
 		/**
 		 * Child class access only!
-		 * @private
 		 */
 		protected function get dataSupportManager():DataSupportManager
 		{
@@ -98,8 +95,6 @@ package base.data.parsers
 		
 		/**
 		 * Parses a property from an XML into a key-value pair.
-		 * 
-		 * @private
 		 * 
 		 * @param p The property XML object.
 		 * @return A KeyValuePair object with the key being the name of the property
@@ -139,8 +134,6 @@ package base.data.parsers
 		 * Checks if the given key is a referenced resource ID and if necessary
 		 * modifies the key and stores the referenced ID in the referencedIDs map.
 		 * 
-		 * @private
-		 * 
 		 * @param key The resource ID property key to check.
 		 * @param value The resource property's value.
 		 * @return A KeyValuePair object.
@@ -172,8 +165,6 @@ package base.data.parsers
 		
 		/**
 		 * Parses a parameter string for a complex data type.
-		 * 
-		 * @private
 		 * 
 		 * @param type The complex datatype object.
 		 * @param params A string of params that get parsed into the object.

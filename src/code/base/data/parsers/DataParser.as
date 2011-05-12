@@ -43,7 +43,6 @@ package base.data.parsers
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
 		protected var _xml:XML;
 		
 		
@@ -52,7 +51,7 @@ package base.data.parsers
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @inheritDoc
+		 * Disposes the parser.
 		 */
 		public function dispose():void
 		{
@@ -84,8 +83,6 @@ package base.data.parsers
 		 * specified with the xml and name arguments. The xml parameter can be an object
 		 * of type XML or XMLList.
 		 * 
-		 * @private
-		 * 
 		 * @param xml The XML or XMLList on that to find 'name'.
 		 * @param name The node or attribute name on the specified XML.
 		 * @return The extracted value.
@@ -103,8 +100,11 @@ package base.data.parsers
 		
 		
 		/**
-		 * Extracts and unwraps text from an XML.
-		 * @private
+		 * Extracts and unwraps text from an XML object.
+		 * 
+		 * @param xml The XML from which to extract.
+		 * @param name The node or attribute name on the specified XML.
+		 * @return The extracted text.
 		 */
 		protected static function extractText(xml:*, name:String = null):String
 		{
@@ -113,7 +113,11 @@ package base.data.parsers
 		
 		
 		/**
-		 * @private
+		 * Extracts a number from an XML object.
+		 * 
+		 * @param xml The XML from which to extract.
+		 * @param name The node or attribute name on the specified XML.
+		 * @return The extracted number.
 		 */
 		protected static function extractNumber(xml:*, name:String):Number
 		{
@@ -122,7 +126,11 @@ package base.data.parsers
 		
 		
 		/**
-		 * @private
+		 * Extracts a boolean from an XML object.
+		 * 
+		 * @param xml The XML from which to extract.
+		 * @param name The node or attribute name on the specified XML.
+		 * @return The extracted boolean.
 		 */
 		protected static function extractBoolean(xml:*, name:String):Boolean
 		{
@@ -131,7 +139,11 @@ package base.data.parsers
 		
 		
 		/**
-		 * @private
+		 * Extracts a color value from an XML object.
+		 * 
+		 * @param xml The XML from which to extract.
+		 * @param name The node or attribute name on the specified XML.
+		 * @return The extracted color value.
 		 */
 		protected static function extractColorValue(xml:*, name:String):uint
 		{
@@ -142,8 +154,6 @@ package base.data.parsers
 		/**
 		 * Parses a string made of IDs into a String Vector. The IDs in the string must
 		 * be separated by commata.
-		 * 
-		 * @private
 		 * 
 		 * @param string The string to parse ID values from.
 		 * @return A Vector with string values.
@@ -161,8 +171,6 @@ package base.data.parsers
 		 * returns true or if the string is 'false' or any other value it returns
 		 * false. The string can be lowercase, uppercase or mixed case.
 		 * 
-		 * @private
-		 * 
 		 * @param string The string to convert into a boolean.
 		 * @return either true or false.
 		 */
@@ -178,8 +186,6 @@ package base.data.parsers
 		 * Parses a string color value. The specified string needs to contain
 		 * a hexadecimal color value either starting with a '#' or only consist
 		 * of a hexadecimal value.
-		 * 
-		 * @private
 		 * 
 		 * @param string A String with a hexadecimal color value, e.g. #FF00FF.
 		 * @return The color value as a uint typed number.
@@ -198,7 +204,9 @@ package base.data.parsers
 		
 		/**
 		 * Trims whitespace from the start and end of the specified string.
-		 * @private
+		 * 
+		 * @param s The string to trim.
+		 * @return The trimmed string.
 		 */
 		protected static function trim(s:String):String
 		{

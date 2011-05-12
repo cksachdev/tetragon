@@ -47,9 +47,6 @@ package base.io.resource
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @private
-		 */
 		private var _loader:ZipLoader;
 		
 		
@@ -158,7 +155,7 @@ package base.io.resource
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @private
+		 * @param e
 		 */
 		private function onLoaderOpen(e:Event):void
 		{
@@ -173,7 +170,7 @@ package base.io.resource
 		
 		
 		/**
-		 * @private
+		 * @param e
 		 */
 		private function onLoaderClose(e:Event):void
 		{
@@ -182,7 +179,7 @@ package base.io.resource
 		
 		
 		/**
-		 * @private
+		 * @param e
 		 */
 		private function onLoaderError(e:IOErrorEvent):void
 		{

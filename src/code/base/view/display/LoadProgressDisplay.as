@@ -41,11 +41,8 @@ package base.view.display
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
 		protected var _loadProgressBar:LoadProgressBar;
-		/** @private */
 		protected var _factor:Number;
-		/** @private */
 		protected var _percentage:Number;
 		
 		

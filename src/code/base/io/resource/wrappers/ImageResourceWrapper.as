@@ -50,13 +50,9 @@ package base.io.resource.wrappers
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
 		protected var _bitmapData:BitmapData;
-		/** @private */
 		protected var _transparent:Boolean;
-		/** @private */
 		protected var _pixelSnapping:String;
-		/** @private */
 		protected var _smoothing:Boolean;
 		
 		
@@ -91,8 +87,6 @@ package base.io.resource.wrappers
 		 * Allows to set smoothing and pixelSnapping parameters for the image
 		 * resource. If a new bitmap of the image resource is created by using
 		 * the <code>bitmap</code> property it will use these parameters.
-		 * 
-		 * @see #bitmap
 		 */
 		public function setBitmapParams(smoothing:Boolean = false, pixelSnapping:String = "auto"):void
 		{

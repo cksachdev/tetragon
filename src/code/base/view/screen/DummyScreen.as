@@ -32,16 +32,5 @@ package base.view.screen
 	 */
 	public class DummyScreen extends BaseScreen
 	{
-		//-----------------------------------------------------------------------------------------
-		// Public Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function start():void
-		{
-			super.start();
-		}
 	}
 }

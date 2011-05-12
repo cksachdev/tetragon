@@ -41,9 +41,6 @@ package base.io.resource.wrappers
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @private
-		 */
 		protected var _data:ByteArray;
 		
 		

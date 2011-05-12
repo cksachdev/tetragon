@@ -43,9 +43,7 @@ package base.io.resource.wrappers
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
 		protected var _movieClip:MovieClip;
-		/** @private */
 		protected var _appDomain:ApplicationDomain;
 		
 		

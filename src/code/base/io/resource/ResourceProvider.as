@@ -50,38 +50,27 @@ package base.io.resource
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @private
-		 */
 		private var _resourceManager:ResourceManager;
-		
-		/**
-		 * @private
-		 */
 		protected var _dsm:DataSupportManager;
 		
 		/**
 		 * ID of the resource provider, if necessary (PackedResourceProvider needs it!)
-		 * @private
 		 */
 		protected var _id:String;
 		
 		/**
 		 * A map that stores ResourceBulkFile objects temporarily for loading, used to
 		 * keep track of them in event handlers. Bulk files are mapped by their ID.
-		 * @private
 		 */
 		protected var _bulkFiles:Object;
 		
 		/**
 		 * Determines if a loader has completed loading all files.
-		 * @private
 		 */
 		protected var _loaderComplete:Boolean;
 		
 		/**
 		 * Determines if a bulk has completed processing.
-		 * @private
 		 */
 		protected var _bulkComplete:Boolean;
 		
@@ -155,7 +144,6 @@ package base.io.resource
 		
 		/**
 		 * A reference to the resource manager.
-		 * @private
 		 */
 		protected function get resourceManager():ResourceManager
 		{
@@ -168,7 +156,7 @@ package base.io.resource
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @private
+		 * @param e
 		 */
 		protected function onBulkFileLoaded(e:FileIOEvent):void
 		{
@@ -180,7 +168,7 @@ package base.io.resource
 		
 		
 		/**
-		 * @private
+		 * @param e
 		 */
 		protected function onBulkFileError(e:FileIOEvent):void
 		{
@@ -190,7 +178,7 @@ package base.io.resource
 		
 		
 		/**
-		 * @private
+		 * @param e
 		 */
 		protected function onBulkFileProgress(e:FileIOEvent):void
 		{
@@ -200,7 +188,7 @@ package base.io.resource
 		
 		
 		/**
-		 * @private
+		 * @param e
 		 */
 		protected function onResourceInit(e:ResourceEvent):void
 		{
@@ -214,7 +202,7 @@ package base.io.resource
 		
 		
 		/**
-		 * @private
+		 * @param e
 		 */
 		protected function onLoaderComplete(e:FileIOEvent):void
 		{
@@ -228,7 +216,7 @@ package base.io.resource
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @private
+		 * Resets the resource provider.
 		 */
 		protected function reset():void
 		{
@@ -240,7 +228,7 @@ package base.io.resource
 		 * Tries to instantiate the resource wrapper class for the resource in the specified
 		 * bulk file.
 		 * 
-		 * @private
+		 * @param bulkFile
 		 */
 		protected function createWrapperFor(bulkFile:ResourceBulkFile):void
 		{
@@ -265,7 +253,8 @@ package base.io.resource
 		
 		/**
 		 * Adds a resource bulk file for loading.
-		 * @private
+		 * 
+		 * @param bulkFile
 		 */
 		protected function addBulkFile(bulkFile:ResourceBulkFile):void
 		{
@@ -279,7 +268,6 @@ package base.io.resource
 		
 		/**
 		 * Starts loading all resource files that were added with addLoadFile().
-		 * @private
 		 */
 		protected function loadFiles():void
 		{
@@ -291,7 +279,7 @@ package base.io.resource
 		 * The processing of resources follows the same procedure regardless from which
 		 * concrete resource provider it came.
 		 * 
-		 * @private
+		 * @param bulkFile
 		 */
 		protected function processBulkFile(bulkFile:ResourceBulkFile):void
 		{
@@ -303,7 +291,7 @@ package base.io.resource
 		
 		
 		/**
-		 * @private
+		 * @param bulkFile
 		 */
 		protected function parseXMLResource(bulkFile:ResourceBulkFile):void
 		{
@@ -384,7 +372,7 @@ package base.io.resource
 		
 		
 		/**
-		 * @private
+		 * @param bulkFile
 		 */
 		protected function parseMediaResource(bulkFile:ResourceBulkFile):void
 		{
@@ -398,7 +386,8 @@ package base.io.resource
 		
 		
 		/**
-		 * @private
+		 * @param referencedIDs
+		 * @param bf
 		 */
 		protected function loadReferencedResources(referencedIDs:Object, bf:ResourceBulkFile):void
 		{
@@ -416,7 +405,8 @@ package base.io.resource
 		
 		/**
 		 * Checks whether all resources in the current bulk have been processed.
-		 * @private
+		 * 
+		 * @param bulkFile
 		 */
 		protected function checkComplete(bulkFile:ResourceBulkFile):void
 		{
@@ -433,7 +423,8 @@ package base.io.resource
 		
 		
 		/**
-		 * @private
+		 * @param bulkFile
+		 * @param message
 		 */
 		protected function fail(bulkFile:ResourceBulkFile, message:String = null):void
 		{

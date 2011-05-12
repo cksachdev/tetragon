@@ -47,31 +47,24 @@ package base.io.resource
 		
 		/**
 		 * A map that stores all package file entries by their ID.
-		 * @private
 		 */
 		internal var _packageFiles:Object;
 		
 		/**
 		 * A map that stores all settings file entries.
-		 * @private
 		 */
 		private var _settingsFiles:Object;
 		
 		/**
 		 * A map that stores all data file entries. Contains ResourceDataFileEntry objects.
-		 * @private
 		 */
 		private var _dataFiles:Object;
 		
 		/**
 		 * A map that stores all resources. Contains Resource objects.
-		 * @private
 		 */
 		private var _resources:Object;
 		
-		/**
-		 * @private
-		 */
 		private var _size:int;
 		
 		
@@ -270,7 +263,7 @@ package base.io.resource
 		
 		
 		/**
-		 * @private
+		 * @param id
 		 */
 		public function getResourceContent(id:String):*
 		{

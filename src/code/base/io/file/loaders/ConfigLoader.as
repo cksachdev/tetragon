@@ -37,10 +37,6 @@ package base.io.file.loaders
 	import flash.events.Event;
 	
 	
-	[Event(name="complete", type="flash.events.Event")]
-	[Event(name="error", type="flash.events.ErrorEvent")]
-	
-	
 	/**
 	 * A class that loads the application configuration/ini file and parses the loaded
 	 * properties into the config model. The manager/config model supports simple string and
@@ -86,7 +82,7 @@ package base.io.file.loaders
 		
 		
 		/**
-		 * Starts the load process.
+		 * @inheritDoc
 		 */
 		override public function load():void
 		{
@@ -95,7 +91,7 @@ package base.io.file.loaders
 		
 		
 		/**
-		 * Disposes the class.
+		 * @inheritDoc
 		 */
 		override public function dispose():void
 		{
@@ -105,9 +101,7 @@ package base.io.file.loaders
 		
 		
 		/**
-		 * Returns a string representation of ConfigLoader.
-		 * 
-		 * @return A string representation of ConfigLoader.
+		 * @inheritDoc
 		 */
 		override public function toString():String
 		{
@@ -121,7 +115,6 @@ package base.io.file.loaders
 		
 		/**
 		 * Initiates parsing of the loaded ini file into the model object.
-		 * @private
 		 */
 		override public function onAllFilesComplete(e:FileIOEvent):void
 		{
@@ -145,7 +138,6 @@ package base.io.file.loaders
 		
 		/**
 		 * Parses text from a text-based ini file.
-		 * @private
 		 */
 		protected function parse(file:TextFile):void
 		{
@@ -174,7 +166,6 @@ package base.io.file.loaders
 		
 		/**
 		 * Tries to parse the specified key and value pair into the Config Model.
-		 * @private
 		 */
 		protected function parseProperty(key:String, val:String):void
 		{
@@ -213,7 +204,6 @@ package base.io.file.loaders
 		 * and so on. Note that string type values in the array string should not be wrapped
 		 * by any kind of quotation marks; internally all values are treated as Strings!
 		 * 
-		 * @private
 		 * @param string The string to parse into an array.
 		 * @return the array with values from the string or null if the string could not be
 		 *         parsed into an array.
@@ -249,7 +239,6 @@ package base.io.file.loaders
 		 * string should not be wrapped by any kind of quotation marks; internally all
 		 * values are treated as Strings!
 		 * 
-		 * @private
 		 * @param string The string to parse into an object.
 		 * @return the object with the key/value pairs from the string or null if the string
 		 *         could not be parsed into an object.

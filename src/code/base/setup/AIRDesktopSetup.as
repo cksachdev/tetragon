@@ -139,7 +139,7 @@ package base.setup
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @private
+		 * @param e
 		 */
 		private function onUpdateManagerFinished(e:UpdateManagerEvent):void 
 		{

@@ -29,13 +29,7 @@ package base.data
 {
 	import base.core.debug.Log;
 	import base.core.entity.IEntityComponent;
-	import base.data.parsers.DataListParser;
-	import base.data.parsers.EntityDataParser;
-	import base.data.parsers.IDataParser;
-	import base.data.parsers.NullDataParser;
-	import base.data.parsers.SettingsDataParser;
-	import base.data.parsers.TextDataParser;
-	import base.data.parsers.XMLDataParser;
+	import base.data.parsers.*;
 	import base.io.resource.ResourceFamily;
 	import base.io.resource.wrappers.*;
 
@@ -59,38 +53,32 @@ package base.data
 		
 		/**
 		 * Maps resource file type wrapper class definitions by string key.
-		 * @private
 		 */
 		private var _resourceFileTypeMap:Object;
 		
 		/**
 		 * Maps resource file type wrapper class definitions by string file extensions.
-		 * @private
 		 */
 		private var _fileTypeExtensionMap:Object;
 		
 		/**
 		 * Maps class definitions of complex types that are used in entity component
 		 * definitions by a string key.
-		 * @private
 		 */
 		private var _complexTypeMap:Object;
 		
 		/**
 		 * Maps class definitions of type IResourceParser by datatype string keys.
-		 * @private
 		 */
 		private var _dataTypeMap:Object;
 		
 		/**
 		 * Maps class definitions of type IEntityComponent by class ID string keys.
-		 * @private
 		 */
 		private var _componentMap:Object;
 		
 		/**
 		 * Counter used to create unique entity component IDs.
-		 * @private
 		 */
 		private var _componentIDCount:uint;
 		
@@ -357,16 +345,11 @@ package base.data
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @private
+		 * @param message
 		 */
 		private function fail(message:String):void
 		{

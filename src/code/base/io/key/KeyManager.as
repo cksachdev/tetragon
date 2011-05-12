@@ -42,11 +42,8 @@ package base.io.key
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
 		private var _key:Key;
-		/** @private */
 		private var _assignmentsDown:Dictionary;
-		/** @private */
 		private var _assignmentsRelease:Dictionary;
 		
 		
@@ -144,17 +141,9 @@ package base.io.key
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------------------------------------
 		// Event Handlers
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @private
-		 */
 		private function onCombinationDown(e:KeyCombinationEvent):void
 		{
 			for (var c:Object in _assignmentsDown)
@@ -172,9 +161,6 @@ package base.io.key
 		}
 		
 		
-		/**
-		 * @private
-		 */
 		private function onCombinationRelease(e:KeyCombinationEvent):void
 		{
 			for (var c:Object in _assignmentsRelease)
@@ -192,25 +178,16 @@ package base.io.key
 		}
 		
 		
-		/**
-		 * @private
-		 */
 		private function onCombinationTyped(e:KeyCombinationEvent):void
 		{
 		}
 		
 		
-		/**
-		 * @private
-		 */
 		private function onKeyDown(e:KeyboardEvent):void
 		{
 		}
 		
 		
-		/**
-		 * @private
-		 */
 		private function onKeyUp(e:KeyboardEvent):void
 		{
 		}

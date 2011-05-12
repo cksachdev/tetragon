@@ -43,9 +43,6 @@ package base.io.resource
 		// Constants
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @private
-		 */
 		public static const ID:String = "loadedResourceProvider";
 		
 		
@@ -53,9 +50,6 @@ package base.io.resource
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @private
-		 */
 		private var _loader:BulkLoader;
 		
 		

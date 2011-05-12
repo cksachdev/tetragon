@@ -43,9 +43,7 @@ package base.command
 		// Properties
 		// -----------------------------------------------------------------------------------------
 		
-		/** @private */
 		private var _main:Main;
-		/** @private */
 		private var _executingCommands:Vector.<CommandVO>;
 		
 		
@@ -185,7 +183,7 @@ package base.command
 		// -----------------------------------------------------------------------------------------
 		
 		/**
-		 * @private
+		 * @param command
 		 */
 		public function onCommandComplete(command:Command):void
 		{
@@ -196,7 +194,7 @@ package base.command
 		
 		
 		/**
-		 * @private
+		 * @param command
 		 */
 		public function onCommandAbort(command:Command):void
 		{
@@ -207,7 +205,8 @@ package base.command
 		
 		
 		/**
-		 * @private
+		 * @param command
+		 * @param message
 		 */
 		public function onCommandError(command:Command, message:String):void
 		{
@@ -217,7 +216,9 @@ package base.command
 		
 		
 		/**
-		 * @private
+		 * @param command
+		 * @param message
+		 * @param progress
 		 */
 		public function onCommandProgress(command:Command, message:String, progress:int):void
 		{
@@ -237,7 +238,6 @@ package base.command
 		 * handlers were specified with a call to CommandManager.execute() and if any of
 		 * them are assigned this method adds signal listeners to these.
 		 * 
-		 * @private
 		 * @param cmdDO The command data object with the command that needs listeners added.
 		 */
 		private function addCommandListeners(cmdVO:CommandVO):void
@@ -296,7 +296,6 @@ package base.command
 		 * and removes it from the executing commands queue. After that any event listeners
 		 * are removed from the command.
 		 * 
-		 * @private
 		 * @param c The command to remove.
 		 */
 		private function removeCommand(c:Command):void
@@ -373,8 +372,7 @@ package base.command
 import base.command.CLICommand;
 
 /**
- * Command Data Object
- * @private
+ * Command Value Object
  */
 final class CommandVO
 {

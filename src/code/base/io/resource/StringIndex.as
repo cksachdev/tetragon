@@ -75,7 +75,7 @@ package base.io.resource
 		
 		
 		/**
-		 * @private
+		 * @param stringID
 		 */
 		public function contains(stringID:String):Boolean
 		{
@@ -84,7 +84,7 @@ package base.io.resource
 		
 		
 		/**
-		 * getString
+		 * @param stringID
 		 */
 		public function get(stringID:String):String
 		{
@@ -93,7 +93,7 @@ package base.io.resource
 		
 		
 		/**
-		 * remove
+		 * @param stringID
 		 */
 		public function remove(stringID:String):void
 		{
@@ -110,6 +110,8 @@ package base.io.resource
 		 * Removes all strings from the string index that are stored by any of the IDs
 		 * in the specified array. Used by the resource manager to unload strings when
 		 * a text resource is unloaded.
+		 * 
+		 * @param stringIDs
 		 */
 		public function removeStrings(stringIDs:Array):void
 		{
@@ -120,9 +122,6 @@ package base.io.resource
 		}
 		
 		
-		/**
-		 * removeAll
-		 */
 		public function removeAll():void
 		{
 			for (var id:String in _strings)
@@ -132,9 +131,6 @@ package base.io.resource
 		}
 		
 		
-		/**
-		 * clear
-		 */
 		public function clear():void
 		{
 			_strings = {};
@@ -142,9 +138,6 @@ package base.io.resource
 		}
 		
 		
-		/**
-		 * dump
-		 */
 		public function dump():String
 		{
 			var t:TabularText = new TabularText(2, true, "  ", null, "  ", 100, ["ID", "STRING"]);

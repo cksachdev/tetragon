@@ -65,42 +65,25 @@ package base
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
 		private static var _instance:Main;
-		/** @private */
 		private static var _singletonLock:Boolean = false;
 		
-		/** @private */
 		private var _contextView:DisplayObjectContainer;
-		/** @private */
 		private var _utilityContainer:Sprite;
-		/** @private */
 		private var _console:Console;
-		/** @private */
 		private var _fpsMonitor:FPSMonitor;
 		
-		/** @private */
 		private var _setupHelper:*;
 		
-		/** @private */
 		private var _dataSupportManager:DataSupportManager;
-		/** @private */
 		private var _commandManager:CommandManager;
-		/** @private */
 		private var _resourceManager:ResourceManager;
-		/** @private */
 		private var _stateManager:StateManager;
-		/** @private */
 		private var _screenManager:ScreenManager;
-		/** @private */
 		private var _localSettingsManager:LocalSettingsManager;
-		/** @private */
 		private var _keyManager:KeyManager;
-		/** @private */
 		private var _entityManager:EntityManager;
-		/** @private */
 		private var _entitySystemManager:EntitySystemManager;
-		/** @private */
 		private var _entityFactory:EntityFactory;
 		
 		
@@ -214,9 +197,6 @@ package base
 		{
 			return _setupHelper;
 		}
-		/**
-		 * @private
-		 */
 		public function set setupHelper(v:*):void
 		{
 			if (_setupHelper) return;
@@ -224,6 +204,9 @@ package base
 		}
 		
 		
+		/**
+		 * A reference to the data support manager.
+		 */
 		public function get dataSupportManager():DataSupportManager
 		{
 			return _dataSupportManager;
@@ -316,19 +299,19 @@ package base
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @private
+		 * Invoked after the application init phase has finished.
+		 * 
+		 * @param command The application init command that executed the init phase.
 		 */
 		private function onAppInitComplete(command:Command):void 
 		{
 			/* Time to open the initial application state. */
 			stateManager.start();
-			//screenManager.start();
 		}
 		
 		
 		/**
 		 * Global Error Handler.
-		 * @private
 		 */
 		private function onUncaughtError(e:UncaughtErrorEvent):void 
 		{
@@ -363,8 +346,6 @@ package base
 		/**
 		 * Initializes Main by providing the context view to it. This method is called
 		 * only once at start by the Entry class.
-		 * 
-		 * @private
 		 */
 		internal function init(contextView:DisplayObjectContainer):void
 		{
@@ -381,8 +362,6 @@ package base
 		 * This method should only ever need to be called once during application life time,
 		 * i.e everything that is being set up here should only be necessary to set up once
 		 * and exist until the application is closed.
-		 * 
-		 * @private
 		 */
 		private function setup():void
 		{
@@ -440,7 +419,8 @@ package base
 		
 		
 		/**
-		 * @private
+		 * Sets up debug utilities like the console and FPS monitor. Called
+		 * automatically by the BaseSetup class.
 		 */
 		public function setupDebugUtilities():void
 		{

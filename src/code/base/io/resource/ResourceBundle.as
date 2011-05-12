@@ -48,7 +48,6 @@ package base.io.resource
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
 		protected var _resourceCount:int = 0;
 		
 		

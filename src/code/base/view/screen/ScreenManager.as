@@ -54,6 +54,7 @@ package base.view.screen
 		private var _currentScreen:BaseScreen;
 		private var _nextScreen:DisplayObject;
 		private var _openScreenClass:Class;
+		
 		private var _screenOpenDelay:Number = 0.2;
 		private var _screenCloseDelay:Number = 0.2;
 		private var _tweenDuration:Number = 0.4;
@@ -61,6 +62,7 @@ package base.view.screen
 		private var _backupDuration:Number;
 		private var _backupOpenDelay:Number;
 		private var _backupCloseDelay:Number;
+		
 		private var _isSwitching:Boolean = false;
 		private var _isAutoStart:Boolean = false;
 		
@@ -83,8 +85,6 @@ package base.view.screen
 		 */
 		public function ScreenManager()
 		{
-			super();
-			
 			_screenClasses = {};
 			_backupDuration = _tweenDuration;
 			_backupOpenDelay = _screenOpenDelay;

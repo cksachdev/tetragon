@@ -45,23 +45,14 @@ package base.io.resource
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
 		private var _main:Main;
-		/** @private */
 		private var _helper:ResourceManagerHelper;
-		/** @private */
 		private var _resourceProviders:Dictionary;
-		/** @private */
 		private var _usePackages:Boolean;
-		/** @private */
 		private var _bulkIDCount:uint;
-		/** @private */
 		private var _waitingHandlers:Object;
-		/** @private */
 		private var _referencedIDQueue:Queue;
-		/** @private */
 		private var _resourceIndex:ResourceIndex;
-		/** @private */
 		private var _stringIndex:StringIndex;
 		
 		
@@ -430,7 +421,7 @@ package base.io.resource
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @private
+		 * @param e
 		 */
 		private function onResourceFileLoaded(e:ResourceEvent):void
 		{
@@ -457,7 +448,7 @@ package base.io.resource
 		
 		
 		/**
-		 * @private
+		 * @param e
 		 */
 		private function onResourceFileFailed(e:ResourceEvent):void
 		{
@@ -483,7 +474,7 @@ package base.io.resource
 		
 		
 		/**
-		 * @private
+		 * @param e
 		 */
 		private function onResourceBulkProgress(e:ResourceEvent):void
 		{
@@ -511,7 +502,7 @@ package base.io.resource
 		
 		
 		/**
-		 * @private
+		 * @param e
 		 */
 		private function onResourceBulkLoaded(e:ResourceEvent):void
 		{
@@ -566,7 +557,7 @@ package base.io.resource
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @private
+		 * @param ids
 		 */
 		internal function enqueueReferencedResources(ids:Array):void
 		{
@@ -580,8 +571,6 @@ package base.io.resource
 		
 		/**
 		 * Sends an event that the Resource Manager initialization has been completed.
-		 * 
-		 * @private
 		 */
 		internal function completeInitialization():void
 		{
@@ -592,8 +581,6 @@ package base.io.resource
 		
 		/**
 		 * Sends an event that the Resource Manager initialization has failed.
-		 * 
-		 * @private
 		 */
 		internal function failInitialization():void
 		{
@@ -602,9 +589,6 @@ package base.io.resource
 		}
 		
 		
-		/**
-		 * @private
-		 */
 		private function completeInit():void
 		{
 			_usePackages = _helper._usePackages;
@@ -622,9 +606,6 @@ package base.io.resource
 		}
 		
 		
-		/**
-		 * @private
-		 */
 		private function createBulkID():String
 		{
 			return "bulk" + (_bulkIDCount++);
@@ -638,7 +619,7 @@ package base.io.resource
 		 * but packed resources are identified by their package file ID since every package
 		 * file needs to use it's own dedicated resource provider.
 		 * 
-		 * @private
+		 * @param id
 		 */
 		private function getResourceProvider(id:String):IResourceProvider
 		{
@@ -647,7 +628,8 @@ package base.io.resource
 		
 		
 		/**
-		 * @private
+		 * @param progressHandler
+		 * @param e
 		 */
 		private function notifyProgress(progressHandler:Function, e:ResourceEvent):void
 		{
@@ -656,7 +638,8 @@ package base.io.resource
 		
 		
 		/**
-		 * @private
+		 * @param item
+		 * @param loadedHandler
 		 */
 		private function notifyLoaded(item:ResourceBulkItem, loadedHandler:Function):void
 		{
@@ -665,7 +648,8 @@ package base.io.resource
 		
 		
 		/**
-		 * @private
+		 * @param item
+		 * @param failedHandler
 		 */
 		private function notifyFailed(item:ResourceBulkItem, failedHandler:Function,
 			message:String):void
@@ -676,7 +660,7 @@ package base.io.resource
 		
 		
 		/**
-		 * @private
+		 * @param completeHandler
 		 */
 		private function notifyComplete(completeHandler:Function):void
 		{
@@ -688,7 +672,6 @@ package base.io.resource
 
 /**
  * VO used for waiting handlers.
- * @private
  */
 final class HandlerVO
 {

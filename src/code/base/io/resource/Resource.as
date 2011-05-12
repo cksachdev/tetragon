@@ -38,27 +38,16 @@ package base.io.resource
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
 		private var _id:String;
-		/** @private */
 		private var _path:String;
-		/** @private */
 		private var _packageID:String;
-		/** @private */
 		private var _dataFileID:String;
-		/** @private */
 		private var _family:String;
-		/** @private */
 		private var _dataType:String;
-		/** @private */
 		private var _embedded:Boolean;
-		/** @private */
 		private var _referenceCount:int;
-		/** @private */
 		private var _status:String;
-		/** @private */
 		private var _content:*;
-		/** @private */
 		private var _wrapperClass:Class;
 		
 		
@@ -212,7 +201,6 @@ package base.io.resource
 		
 		/**
 		 * Resets the resource.
-		 * @private
 		 */
 		internal function reset():void
 		{
@@ -224,7 +212,6 @@ package base.io.resource
 		
 		/**
 		 * Sets the status of the resource.
-		 * @private
 		 */
 		internal function setStatus(status:String):void
 		{
@@ -234,7 +221,6 @@ package base.io.resource
 		
 		/**
 		 * Sets the content of the resource.
-		 * @private
 		 */
 		internal function setContent(content:*):void
 		{
@@ -244,7 +230,6 @@ package base.io.resource
 		
 		/**
 		 * Increases the resource's reference count by one.
-		 * @private
 		 */
 		internal function increaseReferenceCount():void
 		{
@@ -254,7 +239,6 @@ package base.io.resource
 		
 		/**
 		 * Decreases the resource's reference count by one.
-		 * @private
 		 */
 		internal function decreaseReferenceCount():void
 		{

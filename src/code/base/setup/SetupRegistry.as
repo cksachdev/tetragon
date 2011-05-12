@@ -205,8 +205,6 @@ package base.setup
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @private
-		 * 
 		 * @param wrapperClass
 		 * @param fileTypeIDs
 		 * @param fileTypeExtensions
@@ -220,8 +218,6 @@ package base.setup
 		
 		
 		/**
-		 * @private
-		 * 
 		 * @param complexTypeID
 		 * @param clazz
 		 */
@@ -233,8 +229,6 @@ package base.setup
 		
 		
 		/**
-		 * @private
-		 * 
 		 * @param dataTypeID
 		 * @param dataTypeParserClass
 		 */
@@ -246,8 +240,6 @@ package base.setup
 		
 		
 		/**
-		 * @private
-		 * 
 		 * @param systemClass
 		 */
 		protected function registerEntitySystem(systemClass:Class):void
@@ -258,8 +250,6 @@ package base.setup
 		
 		
 		/**
-		 * @private
-		 * 
 		 * @param classID
 		 * @param componentClass
 		 */
@@ -271,8 +261,6 @@ package base.setup
 		
 		
 		/**
-		 * @private
-		 * 
 		 * @param stateID
 		 * @param stateClass
 		 */
@@ -284,8 +272,6 @@ package base.setup
 		
 		
 		/**
-		 * @private
-		 * 
 		 * @param screenID
 		 * @param screenClass
 		 */
