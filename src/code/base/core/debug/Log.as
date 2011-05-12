@@ -58,6 +58,8 @@ package base.core.debug
 		/** @private */
 		private static var _externalLog:ExternalLogAdapter;
 		/** @private */
+		private static var _flashTrace:Boolean = false;
+		/** @private */
 		private static var _enabled:Boolean = true;
 		/** @private */
 		private static var _initial:Boolean = true;
@@ -153,6 +155,7 @@ package base.core.debug
 		{
 			if (_filterLevel > LogLevel.TRACE) return;
 			if (_externalLog) _externalLog.trace(data);
+			if (_flashTrace) FlashTrace.log(data, LogLevel.TRACE, caller);
 			send(data, LogLevel.TRACE, caller);
 		}
 		
@@ -167,6 +170,7 @@ package base.core.debug
 		{
 			if (_filterLevel > LogLevel.DEBUG) return;
 			if (_externalLog) _externalLog.debug(data);
+			if (_flashTrace) FlashTrace.log(data, LogLevel.DEBUG, caller);
 			send(data, LogLevel.DEBUG, caller);
 		}
 		
@@ -181,6 +185,7 @@ package base.core.debug
 		{
 			if (_filterLevel > LogLevel.INFO) return;
 			if (_externalLog) _externalLog.info(data);
+			if (_flashTrace) FlashTrace.log(data, LogLevel.INFO, caller);
 			send(data, LogLevel.INFO, caller);
 		}
 		
@@ -195,6 +200,7 @@ package base.core.debug
 		{
 			if (_filterLevel > LogLevel.WARN) return;
 			if (_externalLog) _externalLog.warn(data);
+			if (_flashTrace) FlashTrace.log(data, LogLevel.WARN, caller);
 			send(data, LogLevel.WARN, caller);
 		}
 		
@@ -209,6 +215,7 @@ package base.core.debug
 		{
 			if (_filterLevel > LogLevel.ERROR) return;
 			if (_externalLog) _externalLog.error(data);
+			if (_flashTrace) FlashTrace.log(data, LogLevel.ERROR, caller);
 			send(data, LogLevel.ERROR, caller);
 		}
 		
@@ -223,6 +230,7 @@ package base.core.debug
 		{
 			if (_filterLevel > LogLevel.FATAL) return;
 			if (_externalLog) _externalLog.fatal(data);
+			if (_flashTrace) FlashTrace.log(data, LogLevel.FATAL, caller);
 			send(data, LogLevel.FATAL, caller);
 		}
 		
@@ -334,6 +342,24 @@ package base.core.debug
 				send(o["data"], o["level"], o["caller"]);
 			}
 			_buffer = null;
+		}
+	}
+}
+
+
+final class FlashTrace
+{
+	public static function log(data:*, level:int, caller:Object):void
+	{
+		var c:String = caller ? caller + ": " : "";
+		switch (level)
+		{
+			case 0: trace("[TRACE] " + c + data); break;
+			case 1: trace("[DEBUG] " + c + data); break;
+			case 2: trace(" [INFO] " + c + data); break;
+			case 3: trace(" [WARN] " + c + data); break;
+			case 4: trace("[ERROR] " + c + data); break;
+			case 5: trace("[FATAL] " + c + data); break;
 		}
 	}
 }

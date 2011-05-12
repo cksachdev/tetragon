@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+***************************************************************************************************
+	
+	tetragon - Game Engine for web- & desktop-based Flash projects.
+	  ____
+	 /   / TETRAGON
+	/___/  ENGINE
+ 	
+	Licensed under the MIT License
+	
+***************************************************************************************************
+-->
+<project default="FDT Launch" basedir=".." name="tetragon.fdt">
+	
+	<property file="bld/build.properties"/>
+	<property file="${password.properties}"/>
+	<taskdef resource="flexTasks.tasks" classpath="${sdk}/ant/lib/flexTasks.jar"/>
+	<basename property="proj.name" file="${basedir}"/>
+	
+	
+	<!-- == FDT TARGETS ======================================================================= -->
+	
+	<target name="FDT Launch">
+		<clean/>
+		<prepare buildType="desktop" debug="true" entryClassTemplate="EntryClassAIR.as"/>
+		<generateAIRDescriptor templatesfolder="${templates.air.desktop}"/>
+		<copyDesktopFiles/>
+		<packResources/>
+		<echo message="Launching ${app.swfname.full} ..." level="info"/>
+		<fdt.loadProjectProperties projectname="${proj.name}"/>
+		<fdt.launch.application
+			projectname="${FDTProject}"
+			mainclass="${path.src.code}/${top.package}/${entry.class}.as"
+			debug="true"
+			profile="false"
+			compilerarguments="
+				-static-link-runtime-shared-libraries=true
+				-target-player=${fpv.version}
+				-library-path+='${FDTProjectSdkPath}/frameworks/locale/en_US'
+				-locale=${app.localestring}
+				-default-frame-rate=${app.framerate}
+				-default-background-color=0x${app.bgcolor}
+				-default-size=${app.width},${app.height}
+				-defaults-css-url='${path.theme}/theme.css'
+				-default-script-limits=${max.recursiondepth},${max.executiontime}
+				-accessible=${accessible}
+				-benchmark=${benchmark}
+				-optimize=true
+				-strict=true
+				-show-unused-type-selector-warnings=false
+				-keep-as3-metadata+=TypeHint
+				-keep-as3-metadata+=Resource
+				-keep-as3-metadata+=Embed
+				-define=CONFIG::IS_WEB_BUILD,false
+				-define=CONFIG::IS_AIR_BUILD,true
+				-define=CONFIG::IS_DESKTOP_BUILD,true
+				-define=CONFIG::IS_MOBILE_BUILD,false
+				-define=CONFIG::IS_ANDROID_BUILD,false
+				-define=CONFIG::IS_IOS_BUILD,false
+				-define=CONFIG::EXTRA_TEST,${extra.test}
+				-define=CONFIG::EXTRA_GAME,${extra.game}
+				-define=CONFIG::EXTRA_RPG,${extra.rpg}
+				-define=CONFIG::EXTRA_TBS,${extra.tbs}
+				-define=CONFIG::USE_EMBEDDED_RESOURCES,${resource.useEmbed}
+				-title='${meta.title}'
+				-description='${meta.description}'
+				-date='${build.date}'
+				-language=${app.language}
+				-publisher='${meta.publisher}'
+				-creator='${meta.creator}'
+				-contributor='${meta.contributor}'"
+			target="${path.bin}/${app.swfname.full}"
+			startswf="false"
+			swflocation="${path.bin}/${app.swfname.full}"
+		/>
+		<LaunchDesktop/>
+	</target>
+	
+	
+	<target name="FDT Debug">
+		<clean/>
+		<prepare buildType="desktop" debug="true" entryClassTemplate="EntryClassAIR.as"/>
+		<generateAIRDescriptor templatesfolder="${templates.air.desktop}"/>
+		<copyDesktopFiles/>
+		<packResources/>
+		<echo message="Debugging ${app.swfname.full} ..." level="info"/>
+		<fdt.loadProjectProperties projectname="${proj.name}"/>
+		<fdt.launch.application
+			projectname="${FDTProject}"
+			mainclass="${path.src.code}/${top.package}/${entry.class}.as"
+			debug="true"
+			profile="false"
+			compilerarguments="
+				-static-link-runtime-shared-libraries=true
+				-target-player=${fpv.version}
+				-library-path+='${FDTProjectSdkPath}/frameworks/locale/en_US'
+				-locale=${app.localestring}
+				-default-frame-rate=${app.framerate}
+				-default-background-color=0x${app.bgcolor}
+				-default-size=${app.width},${app.height}
+				-defaults-css-url='${path.theme}/theme.css'
+				-default-script-limits=${max.recursiondepth},${max.executiontime}
+				-accessible=${accessible}
+				-benchmark=${benchmark}
+				-optimize=true
+				-strict=true
+				-show-unused-type-selector-warnings=false
+				-keep-as3-metadata+=TypeHint
+				-keep-as3-metadata+=Resource
+				-keep-as3-metadata+=Embed
+				-define=CONFIG::IS_WEB_BUILD,false
+				-define=CONFIG::IS_AIR_BUILD,true
+				-define=CONFIG::IS_DESKTOP_BUILD,true
+				-define=CONFIG::IS_MOBILE_BUILD,false
+				-define=CONFIG::IS_ANDROID_BUILD,false
+				-define=CONFIG::IS_IOS_BUILD,false
+				-define=CONFIG::EXTRA_TEST,${extra.test}
+				-define=CONFIG::EXTRA_GAME,${extra.game}
+				-define=CONFIG::EXTRA_RPG,${extra.rpg}
+				-define=CONFIG::EXTRA_TBS,${extra.tbs}
+				-define=CONFIG::USE_EMBEDDED_RESOURCES,${resource.useEmbed}
+				-title='${meta.title}'
+				-description='${meta.description}'
+				-date='${build.date}'
+				-language=${app.language}
+				-publisher='${meta.publisher}'
+				-creator='${meta.creator}'
+				-contributor='${meta.contributor}'"
+			target="${path.bin}/${app.swfname.full}"
+			startswf="false"
+			swflocation="${path.bin}/${app.swfname.full}"
+		/>
+		<fdt.startDebugger
+			projectname="${proj.name}"
+			targetswf="${path.bin}/${app.swfname.full}"
+			switchperspectiveonbreakpoint="true"
+		/>
+		<LaunchDesktop/>
+	</target>
+	
+	
+	<target name="FDT Profile">
+		<clean/>
+		<prepare buildType="desktop" debug="true" entryClassTemplate="EntryClassAIR.as"/>
+		<generateAIRDescriptor templatesfolder="${templates.air.desktop}"/>
+		<copyDesktopFiles/>
+		<packResources/>
+		<echo message="Profiling ${app.swfname.full} ..." level="info"/>
+		<fdt.loadProjectProperties projectname="${proj.name}"/>
+		<fdt.launch.application
+			projectname="${FDTProject}"
+			mainclass="${path.src.code}/${top.package}/${entry.class}.as"
+			debug="true"
+			profile="true"
+			compilerarguments="
+				-static-link-runtime-shared-libraries=true
+				-target-player=${fpv.version}
+				-library-path+='${FDTProjectSdkPath}/frameworks/locale/en_US'
+				-locale=${app.localestring}
+				-default-frame-rate=${app.framerate}
+				-default-background-color=0x${app.bgcolor}
+				-default-size=${app.width},${app.height}
+				-defaults-css-url='${path.theme}/theme.css'
+				-default-script-limits=${max.recursiondepth},${max.executiontime}
+				-accessible=${accessible}
+				-benchmark=${benchmark}
+				-optimize=true
+				-strict=true
+				-show-unused-type-selector-warnings=false
+				-keep-as3-metadata+=TypeHint
+				-keep-as3-metadata+=Resource
+				-keep-as3-metadata+=Embed
+				-define=CONFIG::IS_WEB_BUILD,false
+				-define=CONFIG::IS_AIR_BUILD,true
+				-define=CONFIG::IS_DESKTOP_BUILD,true
+				-define=CONFIG::IS_MOBILE_BUILD,false
+				-define=CONFIG::IS_ANDROID_BUILD,false
+				-define=CONFIG::IS_IOS_BUILD,false
+				-define=CONFIG::EXTRA_TEST,${extra.test}
+				-define=CONFIG::EXTRA_GAME,${extra.game}
+				-define=CONFIG::EXTRA_RPG,${extra.rpg}
+				-define=CONFIG::EXTRA_TBS,${extra.tbs}
+				-define=CONFIG::USE_EMBEDDED_RESOURCES,${resource.useEmbed}
+				-title='${meta.title}'
+				-description='${meta.description}'
+				-date='${build.date}'
+				-language=${app.language}
+				-publisher='${meta.publisher}'
+				-creator='${meta.creator}'
+				-contributor='${meta.contributor}'"
+			target="${path.bin}/${app.swfname.full}"
+			startswf="false"
+			swflocation="${path.bin}/${app.swfname.full}"
+		/>
+		<fdt.startProfiler
+			collectstackdata="true"
+			filterinternalpackages="true"
+			memoryprofilingenabled="true"
+			performanceprofilingenabled="false"
+			projectname="${proj.name}"
+			targetswf="${path.bin}/${app.swfname.full}"
+		/>
+		<LaunchDesktop/>
+	</target>
+	
+	
+	<!-- == MACRODEFS: GENERAL ================================================================ -->
+	
+	<macrodef name="clean">
+		<sequential>
+			<delete includeemptydirs="true">
+				<fileset dir="${path.bin}" includes="**/*" excludes="**/.svn"/>
+			</delete>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="cleanAll">
+		<sequential>
+			<delete includeemptydirs="true">
+				<fileset dir="${path.bin}" includes="**/*" excludes="**/.svn"/>
+			</delete>
+			<delete includeemptydirs="true">
+				<fileset dir="${path.pub}" includes="**/*" excludes="**/.svn"/>
+			</delete>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="prepare">
+		<attribute name="buildType"/>
+		<attribute name="debug"/>
+		<attribute name="entryClassTemplate"/>
+		<sequential>
+			<buildnumber file="bld/build.number"/>
+			<tstamp>
+				<format property="build.date" pattern="dd-MMMM-yyyy HH:mm" unit="minute" locale="en"/>
+			</tstamp>
+			<echo message="*** ${project.name} version: ${app.version} build #${build.number} (@{buildType}), ${build.date} ***" level="info"/>
+			<generateAppInfoClass buildType="@{buildType}" debug="@{debug}"/>
+			<generateEntryClass entryClassTemplate="@{entryClassTemplate}"/>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="generateAppInfoClass">
+		<attribute name="buildType"/>
+		<attribute name="debug"/>
+		<sequential>
+			<echo message="Generating AppInfo.as ..." level="info"/>
+			<copy file="${templates.classes}/AppInfoClass.as" tofile="${path.src.code}/${top.package}/AppInfo.as" overwrite="true">
+				<filterchain>
+					<replacetokens>
+						<token key="top_package"		value="${top.package}"/>
+						<token key="app_id"				value="${app.id}"/>
+						<token key="app_name"			value="${app.name}"/>
+						<token key="app_description"	value="${app.description}"/>
+						<token key="app_version"		value="${app.version}"/>
+						<token key="build_nr"			value="${build.number}"/>
+						<token key="build_date"			value="${build.date}"/>
+						<token key="app_milestone"		value="${app.milestone}"/>
+						<token key="app_releasestage"	value="${app.releasestage}"/>
+						<token key="build_type"			value="@{buildType}"/>
+						<token key="app_copyright"		value="${app.copyright}"/>
+						<token key="meta_publisher"		value="${meta.publisher}"/>
+						<token key="meta_creator"		value="${meta.creator}"/>
+						<token key="meta_contributor"	value="${meta.contributor}"/>
+						<token key="app_year"			value="${app.year}"/>
+						<token key="app_website"		value="${app.website}"/>
+						<token key="app_language"		value="${app.language}"/>
+						<token key="file_name"			value="${app.swfname}"/>
+						<token key="default_width"		value="${app.width}"/>
+						<token key="default_height"		value="${app.height}"/>
+						<token key="is_debug"			value="@{debug}"/>
+					</replacetokens>
+				</filterchain>
+			</copy>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="generateEntryClass">
+		<attribute name="entryClassTemplate"/>
+		<sequential>
+			<echo message="Generating ${entry.class}.as ..." level="info"/>
+			<copy file="${templates.classes}/@{entryClassTemplate}" tofile="${path.src.code}/${top.package}/${entry.class}.as" overwrite="true">
+				<filterchain>
+					<replacetokens>
+						<token key="top_package"		value="${top.package}"/>
+						<token key="app_width"			value="${app.width}"/>
+						<token key="app_height"			value="${app.height}"/>
+						<token key="app_bgcolor"		value="${app.bgcolor}"/>
+						<token key="app_framerate"		value="${app.framerate}"/>
+					</replacetokens>
+				</filterchain>
+			</copy>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="generateAIRDescriptor">
+		<attribute name="templatesFolder"/>
+		<sequential>
+			<echo message="Generating AIR descriptor file ..." level="info"/>
+			<copy file="@{templatesFolder}/airdescriptor.xml" tofile="${path.bin}/${air.descriptor}" overwrite="true">
+				<filterchain>
+					<replacetokens>
+						<token key="air_version"						value="${air.version}"/>
+						<token key="app_id"								value="${app.id}"/>
+						<token key="air_filename"						value="${air.filename}"/>
+						<token key="app_name"							value="${app.name}"/>
+						<token key="app_version"						value="${app.version}"/>
+						<token key="build_nr"							value="${build.number}"/>
+						<token key="app_description"					value="${app.description}"/>
+						<token key="app_copyright"						value="${app.copyright}"/>
+						<token key="app_swfname"						value="${app.swfname.full}"/>
+						<token key="air_windowtitle"					value="${air.windowtitle}"/>
+						<token key="air_systemChrome"					value="${air.systemChrome}"/>
+						<token key="air_transparent"					value="${air.transparent}"/>
+						<token key="air_visible"						value="${air.visible}"/>
+						<token key="air_minimizable"					value="${air.minimizable}"/>
+						<token key="air_maximizable"					value="${air.maximizable}"/>
+						<token key="air_resizable"						value="${air.resizable}"/>
+						<token key="app_width"							value="${app.width}"/>
+						<token key="app_height"							value="${app.height}"/>
+						<token key="air_minsize"						value="${air.minsize}"/>
+						<token key="air_maxsize"						value="${air.maxsize}"/>
+						<token key="meta_publisher"						value="${meta.publisher}"/>
+						<token key="air_mobile_fullscreen"				value="${air.mobile.fullscreen}"/>
+						<token key="air_mobile_autoOrients"				value="${air.mobile.autoOrients}"/>
+						<token key="air_mobile_aspectRatio"				value="${air.mobile.aspectRatio}"/>
+						<token key="air_mobile_renderMode"				value="${air.mobile.renderMode}"/>
+						<token key="air_mobile_softKeyboardBehavior"	value="${air.mobile.softKeyboardBehavior}"/>
+					</replacetokens>
+				</filterchain>
+			</copy>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="copyDesktopFiles">
+		<sequential>
+			<echo message="Copying desktop files ..." level="info"/>
+			<copy todir="${path.bin}/icons" verbose="off">
+				<fileset dir="${templates.air.shared}/icons" excludes="**/.svn"/>
+			</copy>
+			<copy file="${templates.air.shared}/app_air.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true">
+				<filterchain>
+					<replacetokens>
+						<token key="resource_folder" value="${resource.folder}"/>
+						<token key="update_url" value="${air.desktop.updateurl}/${app.shortname}_update.xml"/>
+					</replacetokens>
+				</filterchain>
+			</copy>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="copyResources">
+		<sequential>
+			<echo message="Copying resources ..." level="info"/>
+			<mkdir dir="${path.resources.target}"/>
+			<copy todir="${path.resources.target}" verbose="off">
+				<fileset dir="${path.resources.source}" excludes="**/.svn"/>
+			</copy>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="packResources">
+		<sequential>
+			<echo message="Packing resources ..." level="info"/>
+			<mkdir dir="${path.resources.target}"/>
+			<zip destfile="${path.resources.target}/resources.pak"
+				basedir="${path.resources.source}"
+				excludes="**/.svn,${resource.index.file}"
+				update="false"
+				compress="true"/>
+			<zip destfile="${path.resources.target}/resources.rif"
+				basedir="${path.resources.source}"
+				includes="${resource.index.file}"
+				update="false"
+				compress="true"/>
+		</sequential>
+	</macrodef>
+	
+	
+	<macrodef name="LaunchDesktop">
+		<sequential>
+			<echo message="Opening ${app.swfname.full} in AIR Debug Launcher ..." level="info"/>
+			<exec executable="${air.debuglauncher}" spawn="true">
+				<arg value="${path.bin}\${air.descriptor}"/>
+				<arg value="${path.bin}"/>
+			</exec>
+		</sequential>
+	</macrodef>
+	
+</project>
