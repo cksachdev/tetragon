@@ -36,9 +36,11 @@ package base.data
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
+		/* Logging settings */
 		public var loggingEnabled:Boolean;
 		public var loggingFilterLevel:int;
 		
+		/* Console settings */
 		public var consoleEnabled:Boolean;
 		public var consoleAutoOpen:Boolean;
 		public var consoleTween:Boolean;
@@ -48,8 +50,10 @@ package base.data
 		public var consoleTransparency:Number;
 		public var consoleFontSize:int;
 		public var consoleMaxBufferSize:int;
+		public var consoleInputBackBufferSize:int;
 		public var consoleColors:Array;
 		
+		/* FPSMonitor settings */
 		public var fpsMonitorEnabled:Boolean;
 		public var fpsMonitorAutoOpen:Boolean;
 		public var fpsMonitorPollInterval:Number;
@@ -58,23 +62,31 @@ package base.data
 		public var fpsMonitorPosition:String;
 		public var fpsMonitorColors:Array;
 		
+		/* Locale settings */
 		public var defaultLocale:String;
 		public var currentLocale:String;
 		
+		/* Resource-related settings */
 		public var resourceFolder:String;
 		public var resourceIndexFile:String;
 		
+		/* File IO settings */
 		public var ioLoadConnections:int;
 		public var ioLoadRetries:int;
 		public var ioUseAbsoluteFilePath:Boolean;
 		public var ioPreventFileCaching:Boolean;
 		
+		/* Display-related settings */
+		public var startWithFullscreen:Boolean;
+		
+		/* User folder settings */
 		public var userDataFolder:String;
 		public var userSaveGamesFolder:String;
 		public var userScreenshotsFolder:String;
 		public var userSettingsFolder:String;
 		public var userPluginsFolder:String;
 		
+		/* Update settings */
 		public var updateEnabled:Boolean;
 		public var updateURL:String;
 		public var updateAutoCheck:Boolean;
@@ -84,6 +96,7 @@ package base.data
 		public var updateDownloadUpdateVisible:Boolean;
 		public var updateFileUpdateVisible:Boolean;
 		
+		/* Environment-related settings */
 		public var backgroundFrameRate:int;
 		
 		
@@ -122,6 +135,7 @@ package base.data
 			consoleTransparency = 1.0;
 			consoleFontSize = 11;
 			consoleMaxBufferSize = 40000;
+			consoleInputBackBufferSize = 100;
 			consoleColors = ["111111", "D4FFFF", "AAAAAA", "FFFFFF", "FFD400", "FF7F00", "FF0000", "FFFFAA"];
 			
 			fpsMonitorEnabled = true;
@@ -141,6 +155,8 @@ package base.data
 			ioLoadRetries = 0;
 			ioUseAbsoluteFilePath = false;
 			ioPreventFileCaching = false;
+			
+			startWithFullscreen = false;
 			
 			userDataFolder = "%user_documents%/%meta_publisher%";
 			userSaveGamesFolder = "savegames";

@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	=====================================================================================
+	DECADENCE TILESETS FILE
+	Defines one or more tilesets for use with the Decadence tile scrolling engine.
+	=====================================================================================
+	id						The unique resource ID of the tileset.
+	tileWidth				The width of a tile used in the tileset.
+	tileHeight				The height of a tile used in the tileset.
+	startTile				Can be used to determine at which tile on the associated
+							tile image this tileset starts counting from. This can be
+							used for tilesets that share the same image for their tiles.
+	tileGap					Can be used to determine a gap between tiles on the
+							tileset source image.
+	transparent				Determines if the tileset bitmap is transparent. This is
+							used when using a transparent PNG image for the tileset.
+	bgColor					The background color of the tileset (TODO: Needs explanation!)
+	imageID					ID of the image resource which contains the tiles.
+	=====================================================================================
+	propertyDefinitions		Defines properties that can be used as global- and tile-
+							properties. This is like a pool to that any arbitrary tile
+							property or global property has access to and can reference
+							the property definitions by their ID.
+	=====================================================================================
+	globalProperties		Global properties are properties that affect every tile in
+							the tileset. These are applied to every tile in the tileset
+							automatically.
+	=====================================================================================
+	tiles					The list of tile definitions. Every tile has a unique ID
+							which is the number of the tile rectangle on the used tileset
+							image. Any tile can have a set of properties whose ID refers
+							to the property definition (see propertyDefinitions) which
+							it reflects. Animated tiles have an additional frameCount
+							atribute which determines how many frames the animation
+							uses.
+	=====================================================================================
+-->
+<tilesets>
+	
+	<tileset
+		id="testTileSet"
+		transparent="false"
+		backgroundColor="0xFF00FF"
+		tileImageID="tileSet1Image"
+		tileImageGridWidth="0"
+		tileImageGridHeight="0">
+		<meta>
+			<notes><![CDATA[]]></notes>
+			<author><![CDATA[]]></author>
+			<tags><![CDATA[]]></tags>
+		</meta>
+		<!-- Property Definitions ========================================================= -->
+		<propertyDefinitions>
+			<property id="0" name="name" defaultValue=""/>
+			<property id="1" name="isSolid" defaultValue="false"/>
+			<property id="2" name="isDiggable" defaultValue="false"/>
+			<property id="3" name="isCollectable" defaultValue="false"/>
+			<property id="4" name="isDestructable" defaultValue="false"/>
+			<property id="5" name="hasGravity" defaultValue="false"/>
+			<property id="6" name="scoreValue" defaultValue="0"/>
+		</propertyDefinitions>
+		<!-- Global Properties ============================================================ -->
+		<globalProperties>
+			<property id="0" value="Decadence Test Tileset"/>
+		</globalProperties>
+		<!-- Tile Definitions ============================================================= -->
+		<tileDefinitions>
+			<tile nr="0" x="0" y="0" width="96" height="96">
+				<properties>
+					<property id="0" value="96x96 Square Tile"/>
+					<property id="1" value="true"/>
+				</properties>
+			</tile>
+			<tile nr="1" x="96" y="0" width="64" height="64">
+				<properties>
+					<property id="0" value="64x64 Square Tile"/>
+					<property id="1" value="true"/>
+				</properties>
+			</tile>
+			<tile nr="2" x="160" y="0" width="16" height="64">
+				<properties>
+					<property id="0" value="16x64 Vertical Bar tile"/>
+					<property id="1" value="true"/>
+				</properties>
+			</tile>
+			<tile nr="3" x="176" y="0" width="64" height="16">
+				<properties>
+					<property id="0" value="64x16 Horizontal Bar Tile"/>
+					<property id="1" value="true"/>
+				</properties>
+			</tile>
+			<tile nr="4" x="240" y="0" width="32" height="32">
+				<properties>
+					<property id="0" value="32x32 Square Tile"/>
+					<property id="1" value="true"/>
+				</properties>
+			</tile>
+			<tile nr="5" x="272" y="0" width="16" height="16">
+				<properties>
+					<property id="0" value="16x16 Square Tile"/>
+					<property id="1" value="true"/>
+				</properties>
+			</tile>
+			<tile nr="6" x="272" y="0" width="16" height="16">
+				<properties>
+					<property id="0" value="Anim Square Tile"/>
+					<property id="1" value="true"/>
+				</properties>
+				<frames>
+					<frame x="272" y="0" width="16" height="16"/>
+					<frame x="272" y="0" width="16" height="16"/>
+				</frames>
+			</tile>
+			<tile nr="7" copyOf="5">
+				<properties>
+					<property id="0" value="A virtual copy of tile5"/>
+					<property id="1" value="false"/>
+				</properties>
+			</tile>
+		</tileDefinitions>
+		<!-- Groups Definitions =========================================================== -->
+		<groupDefinitions>
+			<group nr="0" width="32" height="32">
+				<properties>
+					<property id="0" value="32x32 Block"/>
+					<property id="1" value="true"/>
+				</properties>
+				<tiles>
+					<tile nr="6" x="0" y="0"/>
+					<tile nr="6" x="16" y="0"/>
+					<tile nr="6" x="0" y="16"/>
+					<tile nr="6" x="16" y="16"/>
+				</tiles>
+			</group>
+			<group nr="1" width="128" height="16">
+				<properties>
+					<property id="0" value="128x16 Bar"/>
+					<property id="1" value="true"/>
+				</properties>
+				<tiles>
+					<tile nr="4" x="0" y="0"/>
+					<tile nr="4" x="64" y="0"/>
+				</tiles>
+			</group>
+			<group nr="2" width="16" height="128">
+				<properties>
+					<property id="0" value="16x128 Bar"/>
+					<property id="1" value="true"/>
+				</properties>
+				<tiles>
+					<tile nr="3" x="0" y="0"/>
+					<tile nr="3" x="0" y="64"/>
+				</tiles>
+			</group>
+			<group nr="3" width="48" height="32">
+				<properties>
+					<property id="0" value="48x32 Block"/>
+					<property id="1" value="true"/>
+				</properties>
+				<tiles>
+					<tile nr="6" x="0" y="0"/>
+					<tile nr="6" x="16" y="0"/>
+					<tile nr="6" x="32" y="0"/>
+					<tile nr="6" x="0" y="16"/>
+					<tile nr="6" x="16" y="16"/>
+					<tile nr="6" x="32" y="16"/>
+				</tiles>
+			</group>
+			<group nr="4" width="128" height="32">
+				<properties>
+					<property id="0" value="128x32 Block"/>
+					<property id="1" value="true"/>
+				</properties>
+				<tiles>
+					<tile nr="5" x="0" y="0"/>
+					<tile nr="5" x="32" y="0"/>
+					<tile nr="5" x="64" y="0"/>
+					<tile nr="5" x="96" y="0"/>
+				</tiles>
+			</group>
+			<group nr="5" width="128" height="64">
+				<properties>
+					<property id="0" value="128x64 Block"/>
+					<property id="1" value="true"/>
+				</properties>
+				<tiles>
+					<tile nr="2" x="0" y="0"/>
+					<tile nr="2" x="64" y="0"/>
+				</tiles>
+			</group>
+			<group nr="6" width="128" height="96">
+				<properties>
+					<property id="0" value="128x96 Block"/>
+					<property id="1" value="true"/>
+				</properties>
+				<tiles>
+					<tile nr="3" x="0" y="32"/>
+					<tile nr="3" x="16" y="32"/>
+					<tile nr="1" x="32" y="0"/>
+				</tiles>
+			</group>
+			<group nr="7" width="128" height="128">
+				<properties>
+					<property id="0" value="128x128 Block"/>
+					<property id="1" value="true"/>
+				</properties>
+				<tiles>
+					<tile nr="2" x="0" y="0"/>
+					<tile nr="2" x="64" y="0"/>
+					<tile nr="2" x="0" y="64"/>
+					<tile nr="2" x="64" y="64"/>
+				</tiles>
+			</group>
+			<group nr="8" width="128" height="128">
+				<properties>
+					<property id="0" value="128x128 Block B"/>
+					<property id="1" value="true"/>
+				</properties>
+				<tiles>
+					<tile nr="5" x="0" y="0"/>
+					<tile nr="5" x="32" y="0"/>
+					<tile nr="5" x="0" y="32"/>
+					<tile nr="5" x="32" y="32"/>
+					<tile nr="2" x="64" y="0"/>
+					<tile nr="2" x="0" y="64"/>
+					<tile nr="5" x="64" y="64"/>
+					<tile nr="5" x="96" y="64"/>
+					<tile nr="5" x="64" y="96"/>
+					<tile nr="5" x="96" y="96"/>
+				</tiles>
+			</group>
+			<group nr="9" copyOf="6">
+				<properties>
+					<property id="0" value="A virtual copy of another group"/>
+					<property id="1" value="false"/>
+				</properties>
+			</group>
+		</groupDefinitions>
+	</tileset>
+	
+	
+	<tileset
+		id="bdTileSet"
+		transparent="false"
+		backgroundColor="0xFF00FF"
+		tileImageID="tileSet2Image"
+		tileImageGridWidth="32"
+		tileImageGridHeight="32">
+		<meta>
+			<notes><![CDATA[]]></notes>
+			<author><![CDATA[]]></author>
+			<tags><![CDATA[]]></tags>
+		</meta>
+		<!-- Property Definitions ========================================================= -->
+		<propertyDefinitions>
+			<property id="0" name="name" defaultValue=""/>
+			<property id="1" name="editorID" defaultValue=""/>
+			<property id="2" name="isSolid" defaultValue="false"/>
+			<property id="3" name="isDiggable" defaultValue="false"/>
+			<property id="4" name="isCollectable" defaultValue="false"/>
+			<property id="5" name="isDestructable" defaultValue="false"/>
+			<property id="6" name="isPushable" defaultValue="false"/>
+			<property id="7" name="hasGravity" defaultValue="false"/>
+			<property id="8" name="scoreValue" defaultValue="0"/>
+		</propertyDefinitions>
+		<!-- Global Properties ============================================================ -->
+		<globalProperties>
+			<property id="0" value="Boulder Dash Tileset"/>
+		</globalProperties>
+		<!-- Tile Definitions ============================================================= -->
+		<tileDefinitions>
+			<tile nr="0">
+				<properties>
+					<property id="0" value="Border Tile"/>
+				</properties>
+			</tile>
+			<tile nr="1">
+				<properties>
+					<property id="0" value="Exit Tile"/>
+				</properties>
+			</tile>
+			<tile nr="2">
+				<properties>
+					<property id="0" value="Wall Tile"/>
+				</properties>
+			</tile>
+			<tile nr="3">
+				<properties>
+					<property id="0" value="Earth Tile"/>
+				</properties>
+			</tile>
+			<tile nr="4">
+				<properties>
+					<property id="0" value="Gem1 Tile"/>
+				</properties>
+				<frames count="11"/>
+			</tile>
+			<tile nr="5">
+				<properties>
+					<property id="0" value="Boulder Tile"/>
+				</properties>
+			</tile>
+			<tile nr="6">
+				<properties>
+					<property id="0" value="Gem2 Tile"/>
+				</properties>
+				<frames count="11"/>
+			</tile>
+		</tileDefinitions>
+		<!-- Group Definitions ============================================================ -->
+		<groupDefinitions>
+			<group nr="0" width="128" height="32">
+				<properties>
+					<property id="0" value="Horizontal Border Segment"/>
+					<property id="1" value="hBorder"/>
+				</properties>
+				<tiles>
+					<tile nr="0" x="0" y="0"/>
+					<tile nr="0" x="32" y="0"/>
+					<tile nr="0" x="64" y="0"/>
+					<tile nr="0" x="96" y="0"/>
+				</tiles>
+			</group>
+			<group nr="1" width="32" height="128">
+				<properties>
+					<property id="0" value="Vertical Border Segment"/>
+					<property id="1" value="vBorder"/>
+				</properties>
+				<tiles>
+					<tile nr="0" x="0" y="0"/>
+					<tile nr="0" x="0" y="32"/>
+					<tile nr="0" x="0" y="64"/>
+					<tile nr="0" x="0" y="96"/>
+				</tiles>
+			</group>
+			<group nr="2" width="64" height="32">
+				<properties>
+					<property id="0" value="Horizontal Wall Segment"/>
+					<property id="1" value="hWall"/>
+				</properties>
+				<tiles>
+					<tile nr="2" x="0" y="0"/>
+					<tile nr="2" x="32" y="0"/>
+				</tiles>
+			</group>
+			<group nr="3" width="32" height="64">
+				<properties>
+					<property id="0" value="Vertical Wall Segment"/>
+					<property id="1" value="vWall"/>
+				</properties>
+				<tiles>
+					<tile nr="2" x="0" y="0"/>
+					<tile nr="2" x="0" y="32"/>
+				</tiles>
+			</group>
+			<group nr="4" width="32" height="32">
+				<properties>
+					<property id="0" value="Single Wall Segment"/>
+					<property id="1" value="wall"/>
+				</properties>
+				<tiles>
+					<tile nr="2" x="0" y="0"/>
+				</tiles>
+			</group>
+			<group nr="5" width="32" height="32">
+				<properties>
+					<property id="0" value="Exit Segment"/>
+					<property id="1" value="exit"/>
+				</properties>
+				<tiles>
+					<tile nr="1" x="0" y="0"/>
+				</tiles>
+			</group>
+			<group nr="6" width="32" height="32">
+				<properties>
+					<property id="0" value="Earth Segment"/>
+					<property id="1" value="earth"/>
+				</properties>
+				<tiles>
+					<tile nr="3" x="0" y="0"/>
+				</tiles>
+			</group>
+			<group nr="7" width="32" height="32">
+				<properties>
+					<property id="0" value="Gem 1"/>
+					<property id="1" value="gem1"/>
+				</properties>
+				<tiles>
+					<tile nr="4" x="0" y="0"/>
+				</tiles>
+			</group>
+			<group nr="8" width="32" height="32">
+				<properties>
+					<property id="0" value="Gem 2"/>
+					<property id="1" value="gem2"/>
+				</properties>
+				<tiles>
+					<tile nr="6" x="0" y="0"/>
+				</tiles>
+			</group>
+			<group nr="9" width="32" height="32">
+				<properties>
+					<property id="0" value="Boulder"/>
+					<property id="1" value="boulder"/>
+				</properties>
+				<tiles>
+					<tile nr="5" x="0" y="0"/>
+				</tiles>
+			</group>
+		</groupDefinitions>
+	</tileset>
+	
+</tilesets>

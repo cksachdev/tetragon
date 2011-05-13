@@ -30,6 +30,7 @@ package extra.test.setup
 	import base.setup.ISetupRegistry;
 	import base.setup.SetupRegistry;
 
+	import extra.test.state.*;
 	import extra.test.view.screen.*;
 	
 	
@@ -87,7 +88,7 @@ package extra.test.setup
 		 */
 		override public function registerStates():void
 		{
-			/* Abstract method! */
+			registerState("tileScrollerTestState", TileScrollerTestState);
 		}
 		
 		
@@ -97,6 +98,7 @@ package extra.test.setup
 		override public function registerScreens():void
 		{
 			registerScreen("testScreen", TestScreen);
+			registerScreen("tileScrollerTestScreen", TileScrollerTestScreen);
 		}
 	}
 }

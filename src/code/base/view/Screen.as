@@ -77,22 +77,6 @@ package base.view
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Constructor
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Creates a new Screen instance.
-		 */
-		public function Screen()
-		{
-			super();
-			openedSignal = new Signal();
-			createChildren();
-			registerDisplays();
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
@@ -226,10 +210,14 @@ package base.view
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * The init method is not used by screen classes!
+		 * The init method is called automatically by the screen manager right after the
+		 * screen has been instanciated.
 		 */
 		override internal final function init():void
 		{
+			openedSignal = new Signal();
+			createChildren();
+			registerDisplays();
 		}
 		
 		

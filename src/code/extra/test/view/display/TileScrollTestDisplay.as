@@ -25,7 +25,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.game.view.display
+package extra.test.view.display
 {
 	import base.Main;
 	import base.command.env.ToggleFullscreenCommand;
@@ -40,7 +40,7 @@ package extra.game.view.display
 	import flash.ui.Keyboard;
 	
 	
-	public class TileScrollDisplay extends Display
+	public class TileScrollTestDisplay extends Display
 	{
 		//-----------------------------------------------------------------------------------------
 		// Constants
@@ -211,10 +211,10 @@ package extra.game.view.display
 					else createTilemap(3, 0);
 					break;
 				case 52:
-//					if (e.ctrlKey && e.shiftKey) createTilemap(4, 2);
-//					else if (e.ctrlKey) createTilemap(4, 1);
-//					else if (e.shiftKey) createTilemap(4, 3);
-//					else createTilemap(4, 0);
+					//if (e.ctrlKey && e.shiftKey) createTilemap(4, 2);
+					//else if (e.ctrlKey) createTilemap(4, 1);
+					//else if (e.shiftKey) createTilemap(4, 3);
+					//else createTilemap(4, 0);
 					break;
 				case 191:
 					_tileScroller.reset();

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	=====================================================================================
+	DECADENCE TILEMAPS FILE
+	Defines one or more tilemaps for use with the Decadence tile scrolling engine.
+	=====================================================================================
+	id					The unique resource ID of the tilemap.
+	type				The type of the tilemap which is one of "orthogonal",
+						"hexagonal" or "isometric". Only orthogonal is supported yet.
+	layerCount			How many tile layers the tilemap is comprising of.
+	width				The total width of the tilemap, in pixels.
+	height				The total height of the tilemap, in pixels.
+	=====================================================================================
+	mapProperties		These are a list of general properties which are supported
+						by a tilemap, e.g. 'backgroundColor' and 'backgroundGradient'
+						which affects the background of the whole map or soundID which
+						can be used to set a sound ID of a loop that plays while the
+						tilemap is displayed.
+	=====================================================================================
+-->
+<tilemaps>
+	
+	<tilemap
+		id="testTileMap"
+		type="orthogonal"
+		width="0"
+		height="0"
+		groupCount="0"
+		margin="0"
+		edgeMode="1"
+		backgroundColor="0xFF000000"
+		tileSetID="testTileSet"
+		layerCount="1">
+		
+		<meta>
+			<notes><![CDATA[]]></notes>
+			<author><![CDATA[]]></author>
+			<tags><![CDATA[]]></tags>
+		</meta>
+		
+		<mapProperties>
+			<property id="backgroundGradient" value="[-90,0x022B13,0x2C7328,0x09562E,0x65C153,0xCAFF61,0xFFFFB2]"/>
+		</mapProperties>
+		
+		<tileGroups>
+			<group id="1" width="32" height="32">
+				<properties>
+					<property id="0" value="32x32 Block"/>
+					<property id="1" value="true"/>
+				</properties>
+				<tiles>
+					<tile id="tile6" x="0" y="0"/>
+					<tile id="tile6" x="16" y="0"/>
+					<tile id="tile6" x="0" y="16"/>
+					<tile id="tile6" x="16" y="16"/>
+				</tiles>
+			</group>
+			<group id="2" width="128" height="16">
+				<properties>
+					<property id="0" value="128x16 Bar"/>
+					<property id="1" value="true"/>
+				</properties>
+				<tiles>
+					<tile id="tile4" x="0" y="0"/>
+					<tile id="tile4" x="64" y="0"/>
+				</tiles>
+			</group>
+			<group id="3" width="16" height="128">
+				<properties>
+					<property id="0" value="16x128 Bar"/>
+					<property id="1" value="true"/>
+				</properties>
+				<tiles>
+					<tile id="tile3" x="0" y="0"/>
+					<tile id="tile3" x="0" y="64"/>
+				</tiles>
+			</group>
+			<group id="4" width="48" height="32">
+				<properties>
+					<property id="0" value="48x32 Block"/>
+					<property id="1" value="true"/>
+				</properties>
+				<tiles>
+					<tile id="tile6" x="0" y="0"/>
+					<tile id="tile6" x="16" y="0"/>
+					<tile id="tile6" x="32" y="0"/>
+					<tile id="tile6" x="0" y="16"/>
+					<tile id="tile6" x="16" y="16"/>
+					<tile id="tile6" x="32" y="16"/>
+				</tiles>
+			</group>
+			<group id="5" width="128" height="32">
+				<properties>
+					<property id="0" value="128x32 Block"/>
+					<property id="1" value="true"/>
+				</properties>
+				<tiles>
+					<tile id="tile5" x="0" y="0"/>
+					<tile id="tile5" x="32" y="0"/>
+					<tile id="tile5" x="64" y="0"/>
+					<tile id="tile5" x="96" y="0"/>
+				</tiles>
+			</group>
+			<group id="6" width="128" height="64">
+				<properties>
+					<property id="0" value="128x64 Block"/>
+					<property id="1" value="true"/>
+				</properties>
+				<tiles>
+					<tile id="tile2" x="0" y="0"/>
+					<tile id="tile2" x="64" y="0"/>
+				</tiles>
+			</group>
+			<group id="7" width="128" height="96">
+				<properties>
+					<property id="0" value="128x96 Block"/>
+					<property id="1" value="true"/>
+				</properties>
+				<tiles>
+					<tile id="tile3" x="0" y="32"/>
+					<tile id="tile3" x="16" y="32"/>
+					<tile id="tile1" x="32" y="0"/>
+				</tiles>
+			</group>
+			<group id="8" width="128" height="128">
+				<properties>
+					<property id="0" value="128x128 Block"/>
+					<property id="1" value="true"/>
+				</properties>
+				<tiles>
+					<tile id="tile2" x="0" y="0"/>
+					<tile id="tile2" x="64" y="0"/>
+					<tile id="tile2" x="0" y="64"/>
+					<tile id="tile2" x="64" y="64"/>
+				</tiles>
+			</group>
+			<group id="9" width="128" height="128">
+				<properties>
+					<property id="0" value="128x128 Block B"/>
+					<property id="1" value="true"/>
+				</properties>
+				<tiles>
+					<tile id="tile5" x="0" y="0"/>
+					<tile id="tile5" x="32" y="0"/>
+					<tile id="tile5" x="0" y="32"/>
+					<tile id="tile5" x="32" y="32"/>
+					<tile id="tile2" x="64" y="0"/>
+					<tile id="tile2" x="0" y="64"/>
+					<tile id="tile5" x="64" y="64"/>
+					<tile id="tile5" x="96" y="64"/>
+					<tile id="tile5" x="64" y="96"/>
+					<tile id="tile5" x="96" y="96"/>
+				</tiles>
+			</group>
+			<group id="10" copyOf="7">
+				<properties>
+					<property id="0" value="A virtual copy of another group"/>
+					<property id="1" value="false"/>
+				</properties>
+			</group>
+		</tileGroups>
+		
+		<layers>
+			<layer
+				index="0"
+				id="layer0"
+				tileAnimFPS="4"
+				transparent="false"
+				fillColor="0x000000"
+				autoScroll="hv"
+				autoScrollSpeed="1"
+				groupCount="2">
+				<properties>
+					<property id="dropShadow" value="[8,40,0x000000,1.0,6,6,0.8,1,false]"/>
+				</properties>
+				<layout>
+					<group id="1" x="14" y="245"/>
+					<group id="2" x="144" y="27"/>
+				</layout>
+			</layer>
+			
+		</layers>
+	</tilemap>
+	
+</tilemaps>

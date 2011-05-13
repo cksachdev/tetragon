@@ -420,7 +420,7 @@ package base
 		
 		/**
 		 * Sets up debug utilities like the console and FPS monitor. Called
-		 * automatically by the BaseSetup class.
+		 * automatically by the BaseSetup class after the ini file was loaded.
 		 */
 		public function setupDebugUtilities():void
 		{

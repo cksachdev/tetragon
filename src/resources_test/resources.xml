@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	
+	<header version="1.0" entries=""/>
+	
+	<!-- ************************************************************************************** -->
+	<packageFiles>
+		<file id="resourcePackage" path="resources.pak"/>
+	</packageFiles>
+	
+	<!-- ************************************************************************************** -->
+	<dataFiles>
+		<file id="settingsFile" path="data/settings.xml" packageID="resourcePackage"/>
+		<file id="tileSet1File" path="data/tilesets/tilesets1.xml" packageID="resourcePackage"/>
+		<file id="tileSet2File" path="data/tilesets/tilesets2.xml" packageID="resourcePackage"/>
+		<file id="fontTileSetFile" path="data/tilesets/font_tilesets.xml" packageID="resourcePackage"/>
+		<file id="tileMap1File" path="data/tilemaps/tilemaps1.xml" packageID="resourcePackage"/>
+	</dataFiles>
+	
+	<!-- ************************************************************************************** -->
+	<media>
+		<image>
+			<transparent>
+			</transparent>
+			<opaque>
+				<resource id="tileSet1Image" path="images/tilesets/tileset_test.png" packageID="resourcePackage"/>
+				<resource id="tileSet2Image" path="images/tilesets/tileset_boulderdash.png" packageID="resourcePackage"/>
+				<resource id="tileSet3Image" path="images/tilesets/tileset_hardnova.png" packageID="resourcePackage"/>
+				<resource id="fontDina08x16Image" path="images/fonts/font_dina_08x16.png" packageID="resourcePackage"/>
+			</opaque>
+		</image>
+		
+		<swf>
+			<resource id="testSWF" path="swf/test.swf" packageID="resourcePackage"/>
+			<resource id="testParticleSWF" path="swf/particle.swf" packageID="resourcePackage"/>
+		</swf>
+		
+		<shader>
+			<resource id="shaderScanlines" path="shaders/scanlines.pbj" packageID="resourcePackage"/>
+		</shader>
+		
+		<audio>
+			<stream>
+				<resource id="audioLogoTetragon" path="audio/ui/tetragon_logo.mp3" packageID="resourcePackage"/>
+			</stream>
+			<module>
+			</module>
+		</audio>
+		
+		<binary>
+			<resource id="testMesh" path="geometry/testmesh.obj" packageID="resourcePackage"/>
+		</binary>
+	</media>
+	
+	<!-- ************************************************************************************** -->
+	<entities>
+	</entities>
+	
+	<!-- ************************************************************************************** -->
+	<lists>
+	</lists>
+	
+	<!-- ************************************************************************************** -->
+	<data>
+		
+		<group type="Settings" fileID="settingsFile">
+			<resource id="settings"/>
+		</group>
+		
+		<group type="TileMap" fileID="tileMap1File">
+			<resource id="testTileMap"/>
+		</group>
+		
+		<group type="TileSet" fileID="tileSet1File">
+			<resource id="testTileSet"/>
+			<resource id="bdTileSet"/>
+			<resource id="hnTileSet"/>
+			<resource id="tileSetDina08x16"/>
+		</group>
+		
+	</data>
+	
+	<!-- ************************************************************************************** -->
+	<xml>
+	</xml>
+	
+	<!-- ************************************************************************************** -->
+	<text>
+		<resource id="testText">
+			<locale lang="en" path="text/en/test_text.xml" packageID="resourcePackage"/>
+		</resource>
+	</text>
+	
+</resources>

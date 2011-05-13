@@ -574,7 +574,8 @@ package base.core.debug
 			addChild(_ti);
 			
 			_cli = new CLI(this);
-			_backBuffer = new BackBuffer();
+			
+			_backBuffer = new BackBuffer(Registry.config.consoleInputBackBufferSize);
 			
 			if (_useTween)
 			{
@@ -870,16 +871,20 @@ final class ConsoleTextInput extends Sprite
 final class BackBuffer
 {
 	private var _buffer:Vector.<String>;
-	private var _bufferSize:int = 100;
+	private var _bufferSize:int;
 	private var _currentIndex:int;
 	
-	public function BackBuffer()
+	public function BackBuffer(bufferSize:int = 100)
 	{
+		if (bufferSize < 0) bufferSize = 0;
+		_bufferSize = bufferSize;
 		clear();
 	}
 	
 	public function push(string:String):void
 	{
+		if (_bufferSize < 1) return;
+		
 		/* check if buffer is full */
 		if (_buffer.length > 0 && _buffer.length == _bufferSize)
 		{

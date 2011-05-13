@@ -25,19 +25,17 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.game.view.display
+package extra.test.view.display
 {
 	import base.view.Display;
 
 	import extra.game.render.tile.TileScroller;
 
-	import com.hexagonstar.util.display.StageReference;
-
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
 	
-	public class TileScrollInfoDisplay extends Display
+	public class TileScrollTestInfoDisplay extends Display
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -144,7 +142,7 @@ package extra.game.view.display
 				+ "";
 			
 			graphics.beginFill(0x4F449D, 1.0);
-			graphics.drawRect(0, 0, 180, StageReference.stageHeight);
+			graphics.drawRect(0, 0, 180, main.stage.stageHeight);
 			graphics.endFill();
 		}
 		
@@ -165,7 +163,7 @@ package extra.game.view.display
 			_helpTF.x = _infoTF.x;
 			_helpTF.y = _infoTF.y + _infoTF.height + 10;
 			_helpTF.width = _infoTF.width;
-			_helpTF.height = StageReference.stageHeight - _infoTF.x - _infoTF.height - 15;
+			_helpTF.height = main.stage.stageHeight - _infoTF.x - _infoTF.height - 15;
 		}
 	}
 }

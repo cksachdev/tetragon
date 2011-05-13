@@ -25,22 +25,33 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.game.view.screen
+package extra.test.view.screen
 {
 	import base.view.Screen;
 
-	import extra.game.view.display.TileScrollDisplay;
-	import extra.game.view.display.TileScrollInfoDisplay;
+	import extra.test.view.display.TileScrollTestDisplay;
+	import extra.test.view.display.TileScrollTestInfoDisplay;
 	
 	
-	public class GamePlayScreen extends Screen
+	public class TileScrollerTestScreen extends Screen
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _scrollDisplay:TileScrollDisplay;
-		private var _infoDisplay:TileScrollInfoDisplay;
+		private var _infoDisplay:TileScrollTestInfoDisplay;
+		private var _scrollDisplay:TileScrollTestDisplay;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Public Methods
+		//-----------------------------------------------------------------------------------------
+		
+		override public function start():void
+		{
+			super.start();
+			_infoDisplay.tileScroller = _scrollDisplay.tileScroller;
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -49,29 +60,9 @@ package extra.game.view.screen
 		
 		override protected function createChildren():void
 		{
-			_infoDisplay = new TileScrollInfoDisplay();
-			_scrollDisplay = new TileScrollDisplay();
-			_infoDisplay.tileScroller = _scrollDisplay.tileScroller;
+			_infoDisplay = new TileScrollTestInfoDisplay();
+			_scrollDisplay = new TileScrollTestDisplay();
 		}
-		
-		
-//		/**
-//		 * @inheritDoc
-//		 */
-//		override protected function registerResources():void
-//		{
-//			registerResource("tileSet1Image");
-//			registerResource("tileSet2Image");
-//			registerResource("tileSet3Image");
-//			registerResource("fontDina08x16Image");
-//			
-//			registerResource("testTileSet");
-//			registerResource("bdTileSet");
-//			registerResource("hnTileSet");
-//			registerResource("tileSetDina08x16");
-//			
-//			registerResource("testTileMap");
-//		}
 		
 		
 		override protected function registerDisplays():void

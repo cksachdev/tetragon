@@ -28,6 +28,7 @@
 package base.setup
 {
 	import base.assist.AIRDesktopAssistor;
+	import base.command.env.ToggleFullscreenCommand;
 	import base.core.cli.CLICommandRegistryDesktop;
 	import base.core.desktop.WindowBoundsManager;
 	import base.core.update.UpdateManager;
@@ -104,7 +105,10 @@ package base.setup
 				new CLICommandRegistryDesktop(main);
 			}
 			
-			//main.commandManager.execute(new ToggleFullscreenCommand());
+			if (Registry.config.startWithFullscreen && !main.isFullscreen)
+			{
+				main.commandManager.execute(new ToggleFullscreenCommand());
+			}
 			
 			/* Make application visible. */
 			if (NativeWindow.isSupported)

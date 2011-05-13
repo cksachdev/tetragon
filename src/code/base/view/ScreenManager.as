@@ -51,9 +51,9 @@ package base.view
 		
 		private var _screenContainer:Sprite;
 		private var _screenClasses:Object;
+		private var _currentScreenClass:Class;
 		private var _currentScreen:Screen;
 		private var _nextScreen:DisplayObject;
-		private var _openScreenClass:Class;
 		
 		private var _screenOpenDelay:Number = 0.2;
 		private var _screenCloseDelay:Number = 0.2;
@@ -141,21 +141,23 @@ package base.view
 			}
 			
 			/* If the specified screen is already open, only update it! */
-			if (_openScreenClass == screenClass)
+			if (_currentScreenClass == screenClass)
 			{
 				updateScreen();
 				return;
 			}
 			
-			var screen:DisplayObject = new screenClass();
-			if (screen is Screen)
+			var s:DisplayObject = new screenClass();
+			if (s is Screen)
 			{
-				var bs:Screen = Screen(screen);
+				Log.debug("Initializing screen \"" + screenID + "\" ...", this);
+				var screen:Screen = Screen(s);
+				screen.init();
 				
 				_isSwitching = true;
 				_isAutoStart = autoStart;
-				_openScreenClass = screenClass;
-				_nextScreen = bs;
+				_currentScreenClass = screenClass;
+				_nextScreen = screen;
 				
 				if (fastTransition)
 				{
@@ -173,8 +175,8 @@ package base.view
 			}
 			else
 			{
-				Log.fatal("Tried to open a screen that is not of type Screen (" + screenClass
-					+ ").", this);
+				Log.fatal("Tried to open screen with ID \"" + screenID
+					+ "\" which is not of type Screen (" + screenClass + ").", this);
 			}
 		}
 		
@@ -225,7 +227,8 @@ package base.view
 		public function dumpScreenList():String
 		{
 			var initialScreenID:String = Registry.settings.getSettings("initialScreenID");
-			var t:TabularText = new TabularText(4, true, "  ", null, "  ", 100, ["ID", "CLASS", "CURRENT", "INITIAL"]);
+			var t:TabularText = new TabularText(4, true, "  ", null, "  ", 100, ["ID", "CLASS",
+				"CURRENT", "INITIAL"]);
 			for (var id:String in _screenClasses)
 			{
 				var clazz:Class = _screenClasses[id];

@@ -25,12 +25,15 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.game.state
+package extra.test.state
 {
 	import base.state.State;
+	import base.view.Screen;
+
+	import flash.events.Event;
 	
 	
-	public class GamePlayState extends State
+	public class TileScrollerTestState extends State
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -38,36 +41,71 @@ package extra.game.state
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Constructor
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Creates a new instance of the class.
-		 */
-		public function GamePlayState()
-		{
-			super();
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
+		override public function start():void
+		{
+			openScreen("tileScrollerTestScreen");
+		}
 		
-		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
+		
+		override public function stop():void
+		{
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
 		
+		override protected function onScreenOpened(screen:Screen):void
+		{
+		}
+		
+		
+		private function onUserInput(e:Event):void
+		{
+		}
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
+		override protected function registerResources():void
+		{
+			registerResource("tileSet1Image");
+			registerResource("tileSet2Image");
+			registerResource("tileSet3Image");
+			registerResource("fontDina08x16Image");
+			
+			registerResource("testTileSet");
+			registerResource("bdTileSet");
+			registerResource("hnTileSet");
+			registerResource("tileSetDina08x16");
+			
+			registerResource("testTileMap");
+		}
+		
+		
+		override protected function setup():void
+		{
+		}
+		
+		
+		override protected function addListeners():void
+		{
+		}
+		
+		
+		override protected function removeListeners():void
+		{
+		}
+		
+		
+		override protected function dispose():void
+		{
+		}
 	}
 }
