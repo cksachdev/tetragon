@@ -707,9 +707,6 @@ package base.core.debug
 import com.hexagonstar.display.shape.RectangleShape;
 
 import flash.display.Sprite;
-import flash.events.Event;
-import flash.events.KeyboardEvent;
-import flash.events.TextEvent;
 import flash.text.AntiAliasType;
 import flash.text.GridFitType;
 import flash.text.StyleSheet;
@@ -717,11 +714,7 @@ import flash.text.TextField;
 import flash.text.TextFieldType;
 import flash.text.TextFormat;
 
-// ------------------------------------------------------------------------------------------------
 
-/**
- * @private
- */
 final class ConsoleTextArea extends Sprite
 {
 	private var _tf:TextField;
@@ -749,18 +742,15 @@ final class ConsoleTextArea extends Sprite
 		//addChild(_sb);
 	}
 	
-	
 	public function clear():void 
 	{
 		_tf.text = "";
 	}
 	
-	
 	public function updateScrolling():void 
 	{
 		_tf.scrollV = _tf.maxScrollV;
 	}
-	
 	
 	public function resize(w:int, h:int):void
 	{
@@ -770,14 +760,12 @@ final class ConsoleTextArea extends Sprite
 		//_sb.resize(h);
 	}
 	
-	
 	public function scrollPage(down:Boolean = false):void
 	{
 		var visibleLines:int = _tf.numLines - _tf.maxScrollV;
 		if (down) _tf.scrollV += visibleLines;
 		else _tf.scrollV -= visibleLines;
 	}
-	
 	
 	public function get length():int
 	{
@@ -810,11 +798,6 @@ final class ConsoleTextArea extends Sprite
 }
 
 
-// ------------------------------------------------------------------------------------------------
-
-/**
- * @private
- */
 final class ConsoleTextInput extends Sprite
 {
 	private var _tf:TextField;
@@ -836,18 +819,13 @@ final class ConsoleTextInput extends Sprite
 		_tf.embedFonts = true;
 		_tf.height = 20;
 		_tf.focusRect = false;
-		_tf.addEventListener(TextEvent.TEXT_INPUT, onEvent);
-		_tf.addEventListener(Event.CHANGE, onEvent);
-		_tf.addEventListener(KeyboardEvent.KEY_DOWN, onEvent);
 		addChild(_tf);
 	}
-		
 	
 	public function clear():void
 	{
 		_tf.text = "";
 	}
-	
 	
 	public function focus():void 
 	{
@@ -858,19 +836,16 @@ final class ConsoleTextInput extends Sprite
 		if (isEmpty) _tf.text = "";
 	}
 	
-	
 	public function resize(w:int):void
 	{
 		_bg.draw(w, 20, 0xFFFFFF);
 		_tf.width = w;
 	}
 	
-	
 	public function setSelection(i:int, length:int):void
 	{
 		_tf.setSelection(i, length);
 	}
-	
 	
 	public function get text():String
 	{
@@ -889,32 +864,19 @@ final class ConsoleTextInput extends Sprite
 	{
 		return _tf;
 	}
-	
-	
-	private function onEvent(e:Event):void 
-	{
-		dispatchEvent(e);
-	}
 }
 
 
-// ------------------------------------------------------------------------------------------------
-
-/**
- * @private
- */
 final class BackBuffer
 {
 	private var _buffer:Vector.<String>;
 	private var _bufferSize:int = 100;
 	private var _currentIndex:int;
 	
-	
 	public function BackBuffer()
 	{
 		clear();
 	}
-	
 	
 	public function push(string:String):void
 	{
@@ -929,13 +891,11 @@ final class BackBuffer
 		_currentIndex = _buffer.length;
 	}
 	
-	
 	public function clear():void
 	{
 		_buffer = new Vector.<String>();
 		_currentIndex = 0;
 	}
-	
 	
 	public function get hasPrevious():Boolean
 	{
