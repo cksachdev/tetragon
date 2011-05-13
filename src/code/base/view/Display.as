@@ -76,8 +76,8 @@ package base.view
 		 * method manually. Instead the parent screen calls it automatically when the
 		 * screen is being started.
 		 * 
-		 * <p>This is an abstract method. Override this method in your state sub-class and
-		 * place any instructions into it that need to be done when the state is being
+		 * <p>This is an abstract method. Override this method in your display sub-class and
+		 * place any instructions into it that need to be done when the display is being
 		 * started, for example a display might contain animated display children that
 		 * should start playing after this method has been called.</p>
 		 */
