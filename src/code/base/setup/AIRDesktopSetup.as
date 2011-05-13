@@ -27,6 +27,7 @@
  */
 package base.setup
 {
+	import base.assist.AIRDesktopAssistor;
 	import base.core.cli.CLICommandRegistryDesktop;
 	import base.core.desktop.WindowBoundsManager;
 	import base.core.update.UpdateManager;
@@ -61,9 +62,6 @@ package base.setup
 			/* set this to false, when we close the application we first do an update. */
 			NativeApplication.nativeApplication.autoExit = false;
 			
-			/* recall app window bounds */
-			WindowBoundsManager.instance.recallWindowBounds(main.baseWindow, "base");
-			
 			// TODO To be changed! Fullscreen state should not be stored in app.ini
 			// but in user settings file!
 			//main.config.useFullscreen = WindowBoundsManager.instance.fullscreen;
@@ -83,11 +81,6 @@ package base.setup
 		 */
 		override public function postSettingsSetup():void
 		{
-			/* Only create new setup helper if it's not already existing! */
-			if (!main.setupHelper)
-			{
-				main.setupHelper = new AIRDesktopHelper();
-			}
 		}
 		
 		
@@ -96,6 +89,15 @@ package base.setup
 		 */
 		override public function finalSetup():void
 		{
+			/* Only create new assistor if it's not already existing! */
+			if (!main.assistor)
+			{
+				main.assistor = new AIRDesktopAssistor();
+			}
+			
+			/* recall app window bounds */
+			WindowBoundsManager.instance.recallWindowBounds(main.baseWindow, "base");
+			
 			/* Register desktop-specific CLI commands if we have the Console available. */
 			if (main.console && main.console.cli)
 			{
@@ -104,9 +106,9 @@ package base.setup
 			
 			//main.commandManager.execute(new ToggleFullscreenCommand());
 			
+			/* Make application visible. */
 			if (NativeWindow.isSupported)
 			{
-				/* Make application visible. */
 				main.contextView.stage.nativeWindow.visible = true;
 				main.contextView.stage.nativeWindow.activate();
 			}
@@ -138,9 +140,6 @@ package base.setup
 		// Event Handlers
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @param e
-		 */
 		private function onUpdateManagerFinished(e:UpdateManagerEvent):void 
 		{
 			_updateManager.removeEventListener(UpdateManagerEvent.FINISHED, onUpdateManagerFinished);

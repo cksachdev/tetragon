@@ -25,23 +25,19 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base
+package base.assist
 {
-	import base.core.preload.IPreloadable;
+	import base.Main;
+
+	import com.hexagonstar.util.reflection.getClassName;
+
+	import flash.display.Stage;
 	
-	
-	[SWF(width="1024", height="640", backgroundColor="#000000", frameRate="60")]
 	
 	/**
-	 * Entry acts as the entry point and base display object container (or: context view) for
-	 * the application. This is the class that the compiler is being told to compile and from
-	 * which all other application logic is being initiated, in particular Main which acts as
-	 * the main hub for the application.
-	 * 
-	 * <p>IMPORTANT: Auto-generated class. Do not edit!</p>
+	 * Abstract base class for build-specific persistent assist classes.
 	 */
-	[Frame(factoryClass="base.Preloader")]
-	public final class Entry implements IPreloadable
+	public class Assistor
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -51,18 +47,66 @@ package base
 		
 		
 		//-----------------------------------------------------------------------------------------
+		// Constructor
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Creates a new instance of the class.
+		 */
+		public function Assistor()
+		{
+			_main = Main.instance;
+			setup();
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Invoked by the preloader after the application has been fully preloaded.
+		 * Returns a String representation of the class.
 		 * 
-		 * @param preloader a reference to the preloader.
+		 * @return A String representation of the class.
 		 */
-		public function onApplicationPreloaded(preloader:Preloader):void
+		public function toString():String
 		{
-			_main = Main.instance;
-			_main.init(preloader);
+			return getClassName(this);
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Accessors
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Reference to main for use in sub classes.
+		 */
+		protected function get main():Main
+		{
+			return _main;
+		}
+		
+		
+		/**
+		 * Reference to the main stage for use in sub classes.
+		 */
+		public function get stage():Stage
+		{
+			return _main.contextView.stage;
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Private Methods
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @private
+		 */
+		protected function setup():void
+		{
+			/* Abstract method! */
 		}
 	}
 }

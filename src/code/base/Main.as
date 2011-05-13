@@ -27,6 +27,7 @@
  */
 package base
 {
+	import base.assist.*;
 	import base.command.Command;
 	import base.command.CommandManager;
 	import base.command.env.InitApplicationCommand;
@@ -73,8 +74,7 @@ package base
 		private var _console:Console;
 		private var _fpsMonitor:FPSMonitor;
 		
-		private var _setupHelper:*;
-		
+		private var _assistor:Assistor;
 		private var _dataSupportManager:DataSupportManager;
 		private var _commandManager:CommandManager;
 		private var _resourceManager:ResourceManager;
@@ -171,10 +171,9 @@ package base
 		 */
 		public function get baseWindow():*
 		{
-			CONFIG::IS_AIR_BUILD
+			CONFIG::IS_DESKTOP_BUILD
 			{
-				// TODO Move to AIR setup helper class to eleminate AIR-dependant import!
-				if (NativeWindow.isSupported) return contextView.stage.nativeWindow;
+				return AIRDesktopAssistor(assistor).nativeWindow;
 			}
 			return contextView;
 		}
@@ -192,16 +191,16 @@ package base
 		
 		
 		/**
-		 * A reference to the setup helper if the build type uses any. Read-only access!
+		 * A reference to the persistent assistor, if the build-type type uses any.
+		 * Read-only access. Is only set once during app init phase.
 		 */
-		public function get setupHelper():*
+		public function get assistor():Assistor
 		{
-			return _setupHelper;
+			return _assistor;
 		}
-		public function set setupHelper(v:*):void
+		public function set assistor(v:Assistor):void
 		{
-			if (_setupHelper) return;
-			_setupHelper = v;
+			_assistor = v;
 		}
 		
 		
