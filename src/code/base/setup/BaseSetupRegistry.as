@@ -27,8 +27,8 @@
  */
 package base.setup
 {
-	import base.state.*;
-	import base.view.screen.*;
+	import base.state.SplashState;
+	import base.view.splash.SplashScreen;
 	
 	
 	/**
@@ -86,7 +86,6 @@ package base.setup
 		override public function registerStates():void
 		{
 			registerState("splashState", SplashState);
-			registerState("dummyState", DummyState);
 		}
 		
 		
@@ -96,7 +95,6 @@ package base.setup
 		override public function registerScreens():void
 		{
 			registerScreen("splashScreen", SplashScreen);
-			registerScreen("dummyScreen", DummyScreen);
 		}
 	}
 }

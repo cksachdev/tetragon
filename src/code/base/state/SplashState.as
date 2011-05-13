@@ -28,6 +28,7 @@
 package base.state
 {
 	import base.data.Registry;
+	import base.view.LoadProgressDisplay;
 	import base.view.Screen;
 
 	import flash.events.Event;
@@ -78,9 +79,9 @@ package base.state
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
-		override public function get showLoadProgress():Boolean
+		override public function get loadProgressDisplay():LoadProgressDisplay
 		{
-			return false;
+			return null;
 		}
 		
 		

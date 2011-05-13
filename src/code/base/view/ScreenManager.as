@@ -309,6 +309,15 @@ package base.view
 		}
 		
 		
+		/**
+		 * The display object container that acts as a wrapper for any screens.
+		 */
+		public function get screenContainer():Sprite
+		{
+			return _screenContainer;
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------

@@ -29,8 +29,13 @@ package base.state
 {
 	import base.core.debug.Log;
 	import base.data.Registry;
+	import base.event.ResourceEvent;
+	import base.view.LoadProgressDisplay;
 
+	import com.greensock.TweenLite;
 	import com.hexagonstar.util.string.TabularText;
+
+	import flash.display.Sprite;
 	
 	
 	/**
@@ -46,6 +51,8 @@ package base.state
 		private var _currentStateClass:Class;
 		private var _currentState:State;
 		private var _nextState:State;
+		private var _screenContainer:Sprite;
+		private var _loadProgressDisplay:LoadProgressDisplay;
 		private var _isSwitching:Boolean = false;
 		
 		
@@ -56,8 +63,9 @@ package base.state
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function StateManager()
+		public function StateManager(screenContainer:Sprite)
 		{
+			_screenContainer = screenContainer;
 			_stateClasses = {};
 		}
 		
@@ -197,9 +205,35 @@ package base.state
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
 		
+		private function onStateLoadProgress(e:ResourceEvent):void
+		{
+			if (!_loadProgressDisplay) return;
+			
+			/* If we got more than four resources use file count rather than bytes. Not really
+			 * a good indicator but does the job for now, besides bytesLoaded is still buggy. */
+			if (e.totalCount > 3) _loadProgressDisplay.update(e.currentCount, e.totalCount);
+			else _loadProgressDisplay.update(e.bytesLoaded, e.bytesTotal);
+		}
+		
+		
 		private function onStateEntered():void
 		{
 			Log.debug("--- Entered " + _currentState.toString() + " ---", this);
+			
+			if (_loadProgressDisplay && _loadProgressDisplay.waitAfterLoad)
+			{
+				_loadProgressDisplay.userInputSignal.addOnce(onLoadProgressDisplayFinished);
+			}
+			else
+			{
+				onLoadProgressDisplayFinished();
+			}
+		}
+		
+		
+		private function onLoadProgressDisplayFinished():void
+		{
+			removeLoadProgressDisplay();
 			_currentState.start();
 			_isSwitching = false;
 		}
@@ -221,7 +255,7 @@ package base.state
 			if (_currentState)
 			{
 				Log.debug("Exiting " + _currentState.toString() + " ...", this);
-				_currentState.exitedSignal.add(onStateExited);
+				_currentState.exitedSignal.addOnce(onStateExited);
 				_currentState.exit();
 			}
 			else
@@ -237,9 +271,33 @@ package base.state
 			{
 				_currentState = _nextState;
 				Log.debug("Entering " + _currentState.toString() + " ...", this);
-				_currentState.enteredSignal.add(onStateEntered);
+				addLoadProgressDisplay();
+				_currentState.enteredSignal.addOnce(onStateEntered);
 				_currentState.enter();
 			}
+		}
+		
+		
+		private function addLoadProgressDisplay():void
+		{
+			_loadProgressDisplay = _currentState.loadProgressDisplay;
+			if (!_loadProgressDisplay) return;
+			_loadProgressDisplay.alpha = 0;
+			_currentState.progressSignal.add(onStateLoadProgress);
+			_screenContainer.addChild(_loadProgressDisplay);
+			TweenLite.to(_loadProgressDisplay, 0.6, {alpha: 1.0});
+		}
+		
+		
+		private function removeLoadProgressDisplay():void
+		{
+			if (!_loadProgressDisplay) return;
+			//_screenContainer.swapChildren(_screen, _loadProgressDisplay);
+			TweenLite.to(_loadProgressDisplay, 1.0, {alpha: 0.0, onComplete: function():void
+			{
+				_screenContainer.removeChild(_loadProgressDisplay);
+				_loadProgressDisplay = null;
+			}});
 		}
 	}
 }

@@ -25,49 +25,47 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.state
+package base.view.splash
 {
+	import base.data.Registry;
+	import base.view.Display;
+
+	import com.hexagonstar.util.color.colorUintToColorTransform;
+
+	import flash.filters.DropShadowFilter;
+	
+	
 	/**
-	 * DummyState class
+	 * A display that shows the engine's logo.
 	 */
-	public class DummyState extends State
+	public class SplashDisplay extends Display
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		
-		//-----------------------------------------------------------------------------------------
-		// Constructor
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Creates a new instance of the class.
-		 */
-		public function DummyState()
-		{
-			super();
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Public Methods
-		//-----------------------------------------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Callback Handlers
-		//-----------------------------------------------------------------------------------------
+		private var _tetragonLogo:TetragonLogo;
 		
 		
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
+		override protected function createChildren():void
+		{
+			var logoColor:* = Registry.settings.getSettings("splashLogoColor");
+			var splashLogoColor:uint = logoColor != null ? logoColor : 0xFFBF00;
+			var ds:DropShadowFilter = new DropShadowFilter(1.0, 45, 0x000000, 0.4, 8.0, 8.0, 2);
+			
+			_tetragonLogo = new TetragonLogo();
+			_tetragonLogo.filters = [ds];
+			_tetragonLogo.transform.colorTransform = colorUintToColorTransform(splashLogoColor);
+		}
+		
+		
+		override protected function addChildren():void
+		{
+			addChild(_tetragonLogo);
+		}
 	}
 }

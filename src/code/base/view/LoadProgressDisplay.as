@@ -25,8 +25,10 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.view.display
+package base.view
 {
+	import com.hexagonstar.signals.Signal;
+
 	import flash.display.Sprite;
 	
 	
@@ -47,6 +49,13 @@ package base.view.display
 		
 		
 		//-----------------------------------------------------------------------------------------
+		// Signals
+		//-----------------------------------------------------------------------------------------
+		
+		public var userInputSignal:Signal;
+		
+		
+		//-----------------------------------------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------------------------------------
 		
@@ -56,10 +65,8 @@ package base.view.display
 		public function LoadProgressDisplay()
 		{
 			super();
-			
-			_loadProgressBar = new LoadProgressBar();
-			addChild(_loadProgressBar);
-			
+			if (waitAfterLoad) userInputSignal = new Signal();
+			setup();
 			reset();
 		}
 		
@@ -89,6 +96,33 @@ package base.view.display
 		{
 			_percentage = loaded / total * 100;
 			_loadProgressBar.bar.width = _percentage * _factor;
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Accessors
+		//-----------------------------------------------------------------------------------------
+		
+		public function get waitAfterLoad():Boolean
+		{
+			return false;
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Private Methods
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @private
+		 */
+		protected function setup():void
+		{
+			_loadProgressBar = new LoadProgressBar();
+			addChild(_loadProgressBar);
+			
+			x = 30;
+			y = 30;
 		}
 	}
 }

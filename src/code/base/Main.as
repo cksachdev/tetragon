@@ -78,8 +78,8 @@ package base
 		private var _dataSupportManager:DataSupportManager;
 		private var _commandManager:CommandManager;
 		private var _resourceManager:ResourceManager;
-		private var _stateManager:StateManager;
 		private var _screenManager:ScreenManager;
+		private var _stateManager:StateManager;
 		private var _localSettingsManager:LocalSettingsManager;
 		private var _keyManager:KeyManager;
 		private var _entityManager:EntityManager;
@@ -396,8 +396,8 @@ package base
 			_dataSupportManager = new DataSupportManager();
 			_commandManager = new CommandManager();
 			_resourceManager = new ResourceManager();
-			_stateManager = new StateManager();
 			_screenManager = new ScreenManager();
+			_stateManager = new StateManager(_screenManager.screenContainer);
 			_localSettingsManager = new LocalSettingsManager();
 			_keyManager = new KeyManager();
 			

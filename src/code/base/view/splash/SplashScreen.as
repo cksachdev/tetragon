@@ -25,26 +25,38 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.view.display
+package base.view.splash
 {
 	import base.data.Registry;
-	import base.view.Display;
+	import base.view.Screen;
 
-	import com.hexagonstar.util.color.colorUintToColorTransform;
+	import com.hexagonstar.display.shape.RectangleGradientShape;
 
-	import flash.filters.DropShadowFilter;
+	import flash.events.Event;
 	
 	
 	/**
-	 * A display that shows the engine's logo.
+	 * A screen that shows the SplashDisplay.
 	 */
-	public class SplashDisplay extends Display
+	public class SplashScreen extends Screen
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _tetragonLogo:TetragonLogo;
+		private var _bgColors:Array;
+		private var _background:RectangleGradientShape;
+		private var _display:SplashDisplay;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Callback Handlers
+		//-----------------------------------------------------------------------------------------
+		
+		private function onStageResize(e:Event):void
+		{
+			layoutChildren();
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -53,19 +65,43 @@ package base.view.display
 		
 		override protected function createChildren():void
 		{
-			var logoColor:* = Registry.settings.getSettings("splashLogoColor");
-			var splashLogoColor:uint = logoColor != null ? logoColor : 0xFFBF00;
-			var ds:DropShadowFilter = new DropShadowFilter(1.0, 45, 0x000000, 0.4, 8.0, 8.0, 2);
-			
-			_tetragonLogo = new TetragonLogo();
-			_tetragonLogo.filters = [ds];
-			_tetragonLogo.transform.colorTransform = colorUintToColorTransform(splashLogoColor);
+			var bgc:* = Registry.settings.getSettings("splashBackgroundColors");
+			_bgColors = bgc && bgc is Array ? bgc : [0x002C3F, 0x0181B8];
+			_background = new RectangleGradientShape();
+			_display = new SplashDisplay();
 		}
 		
 		
-		override protected function addChildren():void
+		override protected function registerDisplays():void
 		{
-			addChild(_tetragonLogo);
+			registerDisplay(_display);
+		}
+		
+		
+		override protected function addChildren():void 
+		{
+			addChild(_background);
+			addChild(_display);
+		}
+		
+		
+		override protected function addListeners():void
+		{
+			main.stage.addEventListener(Event.RESIZE, onStageResize);
+		}
+		
+		
+		override protected function removeListeners():void
+		{
+			main.stage.removeEventListener(Event.RESIZE, onStageResize);
+		}
+		
+		
+		override protected function layoutChildren():void
+		{
+			_background.draw(main.stage.stageWidth, main.stage.stageHeight, -90, _bgColors);
+			_display.x = getHorizontalCenter(_display);
+			_display.y = getVerticalCenter(_display);
 		}
 	}
 }

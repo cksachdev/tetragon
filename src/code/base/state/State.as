@@ -31,6 +31,7 @@ package base.state
 	import base.event.ResourceEvent;
 	import base.io.resource.Resource;
 	import base.io.resource.ResourceManager;
+	import base.view.LoadProgressDisplay;
 	import base.view.Screen;
 	import base.view.ScreenManager;
 
@@ -192,14 +193,11 @@ package base.state
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Determines whether the state will arrange to show a load progress display while
-		 * it's resources are being loaded. The default is <code>true</code>. You can override
-		 * this getter and set it to false for states where you don't want to show the load
-		 * progress display.
+		 * Creates and returns a new load progress display for use with the state.
 		 */
-		public function get showLoadProgress():Boolean
+		public function get loadProgressDisplay():LoadProgressDisplay
 		{
-			return true;
+			return new LoadProgressDisplay();
 		}
 		
 		
