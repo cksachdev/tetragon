@@ -27,9 +27,7 @@
  */
 package extra.test.view.screen
 {
-	import base.core.debug.Console;
-	import base.core.debug.FPSMonitor;
-	import base.view.screen.BaseScreen;
+	import base.view.Screen;
 
 	import extra.test.view.display.TestDisplay;
 
@@ -39,32 +37,13 @@ package extra.test.view.screen
 	/**
 	 * A test screen.
 	 */
-	public class TestScreen extends BaseScreen
+	public class TestScreen extends Screen
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
 		private var _display:TestDisplay;
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Public Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function start():void
-		{
-			super.start();
-			
-			var c:Console = main.console;
-			if (c) c.toggle();
-			
-			var f:FPSMonitor = main.fpsMonitor;
-			if (f) f.toggle();
-		}
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -84,18 +63,12 @@ package extra.test.view.screen
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function createChildren():void
 		{
 			_display = new TestDisplay();
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 //		override protected function registerResources():void
 //		{
 //			registerResource("unitInfantry");
@@ -105,45 +78,30 @@ package extra.test.view.screen
 //		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function registerDisplays():void
 		{
 			registerDisplay(_display);
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function addChildren():void 
 		{
 			addChild(_display);
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function addListeners():void
 		{
 			main.stage.addEventListener(Event.RESIZE, onStageResize);
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function removeListeners():void
 		{
 			main.stage.removeEventListener(Event.RESIZE, onStageResize);
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function layoutChildren():void
 		{
 			_display.x = getHorizontalCenter(_display);

@@ -44,7 +44,7 @@ package base
 	import base.signals.RenderSignal;
 	import base.signals.TickSignal;
 	import base.state.StateManager;
-	import base.view.screen.ScreenManager;
+	import base.view.ScreenManager;
 
 	import com.hexagonstar.exception.SingletonException;
 	import com.hexagonstar.util.debug.HLog;
@@ -173,6 +173,7 @@ package base
 		{
 			CONFIG::IS_AIR_BUILD
 			{
+				// TODO Move to AIR setup helper class to eleminate AIR-dependant import!
 				if (NativeWindow.isSupported) return contextView.stage.nativeWindow;
 			}
 			return contextView;

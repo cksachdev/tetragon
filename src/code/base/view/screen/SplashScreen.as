@@ -28,6 +28,7 @@
 package base.view.screen
 {
 	import base.data.Registry;
+	import base.view.Screen;
 	import base.view.display.SplashDisplay;
 
 	import com.hexagonstar.display.shape.RectangleGradientShape;
@@ -38,7 +39,7 @@ package base.view.screen
 	/**
 	 * A screen that shows the SplashDisplay.
 	 */
-	public class SplashScreen extends BaseScreen
+	public class SplashScreen extends Screen
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -53,9 +54,6 @@ package base.view.screen
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @param e
-		 */
 		private function onStageResize(e:Event):void
 		{
 			layoutChildren();

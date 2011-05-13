@@ -27,7 +27,7 @@
  */
 package extra.game.view.display
 {
-	import base.view.display.Display;
+	import base.view.Display;
 
 	import extra.game.render.tile.TileScroller;
 
@@ -47,24 +47,6 @@ package extra.game.view.display
 		private var _infoTF:TextField;
 		private var _helpTF:TextField;
 		private var _format:TextFormat;
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Constructor
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Creates a new TestDisplay instance.
-		 */
-		public function TileScrollInfoDisplay()
-		{
-			super();
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Public Methods
-		//-----------------------------------------------------------------------------------------
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -122,9 +104,6 @@ package extra.game.view.display
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function createChildren():void
 		{
 			_format = new TextFormat();
@@ -170,9 +149,6 @@ package extra.game.view.display
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function addChildren():void
 		{
 			addChild(_infoTF);
@@ -180,65 +156,6 @@ package extra.game.view.display
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function enableChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function disableChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function pauseChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function unpauseChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function addListeners():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function removeListeners():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function updateDisplayText():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function layoutChildren():void
 		{
 			_infoTF.x = 5;

@@ -32,9 +32,9 @@ package base.setup
 	import base.core.entity.EntitySystemManager;
 	import base.data.DataSupportManager;
 	import base.state.StateManager;
-	import base.view.screen.ScreenManager;
-
+	import base.view.ScreenManager;
 	import com.hexagonstar.util.reflection.getClassName;
+
 	
 	
 	/**

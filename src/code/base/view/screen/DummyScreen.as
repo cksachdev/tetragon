@@ -27,10 +27,13 @@
  */
 package base.view.screen
 {
+	import base.view.Screen;
+	
+	
 	/**
 	 * A screen that does nothing specific.
 	 */
-	public class DummyScreen extends BaseScreen
+	public class DummyScreen extends Screen
 	{
 	}
 }

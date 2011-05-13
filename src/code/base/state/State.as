@@ -31,8 +31,8 @@ package base.state
 	import base.event.ResourceEvent;
 	import base.io.resource.Resource;
 	import base.io.resource.ResourceManager;
-	import base.view.screen.BaseScreen;
-	import base.view.screen.ScreenManager;
+	import base.view.Screen;
+	import base.view.ScreenManager;
 
 	import com.hexagonstar.signals.Signal;
 	import com.hexagonstar.util.reflection.getClassName;
@@ -297,7 +297,7 @@ package base.state
 		 * 
 		 * @param screen The screen that has been opened.
 		 */
-		protected function onScreenOpened(screen:BaseScreen):void
+		protected function onScreenOpened(screen:Screen):void
 		{
 			/* Abstract method! */
 		}
@@ -312,7 +312,7 @@ package base.state
 		 * 
 		 * @param screen The screen that has been closed.
 		 */
-		protected function onScreenClosed(screen:BaseScreen):void
+		protected function onScreenClosed(screen:Screen):void
 		{
 			/* Abstract method! */
 		}

@@ -27,7 +27,7 @@
  */
 package extra.game.view.screen
 {
-	import base.view.screen.BaseScreen;
+	import base.view.Screen;
 
 	import extra.game.view.display.GameMenuDisplay;
 
@@ -37,7 +37,7 @@ package extra.game.view.screen
 	/**
 	 * A default game menu screen.
 	 */
-	public class GameMenuScreen extends BaseScreen
+	public class GameMenuScreen extends Screen
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -47,25 +47,9 @@ package extra.game.view.screen
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Public Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function start():void
-		{
-			super.start();
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @private
-		 */
 		private function onStageResize(e:Event):void
 		{
 			layoutChildren();
@@ -76,54 +60,36 @@ package extra.game.view.screen
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function createChildren():void
 		{
 			_display = new GameMenuDisplay();
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function registerDisplays():void
 		{
 			registerDisplay(_display);
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function addChildren():void 
 		{
 			addChild(_display);
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function addListeners():void
 		{
 			main.stage.addEventListener(Event.RESIZE, onStageResize);
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function removeListeners():void
 		{
 			main.stage.removeEventListener(Event.RESIZE, onStageResize);
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function layoutChildren():void
 		{
 			_display.x = getHorizontalCenter(_display);

@@ -33,7 +33,7 @@ package extra.game.setup
 	import extra.game.data.parsers.*;
 	import extra.game.entity.components.*;
 	import extra.game.entity.systems.*;
-	import extra.game.state.GameState;
+	import extra.game.state.GamePlayState;
 	import extra.game.view.screen.*;
 	
 	
@@ -104,7 +104,7 @@ package extra.game.setup
 		 */
 		override public function registerStates():void
 		{
-			registerState("gameState", GameState);
+			registerState("gameState", GamePlayState);
 		}
 		
 		

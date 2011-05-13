@@ -28,14 +28,15 @@
 package base.view.display
 {
 	import base.data.Registry;
+	import base.view.Display;
 
 	import com.hexagonstar.util.color.colorUintToColorTransform;
 
 	import flash.filters.DropShadowFilter;
-
+	
 	
 	/**
-	 * A splash display that shows the engine's logo.
+	 * A display that shows the engine's logo.
 	 */
 	public class SplashDisplay extends Display
 	{

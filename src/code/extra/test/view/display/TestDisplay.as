@@ -27,8 +27,10 @@
  */
 package extra.test.view.display
 {
+	import base.core.debug.Console;
+	import base.core.debug.FPSMonitor;
 	import base.core.entity.IEntity;
-	import base.view.display.Display;
+	import base.view.Display;
 
 	import com.hexagonstar.util.debug.Debug;
 	
@@ -39,20 +41,16 @@ package extra.test.view.display
 	public class TestDisplay extends Display
 	{
 		//-----------------------------------------------------------------------------------------
-		// Properties
-		//-----------------------------------------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
 		override public function start():void
 		{
-			super.start();
+			var c:Console = main.console;
+			if (c) c.toggle();
+			
+			var f:FPSMonitor = main.fpsMonitor;
+			if (f) f.toggle();
 			
 			var emitter:IEntity = main.entityFactory.createEntity("testParticleEmitter");
 			Debug.trace(emitter.dump());
@@ -61,135 +59,6 @@ package extra.test.view.display
 			Debug.trace(particle.dump());
 			
 			main.entitySystemManager.start();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function stop():void
-		{
-			super.stop();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function reset():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function update():void
-		{
-			super.update();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function dispose():void
-		{
-			super.dispose();
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Callback Handlers
-		//-----------------------------------------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function createChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function addChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function addListeners():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function removeListeners():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function enableChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function disableChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function pauseChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function unpauseChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function updateDisplayText():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function layoutChildren():void
-		{
 		}
 	}
 }

@@ -25,11 +25,10 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.view.display
+package base.view
 {
 	import base.Main;
 	import base.io.resource.ResourceManager;
-	import base.view.screen.BaseScreen;
 
 	import com.hexagonstar.util.reflection.getClassName;
 
@@ -50,7 +49,7 @@ package base.view.display
 		//-----------------------------------------------------------------------------------------
 		
 		private var _main:Main;
-		private var _screen:BaseScreen;
+		private var _screen:Screen;
 		private var _enabled:Boolean = true;
 		private var _paused:Boolean = false;
 		
@@ -71,20 +70,6 @@ package base.view.display
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Used to initialize the display.
-		 * 
-		 * <p>You normally don't call this method manually. Instead the parent screen
-		 * calls it automatically when the screen is being opened.</p>
-		 */
-		public function init():void
-		{
-			createChildren();
-			addChildren();
-			addListeners();
-		}
-		
 		
 		/**
 		 * Starts the display after it has been initialized. You normally don't call this
@@ -119,7 +104,7 @@ package base.view.display
 		
 		
 		/**
-		 * Used to put the display into it's initial state as it was right after the
+		 * Used to put the display into it's initial state like it was right after the
 		 * display has been instantiated for the first time. This method can be called to
 		 * reset properties and child objects in case the display should be re-used
 		 * without the need to re-instantiate it.
@@ -185,6 +170,8 @@ package base.view.display
 		 * display children are disabled so that no user interaction may occur until the
 		 * display is enabled again. Set this property to either <code>true</code>
 		 * (enabled) or <code>false</code> (disabled).
+		 * 
+		 * @default <code>true</code>
 		 */
 		public function get enabled():Boolean
 		{
@@ -204,6 +191,8 @@ package base.view.display
 		 * objects of the display are being paused too, if possible. This property should
 		 * be used if the display needs to be pausable, for example if it contains any
 		 * animation that should not play while the application is in a paused state.
+		 * 
+		 * @default <code>false</code>
 		 */
 		public function get paused():Boolean
 		{
@@ -223,11 +212,11 @@ package base.view.display
 		 * property is set automatically by the display's parent screen when the display
 		 * is registered with the screen by using <code>registerDisplay()</code>.
 		 */
-		public function get screen():BaseScreen
+		public function get screen():Screen
 		{
 			return _screen;
 		}
-		public function set screen(v:BaseScreen):void
+		public function set screen(v:Screen):void
 		{
 			_screen = v;
 		}
@@ -248,6 +237,24 @@ package base.view.display
 		protected function get resourceManager():ResourceManager
 		{
 			return _main.resourceManager;
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Internal Methods
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Used to initialize the display.
+		 * 
+		 * <p>You never have to call this method manually. Instead the parent screen
+		 * calls it automatically when the screen is being opened.</p>
+		 */
+		internal function init():void
+		{
+			createChildren();
+			addChildren();
+			addListeners();
 		}
 		
 		

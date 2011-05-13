@@ -28,7 +28,7 @@
 package extra.tbs.state
 {
 	import base.state.State;
-	import base.view.screen.BaseScreen;
+	import base.view.Screen;
 	
 	
 	/**
@@ -82,7 +82,7 @@ package extra.tbs.state
 		/**
 		 * @inheritDoc
 		 */
-		override protected function onScreenOpened(screen:BaseScreen):void
+		override protected function onScreenOpened(screen:Screen):void
 		{
 		}
 		

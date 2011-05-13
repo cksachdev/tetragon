@@ -25,7 +25,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.view.screen
+package base.view
 {
 	import base.Main;
 	import base.core.debug.Log;
@@ -51,7 +51,7 @@ package base.view.screen
 		
 		private var _screenContainer:Sprite;
 		private var _screenClasses:Object;
-		private var _currentScreen:BaseScreen;
+		private var _currentScreen:Screen;
 		private var _nextScreen:DisplayObject;
 		private var _openScreenClass:Class;
 		
@@ -148,9 +148,9 @@ package base.view.screen
 			}
 			
 			var screen:DisplayObject = new screenClass();
-			if (screen is BaseScreen)
+			if (screen is Screen)
 			{
-				var bs:BaseScreen = BaseScreen(screen);
+				var bs:Screen = Screen(screen);
 				
 				_isSwitching = true;
 				_isAutoStart = autoStart;
@@ -173,7 +173,7 @@ package base.view.screen
 			}
 			else
 			{
-				Log.fatal("Tried to open a screen that is not of type BaseScreen (" + screenClass
+				Log.fatal("Tried to open a screen that is not of type Screen (" + screenClass
 					+ ").", this);
 			}
 		}
@@ -255,7 +255,7 @@ package base.view.screen
 		/**
 		 * Returns the currently opened screen.
 		 */
-		public function get currentScreen():BaseScreen
+		public function get currentScreen():Screen
 		{
 			return _currentScreen;
 		}
@@ -382,7 +382,7 @@ package base.view.screen
 		{
 			Log.debug("Closed " + _currentScreen.toString(), this);
 			
-			var oldScreen:BaseScreen = _currentScreen;
+			var oldScreen:Screen = _currentScreen;
 			_screenContainer.removeChild(_currentScreen);
 			_currentScreen.close();
 			screenClosedSignal.dispatch(oldScreen);
@@ -429,7 +429,7 @@ package base.view.screen
 			{
 				setTimeout(function():void
 				{
-					_currentScreen = BaseScreen(_nextScreen);
+					_currentScreen = Screen(_nextScreen);
 					_currentScreen.openedSignal.add(onScreenOpened);
 					_currentScreen.open();
 				}, _screenOpenDelay * 1000);

@@ -29,14 +29,12 @@ package extra.game.view.display
 {
 	import base.Main;
 	import base.command.env.ToggleFullscreenCommand;
-	import base.view.display.Display;
+	import base.view.Display;
 
 	import extra.game.render.tile.TileMap;
 	import extra.game.render.tile.TileMapGenerator;
 	import extra.game.render.tile.TileScroller;
 	import extra.game.render.tile.TileSet;
-
-	import com.hexagonstar.util.display.StageReference;
 
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
@@ -74,55 +72,12 @@ package extra.game.view.display
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Constructor
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Creates a new TestDisplay instance.
-		 */
-		public function TileScrollDisplay()
-		{
-			super();
-		}
-
-		
-		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function start():void
-		{
-			super.start();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
 		override public function stop():void
 		{
-			super.stop();
 			_tileScroller.stop();
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function reset():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function dispose():void
-		{
-			super.dispose();
 		}
 		
 		
@@ -296,9 +251,6 @@ package extra.game.view.display
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function createChildren():void
 		{
 			var w:int = VIEWPORT_SIZES[_currentVPSize]["w"];
@@ -309,9 +261,6 @@ package extra.game.view.display
 		}
 		
 		
-		/**
-		 * @private
-		 */
 		private function createTilemap(mapType:int, sizeRange:int = 0):void
 		{
 			
@@ -325,86 +274,31 @@ package extra.game.view.display
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function addChildren():void
 		{
 			addChild(_tileScroller);
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function enableChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function disableChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function pauseChildren():void
 		{
 			_tileScroller.paused = true;
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function unpauseChildren():void
 		{
 			_tileScroller.paused = false;
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function addListeners():void
 		{
-			StageReference.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-			StageReference.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			main.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			main.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function removeListeners():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function updateDisplayText():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function layoutChildren():void
-		{
-		}
-		
-		
-		/**
-		 * @private
-		 */
 		private function resizeViewport(inc:Boolean):void
 		{
 			var w:int;
@@ -438,9 +332,6 @@ package extra.game.view.display
 		}
 		
 		
-		/**
-		 * @private
-		 */
 		private function switchEdgeMode():void
 		{
 			if (_tileScroller.edgeMode == TileScroller.EDGE_MODE_OFF)

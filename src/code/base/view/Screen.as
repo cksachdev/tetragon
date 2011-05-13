@@ -25,16 +25,14 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.view.screen
+package base.view
 {
-	import base.view.display.Display;
-
 	import com.hexagonstar.signals.Signal;
 	import com.hexagonstar.util.display.StageReference;
 
 	import flash.display.DisplayObject;
 	import flash.events.Event;
-
+	
 	
 	/**
 	 * Abstract base class for screens.
@@ -56,7 +54,7 @@ package base.view.screen
 	 * @see base.view.display.Display
 	 * @see base.view.screen.ScreenManager
 	 */
-	public class BaseScreen extends Display
+	public class Screen extends Display
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -74,7 +72,6 @@ package base.view.screen
 		
 		/**
 		 * Signal that is broadcasted when the screen has been opened and is ready for use.
-		 * @private
 		 */
 		public var openedSignal:Signal;
 		
@@ -84,9 +81,9 @@ package base.view.screen
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Creates a new AbstractScreen instance.
+		 * Creates a new Screen instance.
 		 */
-		public function BaseScreen()
+		public function Screen()
 		{
 			super();
 			openedSignal = new Signal();
@@ -100,29 +97,17 @@ package base.view.screen
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Not used by screen classes!
-		 */
-		override public final function init():void
-		{
-		}
-		
-		
-		/**
-		 * Opens the screen. You normally don't call this method manually. Instead
-		 * the screen manager calls it when the screen is requested to be opened.
-		 */
-		public function open():void
-		{
-			executeOnDisplays("init");
-			addChildren();
-			addListeners();
-			/* Wait one frame before showing the screen. */
-			addEventListener(Event.ENTER_FRAME, onFramePassed);
-		}
-		
-		
-		/**
-		 * Starts the screen
+		 * Starts the screen after it has been opened. You normally don't call this method
+		 * manually. Instead the screen manager calls it automatically when the screen is
+		 * being requested to start.
+		 * 
+		 * <p>You don't need to override this method unless you have any custom objects in
+		 * your screen that need starting. All registered displays of the screen are
+		 * started automatically when the screen is started.</p>
+		 * 
+		 * <p>If you override this method make sure to call <code>super.start()</code> at
+		 * either the beginning or the end of your overriden method, otherwise registered
+		 * displays will not be started.</p>
 		 */
 		override public function start():void
 		{
@@ -131,17 +116,29 @@ package base.view.screen
 		
 		
 		/**
-		 * @inheritDoc
+		 * Updates the screen. This method is called automatically by the screen manager
+		 * before the screen is started and whenever the updateScreen() method is called
+		 * in the screen manager. A call to this method updates all registered child
+		 * displays.
+		 * 
+		 * <p>If you override this method make sure to call <code>super.update()</code> at
+		 * the beginning of your overriden method, otherwise registered displays will not
+		 * be updated.</p>
 		 */
 		override public function update():void
 		{
 			executeOnDisplays("update");
-			super.update();
+			layoutChildren();
 		}
 		
 		
 		/**
-		 * @inheritDoc
+		 * Resets the screen anmd all of it's registered child displays. Can be used to
+		 * reset any display objects into their initial state, position, size etc.
+		 * 
+		 * <p>If you override this method make sure to call <code>super.reset()</code> at
+		 * the beginning of your overriden method, otherwise registered displays will not
+		 * be reset.</p>
 		 */
 		override public function reset():void
 		{
@@ -150,7 +147,13 @@ package base.view.screen
 		
 		
 		/**
-		 * @inheritDoc
+		 * Stops the screen if it has been started. You normally don't call this method
+		 * manually. Instead it is called automatically before the screen is
+		 * being closed by the screen manager.
+		 * 
+		 * <p>If you override this method make sure to call <code>super.stop()</code> at
+		 * the beginning of your overriden method, otherwise registered displays will not
+		 * be stopped.</p>
 		 */
 		override public function stop():void
 		{
@@ -159,17 +162,15 @@ package base.view.screen
 		
 		
 		/**
-		 * Closes the screen.
-		 */
-		public function close():void
-		{
-			stop();
-			dispose();
-		}
-		
-		
-		/**
-		 * @inheritDoc
+		 * Disposes the screen and all it's registered child displays to clean up
+		 * resources that are no longer needed. A call to this method removes any
+		 * event/signal listeners.
+		 * 
+		 * <p>You normally don't call this method manually. Instead it is called
+		 * automatically when the screen is being closed by the screen manager.</p>
+		 * 
+		 * <p>If you want to override this method make sure to call
+		 * <code>super.dispose()</code> at the start of your overriden dispose method.</p>
 		 */
 		override public function dispose():void
 		{
@@ -203,7 +204,7 @@ package base.view.screen
 		
 		
 		/**
-		 * The displays of the screen.
+		 * A vector containing all child displays that are registered in the screen.
 		 */
 		protected function get displays():Vector.<Display>
 		{
@@ -217,6 +218,43 @@ package base.view.screen
 		protected function get screenManager():ScreenManager
 		{
 			return main.screenManager;
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Internal Methods
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * The init method is not used by screen classes!
+		 */
+		override internal final function init():void
+		{
+		}
+		
+		
+		/**
+		 * Opens the screen. You never have to call this method manually. Instead
+		 * the screen manager calls it when the screen is requested to be opened.
+		 */
+		internal function open():void
+		{
+			executeOnDisplays("init");
+			addChildren();
+			addListeners();
+			/* Wait one frame before showing the screen. */
+			addEventListener(Event.ENTER_FRAME, onFramePassed);
+		}
+		
+		
+		/**
+		 * Closes the screen. You never have to call this method manually. Instead
+		 * the screen manager calls it when the screen is requested to be closed.
+		 */
+		internal function close():void
+		{
+			stop();
+			dispose();
 		}
 		
 		
@@ -280,22 +318,6 @@ package base.view.screen
 		
 		
 		/**
-		 * Registers a Display for use with the screen. This doesn't add the display to
-		 * the display list but 'registers' it for use with the screen. Displays that are
-		 * registered with the screen have several methods and setters automatically
-		 * called if these methods are called on the screen.
-		 * 
-		 * @param display The display instance to register.
-		 */
-		protected function registerDisplay(display:Display):void
-		{
-			if (!_displays) _displays = new Vector.<Display>();
-			display.screen = this;
-			_displays.push(display);
-		}
-		
-		
-		/**
 		 * Used to add all display children to the display list of the screen. By default
 		 * this method will automatically add all registered displays to the display list
 		 * in the same order they were registered. You can override this method if you
@@ -315,12 +337,40 @@ package base.view.screen
 		
 		
 		/**
-		 * Calls a method on all registered displays of the screen.
+		 * Registers a Display for use with the screen. This doesn't add the display to
+		 * the display list but 'registers' it for use with the screen. Displays that are
+		 * registered with the screen have several methods and setters automatically
+		 * called if these methods are called on the screen.
+		 * 
+		 * @param display The display instance to register.
+		 */
+		protected final function registerDisplay(display:Display):void
+		{
+			if (!_displays) _displays = new Vector.<Display>();
+			display.screen = this;
+			_displays.push(display);
+		}
+		
+		
+		/**
+		 * updateDisplayText is never used for screen classes! Put any display text
+		 * into child displays that are registered with the screen.
+		 */
+		override protected final function updateDisplayText():void
+		{
+		}
+		
+		
+		/**
+		 * Calls a method on all registered displays of the screen. Used by many
+		 * default methods of the screen to delegate execution to child displays.
+		 * Execution is always delegated to child displays in the same order in
+		 * that they were registered in <code>registerDisplays()</code>.
 		 * 
 		 * @param func The function that should be called on the display.
 		 * @param value An optional value used when calling setters.
 		 */
-		private function executeOnDisplays(func:String, value:* = null):void
+		private final function executeOnDisplays(func:String, value:* = null):void
 		{
 			if (!_displays) return;
 			var len:uint = _displays.length;

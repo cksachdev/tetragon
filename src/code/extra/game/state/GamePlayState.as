@@ -30,10 +30,7 @@ package extra.game.state
 	import base.state.State;
 	
 	
-	/**
-	 * GameState class
-	 */
-	public class GameState extends State
+	public class GamePlayState extends State
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -47,7 +44,7 @@ package extra.game.state
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function GameState()
+		public function GamePlayState()
 		{
 			super();
 		}

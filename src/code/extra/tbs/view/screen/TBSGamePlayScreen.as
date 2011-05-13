@@ -27,7 +27,7 @@
  */
 package extra.tbs.view.screen
 {
-	import base.view.screen.BaseScreen;
+	import base.view.Screen;
 
 	import extra.tbs.view.display.TBSPlayfieldDisplay;
 
@@ -37,7 +37,7 @@ package extra.tbs.view.screen
 	/**
 	 * Gameplay screen for turn-based strategy games.
 	 */
-	public class TBSGamePlayScreen extends BaseScreen
+	public class TBSGamePlayScreen extends Screen
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -47,25 +47,9 @@ package extra.tbs.view.screen
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Public Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function start():void
-		{
-			super.start();
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @private
-		 */
 		private function onStageResize(e:Event):void
 		{
 			layoutChildren();
@@ -76,56 +60,33 @@ package extra.tbs.view.screen
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function createChildren():void
 		{
 			_playfieldDisplay = new TBSPlayfieldDisplay();
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function registerDisplays():void
 		{
 			registerDisplay(_playfieldDisplay);
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function addChildren():void 
 		{
 			addChild(_playfieldDisplay);
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function addListeners():void
 		{
 			main.stage.addEventListener(Event.RESIZE, onStageResize);
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
 		override protected function removeListeners():void
 		{
 			main.stage.removeEventListener(Event.RESIZE, onStageResize);
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override protected function layoutChildren():void
-		{
 		}
 	}
 }

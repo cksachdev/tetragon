@@ -28,7 +28,7 @@
 package base.state
 {
 	import base.data.Registry;
-	import base.view.screen.BaseScreen;
+	import base.view.Screen;
 
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -41,7 +41,8 @@ package base.state
 	
 	
 	/**
-	 * SplashState class
+	 * A state that represents the application part during that the splash screen is
+	 * being displayed.
 	 */
 	public class SplashState extends State
 	{
@@ -66,18 +67,10 @@ package base.state
 		}
 		
 		
-		override public function update():void
-		{
-		}
-		
-		
 		override public function stop():void
 		{
 			_timer.stop();
-			if (_tetragonLogoSoundChannel)
-			{
-				_tetragonLogoSoundChannel.stop();
-			}
+			if (_tetragonLogoSoundChannel) _tetragonLogoSoundChannel.stop();
 		}
 		
 		
@@ -95,14 +88,11 @@ package base.state
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
 		
-		override protected function onScreenOpened(screen:BaseScreen):void
+		override protected function onScreenOpened(screen:Screen):void
 		{
 			_timer.start();
 			var sound:Sound = getResource("audioLogoTetragon");
-			if (sound)
-			{
-				_tetragonLogoSoundChannel = sound.play();
-			}
+			if (sound) _tetragonLogoSoundChannel = sound.play();
 		}
 		
 		
@@ -138,19 +128,15 @@ package base.state
 		
 		override protected function setup():void
 		{
-			_allowSplashAbort = Registry.settings.getSettings("allowSplashAbort");
-			_splashScreenWaitTime = Registry.settings.getSettings("splashScreenWaitTime");
-			_initialStateID = Registry.settings.getSettings("initialStateID");
-			
-			if(_splashScreenWaitTime < 1)
-			{
-				_splashScreenWaitTime = 6;
-			}
-			
-			_timer = new Timer(_splashScreenWaitTime * 1000, 1);
-			
 			/* Hide mouse during splash state if fullscreen. */
 			if (main.isFullscreen) Mouse.hide();
+			
+			_initialStateID = Registry.settings.getSettings("initialStateID");
+			_allowSplashAbort = Registry.settings.getSettings("allowSplashAbort");
+			_splashScreenWaitTime = Registry.settings.getSettings("splashScreenWaitTime");
+			if (_splashScreenWaitTime < 1) _splashScreenWaitTime = 6;
+			
+			_timer = new Timer(_splashScreenWaitTime * 1000, 1);
 		}
 		
 		
