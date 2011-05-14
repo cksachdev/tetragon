@@ -48,7 +48,7 @@ package base.view.loadprogressbar
 		protected var _loadProgressBar:LoadProgressBar;
 		protected var _factor:Number;
 		protected var _percentage:Number;
-		protected var _isPercentageFull:Boolean = false;
+		protected var _isComplete:Boolean;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -60,18 +60,24 @@ package base.view.loadprogressbar
 			_factor = _loadProgressBar.bar.width / 100;
 			_percentage = 0;
 			_loadProgressBar.bar.width = 1;
+			_isComplete = false;
 		}
 		
 		
 		override public function update(e:ResourceEvent):void
 		{
+			if (_isComplete) return;
+			
 			_percentage = e.bytesLoaded / e.bytesTotal * 100;
 			_loadProgressBar.bar.width = _percentage * _factor;
 			
-			if (_percentage == 100 && !_isPercentageFull && waitForUserInput)
+			if (_percentage == 100)
 			{
-				_isPercentageFull = true;
-				StageReference.stage.addEventListener(MouseEvent.CLICK, onMouseClick);
+				_isComplete = true;
+				if (waitForUserInput)
+				{
+					StageReference.stage.addEventListener(MouseEvent.CLICK, onMouseClick);
+				}
 			}
 		}
 		
@@ -110,6 +116,7 @@ package base.view.loadprogressbar
 		
 		private function onMouseClick(e:MouseEvent):void
 		{
+			e.preventDefault();
 			StageReference.stage.removeEventListener(MouseEvent.CLICK, onMouseClick);
 			userInputSignal.dispatch();
 		}

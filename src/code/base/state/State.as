@@ -34,6 +34,7 @@ package base.state
 	import base.view.Screen;
 	import base.view.ScreenManager;
 	import base.view.loadprogressbar.BasicLoadProgressDisplay;
+	import base.view.loadprogressbar.LoadProgressDisplay;
 
 	import com.hexagonstar.signals.Signal;
 	import com.hexagonstar.util.reflection.getClassName;
@@ -196,7 +197,7 @@ package base.state
 		/**
 		 * Creates and returns a new load progress display for use with the state.
 		 */
-		public function get loadProgressDisplay():BasicLoadProgressDisplay
+		public function get loadProgressDisplay():LoadProgressDisplay
 		{
 			return new BasicLoadProgressDisplay();
 		}

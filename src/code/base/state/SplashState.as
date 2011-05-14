@@ -29,7 +29,8 @@ package base.state
 {
 	import base.data.Registry;
 	import base.view.Screen;
-	import base.view.loadprogressbar.BasicLoadProgressDisplay;
+	import base.view.loadprogressbar.LoadProgressDisplay;
+
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
@@ -79,7 +80,7 @@ package base.state
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
-		override public function get loadProgressDisplay():BasicLoadProgressDisplay
+		override public function get loadProgressDisplay():LoadProgressDisplay
 		{
 			return null;
 		}

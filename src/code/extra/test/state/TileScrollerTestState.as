@@ -29,6 +29,8 @@ package extra.test.state
 {
 	import base.state.State;
 	import base.view.Screen;
+	import base.view.loadprogressbar.DebugLoadProgressDisplay;
+	import base.view.loadprogressbar.LoadProgressDisplay;
 
 	import flash.events.Event;
 	
@@ -66,6 +68,16 @@ package extra.test.state
 		
 		private function onUserInput(e:Event):void
 		{
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Accessors
+		//-----------------------------------------------------------------------------------------
+		
+		override public function get loadProgressDisplay():LoadProgressDisplay
+		{
+			return new DebugLoadProgressDisplay();
 		}
 		
 		
