@@ -322,17 +322,6 @@ package base.view
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
 		
-//		private function onScreenProgress(e:ResourceEvent):void
-//		{
-//			if (!_loadProgressDisplay) return;
-//			
-//			/* If we got more than four resources use file count rather than bytes. Not really
-//			 * a good indicator but does the job for now, besides bytesLoaded is still buggy. */
-//			if (e.totalCount > 3) _loadProgressDisplay.update(e.currentCount, e.totalCount);
-//			else _loadProgressDisplay.update(e.bytesLoaded, e.bytesTotal);
-//		}
-		
-		
 		private function onScreenOpened():void
 		{
 			if (!_currentScreen)
@@ -392,11 +381,11 @@ package base.view
 		
 		private function onTweenOutComplete():void
 		{
-			Log.debug("Closed " + _currentScreen.toString(), this);
-			
 			var oldScreen:Screen = _currentScreen;
 			_screenContainer.removeChild(_currentScreen);
 			_currentScreen.close();
+			Log.debug("Closed " + _currentScreen.toString(), this);
+			_currentScreen = null;
 			screenClosedSignal.dispatch(oldScreen);
 			openNextScreen();
 		}
@@ -437,39 +426,13 @@ package base.view
 		
 		private function openNextScreen():void
 		{
-			if (_nextScreen)
+			if (!_nextScreen) return;
+			setTimeout(function():void
 			{
-				setTimeout(function():void
-				{
-					_currentScreen = Screen(_nextScreen);
-					_currentScreen.openedSignal.add(onScreenOpened);
-					_currentScreen.open();
-				}, _screenOpenDelay * 1000);
-			}
+				_currentScreen = Screen(_nextScreen);
+				_currentScreen.openedSignal.add(onScreenOpened);
+				_currentScreen.open();
+			}, _screenOpenDelay * 1000);
 		}
-		
-		
-//		private function addLoadProgressDisplay():void
-//		{
-//			if (!_showLoadProgress) return;
-//			_loadProgressDisplay = new LoadProgressDisplay();
-//			_loadProgressDisplay.x = StageReference.hCenter - (_loadProgressDisplay.width * 0.5);
-//			_loadProgressDisplay.y = StageReference.vCenter - (_loadProgressDisplay.height * 0.5);
-//			_loadProgressDisplay.alpha = 0;
-//			_screenContainer.addChild(_loadProgressDisplay);
-//			TweenLite.to(_loadProgressDisplay, 0.6, {alpha: 1.0});
-//		}
-//		
-//		
-//		private function removeLoadProgressDisplay():void
-//		{
-//			if (!_loadProgressDisplay) return;
-//			_screenContainer.swapChildren(_screen, _loadProgressDisplay);
-//			TweenLite.to(_loadProgressDisplay, 1.0, {alpha: 0.0, onComplete: function():void
-//			{
-//				_screenContainer.removeChild(_loadProgressDisplay);
-//				_loadProgressDisplay = null;
-//			}});
-//		}
 	}
 }

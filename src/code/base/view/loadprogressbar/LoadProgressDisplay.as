@@ -25,27 +25,23 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.view
+package base.view.loadprogressbar
 {
+	import base.event.ResourceEvent;
+
 	import com.hexagonstar.signals.Signal;
 
 	import flash.display.Sprite;
 	
 	
 	/**
-	 * A simple progress bar that displays the load progress of resources being loaded
-	 * for the displays of a screen. The LoadProgressDisplay itself is not of type Display
-	 * and cannot load resources for itself. It's only purpose is to show load progress.
+	 * Abstract base class for load progress display classes.
 	 */
 	public class LoadProgressDisplay extends Sprite
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
-		
-		protected var _loadProgressBar:LoadProgressBar;
-		protected var _factor:Number;
-		protected var _percentage:Number;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -65,7 +61,7 @@ package base.view
 		public function LoadProgressDisplay()
 		{
 			super();
-			if (waitAfterLoad) userInputSignal = new Signal();
+			if (waitForUserInput) userInputSignal = new Signal();
 			setup();
 			reset();
 		}
@@ -76,26 +72,32 @@ package base.view
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Resets the load progress bar.
+		 * Resets the load progress display.
 		 */
 		public function reset():void
 		{
-			_factor = _loadProgressBar.bar.width / 100;
-			_percentage = 0;
-			_loadProgressBar.bar.width = 1;
+			/* Abstract method! */
 		}
 		
 		
 		/**
 		 * Updates the load progress bar.
-		 * 
-		 * @param loaded Value of data that has already been loaded.
-		 * @param total Value of total data to be loaded.
 		 */
-		public function update(loaded:uint , total:uint):void
+		public function update(e:ResourceEvent):void
 		{
-			_percentage = loaded / total * 100;
-			_loadProgressBar.bar.width = _percentage * _factor;
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Disposes the class.
+		 */
+		public function dispose():void
+		{
+			if (userInputSignal)
+			{
+				userInputSignal.removeAll();
+			}
 		}
 		
 		
@@ -103,7 +105,21 @@ package base.view
 		// Accessors
 		//-----------------------------------------------------------------------------------------
 		
-		public function get waitAfterLoad():Boolean
+		public function get closeScreenBeforeLoad():Boolean
+		{
+			return false;
+		}
+		
+		
+		/**
+		 * Determines whether the load progress display should wait for user input before
+		 * continuing after the loading completed. You can set this property to return true
+		 * in your sub-class if you want the progress display to wait for user input after
+		 * loading has finished.
+		 * 
+		 * @default <code>false</code>
+		 */
+		public function get waitForUserInput():Boolean
 		{
 			return false;
 		}
@@ -114,15 +130,11 @@ package base.view
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @private
+		 * 
 		 */
 		protected function setup():void
 		{
-			_loadProgressBar = new LoadProgressBar();
-			addChild(_loadProgressBar);
-			
-			x = 30;
-			y = 30;
+			/* Abstract method! */
 		}
 	}
 }

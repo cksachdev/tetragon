@@ -397,7 +397,7 @@ package base
 			_commandManager = new CommandManager();
 			_resourceManager = new ResourceManager();
 			_screenManager = new ScreenManager();
-			_stateManager = new StateManager(_screenManager.screenContainer);
+			_stateManager = new StateManager();
 			_localSettingsManager = new LocalSettingsManager();
 			_keyManager = new KeyManager();
 			

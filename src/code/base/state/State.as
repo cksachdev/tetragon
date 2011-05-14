@@ -31,12 +31,13 @@ package base.state
 	import base.event.ResourceEvent;
 	import base.io.resource.Resource;
 	import base.io.resource.ResourceManager;
-	import base.view.LoadProgressDisplay;
 	import base.view.Screen;
 	import base.view.ScreenManager;
+	import base.view.loadprogressbar.BasicLoadProgressDisplay;
 
 	import com.hexagonstar.signals.Signal;
 	import com.hexagonstar.util.reflection.getClassName;
+
 	
 	
 	/**
@@ -68,7 +69,7 @@ package base.state
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Signal that is broadcasted after the state has been loaded and entered.
+		 * Signal that is broadcasted after the state has been entered.
 		 */
 		public var enteredSignal:Signal;
 		
@@ -195,9 +196,9 @@ package base.state
 		/**
 		 * Creates and returns a new load progress display for use with the state.
 		 */
-		public function get loadProgressDisplay():LoadProgressDisplay
+		public function get loadProgressDisplay():BasicLoadProgressDisplay
 		{
-			return new LoadProgressDisplay();
+			return new BasicLoadProgressDisplay();
 		}
 		
 		
