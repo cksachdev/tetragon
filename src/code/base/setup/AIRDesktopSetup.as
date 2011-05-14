@@ -37,6 +37,7 @@ package base.setup
 
 	import flash.desktop.NativeApplication;
 	import flash.display.NativeWindow;
+	import flash.display.Stage;
 	
 	
 	/**
@@ -90,14 +91,13 @@ package base.setup
 		 */
 		override public function finalSetup():void
 		{
+			var stage:Stage = main.contextView.stage;
+			
 			/* Only create new assistor if it's not already existing! */
 			if (!main.assistor)
 			{
 				main.assistor = new AIRDesktopAssistor();
 			}
-			
-			/* recall app window bounds */
-			WindowBoundsManager.instance.recallWindowBounds(main.baseWindow, "base");
 			
 			/* Register desktop-specific CLI commands if we have the Console available. */
 			if (main.console && main.console.cli)
@@ -105,6 +105,13 @@ package base.setup
 				new CLICommandRegistryDesktop(main);
 			}
 			
+			/* Correct stage dimensions which might be wrong due to system chrome. */
+			windowBoundsManager.calculateWindowChromeExtra();
+			
+			/* Recall app window bounds. */
+			windowBoundsManager.recallWindowBounds(main.baseWindow, "base");
+			
+			/* Check if we want to start in fullscreen mode. */
 			if (Registry.config.startWithFullscreen && !main.isFullscreen)
 			{
 				main.commandManager.execute(new ToggleFullscreenCommand());
@@ -113,8 +120,8 @@ package base.setup
 			/* Make application visible. */
 			if (NativeWindow.isSupported)
 			{
-				main.contextView.stage.nativeWindow.visible = true;
-				main.contextView.stage.nativeWindow.activate();
+				stage.nativeWindow.visible = true;
+				stage.nativeWindow.activate();
 			}
 			
 			if (Registry.config.updateEnabled)
@@ -137,6 +144,12 @@ package base.setup
 		override public function get name():String
 		{
 			return "desktop";
+		}
+		
+		
+		protected function get windowBoundsManager():WindowBoundsManager
+		{
+			return WindowBoundsManager.instance;
 		}
 		
 		

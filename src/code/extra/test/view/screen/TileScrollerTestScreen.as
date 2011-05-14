@@ -83,7 +83,7 @@ package extra.test.view.screen
 		{
 			_infoDisplay.x = 0;
 			_infoDisplay.y = 0;
-			_scrollDisplay.x = ((main.stage.stageWidth + _infoDisplay.width) * 0.5) - (_scrollDisplay.tileScroller.viewportWidth * 0.5);
+			_scrollDisplay.x = _infoDisplay.width + ((main.stage.stageWidth - _infoDisplay.width) * 0.5) - (_scrollDisplay.tileScroller.viewportWidth * 0.5);
 			_scrollDisplay.y = (main.stage.stageHeight * 0.5) - (_scrollDisplay.tileScroller.viewportHeight * 0.5);
 		}
 	}

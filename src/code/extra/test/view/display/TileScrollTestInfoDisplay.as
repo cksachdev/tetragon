@@ -142,7 +142,7 @@ package extra.test.view.display
 				+ "";
 			
 			graphics.beginFill(0x4F449D, 1.0);
-			graphics.drawRect(0, 0, 180, main.stage.stageHeight);
+			graphics.drawRect(0, 0, 192, main.stage.stageHeight);
 			graphics.endFill();
 		}
 		
@@ -158,7 +158,7 @@ package extra.test.view.display
 		{
 			_infoTF.x = 5;
 			_infoTF.y = 5;
-			_infoTF.width = 170;
+			_infoTF.width = 182;
 			_infoTF.height = 330;
 			_helpTF.x = _infoTF.x;
 			_helpTF.y = _infoTF.y + _infoTF.height + 10;

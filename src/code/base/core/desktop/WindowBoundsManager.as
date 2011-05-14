@@ -36,6 +36,7 @@ package base.core.desktop
 
 	import flash.display.NativeWindow;
 	import flash.display.Screen;
+	import flash.geom.Rectangle;
 	
 	
 	/**
@@ -68,6 +69,10 @@ package base.core.desktop
 		private var _screenWidth:int = 0;
 		/** @private */
 		private var _screenHeight:int = 0;
+		/** @private */
+		private var _windowChromeExtraWidth:int = -1;
+		/** @private */
+		private var _windowChromeExtraHeight:int = -1;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -100,8 +105,8 @@ package base.core.desktop
 			var wb:WindowBounds = new WindowBounds();
 			wb.x = window.bounds.topLeft.x;
 			wb.y = window.bounds.topLeft.y;
-			wb.width = window.bounds.bottomRight.x - wb.x;
-			wb.height = window.bounds.bottomRight.y - wb.y;
+			wb.width = window.bounds.bottomRight.x - wb.x - _windowChromeExtraWidth;
+			wb.height = window.bounds.bottomRight.y - wb.y - _windowChromeExtraHeight;
 			
 			/* Only store size and position if we're not in fullscreen! */
 			if (!fs) _settingsManager.put(windowID, wb);
@@ -109,9 +114,9 @@ package base.core.desktop
 			_settingsManager.put(FULLSCREEN, fs);
 			_settingsManager.store();
 			
-			//Log.debug(toString() + " Window bounds stored for \"" + windowID + "\" (x=" + wb.x
-			//	+ " y=" + wb.y + " width=" + wb.width + " height=" + wb.height + " fullscreen="
-			//	+ fs + ").");
+			Log.debug(toString() + " Window bounds stored for \"" + windowID + "\" (x=" + wb.x
+				+ " y=" + wb.y + " width=" + wb.width + " height=" + wb.height + " fullscreen="
+				+ fs + ").");
 		}
 		
 		
@@ -122,16 +127,25 @@ package base.core.desktop
 		{
 			if (!window || !windowID || windowID.length < 1) return null;
 			var o:Object = _settingsManager.recall(windowID);
+			var wb:WindowBounds = new WindowBounds();
 			if (o)
 			{
-				var wb:WindowBounds = new WindowBounds();
 				wb.x = window.x = o["x"];
 				wb.y = window.y = o["y"];
 				wb.width = window.width = o["width"];
 				wb.height = window.height = o["height"];
-				return wb;
 			}
-			return null;
+			else
+			{
+				wb.x = window.x;
+				wb.y = window.y;
+				wb.width = window.width;
+				wb.height = window.height;
+			}
+			_main.stage.stageWidth = wb.width;
+			_main.stage.stageHeight = wb.height;
+			_main.stage.fullScreenSourceRect = new Rectangle(0, 0, wb.width, wb.height);
+			return wb;
 		}
 		
 		
@@ -142,9 +156,9 @@ package base.core.desktop
 		{
 			updateScreenResolution();
 			
-			var w:NativeWindow = Main.instance.baseWindow;
-			w.width = AppInfo.DEFAULT_WIDTH;
-			w.height = AppInfo.DEFAULT_HEIGHT;
+			var w:NativeWindow = nativeWindow;
+			w.width = AppInfo.DEFAULT_WIDTH + _windowChromeExtraWidth;
+			w.height = AppInfo.DEFAULT_HEIGHT + _windowChromeExtraHeight;
 			
 			/* If no window position has been stored yet (e.g. on first launch)
 			 * let's either set position to 0 (if screen is smaller than window)
@@ -156,6 +170,21 @@ package base.core.desktop
 			
 			Log.debug(toString() + " Reset base window bounds to x=" + w.x + " y=" + w.y
 				+ ", width=" + w.width + " height=" + w.height);
+		}
+		
+		
+		/**
+		 * Calculate the extra width and height of the system window's chrome.
+		 */
+		public function calculateWindowChromeExtra():void
+		{
+			if (_windowChromeExtraWidth < 0 && _windowChromeExtraHeight < 0)
+			{
+				var sw:int = _main.stage.stageWidth;
+				var sh:int = _main.stage.stageHeight;
+				_windowChromeExtraWidth = AppInfo.DEFAULT_WIDTH - sw;
+				_windowChromeExtraHeight = AppInfo.DEFAULT_HEIGHT - sh;
+			}
 		}
 		
 		
@@ -189,15 +218,31 @@ package base.core.desktop
 		}
 		
 		
+		/**
+		 * Returns a reference to the nativeWindow.
+		 */
+		public function get nativeWindow():NativeWindow
+		{
+			return _main.stage.nativeWindow;
+		}
+		
+		
 		public function get fullscreen():Boolean
 		{
 			return Boolean(_settingsManager.recall(FULLSCREEN));
 		}
 		
 		
-		//-----------------------------------------------------------------------------------------
-		// Event Handlers
-		//-----------------------------------------------------------------------------------------
+		public function get windowChromeExtraWidth():int
+		{
+			return _windowChromeExtraWidth;
+		}
+		
+		
+		public function get windowChromeExtraHeight():int
+		{
+			return _windowChromeExtraHeight;
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------
