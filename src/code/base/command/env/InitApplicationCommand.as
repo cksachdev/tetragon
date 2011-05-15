@@ -29,6 +29,7 @@ package base.command.env
 {
 	import base.AppInfo;
 	import base.AppResourceBundle;
+	import base.AppSetups;
 	import base.command.CLICommand;
 	import base.core.debug.Console;
 	import base.core.debug.Log;
@@ -38,16 +39,8 @@ package base.command.env
 	import base.io.resource.ResourceIndex;
 	import base.io.resource.ResourceManager;
 	import base.io.resource.ResourceStatus;
-	import base.setup.AIRAndroidSetup;
-	import base.setup.AIRDesktopSetup;
-	import base.setup.AIRIOSSetup;
 	import base.setup.BaseSetup;
 	import base.setup.Setup;
-
-	import extra.demo.setup.*;
-	import extra.game.setup.*;
-	import extra.rpg.setup.*;
-	import extra.tbs.setup.*;
 
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
@@ -89,17 +82,7 @@ package base.command.env
 			Log.init();
 			Log.info("Initializing...", this);
 			
-			_setups = new Vector.<Setup>();
-			/* Add base setup ... */
-			_setups.push(new BaseSetup());
-			
-			addSetups();
-			
-			var s:String = "Used setups: ";
-			for (var i:int = 0; i < _setups.length; i++)
-				s += _setups[i].name + ", ";
-			Log.debug(s.substr(0, s.length - 2), this);
-			
+			createSetups();
 			initialSetup();
 			loadApplicationConfig();
 		}
@@ -206,52 +189,39 @@ package base.command.env
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * You can add any additional setups for extra code branches here that should
-		 * be included in the application via compile-time constants. To do this you
-		 * define a new compile-time constant named 'EXTRA_YOUREXTRANAME' which needs
-		 * to be added to the build script.
-		 * 
-		 * IMPORTANT: When adding new setups make sure that it's import is not defined
-		 * explicitly but rather with a star (e.g. import extra.game.setup.*;) or the
-		 * compiler will still force-compile the setup class even if it isn't needed.
-		 * 
 		 * @private
 		 */
-		private function addSetups():void
+		private function createSetups():void
 		{
-			/* Add Desktop-specific setup if this is an AIR Desktop build. */
-			CONFIG::IS_DESKTOP_BUILD
+			var i:uint;
+			_setups = new Vector.<Setup>();
+			/* Add base setup ... */
+			_setups.push(new BaseSetup());
+			/* Add any additional setups that are listed in AppSetups ... */
+			var a:Array = new AppSetups().setups;
+			for (i = 0; i < a.length; i++)
 			{
-				_setups.push(new AIRDesktopSetup());
-			}
-			/* Add Android-specific setup if this is an AIR Android build. */
-			CONFIG::IS_ANDROID_BUILD
-			{
-				_setups.push(new AIRAndroidSetup());
-			}
-			/* Add iOS-specific setup if this is an AIR iOS build. */
-			CONFIG::IS_IOS_BUILD
-			{
-				_setups.push(new AIRIOSSetup());
+				var clazz:Class = a[i];
+				if (clazz)
+				{
+					var setup:* = new clazz();
+					if (setup is Setup)
+					{
+						_setups.push(setup);
+					}
+					else
+					{
+						Log.fatal("setup \"" + setup + "\" is not of type Setup!", this);
+					}
+				}
 			}
 			
-			/* You can add setups for extra code branches here if needed. */
- 			CONFIG::EXTRA_GAME
+			var s:String = "Used setups: ";
+			for (i = 0; i < _setups.length; i++)
 			{
-				_setups.push(new GameSetup());
+				s += _setups[i].name + ", ";
 			}
- 			CONFIG::EXTRA_RPG
-			{
-				_setups.push(new RPGSetup());
-			}
- 			CONFIG::EXTRA_TBS
-			{
-				_setups.push(new TBSSetup());
-			}
- 			CONFIG::EXTRA_DEMO
-			{
-				_setups.push(new DemoSetup());
-			}
+			Log.debug(s.substr(0, s.length - 2), this);
 		}
 		
 		

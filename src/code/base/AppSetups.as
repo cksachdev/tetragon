@@ -27,31 +27,49 @@
  */
 package base
 {
+	import base.setup.*;
+
+	import extra.demo.setup.DemoSetup;
+	import extra.game.setup.GameSetup;
+	import extra.rpg.setup.RPGSetup;
+	import extra.tbs.setup.TBSSetup;
+	
+	
 	/**
-	 * AppInfo
-	 * Ant auto-generated application information class. Do not edit!
+	 * An auto-generated class that contains a list of setups which are being
+	 * initialized during the application init phase.
+	 * 
+	 * <p>IMPORTANT: Auto-generated class. Do not edit!</p>
 	 */
-	public final class AppInfo
+	public class AppSetups
 	{
-		public static const ID:String				= "com.hexagonstar.tetragon";
-		public static const NAME:String				= "Tetragon Application";
-		public static const DESCRIPTION:String		= "Tetragon Application Test Build";
-		public static const VERSION:String			= "1.0.0";
-		public static const BUILD:String			= "5503";
-		public static const BUILD_DATE:String		= "15-May-2011 14:17";
-		public static const MILESTONE:String		= "foundation";
-		public static const BUILD_TYPE:String		= "desktop";
-		public static const RELEASE_STAGE:String	= "beta";
-		public static const COPYRIGHT:String		= "Hexagon Star Softworks";
-		public static const PUBLISHER:String		= "Hexagon Star Softworks";
-		public static const CREATOR:String			= "Hexagon Star Softworks";
-		public static const CONTRIBUTOR:String		= "Hexagon Star Softworks";
-		public static const YEAR:String				= "2011";
-		public static const WEBSITE:String			= "http://www.hexagonstar.com/";
-		public static const LANGUAGE:String			= "en";
-		public static const FILENAME:String			= "tetragon";
-		public static const DEFAULT_WIDTH:int		= 1024;
-		public static const DEFAULT_HEIGHT:int		= 640;
-		public static const IS_DEBUG:Boolean		= true;
+		//-----------------------------------------------------------------------------------------
+		// Properties
+		//-----------------------------------------------------------------------------------------
+		
+		private var _setups:Array =
+		[
+			AIRDesktopSetup,
+			/*AIRAndroidSetup,*/
+			/*AIRIOSSetup,*/
+			GameSetup,
+			RPGSetup,
+			TBSSetup,
+			DemoSetup,
+		];
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Accessors
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * An array of qualified class names to setup classes that set up additional
+		 * base and extra packages for use with the application.
+		 */
+		public function get setups():Array
+		{
+			return _setups;
+		}
 	}
 }
