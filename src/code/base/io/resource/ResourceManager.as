@@ -142,7 +142,8 @@ package base.io.resource
 			for (n = 0; n < total; n++)
 			{
 				var item:ResourceBulkItem = items[n];
-				var r:Resource = item.resource = _resourceIndex.getResource(item.resourceID);
+				var r:Resource = _resourceIndex.getResource(item.resourceID);
+				item.setResource(r);
 				
 				/* Check if a resource for the specified ID actually exists. */
 				if (!r)
@@ -478,14 +479,41 @@ package base.io.resource
 		 */
 		private function onResourceBulkProgress(e:ResourceEvent):void
 		{
-			var bf:ResourceBulkFile = e.bulkFile;
+//			var bf:ResourceBulkFile = e.bulkFile;
+//			if (!bf) return;
+//			
+//			for (var i:uint = 0; i < bf.items.length; i++)
+//			{
+//				var item:ResourceBulkItem = bf.items[i];
+//				var r:Resource = item.resource;
+//				//notifyProgress(bf.bulk.progressHandler, e);
+//				
+//				/* Call any waiting handlers that might have been
+//				 * added while the resource was loading. */
+//				if (_waitingHandlers[r.id])
+//				{
+//					var a:Array = _waitingHandlers[r.id];
+//					for (var j:uint = 0; j < a.length; j++)
+//					{
+//						//notifyProgress(HandlerVO(a[j]).progressHandler, e);
+//					}
+//				}
+//			}
+		}
+		
+		
+		private function onResourceBulkProgress2(stats:ResourceBulkStats):void
+		{
+			//Debug.trace(">>> PROGRESS: " + stats.currentFilePath + " (" + stats.currentFileBytesLoaded + "/" + stats.currentFileBytesTotal + ")");
+			
+			var bf:ResourceBulkFile = stats.currentBulkFile;
 			if (!bf) return;
 			
 			for (var i:uint = 0; i < bf.items.length; i++)
 			{
 				var item:ResourceBulkItem = bf.items[i];
 				var r:Resource = item.resource;
-				notifyProgress(bf.bulk.progressHandler, e);
+				notifyProgress(bf.bulk.progressHandler, stats);
 				
 				/* Call any waiting handlers that might have been
 				 * added while the resource was loading. */
@@ -494,7 +522,7 @@ package base.io.resource
 					var a:Array = _waitingHandlers[r.id];
 					for (var j:uint = 0; j < a.length; j++)
 					{
-						notifyProgress(HandlerVO(a[j]).progressHandler, e);
+						notifyProgress(HandlerVO(a[j]).progressHandler, stats);
 					}
 				}
 			}
@@ -601,6 +629,7 @@ package base.io.resource
 				p.addEventListener(ResourceEvent.FILE_LOADED, onResourceFileLoaded);
 				p.addEventListener(ResourceEvent.BULK_LOADED, onResourceBulkLoaded);
 				p.addEventListener(ResourceEvent.BULK_PROGRESS, onResourceBulkProgress);
+				p.progressSignal.add(onResourceBulkProgress2);
 			}
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
@@ -629,11 +658,11 @@ package base.io.resource
 		
 		/**
 		 * @param progressHandler
-		 * @param e
+		 * @param s
 		 */
-		private function notifyProgress(progressHandler:Function, e:ResourceEvent):void
+		private function notifyProgress(progressHandler:Function, s:ResourceBulkStats):void
 		{
-			if (progressHandler != null) progressHandler(e);
+			if (progressHandler != null) progressHandler(s);
 		}
 		
 		

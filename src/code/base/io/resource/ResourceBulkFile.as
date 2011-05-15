@@ -39,11 +39,12 @@ package base.io.resource
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		public var id:String;
-		public var path:String;
-		public var resourceFamily:String;
-		public var resourceType:String;
-		
+		private var _id:String;
+		private var _path:String;
+		private var _resourceFamily:String;
+		private var _resourceType:String;
+		private var _bytesLoaded:uint = 0;
+		private var _bytesTotal:uint = 0;
 		private var _bulk:ResourceBulk;
 		private var _wrapper:ResourceWrapper;
 		private var _items:Vector.<ResourceBulkItem>;
@@ -60,7 +61,7 @@ package base.io.resource
 		 */
 		public function ResourceBulkFile(id:String, bulk:ResourceBulk)
 		{
-			this.id = id;
+			_id = id;
 			_bulk = bulk;
 			_items = new Vector.<ResourceBulkItem>();
 		}
@@ -75,12 +76,23 @@ package base.io.resource
 		 */
 		internal function addItem(item:ResourceBulkItem):void
 		{
-			if (path == null) path = item.resource.path;
-			if (resourceFamily == null) resourceFamily = item.resource.family;
-			if (resourceType == null) resourceType = item.resource.dataType;
+			if (_path == null) _path = item.resource.path;
+			if (_resourceFamily == null) _resourceFamily = item.resource.family;
+			if (_resourceType == null) _resourceType = item.resource.dataType;
 			
-			item.bulkFile = this;
+			item.setBulkFile(this);
 			_items.push(item);
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		internal function updateProgress(bl:uint, bt:uint):void
+		{
+			_bytesLoaded = bl;
+			_bytesTotal = bt;
+			_bulk.updateProgress();
 		}
 		
 		
@@ -98,6 +110,24 @@ package base.io.resource
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * The ID of the resource bulk file.
+		 */
+		public function get id():String
+		{
+			return _id;
+		}
+		
+		
+		/**
+		 * The path of the resource bulk file.
+		 */
+		public function get path():String
+		{
+			return _path;
+		}
+		
 		
 		/**
 		 * Returns the resource bulk item of the bulk file. If this bulk file contains
@@ -127,6 +157,18 @@ package base.io.resource
 		}
 		
 		
+		internal function get bytesLoaded():uint
+		{
+			return _bytesLoaded;
+		}
+		
+		
+		internal function get bytesTotal():uint
+		{
+			return _bytesTotal;
+		}
+		
+		
 		internal function get wrapper():ResourceWrapper
 		{
 			return _wrapper;
@@ -135,6 +177,18 @@ package base.io.resource
 		{
 			_wrapper = v;
 			_wrapper.setup(this);
+		}
+		
+		
+		public function get resourceFamily():String
+		{
+			return _resourceFamily;
+		}
+		
+		
+		public function get resourceType():String
+		{
+			return _resourceType;
 		}
 	}
 }

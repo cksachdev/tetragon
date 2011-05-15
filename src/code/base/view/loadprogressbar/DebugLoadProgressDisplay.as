@@ -27,7 +27,7 @@
  */
 package base.view.loadprogressbar
 {
-	import base.event.ResourceEvent;
+	import base.io.resource.ResourceBulkStats;
 
 	import com.hexagonstar.util.display.StageReference;
 
@@ -65,14 +65,15 @@ package base.view.loadprogressbar
 		}
 		
 		
-		override public function update(e:ResourceEvent):void
+		override public function update(loadStats:ResourceBulkStats):void
 		{
 			if (_isComplete) return;
 			
-			_percentage = e.bytesLoaded / e.bytesTotal * 100;
-			_text += "Loading bulkfile: " + e.bulkFile.id
-				+ "\nBytes loaded: " + e.bytesLoaded + " / " + e.bytesTotal
-				+ "\n";
+			_percentage = loadStats.percentage;
+			_text += "Loading bulkfile: " + loadStats.currentFilePath
+				+ " (" + loadStats.currentFileBytesLoaded + "/" + loadStats.currentFileBytesTotal
+				+ ")"
+				+ "\nTotal: " + loadStats.bytesLoaded + "/" + loadStats.bytesTotal + "\n";
 			
 			if (_percentage == 100)
 			{
@@ -122,8 +123,8 @@ package base.view.loadprogressbar
 			_tf.embedFonts = true;
 			_tf.focusRect = false;
 			_tf.selectable = false;
-			_tf.width = 600;
-			_tf.height = 200;
+			_tf.width = StageReference.stageWidth - 60;
+			_tf.height = StageReference.stageHeight - 60;
 			//_tf.border = true;
 			//_tf.borderColor = 0xFFFFFF;
 			_tf.defaultTextFormat = f;

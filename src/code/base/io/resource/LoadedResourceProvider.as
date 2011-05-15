@@ -77,6 +77,7 @@ package base.io.resource
 		{
 			_loader = new BulkLoader(Registry.config.ioLoadConnections, Registry.config.ioLoadRetries,
 				Registry.config.ioUseAbsoluteFilePath, Registry.config.ioPreventFileCaching);
+			_loader.addEventListener(FileIOEvent.OPEN, onBulkFileOpen);
 			_loader.addEventListener(FileIOEvent.IO_ERROR, onBulkFileError);
 			_loader.addEventListener(FileIOEvent.SECURITY_ERROR, onBulkFileError);
 			_loader.addEventListener(FileIOEvent.PROGRESS, onBulkFileProgress);
@@ -101,6 +102,7 @@ package base.io.resource
 		 */
 		override public function dispose():void
 		{
+			_loader.removeEventListener(FileIOEvent.OPEN, onBulkFileOpen);
 			_loader.removeEventListener(FileIOEvent.IO_ERROR, onBulkFileError);
 			_loader.removeEventListener(FileIOEvent.SECURITY_ERROR, onBulkFileError);
 			_loader.removeEventListener(FileIOEvent.PROGRESS, onBulkFileProgress);

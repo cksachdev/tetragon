@@ -27,18 +27,17 @@
  */
 package base.io.resource
 {
+	import com.hexagonstar.signals.Signal;
+	
+	
 	/**
-	 * An item used to wrap a single resource during resource bulk loading.
+	 * ResourceSignal class
 	 */
-	public class ResourceBulkItem
+	public class ResourceSignal extends Signal
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
-		
-		private var _resource:Resource;
-		private var _resourceID:String;
-		private var _bulkFile:ResourceBulkFile;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -46,55 +45,32 @@ package base.io.resource
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Creates a new ResourceBulkItem instance.
+		 * Creates a new instance of the class.
 		 */
-		public function ResourceBulkItem(resourceID:String)
+		public function ResourceSignal()
 		{
-			_resourceID = resourceID;
+			super(ResourceBulkStats);
 		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Public Methods
+		//-----------------------------------------------------------------------------------------
 		
 		
 		//-----------------------------------------------------------------------------------------
 		// Accessors
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * The resource that is being contained in the resource bulk item.
-		 */
-		public function get resource():Resource
-		{
-			return _resource;
-		}
 		
-		
-		/**
-		 * The ID of the resource that is being contained in the resource bulk item.
-		 */
-		public function get resourceID():String
-		{
-			return _resourceID;
-		}
-		
-		
-		internal function get bulkFile():ResourceBulkFile
-		{
-			return _bulkFile;
-		}
+		//-----------------------------------------------------------------------------------------
+		// Callback Handlers
+		//-----------------------------------------------------------------------------------------
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Internal Methods
+		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
-		internal function setResource(r:Resource):void
-		{
-			_resource = r;
-		}
-		
-		
-		internal function setBulkFile(bf:ResourceBulkFile):void
-		{
-			_bulkFile = bf;
-		}
 	}
 }

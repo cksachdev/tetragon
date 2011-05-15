@@ -27,7 +27,7 @@
  */
 package base.view.loadprogressbar
 {
-	import base.event.ResourceEvent;
+	import base.io.resource.ResourceBulkStats;
 
 	import com.hexagonstar.util.display.StageReference;
 
@@ -64,11 +64,11 @@ package base.view.loadprogressbar
 		}
 		
 		
-		override public function update(e:ResourceEvent):void
+		override public function update(loadStats:ResourceBulkStats):void
 		{
 			if (_isComplete) return;
 			
-			_percentage = e.bytesLoaded / e.bytesTotal * 100;
+			_percentage = loadStats.bytesLoaded / loadStats.bytesTotal * 100;
 			_loadProgressBar.bar.width = _percentage * _factor;
 			
 			if (_percentage == 100)

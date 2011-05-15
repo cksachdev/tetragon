@@ -41,5 +41,7 @@ package base.io.resource
 		function loadResourceBulk(bulk:ResourceBulk):void;
 		function dispose():void;
 		function toString():String;
+		
+		function get progressSignal():ResourceSignal;
 	}
 }

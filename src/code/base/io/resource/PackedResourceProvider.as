@@ -116,6 +116,7 @@ package base.io.resource
 			_loader.removeEventListener(Event.OPEN, onLoaderOpen);
 			_loader.removeEventListener(Event.CLOSE, onLoaderClose);
 			_loader.removeEventListener(IOErrorEvent.IO_ERROR, onLoaderError);
+			_loader.removeEventListener(FileIOEvent.OPEN, onBulkFileOpen);
 			_loader.removeEventListener(FileIOEvent.IO_ERROR, onBulkFileError);
 			_loader.removeEventListener(FileIOEvent.SECURITY_ERROR, onBulkFileError);
 			_loader.removeEventListener(FileIOEvent.PROGRESS, onBulkFileProgress);
@@ -159,6 +160,7 @@ package base.io.resource
 		 */
 		private function onLoaderOpen(e:Event):void
 		{
+			_loader.addEventListener(FileIOEvent.OPEN, onBulkFileOpen);
 			_loader.addEventListener(FileIOEvent.IO_ERROR, onBulkFileError);
 			_loader.addEventListener(FileIOEvent.SECURITY_ERROR, onBulkFileError);
 			_loader.addEventListener(FileIOEvent.PROGRESS, onBulkFileProgress);

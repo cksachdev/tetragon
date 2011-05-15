@@ -25,33 +25,18 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.view.loadprogressbar
+package base.io.resource
 {
-	import base.io.resource.ResourceBulkStats;
-
-	import com.hexagonstar.signals.Signal;
-
-	import flash.display.Sprite;
-	
-	
 	/**
-	 * Abstract base class for load progress display classes.
-	 * 
-	 * You can use any of the sub-classes or extends this class to write your own
-	 * load progress display class for use in your states.
+	 * ResourceBulkStats class
 	 */
-	public class LoadProgressDisplay extends Sprite
+	public class ResourceBulkStats
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		
-		//-----------------------------------------------------------------------------------------
-		// Signals
-		//-----------------------------------------------------------------------------------------
-		
-		public var userInputSignal:Signal;
+		private var _bulk:ResourceBulk;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -61,12 +46,9 @@ package base.view.loadprogressbar
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function LoadProgressDisplay()
+		public function ResourceBulkStats(bulk:ResourceBulk)
 		{
-			super();
-			if (waitForUserInput) userInputSignal = new Signal();
-			setup();
-			reset();
+			_bulk = bulk;
 		}
 		
 		
@@ -74,66 +56,108 @@ package base.view.loadprogressbar
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * Resets the load progress display.
-		 */
-		public function reset():void
-		{
-			/* Abstract method! */
-		}
-		
-		
-		/**
-		 * Updates the load progress bar.
-		 */
-		public function update(loadStats:ResourceBulkStats):void
-		{
-			/* Abstract method! */
-		}
-		
-		
-		/**
-		 * Disposes the class.
-		 */
-		public function dispose():void
-		{
-			if (userInputSignal)
-			{
-				userInputSignal.removeAll();
-			}
-		}
-		
 		
 		//-----------------------------------------------------------------------------------------
 		// Accessors
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Determines if the load progress display should request to close any screen that
-		 * might be open. By default this property returns <code>false</code> which means
-		 * that the load progress display appears overlaid over any open screen. You can
-		 * override this getter in your sub-class and let it return <code>true</code> to
-		 * have any open screen closed before the load progress display is shown.
-		 * 
-		 * @default <code>false</code>
+		 * The currently loaded files of the resource bulk.
 		 */
-		public function get closeScreenBeforeLoad():Boolean
+		public function get filesLoaded():uint
 		{
-			return false;
+			return _bulk.filesLoaded;
 		}
 		
 		
 		/**
-		 * Determines whether the load progress display should wait for user input before
-		 * continuing after the loading completed. You can set this property to return
-		 * <code>true</code> in your sub-class if you want the progress display to wait
-		 * for user input after loading has finished.
-		 * 
-		 * @default <code>false</code>
+		 * The total files of the resource bulk.
 		 */
-		public function get waitForUserInput():Boolean
+		public function get filesTotal():uint
 		{
-			return false;
+			return _bulk.filesTotal;
+		}
+		
+		
+		/**
+		 * The currently loaded bytes of the resource bulk.
+		 */
+		public function get bytesLoaded():uint
+		{
+			return _bulk.bytesLoaded;
+		}
+		
+		
+		/**
+		 * The total bytes of the resource bulk.
+		 */
+		public function get bytesTotal():uint
+		{
+			return _bulk.bytesTotal;
+		}
+		
+		
+		/**
+		 * The total loaded percentage.
+		 */
+		public function get percentage():uint
+		{
+			return (bytesLoaded / bytesTotal * 100);
+		}
+		
+		
+		public function get currentFilePath():String
+		{
+			if (!_bulk.currentBulkFile) return null;
+			return _bulk.currentBulkFile.path;
+		}
+		
+		
+		public function get currentFileBytesLoaded():uint
+		{
+			if (!_bulk.currentBulkFile) return 0;
+			return _bulk.currentBulkFile.bytesLoaded;
+		}
+		
+		
+		public function get currentFileBytesTotal():uint
+		{
+			if (!_bulk.currentBulkFile) return 0;
+			return _bulk.currentBulkFile.bytesTotal;
+		}
+		
+		
+		public function get currentFilePercentage():uint
+		{
+			return (currentFileBytesLoaded / currentFileBytesTotal * 100);
+		}
+		
+		
+		/**
+		 * Determines whether the bulk has fully completed loading all bulk files
+		 * that are part of it.
+		 */
+		public function get isComplete():Boolean
+		{
+			return filesLoaded == filesTotal;
+		}
+		
+		
+		/**
+		 * The currently loading bulk file.
+		 */
+		internal function get currentBulkFile():ResourceBulkFile
+		{
+			return _bulk.currentBulkFile;
+		}
+		
+		
+		/**
+		 * The resource bulk to which these stats belong.
+		 */
+		internal function get bulk():ResourceBulk
+		{
+			return _bulk;
 		}
 		
 		
@@ -142,11 +166,10 @@ package base.view.loadprogressbar
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * 
+		 * @private
 		 */
-		protected function setup():void
+		internal function updateProgress():void
 		{
-			/* Abstract method! */
 		}
 	}
 }

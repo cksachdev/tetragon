@@ -27,6 +27,7 @@
  */
 package base.view
 {
+	import com.hexagonstar.signals.NativeSignal;
 	import com.hexagonstar.signals.Signal;
 	import com.hexagonstar.util.display.StageReference;
 
@@ -230,8 +231,8 @@ package base.view
 			executeOnDisplays("init");
 			addChildren();
 			addListeners();
-			/* Wait one frame before showing the screen. */
-			addEventListener(Event.ENTER_FRAME, onFramePassed);
+			/* Wait one frame before showing the screen, using as3 signal one-liner, yay! */
+			(new NativeSignal(this, Event.ENTER_FRAME, Event)).addOnce(onFramePassed);
 		}
 		
 		
@@ -256,7 +257,6 @@ package base.view
 		 */
 		private function onFramePassed(e:Event):void
 		{
-			removeEventListener(Event.ENTER_FRAME, onFramePassed);
 			openedSignal.dispatch();
 			openedSignal.removeAll();
 			openedSignal = null;

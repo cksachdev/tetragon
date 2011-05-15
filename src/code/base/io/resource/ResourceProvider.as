@@ -74,6 +74,15 @@ package base.io.resource
 		 */
 		protected var _bulkComplete:Boolean;
 		
+		protected var _isFileProgressStart:Boolean;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Signal
+		//-----------------------------------------------------------------------------------------
+		
+		protected var _progressSignal:ResourceSignal;
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Constructor
@@ -88,6 +97,9 @@ package base.io.resource
 			_dsm = Main.instance.dataSupportManager;
 			_id = id;
 			_bulkFiles = {};
+			_isFileProgressStart = false;
+			
+			_progressSignal = new ResourceSignal();
 		}
 		
 		
@@ -142,6 +154,12 @@ package base.io.resource
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
+		public function get progressSignal():ResourceSignal
+		{
+			return _progressSignal;
+		}
+		
+		
 		/**
 		 * A reference to the resource manager.
 		 */
@@ -155,9 +173,26 @@ package base.io.resource
 		// Event Handlers
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @param e
-		 */
+		protected function onBulkFileOpen(e:FileIOEvent):void
+		{
+			var bf:ResourceBulkFile = _bulkFiles[e.file.id];
+			_isFileProgressStart = true;
+		}
+		
+		
+		protected function onBulkFileProgress(e:FileIOEvent):void
+		{
+			var bf:ResourceBulkFile = _bulkFiles[e.file.id];
+			bf.updateProgress(e.bytesLoaded, e.bytesTotal);
+			if (_isFileProgressStart)
+			{
+				_isFileProgressStart = false;
+				bf.bulk.setCurrentFile(bf);
+			}
+			_progressSignal.dispatch(bf.bulk.stats);
+		}
+		
+		
 		protected function onBulkFileLoaded(e:FileIOEvent):void
 		{
 			var bf:ResourceBulkFile = _bulkFiles[e.file.id];
@@ -167,43 +202,28 @@ package base.io.resource
 		}
 		
 		
-		/**
-		 * @param e
-		 */
-		protected function onBulkFileError(e:FileIOEvent):void
-		{
-			var bf:ResourceBulkFile = _bulkFiles[e.file.id];
-			fail(bf, e.text);
-		}
-		
-		
-		/**
-		 * @param e
-		 */
-		protected function onBulkFileProgress(e:FileIOEvent):void
-		{
-			dispatchEvent(new ResourceEvent(ResourceEvent.BULK_PROGRESS,
-				_bulkFiles[e.file.id], null, e.bytesLoaded, e.bytesTotal, e.percentLoaded));
-		}
-		
-		
-		/**
-		 * @param e
-		 */
 		protected function onResourceInit(e:ResourceEvent):void
 		{
 			var bf:ResourceBulkFile = e.bulkFile;
 			bf.wrapper.removeEventListener(ResourceEvent.INIT_SUCCESS, onResourceInit);
 			bf.wrapper.removeEventListener(ResourceEvent.INIT_FAILED, onResourceInit);
+			bf.updateProgress(e.bytesLoaded, e.bytesTotal);
 			
-			if (e.type == ResourceEvent.INIT_FAILED) fail(bf, e.text);
-			else processBulkFile(bf);
+			if (e.type == ResourceEvent.INIT_FAILED)
+				fail(bf, e.text);
+			else
+				processBulkFile(bf);
 		}
 		
 		
-		/**
-		 * @param e
-		 */
+		protected function onBulkFileError(e:FileIOEvent):void
+		{
+			var bf:ResourceBulkFile = _bulkFiles[e.file.id];
+			bf.updateProgress(e.bytesLoaded, e.bytesTotal);
+			fail(bf, e.text);
+		}
+		
+		
 		protected function onLoaderComplete(e:FileIOEvent):void
 		{
 			_loaderComplete = true;
@@ -366,7 +386,7 @@ package base.io.resource
 			}
 			
 			dispatchEvent(new ResourceEvent(ResourceEvent.FILE_LOADED, bulkFile));
-			bulkFile.bulk.increaseCompleteCount();
+			bulkFile.bulk.increaseLoadedCount();
 			checkComplete(bulkFile);
 		}
 		
@@ -380,7 +400,7 @@ package base.io.resource
 			r.setContent(bulkFile.wrapper.content);
 			r.setStatus(ResourceStatus.LOADED);
 			dispatchEvent(new ResourceEvent(ResourceEvent.FILE_LOADED, bulkFile));
-			bulkFile.bulk.increaseCompleteCount();
+			bulkFile.bulk.increaseLoadedCount();
 			checkComplete(bulkFile);
 		}
 		
@@ -413,7 +433,7 @@ package base.io.resource
 			/* Finished files can be removed from temporary map now. */
 			delete _bulkFiles[bulkFile.id];
 			
-			if (bulkFile.bulk.isComplete)
+			if (bulkFile.bulk.stats.isComplete)
 			{
 				_bulkComplete = true;
 				if (_loaderComplete) reset();
@@ -433,7 +453,7 @@ package base.io.resource
 			{
 				bulkFile.items[i].resource.setStatus(ResourceStatus.FAILED);
 			}
-			bulkFile.bulk.decreaseFileCount();
+			bulkFile.bulk.decreaseTotalCount();
 			dispatchEvent(new ResourceEvent(ResourceEvent.FILE_FAILED, bulkFile, message));
 			checkComplete(bulkFile);
 		}

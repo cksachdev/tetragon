@@ -30,7 +30,7 @@ package base.state
 	import base.Main;
 	import base.core.debug.Log;
 	import base.data.Registry;
-	import base.event.ResourceEvent;
+	import base.io.resource.ResourceBulkStats;
 	import base.view.Screen;
 	import base.view.ScreenManager;
 	import base.view.loadprogressbar.LoadProgressDisplay;
@@ -226,10 +226,10 @@ package base.state
 		/**
 		 * Invoked while a state is loading.
 		 */
-		private function onStateLoadProgress(e:ResourceEvent):void
+		private function onStateLoadProgress(stats:ResourceBulkStats):void
 		{
 			if (!_loadProgressDisplay) return;
-			_loadProgressDisplay.update(e);
+			_loadProgressDisplay.update(stats);
 		}
 		
 		

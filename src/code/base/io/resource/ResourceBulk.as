@@ -27,6 +27,7 @@
  */
 package base.io.resource
 {
+	import com.hexagonstar.util.debug.Debug;
 	/**
 	 * A resource bulk is a bulk of resources that are being loaded in the same
 	 * call by the resource manager. It is created temporarily by the resource
@@ -39,16 +40,21 @@ package base.io.resource
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		internal var id:String;
-		internal var bulkFiles:Object;
-		internal var provider:IResourceProvider;
-		internal var loadedHandler:Function;
-		internal var failedHandler:Function;
-		internal var completeHandler:Function;
-		internal var progressHandler:Function;
+		private var _id:String;
+		private var _provider:IResourceProvider;
+		private var _bulkFiles:Object;
+		private var _stats:ResourceBulkStats;
+		private var _currentBulkFile:ResourceBulkFile;
+		private var _filesLoaded:uint = 0;
+		private var _filesTotal:uint = 0;
+		private var _bytesLoaded:uint = 0;
+		private var _bytesLoadedTemp:uint = 0;
+		private var _bytesTotal:uint = 0;
 		
-		private var _fileCount:int;
-		private var _completeCount:int;
+		private var _loadedHandler:Function;
+		private var _failedHandler:Function;
+		private var _completeHandler:Function;
+		private var _progressHandler:Function;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -61,15 +67,15 @@ package base.io.resource
 		public function ResourceBulk(id:String, p:IResourceProvider, lh:Function, fh:Function,
 			ch:Function, ph:Function)
 		{
-			this.id = id;
-			provider = p;
-			loadedHandler = lh;
-			failedHandler = fh;
-			completeHandler = ch;
-			progressHandler = ph;
-			bulkFiles = {};
-			_fileCount = 0;
-			_completeCount = 0;
+			_id = id;
+			_provider = p;
+			_bulkFiles = {};
+			_stats = new ResourceBulkStats(this);
+			
+			_loadedHandler = lh;
+			_failedHandler = fh;
+			_completeHandler = ch;
+			_progressHandler = ph;
 		}
 		
 		
@@ -89,11 +95,11 @@ package base.io.resource
 			
 			/* Check if a file object has already been created for the data file this item
 			 * is in and if not create one. */
-			var f:ResourceBulkFile = bulkFiles[fileID];
+			var f:ResourceBulkFile = _bulkFiles[fileID];
 			if (f == null)
 			{
-				f = bulkFiles[fileID] = new ResourceBulkFile(fileID, this);
-				_fileCount++;
+				f = _bulkFiles[fileID] = new ResourceBulkFile(fileID, this);
+				increaseTotalCount();
 			}
 			
 			/* Store the item in the file object. */
@@ -106,25 +112,61 @@ package base.io.resource
 		 */
 		internal function load():void
 		{
-			provider.loadResourceBulk(this);
+			_provider.loadResourceBulk(this);
 		}
 		
 		
 		/**
 		 * Increases the bulk's file complete count.
 		 */
-		internal function increaseCompleteCount():void
+		internal function increaseLoadedCount():void
 		{
-			_completeCount++;
+			_filesLoaded++;
 		}
 		
 		
 		/**
 		 * Decreases the bulk's file count. Used when bulk files failed to load.
 		 */
-		internal function decreaseFileCount():void
+		internal function increaseTotalCount():void
 		{
-			_fileCount--;
+			_filesTotal++;
+		}
+		
+		
+		/**
+		 * Decreases the bulk's file count. Used when bulk files failed to load.
+		 */
+		internal function decreaseTotalCount():void
+		{
+			if (_filesTotal < 1) return;
+			_filesTotal--;
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		internal function setCurrentFile(bf:ResourceBulkFile):void
+		{
+			_currentBulkFile = bf;
+			//_bytesLoaded = _bytesTotal + _bytesLoadedTemp;
+			Debug.trace(_currentBulkFile.path);
+			_bytesTotal += _currentBulkFile.bytesTotal;
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		internal function updateProgress():void
+		{
+			if (_currentBulkFile)
+			{
+				_bytesLoadedTemp = _currentBulkFile.bytesLoaded;
+				_bytesLoaded = _bytesLoadedTemp;
+				Debug.trace(_bytesLoaded + " / " + _bytesTotal);
+			}
 		}
 		
 		
@@ -135,7 +177,7 @@ package base.io.resource
 		 */
 		internal function toString():String
 		{
-			return "[ResourceBulk, id=" + id + ", completeCount=" + _completeCount + ", fileCount=" + _fileCount + "]";
+			return "[ResourceBulk, id=" + _id + "]";
 		}
 		
 		
@@ -143,17 +185,84 @@ package base.io.resource
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
-		public function get fileCount():int
+		/**
+		 * The ID of the resource bulk.
+		 */
+		public function get id():String
 		{
-			return _fileCount;
+			return _id;
 		}
-		public function get completeCount():int
+		
+		
+		/**
+		 * A map containing all resource bulk files in the bulk.
+		 */
+		public function get bulkFiles():Object
 		{
-			return _completeCount + 1;
+			return _bulkFiles;
 		}
-		public function get isComplete():Boolean
+		
+		
+		/**
+		 * The statistics object of the resource bulk.
+		 */
+		public function get stats():ResourceBulkStats
 		{
-			return _completeCount == _fileCount;
+			return _stats;
+		}
+		
+		
+		internal function get filesLoaded():uint
+		{
+			return _filesLoaded;
+		}
+		
+		
+		internal function get filesTotal():uint
+		{
+			return _filesTotal;
+		}
+		
+		
+		internal function get bytesLoaded():uint
+		{
+			return _bytesLoaded;
+		}
+		
+		
+		internal function get bytesTotal():uint
+		{
+			return _bytesTotal;
+		}
+		
+		
+		internal function get currentBulkFile():ResourceBulkFile
+		{
+			return _currentBulkFile;
+		}
+		
+		
+		internal function get loadedHandler():Function
+		{
+			return _loadedHandler;
+		}
+		
+		
+		internal function get failedHandler():Function
+		{
+			return _failedHandler;
+		}
+		
+		
+		internal function get completeHandler():Function
+		{
+			return _completeHandler;
+		}
+		
+		
+		internal function get progressHandler():Function
+		{
+			return _progressHandler;
 		}
 	}
 }
