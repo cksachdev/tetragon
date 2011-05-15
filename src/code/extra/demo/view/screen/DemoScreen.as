@@ -25,80 +25,87 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.test.setup
+package extra.demo.view.screen
 {
-	import base.setup.ISetupRegistry;
-	import base.setup.SetupRegistry;
+	import base.view.Screen;
 
-	import extra.test.state.*;
-	import extra.test.view.screen.*;
+	import extra.demo.view.display.DemoDisplay;
+
+	import flash.events.Event;
 	
 	
 	/**
-	 * Test setup registry class.
+	 * A test screen.
 	 */
-	public class TestSetupRegistry extends SetupRegistry implements ISetupRegistry
+	public class DemoScreen extends Screen
 	{
 		//-----------------------------------------------------------------------------------------
-		// Public Methods
+		// Properties
+		//-----------------------------------------------------------------------------------------
+		
+		private var _display:DemoDisplay;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
-		override public function registerResourceFileTypes():void
+		private function onStageResize(e:Event):void
 		{
+			layoutChildren();
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerComplexTypes():void
+		//-----------------------------------------------------------------------------------------
+		// Private Methods
+		//-----------------------------------------------------------------------------------------
+		
+		override protected function createChildren():void
 		{
+			_display = new DemoDisplay();
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerDataTypes():void
+//		override protected function registerResources():void
+//		{
+//			registerResource("unitInfantry");
+//			registerResource("testParticleEmitter");
+//			registerResource("testParticle");
+//			registerResource("particleSymbol");
+//		}
+		
+		
+		override protected function registerDisplays():void
 		{
+			registerDisplay(_display);
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerEntitySystems():void
+		override protected function addChildren():void 
 		{
+			addChild(_display);
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerEntityComponents():void
+		override protected function addListeners():void
 		{
+			main.stage.addEventListener(Event.RESIZE, onStageResize);
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerStates():void
+		override protected function removeListeners():void
 		{
-			registerState("tileScrollerTestState", TileScrollerTestState);
+			main.stage.removeEventListener(Event.RESIZE, onStageResize);
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function registerScreens():void
+		override protected function layoutChildren():void
 		{
-			registerScreen("testScreen", TestScreen);
-			registerScreen("tileScrollerTestScreen", TileScrollerTestScreen);
+			_display.x = getHorizontalCenter(_display);
+			_display.y = getVerticalCenter(_display);
 		}
 	}
 }

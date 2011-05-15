@@ -25,7 +25,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.test.view.display
+package extra.demo.view.display
 {
 	import base.view.Display;
 
@@ -35,7 +35,7 @@ package extra.test.view.display
 	import flash.text.TextFormat;
 	
 	
-	public class TileScrollTestInfoDisplay extends Display
+	public class TileScrollDemoInfoDisplay extends Display
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

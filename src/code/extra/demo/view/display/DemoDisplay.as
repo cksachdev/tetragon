@@ -25,7 +25,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.test.view.display
+package extra.demo.view.display
 {
 	import base.core.debug.Console;
 	import base.core.debug.FPSMonitor;
@@ -38,7 +38,7 @@ package extra.test.view.display
 	/**
 	 * A test display.
 	 */
-	public class TestDisplay extends Display
+	public class DemoDisplay extends Display
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods

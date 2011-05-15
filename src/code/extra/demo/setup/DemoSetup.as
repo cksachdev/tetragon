@@ -25,15 +25,15 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.test.setup
+package extra.demo.setup
 {
 	import base.setup.Setup;
 	
 	
 	/**
-	 * Setup class specific for Test Add-On.
+	 * Setup class specific for the demo extra package.
 	 */
-	public class TestSetup extends Setup
+	public class DemoSetup extends Setup
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
@@ -76,7 +76,7 @@ package extra.test.setup
 		 */
 		override public function registrySetup():void
 		{
-			new TestSetupRegistry().execute();
+			new DemoSetupRegistry().execute();
 		}
 		
 		
@@ -89,7 +89,7 @@ package extra.test.setup
 		 */
 		override public function get name():String
 		{
-			return "test";
+			return "demo";
 		}
 	}
 }

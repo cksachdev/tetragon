@@ -38,12 +38,16 @@ package base.command.env
 	import base.io.resource.ResourceIndex;
 	import base.io.resource.ResourceManager;
 	import base.io.resource.ResourceStatus;
-	import base.setup.*;
+	import base.setup.AIRAndroidSetup;
+	import base.setup.AIRDesktopSetup;
+	import base.setup.AIRIOSSetup;
+	import base.setup.BaseSetup;
+	import base.setup.Setup;
 
+	import extra.demo.setup.*;
 	import extra.game.setup.*;
 	import extra.rpg.setup.*;
 	import extra.tbs.setup.*;
-	import extra.test.setup.*;
 
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
@@ -232,10 +236,6 @@ package base.command.env
 			}
 			
 			/* You can add setups for extra code branches here if needed. */
- 			CONFIG::EXTRA_TEST
-			{
-				_setups.push(new TestSetup());
-			}
  			CONFIG::EXTRA_GAME
 			{
 				_setups.push(new GameSetup());
@@ -247,6 +247,10 @@ package base.command.env
  			CONFIG::EXTRA_TBS
 			{
 				_setups.push(new TBSSetup());
+			}
+ 			CONFIG::EXTRA_DEMO
+			{
+				_setups.push(new DemoSetup());
 			}
 		}
 		

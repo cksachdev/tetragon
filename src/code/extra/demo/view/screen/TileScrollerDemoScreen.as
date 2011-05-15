@@ -25,22 +25,22 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.test.view.screen
+package extra.demo.view.screen
 {
 	import base.view.Screen;
 
-	import extra.test.view.display.TileScrollTestDisplay;
-	import extra.test.view.display.TileScrollTestInfoDisplay;
+	import extra.demo.view.display.TileScrollDemoDisplay;
+	import extra.demo.view.display.TileScrollDemoInfoDisplay;
 	
 	
-	public class TileScrollerTestScreen extends Screen
+	public class TileScrollerDemoScreen extends Screen
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _infoDisplay:TileScrollTestInfoDisplay;
-		private var _scrollDisplay:TileScrollTestDisplay;
+		private var _infoDisplay:TileScrollDemoInfoDisplay;
+		private var _scrollDisplay:TileScrollDemoDisplay;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -60,8 +60,8 @@ package extra.test.view.screen
 		
 		override protected function createChildren():void
 		{
-			_infoDisplay = new TileScrollTestInfoDisplay();
-			_scrollDisplay = new TileScrollTestDisplay();
+			_infoDisplay = new TileScrollDemoInfoDisplay();
+			_scrollDisplay = new TileScrollDemoDisplay();
 		}
 		
 		

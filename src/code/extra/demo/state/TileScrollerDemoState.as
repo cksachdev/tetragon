@@ -25,7 +25,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package extra.test.state
+package extra.demo.state
 {
 	import base.state.State;
 	import base.view.Screen;
@@ -35,7 +35,7 @@ package extra.test.state
 	import flash.events.Event;
 	
 	
-	public class TileScrollerTestState extends State
+	public class TileScrollerDemoState extends State
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -48,7 +48,7 @@ package extra.test.state
 		
 		override public function start():void
 		{
-			openScreen("tileScrollerTestScreen");
+			openScreen("tileScrollerDemoScreen");
 		}
 		
 		
