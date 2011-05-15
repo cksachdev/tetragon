@@ -36,10 +36,16 @@ package base
 	
 	
 	/**
-	 * An auto-generated class that contains a list of setups which are being
+	 * A class that contains a list of base/extra setup classes which are being
 	 * initialized during the application init phase.
 	 * 
-	 * <p>IMPORTANT: Auto-generated class. Do not edit!</p>
+	 * <p>The InitApplicationCommand uses this class briefly to get all setup classes that
+	 * are compiled into the build and instantiates them so that the setup packages can be
+	 * connected to the base engine.</p>
+	 * 
+	 * <p>TODO Utimately make this class being auto-generated through the build process
+	 * and find a way to conviently set in the build properties which setup classes should
+	 * be included in the build. (If Ant only would support iteration!!)</p>
 	 */
 	public class AppSetups
 	{
@@ -47,16 +53,54 @@ package base
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _setups:Array =
-		[
-			AIRDesktopSetup,
-			/*AIRAndroidSetup,*/
-			/*AIRIOSSetup,*/
-			GameSetup,
-			RPGSetup,
-			TBSSetup,
-			DemoSetup,
-		];
+		private var _setups:Array;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Constructor
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Creates a new instance of the class.
+		 */
+		public function AppSetups()
+		{
+			_setups = [];
+			
+			/* Add Desktop-specific setup if this is an AIR Desktop build. */
+			CONFIG::IS_DESKTOP_BUILD
+			{
+				_setups.push(AIRDesktopSetup);
+			}
+			/* Add Android-specific setup if this is an AIR Android build. */
+			CONFIG::IS_ANDROID_BUILD
+			{
+				_setups.push(AIRAndroidSetup);
+			}
+			/* Add iOS-specific setup if this is an AIR iOS build. */
+			CONFIG::IS_IOS_BUILD
+			{
+				_setups.push(AIRIOSSetup);
+			}
+			
+			/* You can add setups for extra code branches here if needed. */
+ 			CONFIG::EXTRA_GAME
+			{
+				_setups.push(GameSetup);
+			}
+ 			CONFIG::EXTRA_RPG
+			{
+				_setups.push(RPGSetup);
+			}
+ 			CONFIG::EXTRA_TBS
+			{
+				_setups.push(TBSSetup);
+			}
+ 			CONFIG::EXTRA_DEMO
+			{
+				_setups.push(DemoSetup);
+			}
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------
