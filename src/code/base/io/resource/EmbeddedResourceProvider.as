@@ -98,15 +98,6 @@ package base.io.resource
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function toString():String
-		{
-			return "EmbeddedResourceProvider";
-		}
-		
-		
 		//-----------------------------------------------------------------------------------------
 		// Event Handlers
 		//-----------------------------------------------------------------------------------------

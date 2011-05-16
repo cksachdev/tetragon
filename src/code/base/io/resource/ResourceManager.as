@@ -33,6 +33,7 @@ package base.io.resource
 
 	import com.hexagonstar.structures.IIterator;
 	import com.hexagonstar.structures.queues.Queue;
+	import com.hexagonstar.util.debug.Debug;
 
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -502,7 +503,7 @@ package base.io.resource
 		
 		private function onResourceBulkProgress2(bf:ResourceBulkFile):void
 		{
-			//Debug.trace(">>> PROGRESS: " + stats.currentFilePath + " (" + stats.currentFileBytesLoaded + "/" + stats.currentFileBytesTotal + ")");
+			Debug.trace(">>> PROGRESS: " + bf.path + " (" + bf.bytesLoaded + "/" + bf.bytesTotal + ")");
 			
 			for (var i:uint = 0; i < bf.items.length; i++)
 			{

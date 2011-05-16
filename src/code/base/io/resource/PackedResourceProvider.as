@@ -31,7 +31,6 @@ package base.io.resource
 	import base.data.Registry;
 
 	import com.hexagonstar.file.ZipLoader;
-	import com.hexagonstar.util.debug.Debug;
 
 	import flash.filesystem.File;
 	
@@ -127,15 +126,6 @@ package base.io.resource
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function toString():String
-		{
-			return "PackedResourceProvider";
-		}
-		
-		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
@@ -188,7 +178,6 @@ package base.io.resource
 		 */
 		override protected function reset():void
 		{
-			Debug.trace("RESET!");
 			if (!_loader) return;
 			if (_loader.loading) return;
 			_loader.reset();

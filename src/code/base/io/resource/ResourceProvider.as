@@ -38,7 +38,6 @@ package base.io.resource
 
 	import com.hexagonstar.file.types.IFile;
 	import com.hexagonstar.signals.Signal;
-	import com.hexagonstar.util.debug.Debug;
 	import com.hexagonstar.util.reflection.getClassName;
 	
 	
@@ -162,27 +161,6 @@ package base.io.resource
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
-		public function get openSignal():Signal
-		{
-			if (!_openSignal) _openSignal = new Signal();
-			return _openSignal;
-		}
-		
-		
-		public function get closeSignal():Signal
-		{
-			if (!_closeSignal) _closeSignal = new Signal();
-			return _closeSignal;
-		}
-		
-		
-		public function get errorSignal():Signal
-		{
-			if (!_errorSignal) _errorSignal = new Signal();
-			return _errorSignal;
-		}
-		
-		
 		public function get bulkProgressSignal():Signal
 		{
 			return _bulkProgressSignal;
@@ -207,6 +185,27 @@ package base.io.resource
 		}
 		
 		
+		internal function get openSignal():Signal
+		{
+			if (!_openSignal) _openSignal = new Signal();
+			return _openSignal;
+		}
+		
+		
+		internal function get closeSignal():Signal
+		{
+			if (!_closeSignal) _closeSignal = new Signal();
+			return _closeSignal;
+		}
+		
+		
+		internal function get errorSignal():Signal
+		{
+			if (!_errorSignal) _errorSignal = new Signal();
+			return _errorSignal;
+		}
+		
+		
 		/**
 		 * A reference to the resource manager.
 		 */
@@ -222,15 +221,13 @@ package base.io.resource
 		
 		protected function onBulkFileOpen(file:IFile):void
 		{
-			Debug.trace(">>> onBulkFileOpen: " + file.path);
 			_isNextFileOpened = true;
 		}
 		
 		
 		protected function onBulkFileProgress(file:IFile):void
 		{
-			Debug.trace(">>> onBulkFileProgress: " + file.path);
-			//var bf:ResourceBulkFile = _bulkFiles[e.file.id];
+			var bf:ResourceBulkFile = _bulkFiles[file.id];
 			//bf.updateProgress(e);
 			
 			if (_isNextFileOpened)
@@ -240,13 +237,13 @@ package base.io.resource
 				//bf.bulk.setCurrentFile(bf);
 			}
 			
+			_bulkProgressSignal.dispatch(bf);
 			//_progressSignal.dispatch(bf.bulk.stats);
 		}
 		
 		
 		protected function onBulkFileLoaded(file:IFile):void
 		{
-			Debug.trace(">>> onBulkFileLoaded: " + file.path);
 			var bf:ResourceBulkFile = _bulkFiles[file.id];
 			//bf.updateProgress(e);
 			bf.wrapper.addEventListener(ResourceEvent.INIT_SUCCESS, onResourceInit);
@@ -278,7 +275,6 @@ package base.io.resource
 		protected function onLoaderComplete(file:IFile):void
 		{
 			var bf:ResourceBulkFile = _bulkFiles[file.id];
-			Debug.trace(">>> onLoaderComplete: " + bf.id);
 			//bf.updateProgress(e);
 			_loaderComplete = true;
 			if (_isBulkComplete) reset();

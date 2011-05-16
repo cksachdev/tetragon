@@ -32,7 +32,6 @@ package base.io.resource
 
 	import com.hexagonstar.file.BulkLoader;
 	import com.hexagonstar.file.types.IFile;
-	import com.hexagonstar.util.debug.Debug;
 	
 	
 	/**
@@ -116,15 +115,6 @@ package base.io.resource
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function toString():String
-		{
-			return "LoadedResourceProvider";
-		}
-		
-		
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
@@ -134,7 +124,6 @@ package base.io.resource
 		 */
 		override protected function reset():void
 		{
-			Debug.trace("RESET!");
 			if (!_loader) return;
 			if (_loader.loading) return;
 			_loader.reset();
