@@ -35,9 +35,6 @@ package base.io.resource
 	import com.hexagonstar.exception.IllegalArgumentException;
 	import com.hexagonstar.util.env.isAIRApplication;
 
-	import flash.events.ErrorEvent;
-	import flash.events.Event;
-	import flash.events.IOErrorEvent;
 	import flash.utils.Dictionary;
 	
 	
@@ -82,49 +79,48 @@ package base.io.resource
 		 * Invoked after the resource index file has been loaded (or failed loading). This
 		 * handler is also called if no resource index file should be loaded (i.e if no
 		 * filename for it was found in the config).
-		 * 
-		 * @param e
 		 */
-		private function onResourceIndexFileProcessed(e:Event):void
+		private function onResourceIndexFileProcessed():void
 		{
 			if (_indexLoader)
 			{
-				_indexLoader.removeEventListener(Event.COMPLETE, onResourceIndexFileProcessed);
-				_indexLoader.removeEventListener(ErrorEvent.ERROR, onResourceIndexFileProcessed);
+				_indexLoader.completeSignal.remove(onResourceIndexFileProcessed);
+				_indexLoader.errorSignal.remove(onResourceIndexFileError);
 				_indexLoader.dispose();
 				_indexLoader = null;
 			}
-			if (e.type == ErrorEvent.ERROR)
+			/* If we're on an AIR application we want to use packed resources! */
+			if (isAIRApplication()) preparePackageFiles();
+			else _resourceManager.completeInitialization();
+		}
+		
+		
+		private function onResourceIndexFileError(message:String):void
+		{
+			if (_indexLoader)
 			{
-				Log.error("Could not load resource index file! (" + ErrorEvent(e).text + ")", this);
-				_resourceManager.failInitialization();
+				_indexLoader.completeSignal.remove(onResourceIndexFileProcessed);
+				_indexLoader.errorSignal.remove(onResourceIndexFileError);
+				_indexLoader.dispose();
+				_indexLoader = null;
 			}
-			else
-			{
-				/* If we're on an AIR application we want to use packed resources! */
-				if (isAIRApplication()) preparePackageFiles();
-				else _resourceManager.completeInitialization();
-			}
+			Log.error("Could not load resource index file! (" + message + ")", this);
+			_resourceManager.failInitialization();
 		}
 		
 		
 		/**
 		 * Invoked after a PackedResourceProvider has been prepared for a resource pack.
-		 * 
-		 * @param e
 		 */
-		private function onPackedResourceProviderEvent(e:Event):void
+		private function onResourceProviderOpened(p:ResourceProvider):void
 		{
 			CONFIG::IS_AIR_BUILD
 			{
-				if (e)
-				{
-					var p:PackedResourceProvider = PackedResourceProvider(e.target);
-					p.removeEventListener(Event.OPEN, onPackedResourceProviderEvent);
-					p.removeEventListener(IOErrorEvent.IO_ERROR, onPackedResourceProviderEvent);
-					/* Map the PackedResourceProvider by ID. */
-					_resourceProviders[p.id] = p;
-				}
+				var pp:PackedResourceProvider = PackedResourceProvider(p);
+				pp.openSignal.remove(onResourceProviderOpened);
+				pp.errorSignal.remove(onResourceProviderOpened);
+				/* Map the PackedResourceProvider by ID. */
+				_resourceProviders[pp.id] = pp;
 				_packedResourceProviderCount--;
 				if (_packedResourceProviderCount < 1)
 				{
@@ -227,14 +223,14 @@ package base.io.resource
 				_resourceProviders[LoadedResourceProvider.ID] = p;
 				
 				_indexLoader = new ResourceIndexLoader(_resourceIndex);
-				_indexLoader.addEventListener(Event.COMPLETE, onResourceIndexFileProcessed);
-				_indexLoader.addEventListener(ErrorEvent.ERROR, onResourceIndexFileProcessed);
+				_indexLoader.completeSignal.addOnce(onResourceIndexFileProcessed);
+				_indexLoader.errorSignal.add(onResourceIndexFileError);
 				_indexLoader.load();
 			}
 			else
 			{
 				Log.debug("Resource index file not loaded!", this);
-				onResourceIndexFileProcessed(new Event(Event.COMPLETE));
+				onResourceIndexFileProcessed();
 			}
 		}
 		
@@ -256,8 +252,8 @@ package base.io.resource
 					var p:PackedResourceProvider = new PackedResourceProvider(packageID);
 					if (p.init(name))
 					{
-						p.addEventListener(Event.OPEN, onPackedResourceProviderEvent);
-						p.addEventListener(IOErrorEvent.IO_ERROR, onPackedResourceProviderEvent);
+						p.openSignal.addOnce(onResourceProviderOpened);
+						p.errorSignal.addOnce(onResourceProviderOpened);
 						p.open();
 						_packedResourceProviderCount++;
 					}

@@ -159,7 +159,7 @@ package base.io.resource
 		 */
 		override protected function loadFiles():void
 		{
-			_bulkComplete = false;
+			_isBulkComplete = false;
 			_loaderComplete = false;
 			_loader.load();
 		}

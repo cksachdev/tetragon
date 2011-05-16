@@ -49,7 +49,7 @@ package base.io.resource
 		 */
 		public function ResourceSignal()
 		{
-			super(ResourceBulkStats);
+			super();
 		}
 		
 		

@@ -37,7 +37,6 @@ package base.io.file.loaders
 	import com.hexagonstar.file.types.XMLFile;
 	import com.hexagonstar.file.types.ZipFile;
 
-	import flash.events.Event;
 	import flash.system.System;
 	
 	
@@ -94,15 +93,6 @@ package base.io.file.loaders
 		{
 			super.dispose();
 			_resourceIndex = null;
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function toString():String
-		{
-			return "ResourceIndexLoader";
 		}
 		
 		
@@ -229,7 +219,7 @@ package base.io.file.loaders
 			}
 			
 			Log.debug("Parsed " + _resCount + " resource entries.", this);
-			dispatchEvent(new Event(Event.COMPLETE));
+			if (_completeSignal) _completeSignal.dispatch();
 		}
 		
 		

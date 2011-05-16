@@ -36,16 +36,16 @@ package base.io.resource
 	import base.io.resource.wrappers.ResourceWrapper;
 	import base.io.resource.wrappers.XMLResourceWrapper;
 
-	import com.hexagonstar.file.BulkFileIOEvent;
+	import com.hexagonstar.file.types.IFile;
+	import com.hexagonstar.signals.Signal;
 	import com.hexagonstar.util.debug.Debug;
-
-	import flash.events.EventDispatcher;
+	import com.hexagonstar.util.reflection.getClassName;
 	
 	
 	/**
 	 * Abstract base class for resource providers.
 	 */
-	public class ResourceProvider extends EventDispatcher implements IResourceProvider
+	public class ResourceProvider implements IResourceProvider
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -74,14 +74,20 @@ package base.io.resource
 		/**
 		 * Determines if a bulk has completed processing.
 		 */
-		protected var _bulkComplete:Boolean;
+		protected var _isBulkComplete:Boolean;
 		
 		
 		//-----------------------------------------------------------------------------------------
 		// Signal
 		//-----------------------------------------------------------------------------------------
 		
-		protected var _progressSignal:ResourceSignal;
+		protected var _openSignal:Signal;
+		protected var _closeSignal:Signal;
+		protected var _errorSignal:Signal;
+		protected var _fileLoadedSignal:Signal;
+		protected var _fileFailedSignal:Signal;
+		protected var _bulkProgressSignal:Signal;
+		protected var _bulkLoadedSignal:Signal;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -99,7 +105,10 @@ package base.io.resource
 			_bulkFiles = {};
 			_isNextFileOpened = false;
 			
-			_progressSignal = new ResourceSignal();
+			_bulkProgressSignal = new Signal();
+			_fileLoadedSignal = new Signal();
+			_fileFailedSignal = new Signal();
+			_bulkLoadedSignal = new Signal();
 		}
 		
 		
@@ -143,10 +152,9 @@ package base.io.resource
 		/**
 		 * @inheritDoc
 		 */
-		override public function toString():String
+		public function toString():String
 		{
-			/* Abstract method! */
-			return null;
+			return getClassName(this);
 		}
 		
 		
@@ -154,9 +162,48 @@ package base.io.resource
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
-		public function get progressSignal():ResourceSignal
+		public function get openSignal():Signal
 		{
-			return _progressSignal;
+			if (!_openSignal) _openSignal = new Signal();
+			return _openSignal;
+		}
+		
+		
+		public function get closeSignal():Signal
+		{
+			if (!_closeSignal) _closeSignal = new Signal();
+			return _closeSignal;
+		}
+		
+		
+		public function get errorSignal():Signal
+		{
+			if (!_errorSignal) _errorSignal = new Signal();
+			return _errorSignal;
+		}
+		
+		
+		public function get bulkProgressSignal():Signal
+		{
+			return _bulkProgressSignal;
+		}
+		
+		
+		public function get fileLoadedSignal():Signal
+		{
+			return _fileLoadedSignal;
+		}
+		
+		
+		public function get fileFailedSignal():Signal
+		{
+			return _fileFailedSignal;
+		}
+		
+		
+		public function get bulkLoadedSignal():Signal
+		{
+			return _bulkLoadedSignal;
 		}
 		
 		
@@ -173,32 +220,35 @@ package base.io.resource
 		// Event Handlers
 		//-----------------------------------------------------------------------------------------
 		
-		protected function onBulkFileOpen(e:BulkFileIOEvent):void
+		protected function onBulkFileOpen(file:IFile):void
 		{
+			Debug.trace(">>> onBulkFileOpen: " + file.path);
 			_isNextFileOpened = true;
 		}
 		
 		
-		protected function onBulkFileProgress(e:BulkFileIOEvent):void
+		protected function onBulkFileProgress(file:IFile):void
 		{
-			var bf:ResourceBulkFile = _bulkFiles[e.file.id];
-			bf.updateProgress(e);
+			Debug.trace(">>> onBulkFileProgress: " + file.path);
+			//var bf:ResourceBulkFile = _bulkFiles[e.file.id];
+			//bf.updateProgress(e);
 			
 			if (_isNextFileOpened)
 			{
 				//Debug.trace(e.file.path + " percentage: " + e.percentage);
 				_isNextFileOpened = false;
-				bf.bulk.setCurrentFile(bf);
+				//bf.bulk.setCurrentFile(bf);
 			}
 			
-			_progressSignal.dispatch(bf.bulk.stats);
+			//_progressSignal.dispatch(bf.bulk.stats);
 		}
 		
 		
-		protected function onBulkFileLoaded(e:BulkFileIOEvent):void
+		protected function onBulkFileLoaded(file:IFile):void
 		{
-			var bf:ResourceBulkFile = _bulkFiles[e.file.id];
-			bf.updateProgress(e);
+			Debug.trace(">>> onBulkFileLoaded: " + file.path);
+			var bf:ResourceBulkFile = _bulkFiles[file.id];
+			//bf.updateProgress(e);
 			bf.wrapper.addEventListener(ResourceEvent.INIT_SUCCESS, onResourceInit);
 			bf.wrapper.addEventListener(ResourceEvent.INIT_FAILED, onResourceInit);
 			bf.wrapper.initialize();
@@ -218,20 +268,20 @@ package base.io.resource
 		}
 		
 		
-		protected function onBulkFileError(e:BulkFileIOEvent):void
+		protected function onBulkFileError(file:IFile):void
 		{
-			var bf:ResourceBulkFile = _bulkFiles[e.file.id];
-			fail(bf, e.text);
+			var bf:ResourceBulkFile = _bulkFiles[file.id];
+			fail(bf, file.errorMessage);
 		}
 		
 		
-		protected function onLoaderComplete(e:BulkFileIOEvent):void
+		protected function onLoaderComplete(file:IFile):void
 		{
-			Debug.trace(">>> onLoaderComplete");
-			var bf:ResourceBulkFile = _bulkFiles[e.file.id];
-			bf.updateProgress(e);
+			var bf:ResourceBulkFile = _bulkFiles[file.id];
+			Debug.trace(">>> onLoaderComplete: " + bf.id);
+			//bf.updateProgress(e);
 			_loaderComplete = true;
-			if (_bulkComplete) reset();
+			if (_isBulkComplete) reset();
 		}
 		
 		
@@ -389,7 +439,7 @@ package base.io.resource
 				bulkFile.items[i].resource.setStatus(ResourceStatus.LOADED);
 			}
 			
-			dispatchEvent(new ResourceEvent(ResourceEvent.FILE_LOADED, bulkFile));
+			_fileLoadedSignal.dispatch(bulkFile);
 			bulkFile.bulk.increaseLoadedCount();
 			checkComplete(bulkFile);
 		}
@@ -403,7 +453,7 @@ package base.io.resource
 			var r:Resource = bulkFile.item.resource;
 			r.setContent(bulkFile.wrapper.content);
 			r.setStatus(ResourceStatus.LOADED);
-			dispatchEvent(new ResourceEvent(ResourceEvent.FILE_LOADED, bulkFile));
+			_fileLoadedSignal.dispatch(bulkFile);
 			bulkFile.bulk.increaseLoadedCount();
 			checkComplete(bulkFile);
 		}
@@ -439,9 +489,9 @@ package base.io.resource
 			
 			if (bulkFile.bulk.stats.isComplete)
 			{
-				_bulkComplete = true;
+				_isBulkComplete = true;
 				if (_loaderComplete) reset();
-				dispatchEvent(new ResourceEvent(ResourceEvent.BULK_LOADED, bulkFile));
+				_bulkLoadedSignal.dispatch(bulkFile);
 			}
 		}
 		
@@ -458,7 +508,7 @@ package base.io.resource
 				bulkFile.items[i].resource.setStatus(ResourceStatus.FAILED);
 			}
 			bulkFile.bulk.decreaseTotalCount();
-			dispatchEvent(new ResourceEvent(ResourceEvent.FILE_FAILED, bulkFile, message));
+			_fileFailedSignal.dispatch(bulkFile, message);
 			checkComplete(bulkFile);
 		}
 	}

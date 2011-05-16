@@ -28,8 +28,6 @@
 package base.io.resource
 {
 	import base.io.resource.wrappers.ResourceWrapper;
-
-	import com.hexagonstar.file.BulkFileIOEvent;
 	
 	
 	/**
@@ -90,12 +88,12 @@ package base.io.resource
 		/**
 		 * @private
 		 */
-		internal function updateProgress(e:BulkFileIOEvent):void
-		{
-			_bytesLoaded = e.currentFileBytesLoaded;
-			_bytesTotal = e.currentFileBytesTotal;
-			_bulk.updateProgress(e);
-		}
+//		internal function updateProgress(e:BulkFileIOEvent):void
+//		{
+//			_bytesLoaded = e.currentFileBytesLoaded;
+//			_bytesTotal = e.currentFileBytesTotal;
+//			_bulk.updateProgress(e);
+//		}
 		
 		
 		/**

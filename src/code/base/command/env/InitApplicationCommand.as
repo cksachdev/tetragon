@@ -42,7 +42,6 @@ package base.command.env
 	import base.setup.BaseSetup;
 	import base.setup.Setup;
 
-	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	
 	
@@ -131,15 +130,22 @@ package base.command.env
 		/**
 		 * @private
 		 */
-		private function onConfigLoadComplete(e:Event):void 
+		private function onConfigLoadComplete():void 
 		{
-			if (e.type == ErrorEvent.ERROR)
-			{
-				Log.debug("Ini file not loaded!", this);
-			}
-			
-			_configLoader.removeEventListener(Event.COMPLETE, onConfigLoadComplete);
-			_configLoader.removeEventListener(ErrorEvent.ERROR, onConfigLoadComplete);
+			_configLoader.completeSignal.remove(onConfigLoadComplete);
+			_configLoader.errorSignal.remove(onConfigLoadError);
+			postConfigSetup();
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		private function onConfigLoadError(message:String):void 
+		{
+			Log.debug("Ini file not loaded! (error was: " + message + ")", this);
+			_configLoader.completeSignal.remove(onConfigLoadComplete);
+			_configLoader.errorSignal.remove(onConfigLoadError);
 			postConfigSetup();
 		}
 		
@@ -254,8 +260,8 @@ package base.command.env
 				/* Create ini filename that uses the same first part as the SWF. This
 				 * assures that we can have several SWFs with their own ini file if needed. */
 				_configLoader = new ConfigLoader();
-				_configLoader.addEventListener(Event.COMPLETE, onConfigLoadComplete);
-				_configLoader.addEventListener(ErrorEvent.ERROR, onConfigLoadComplete);
+				_configLoader.completeSignal.addOnce(onConfigLoadComplete);
+				_configLoader.errorSignal.addOnce(onConfigLoadError);
 				_configLoader.addFile(AppInfo.FILENAME + ".ini", "configFile");
 				_configLoader.load();
 			}

@@ -424,9 +424,8 @@ package base.io.resource
 		/**
 		 * @param e
 		 */
-		private function onResourceFileLoaded(e:ResourceEvent):void
+		private function onResourceFileLoaded(bf:ResourceBulkFile):void
 		{
-			var bf:ResourceBulkFile = e.bulkFile;
 			for (var i:uint = 0; i < bf.items.length; i++)
 			{
 				var item:ResourceBulkItem = bf.items[i];
@@ -451,14 +450,13 @@ package base.io.resource
 		/**
 		 * @param e
 		 */
-		private function onResourceFileFailed(e:ResourceEvent):void
+		private function onResourceFileFailed(bf:ResourceBulkFile, message:String):void
 		{
-			var bf:ResourceBulkFile = e.bulkFile;
 			for (var i:uint = 0; i < bf.items.length; i++)
 			{
 				var item:ResourceBulkItem = bf.items[i];
 				var r:Resource = item.resource;
-				notifyFailed(item, bf.bulk.failedHandler, e.text);
+				notifyFailed(item, bf.bulk.failedHandler, message);
 				
 				/* Call any waiting handlers that might have been
 				 * added while the resource was loading. */
@@ -467,7 +465,7 @@ package base.io.resource
 					var a:Array = _waitingHandlers[r.id];
 					for (var j:uint = 0; j < a.length; j++)
 					{
-						notifyFailed(item, HandlerVO(a[j]).failedHandler, e.text);
+						notifyFailed(item, HandlerVO(a[j]).failedHandler, message);
 					}
 				}
 			}
@@ -502,18 +500,16 @@ package base.io.resource
 		}
 		
 		
-		private function onResourceBulkProgress2(stats:ResourceBulkStats):void
+		private function onResourceBulkProgress2(bf:ResourceBulkFile):void
 		{
 			//Debug.trace(">>> PROGRESS: " + stats.currentFilePath + " (" + stats.currentFileBytesLoaded + "/" + stats.currentFileBytesTotal + ")");
-			
-			var bf:ResourceBulkFile = stats.currentBulkFile;
-			if (!bf) return;
 			
 			for (var i:uint = 0; i < bf.items.length; i++)
 			{
 				var item:ResourceBulkItem = bf.items[i];
 				var r:Resource = item.resource;
-				notifyProgress(bf.bulk.progressHandler, stats);
+				// TODO
+				//notifyProgress(bf.bulk.progressHandler, stats);
 				
 				/* Call any waiting handlers that might have been
 				 * added while the resource was loading. */
@@ -522,7 +518,8 @@ package base.io.resource
 					var a:Array = _waitingHandlers[r.id];
 					for (var j:uint = 0; j < a.length; j++)
 					{
-						notifyProgress(HandlerVO(a[j]).progressHandler, stats);
+						// TODO
+						//notifyProgress(HandlerVO(a[j]).progressHandler, stats);
 					}
 				}
 			}
@@ -532,9 +529,8 @@ package base.io.resource
 		/**
 		 * @param e
 		 */
-		private function onResourceBulkLoaded(e:ResourceEvent):void
+		private function onResourceBulkLoaded(bf:ResourceBulkFile):void
 		{
-			var bf:ResourceBulkFile = e.bulkFile;
 			var b:ResourceBulk = bf.bulk;
 			var a:Array;
 			
@@ -625,11 +621,10 @@ package base.io.resource
 			_helper = null;
 			for each (var p:IResourceProvider in _resourceProviders)
 			{
-				p.addEventListener(ResourceEvent.FILE_FAILED, onResourceFileFailed);
-				p.addEventListener(ResourceEvent.FILE_LOADED, onResourceFileLoaded);
-				p.addEventListener(ResourceEvent.BULK_LOADED, onResourceBulkLoaded);
-				p.addEventListener(ResourceEvent.BULK_PROGRESS, onResourceBulkProgress);
-				p.progressSignal.add(onResourceBulkProgress2);
+				p.fileFailedSignal.add(onResourceFileFailed);
+				p.fileLoadedSignal.add(onResourceFileLoaded);
+				p.bulkLoadedSignal.add(onResourceBulkLoaded);
+				p.bulkProgressSignal.add(onResourceBulkProgress2);
 			}
 			dispatchEvent(new Event(Event.COMPLETE));
 		}

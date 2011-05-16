@@ -33,8 +33,6 @@ package base.io.resource
 	import com.hexagonstar.file.ZipLoader;
 	import com.hexagonstar.util.debug.Debug;
 
-	import flash.events.Event;
-	import flash.events.IOErrorEvent;
 	import flash.filesystem.File;
 	
 	
@@ -156,7 +154,7 @@ package base.io.resource
 		// Event Handlers
 		//-----------------------------------------------------------------------------------------
 		
-		private function onLoaderOpen(e:Event):void
+		private function onLoaderOpen():void
 		{
 			_loader.fileOpenSignal.add(onBulkFileOpen);
 			_loader.fileProgressSignal.add(onBulkFileProgress);
@@ -165,19 +163,19 @@ package base.io.resource
 			_loader.fileSecurityErrorSignal.add(onBulkFileError);
 			_loader.allCompleteSignal.add(onLoaderComplete);
 			Log.debug("Opened resource package \"" + _loader.filename + "\".", this);
-			dispatchEvent(e.clone());
+			if (_openSignal) _openSignal.dispatch(this);
 		}
 		
 		
-		private function onLoaderClose(e:Event):void
+		private function onLoaderClose():void
 		{
-			dispatchEvent(e.clone());
+			if (_closeSignal) _closeSignal.dispatch(this);
 		}
 		
 		
-		private function onLoaderError(e:IOErrorEvent):void
+		private function onLoaderError(message:String):void
 		{
-			dispatchEvent(e.clone());
+			if (_errorSignal) _errorSignal.dispatch(this);
 		}
 		
 		
@@ -221,7 +219,7 @@ package base.io.resource
 		 */
 		override protected function loadFiles():void
 		{
-			_bulkComplete = false;
+			_isBulkComplete = false;
 			_loaderComplete = false;
 			_loader.load();
 		}

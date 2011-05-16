@@ -34,10 +34,10 @@ package base.io.file.loaders
 	import com.hexagonstar.file.IFileIOSignalListener;
 	import com.hexagonstar.file.types.IFile;
 	import com.hexagonstar.file.types.XMLFile;
+	import com.hexagonstar.signals.Signal;
 	import com.hexagonstar.structures.queues.Queue;
+	import com.hexagonstar.util.reflection.getClassName;
 
-	import flash.events.ErrorEvent;
-	import flash.events.EventDispatcher;
 	import flash.system.Capabilities;
 	
 	
@@ -45,7 +45,7 @@ package base.io.file.loaders
 	 * Abstract base class for file loaders. Provides common implementation for concrete
 	 * loader classes.
 	 */
-	public class FileLoader extends EventDispatcher implements IFileIOSignalListener
+	public class FileLoader implements IFileIOSignalListener
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -56,7 +56,15 @@ package base.io.file.loaders
 		protected var _preventNotify:Boolean;
 		protected var _useAbsoluteFilePath:Boolean;
 		protected var _preventFileCaching:Boolean;
-
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Signals
+		//-----------------------------------------------------------------------------------------
+		
+		protected var _errorSignal:Signal;
+		protected var _completeSignal:Signal;
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Constructor
@@ -67,8 +75,6 @@ package base.io.file.loaders
 		 */
 		public function FileLoader()
 		{
-			super();
-			
 			_preventNotify = false;
 			_loader = new BulkLoader(Registry.config.ioLoadConnections, Registry.config.ioLoadRetries,
 				Registry.config.ioUseAbsoluteFilePath, Registry.config.ioPreventFileCaching);
@@ -119,6 +125,34 @@ package base.io.file.loaders
 			_loader.dispose();
 			_loader = null;
 			_files = null;
+		}
+		
+		
+		/**
+		 * Returns a String Representation of the class.
+		 * 
+		 * @return A String Representation of the class.
+		 */
+		public function toString():String
+		{
+			return getClassName(this);
+		}
+		
+		//-----------------------------------------------------------------------------------------
+		// Accessors
+		//-----------------------------------------------------------------------------------------
+		
+		public function get errorSignal():Signal
+		{
+			if (!_errorSignal) _errorSignal = new Signal();
+			return _errorSignal;
+		}
+		
+		
+		public function get completeSignal():Signal
+		{
+			if (!_completeSignal) _completeSignal = new Signal();
+			return _completeSignal;
 		}
 		
 		
@@ -236,10 +270,8 @@ package base.io.file.loaders
 			if (!_preventNotify)
 			{
 				_preventNotify = true;
-				
-				var e:ErrorEvent = new ErrorEvent(ErrorEvent.ERROR);
-				e.text = toString() + " Error: " + msg;
-				dispatchEvent(e);
+				var message:String = toString() + " Error: " + msg;
+				if (_errorSignal) _errorSignal.dispatch(message);
 			}
 		}
 		

@@ -33,8 +33,6 @@ package base.io.file.loaders
 
 	import com.hexagonstar.file.types.IFile;
 	import com.hexagonstar.file.types.TextFile;
-
-	import flash.events.Event;
 	
 	
 	/**
@@ -100,15 +98,6 @@ package base.io.file.loaders
 		}
 		
 		
-		/**
-		 * @inheritDoc
-		 */
-		override public function toString():String
-		{
-			return "ConfigLoader";
-		}
-		
-		
 		//-----------------------------------------------------------------------------------------
 		// Event Handlers
 		//-----------------------------------------------------------------------------------------
@@ -127,7 +116,7 @@ package base.io.file.loaders
 			}
 			else
 			{
-				notifyError("File invalid or not found <" + file.toString() + "> ("
+				notifyError("File invalid or not found \"" + file.toString() + "\" ("
 					+ file.status + ")");
 			}
 		}
@@ -161,7 +150,7 @@ package base.io.file.loaders
 				}
 			}
 			
-			dispatchEvent(new Event(Event.COMPLETE));
+			if (_completeSignal) _completeSignal.dispatch();
 		}
 		
 		

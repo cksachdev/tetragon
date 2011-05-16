@@ -27,21 +27,23 @@
  */
 package base.io.resource
 {
-	import flash.events.IEventDispatcher;
-
-
-
+	import com.hexagonstar.signals.Signal;
+	
+	
 	/**
 	 * Common interface for resource providers that are used by the resource manager
 	 * to load resources.
 	 */
-	public interface IResourceProvider extends IEventDispatcher
+	public interface IResourceProvider
 	{
 		function init(arg:* = null):Boolean
 		function loadResourceBulk(bulk:ResourceBulk):void;
 		function dispose():void;
 		function toString():String;
 		
-		function get progressSignal():ResourceSignal;
+		function get fileLoadedSignal():Signal;
+		function get fileFailedSignal():Signal;
+		function get bulkProgressSignal():Signal;
+		function get bulkLoadedSignal():Signal;
 	}
 }

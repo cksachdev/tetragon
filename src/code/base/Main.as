@@ -317,7 +317,6 @@ package base
 		{
 			e.preventDefault();
 			var msg:String;
-			
 			if (e.error is Error)
 			{
 				var e1:Error = Error(e.error);
@@ -375,11 +374,11 @@ package base
 			}
 			
 			/* Set up global error listener if this is a release version. */
-			if (!AppInfo.IS_DEBUG)
-			{
+			//if (!AppInfo.IS_DEBUG)
+			//{
 				contextView.loaderInfo.uncaughtErrorEvents.addEventListener(
 					UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
-			}
+			//}
 			
 			/* Set stage reference as early as possible. */
 			StageReference.stage = contextView.stage;

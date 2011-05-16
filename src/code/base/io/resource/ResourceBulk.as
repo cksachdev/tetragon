@@ -27,7 +27,6 @@
  */
 package base.io.resource
 {
-	import com.hexagonstar.file.BulkFileIOEvent;
 	/**
 	 * A resource bulk is a bulk of resources that are being loaded in the same
 	 * call by the resource manager. It is created temporarily by the resource
@@ -45,7 +44,6 @@ package base.io.resource
 		private var _bulkFiles:Object;
 		private var _stats:ResourceBulkStats;
 		private var _currentBulkFile:ResourceBulkFile;
-		private var _event:BulkFileIOEvent;
 		
 		private var _filesLoaded:uint = 0;
 		private var _filesTotal:uint = 0;
@@ -158,11 +156,11 @@ package base.io.resource
 		/**
 		 * @private
 		 */
-		internal function updateProgress(e:BulkFileIOEvent):void
-		{
-			_event = e;
-			//Debug.trace(e.file.path + " (" + _event.ratioPercentage + "%)");
-		}
+//		internal function updateProgress(e:BulkFileIOEvent):void
+//		{
+//			_event = e;
+//			//Debug.trace(e.file.path + " (" + _event.ratioPercentage + "%)");
+//		}
 		
 		
 		/**
@@ -221,19 +219,19 @@ package base.io.resource
 		
 		internal function get bytesLoaded():uint
 		{
-			return _event.bytesLoaded;
+			return 0;//_event.bytesLoaded;
 		}
 		
 		
 		internal function get bytesTotal():uint
 		{
-			return _event.bytesTotal;
+			return 0;//_event.bytesTotal;
 		}
 		
 		
 		internal function get percentage():uint
 		{
-			return _event.percentage;
+			return 0;//_event.percentage;
 		}
 		
 		
