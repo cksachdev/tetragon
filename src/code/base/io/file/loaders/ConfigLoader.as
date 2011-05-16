@@ -31,7 +31,7 @@ package base.io.file.loaders
 	import base.data.Config;
 	import base.data.Registry;
 
-	import com.hexagonstar.file.FileIOEvent;
+	import com.hexagonstar.file.types.IFile;
 	import com.hexagonstar.file.types.TextFile;
 
 	import flash.events.Event;
@@ -116,18 +116,19 @@ package base.io.file.loaders
 		/**
 		 * Initiates parsing of the loaded ini file into the model object.
 		 */
-		override public function onAllFilesComplete(e:FileIOEvent):void
+		override public function onAllFilesComplete(file:IFile):void
 		{
-			super.onAllFilesComplete(e);
+			super.onAllFilesComplete(file);
 			
-			if (e.file.valid)
+			_loader.reset();
+			if (file.valid)
 			{
-				parse(TextFile(e.file));
+				parse(TextFile(file));
 			}
 			else
 			{
-				notifyError("File invalid or not found <" + e.file.toString() + "> ("
-					+ e.file.status + ")");
+				notifyError("File invalid or not found <" + file.toString() + "> ("
+					+ file.status + ")");
 			}
 		}
 		

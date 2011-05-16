@@ -27,7 +27,7 @@
  */
 package base.io.resource
 {
-	import com.hexagonstar.util.debug.Debug;
+	import com.hexagonstar.file.BulkFileIOEvent;
 	/**
 	 * A resource bulk is a bulk of resources that are being loaded in the same
 	 * call by the resource manager. It is created temporarily by the resource
@@ -45,11 +45,10 @@ package base.io.resource
 		private var _bulkFiles:Object;
 		private var _stats:ResourceBulkStats;
 		private var _currentBulkFile:ResourceBulkFile;
+		private var _event:BulkFileIOEvent;
+		
 		private var _filesLoaded:uint = 0;
 		private var _filesTotal:uint = 0;
-		private var _bytesLoaded:uint = 0;
-		private var _bytesLoadedTemp:uint = 0;
-		private var _bytesTotal:uint = 0;
 		
 		private var _loadedHandler:Function;
 		private var _failedHandler:Function;
@@ -151,22 +150,18 @@ package base.io.resource
 		{
 			_currentBulkFile = bf;
 			//_bytesLoaded = _bytesTotal + _bytesLoadedTemp;
-			Debug.trace(_currentBulkFile.path);
-			_bytesTotal += _currentBulkFile.bytesTotal;
+			//Debug.trace(_currentBulkFile.path + " (" +_currentBulkFile.bytesLoaded + "/" + _currentBulkFile.bytesTotal + ")");
+			//_bytesTotal += _currentBulkFile.bytesTotal;
 		}
 		
 		
 		/**
 		 * @private
 		 */
-		internal function updateProgress():void
+		internal function updateProgress(e:BulkFileIOEvent):void
 		{
-			if (_currentBulkFile)
-			{
-				_bytesLoadedTemp = _currentBulkFile.bytesLoaded;
-				_bytesLoaded = _bytesLoadedTemp;
-				Debug.trace(_bytesLoaded + " / " + _bytesTotal);
-			}
+			_event = e;
+			//Debug.trace(e.file.path + " (" + _event.ratioPercentage + "%)");
 		}
 		
 		
@@ -226,13 +221,19 @@ package base.io.resource
 		
 		internal function get bytesLoaded():uint
 		{
-			return _bytesLoaded;
+			return _event.bytesLoaded;
 		}
 		
 		
 		internal function get bytesTotal():uint
 		{
-			return _bytesTotal;
+			return _event.bytesTotal;
+		}
+		
+		
+		internal function get percentage():uint
+		{
+			return _event.percentage;
 		}
 		
 		

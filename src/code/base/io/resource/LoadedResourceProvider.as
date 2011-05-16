@@ -27,11 +27,12 @@
  */
 package base.io.resource
 {
+	import base.data.Config;
 	import base.data.Registry;
 
 	import com.hexagonstar.file.BulkLoader;
-	import com.hexagonstar.file.FileIOEvent;
 	import com.hexagonstar.file.types.IFile;
+	import com.hexagonstar.util.debug.Debug;
 	
 	
 	/**
@@ -75,14 +76,15 @@ package base.io.resource
 		 */
 		override public function init(arg:* = null):Boolean
 		{
-			_loader = new BulkLoader(Registry.config.ioLoadConnections, Registry.config.ioLoadRetries,
-				Registry.config.ioUseAbsoluteFilePath, Registry.config.ioPreventFileCaching);
-			_loader.addEventListener(FileIOEvent.OPEN, onBulkFileOpen);
-			_loader.addEventListener(FileIOEvent.IO_ERROR, onBulkFileError);
-			_loader.addEventListener(FileIOEvent.SECURITY_ERROR, onBulkFileError);
-			_loader.addEventListener(FileIOEvent.PROGRESS, onBulkFileProgress);
-			_loader.addEventListener(FileIOEvent.FILE_COMPLETE, onBulkFileLoaded);
-			_loader.addEventListener(FileIOEvent.COMPLETE, onLoaderComplete);
+			var cfg:Config = Registry.config;
+			_loader = new BulkLoader(cfg.ioLoadConnections, cfg.ioLoadRetries,
+				cfg.ioUseAbsoluteFilePath, cfg.ioPreventFileCaching);
+			_loader.fileOpenSignal.add(onBulkFileOpen);
+			_loader.fileProgressSignal.add(onBulkFileProgress);
+			_loader.fileCompleteSignal.add(onBulkFileLoaded);
+			_loader.fileIOErrorSignal.add(onBulkFileError);
+			_loader.fileSecurityErrorSignal.add(onBulkFileError);
+			_loader.allCompleteSignal.add(onLoaderComplete);
 			return true;
 		}
 		
@@ -102,12 +104,12 @@ package base.io.resource
 		 */
 		override public function dispose():void
 		{
-			_loader.removeEventListener(FileIOEvent.OPEN, onBulkFileOpen);
-			_loader.removeEventListener(FileIOEvent.IO_ERROR, onBulkFileError);
-			_loader.removeEventListener(FileIOEvent.SECURITY_ERROR, onBulkFileError);
-			_loader.removeEventListener(FileIOEvent.PROGRESS, onBulkFileProgress);
-			_loader.removeEventListener(FileIOEvent.FILE_COMPLETE, onBulkFileLoaded);
-			_loader.removeEventListener(FileIOEvent.COMPLETE, onLoaderComplete);
+			_loader.fileOpenSignal.remove(onBulkFileOpen);
+			_loader.fileProgressSignal.remove(onBulkFileProgress);
+			_loader.fileCompleteSignal.remove(onBulkFileLoaded);
+			_loader.fileIOErrorSignal.remove(onBulkFileError);
+			_loader.fileSecurityErrorSignal.remove(onBulkFileError);
+			_loader.allCompleteSignal.remove(onLoaderComplete);
 			_loader.dispose();
 			_loader = null;
 			super.dispose();
@@ -132,6 +134,7 @@ package base.io.resource
 		 */
 		override protected function reset():void
 		{
+			Debug.trace("RESET!");
 			if (!_loader) return;
 			if (_loader.loading) return;
 			_loader.reset();

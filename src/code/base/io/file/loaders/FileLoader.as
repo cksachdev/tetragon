@@ -31,8 +31,8 @@ package base.io.file.loaders
 	import base.data.Registry;
 
 	import com.hexagonstar.file.BulkLoader;
-	import com.hexagonstar.file.FileIOEvent;
-	import com.hexagonstar.file.IFileIOEventListener;
+	import com.hexagonstar.file.IFileIOSignalListener;
+	import com.hexagonstar.file.types.IFile;
 	import com.hexagonstar.file.types.XMLFile;
 	import com.hexagonstar.structures.queues.Queue;
 
@@ -45,7 +45,7 @@ package base.io.file.loaders
 	 * Abstract base class for file loaders. Provides common implementation for concrete
 	 * loader classes.
 	 */
-	public class FileLoader extends EventDispatcher implements IFileIOEventListener
+	public class FileLoader extends EventDispatcher implements IFileIOSignalListener
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -72,7 +72,7 @@ package base.io.file.loaders
 			_preventNotify = false;
 			_loader = new BulkLoader(Registry.config.ioLoadConnections, Registry.config.ioLoadRetries,
 				Registry.config.ioUseAbsoluteFilePath, Registry.config.ioPreventFileCaching);
-			_loader.addEventListenersFor(this);
+			_loader.addListenersFor(this);
 		}
 		
 		
@@ -115,7 +115,7 @@ package base.io.file.loaders
 		 */
 		public function dispose():void
 		{
-			_loader.removeEventListenersFor(this);
+			_loader.removeListenersFor(this);
 			_loader.dispose();
 			_loader = null;
 			_files = null;
@@ -129,57 +129,57 @@ package base.io.file.loaders
 		/**
 		 * Abstract Method.
 		 */
-		public function onFileOpen(e:FileIOEvent):void
+		public function onFileOpen(file:IFile):void
 		{
-			//Debug.trace(toString() + " Opened: " + e.file.path);
+			//Debug.trace(toString() + " Opened: " + file.path);
 		}
 		
 		
 		/**
 		 * Abstract Method.
 		 */
-		public function onFileProgress(e:FileIOEvent):void
+		public function onFileProgress(file:IFile):void
 		{
-			//Debug.trace(toString() + " Load Progress: " + e.file.path);
+			//Debug.trace(toString() + " Load Progress: " + file.path);
 		}
 		
 		
 		/**
 		 * Abstract Method.
 		 */
-		public function onFileComplete(e:FileIOEvent):void
+		public function onFileComplete(file:IFile):void
 		{
-			Log.debug("Loaded \"" + e.file.path + "\".", this);
+			Log.debug("Loaded \"" + file.path + "\".", this);
 		}
 		
 		
 		/**
 		 * Abstract Method.
 		 */
-		public function onAllFilesComplete(e:FileIOEvent):void
+		public function onAllFilesComplete(file:IFile):void
 		{
-			//Debug.trace(toString() + " onComplete");
+			//Log.debug(toString() + " onComplete");
 		}
 		
 		
 		/**
 		 * Abstract Method.
 		 */
-		public function onFileAbort(e:FileIOEvent):void
+		public function onFileAbort(file:IFile):void
 		{
-			Log.debug("Aborted after \"" + e.file.path + "\".", this);
+			Log.debug("Aborted after \"" + file.path + "\".", this);
 		}
 		
 		
 		/**
 		 * Abstract Method.
 		 */
-		public function onFileHTTPStatus(e:FileIOEvent):void
+		public function onFileHTTPStatus(file:IFile):void
 		{
-			var code:int = e.httpStatus;
+			var code:int = file.httpStatus;
 			if (code > 0)
 			{
-				var status:String = e.httpStatusInfo;
+				var status:String = file.httpStatusInfo;
 				if (code > 399 && code < 600)
 					Log.warn("HTTPStatus: " + status, this);
 				else
@@ -191,18 +191,18 @@ package base.io.file.loaders
 		/**
 		 * Abstract Method.
 		 */
-		public function onFileIOError(e:FileIOEvent):void
+		public function onFileIOError(file:IFile):void
 		{
-			notifyLoadError(e);
+			notifyLoadError(file);
 		}
 		
 		
 		/**
 		 * Abstract Method.
 		 */
-		public function onFileSecurityError(e:FileIOEvent):void
+		public function onFileSecurityError(file:IFile):void
 		{
-			notifyLoadError(e);
+			notifyLoadError(file);
 		}
 		
 		
@@ -213,15 +213,15 @@ package base.io.file.loaders
 		/**
 		 * @param e
 		 */
-		protected function notifyLoadError(e:FileIOEvent):void
+		protected function notifyLoadError(file:IFile):void
 		{
 			if (!Capabilities.isDebugger)
 			{
-				notifyError("Could not load " + e.file.path + " (" + e.text + ").");
+				notifyError("Could not load " + file.path + " (" + file.errorMessage + ").");
 			}
 			else
 			{
-				notifyError(e.text);
+				notifyError(file.errorMessage);
 			}
 		}
 		

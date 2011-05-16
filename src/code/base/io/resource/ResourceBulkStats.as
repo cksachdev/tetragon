@@ -102,7 +102,7 @@ package base.io.resource
 		 */
 		public function get percentage():uint
 		{
-			return (bytesLoaded / bytesTotal * 100);
+			return _bulk.percentage;
 		}
 		
 		
@@ -158,18 +158,6 @@ package base.io.resource
 		internal function get bulk():ResourceBulk
 		{
 			return _bulk;
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @private
-		 */
-		internal function updateProgress():void
-		{
 		}
 	}
 }

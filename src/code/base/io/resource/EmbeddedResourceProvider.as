@@ -29,7 +29,7 @@ package base.io.resource
 {
 	import base.event.ResourceEvent;
 
-	import com.hexagonstar.file.FileIOEvent;
+	import com.hexagonstar.file.BulkFileIOEvent;
 
 	
 	/**
@@ -114,7 +114,7 @@ package base.io.resource
 		/**
 		 * Not used for EmbeddedResourceProvider!
 		 */
-		override protected function onBulkFileLoaded(e:FileIOEvent):void
+		override protected function onBulkFileLoaded(e:BulkFileIOEvent):void
 		{
 		}
 		
@@ -122,7 +122,7 @@ package base.io.resource
 		/**
 		 * Not used for EmbeddedResourceProvider!
 		 */
-		override protected function onBulkFileError(e:FileIOEvent):void
+		override protected function onBulkFileError(e:BulkFileIOEvent):void
 		{
 		}
 		

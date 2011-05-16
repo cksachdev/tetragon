@@ -33,7 +33,6 @@ package base.io.file.loaders
 	import base.io.resource.ResourceFamily;
 	import base.io.resource.ResourceIndex;
 
-	import com.hexagonstar.file.FileIOEvent;
 	import com.hexagonstar.file.types.IFile;
 	import com.hexagonstar.file.types.XMLFile;
 	import com.hexagonstar.file.types.ZipFile;
@@ -116,9 +115,9 @@ package base.io.file.loaders
 		 * 
 		 * @param e
 		 */
-		override public function onFileComplete(e:FileIOEvent):void
+		override public function onFileComplete(file:IFile):void
 		{
-			super.onFileComplete(e);
+			super.onFileComplete(file);
 		}
 		
 		
@@ -127,14 +126,15 @@ package base.io.file.loaders
 		 * 
 		 * @param e
 		 */
-		override public function onAllFilesComplete(e:FileIOEvent):void
+		override public function onAllFilesComplete(file:IFile):void
 		{
+			_loader.reset();
 			switch (_state)
 			{
 				case 0:
 				case 2:
 					/* Non-packed or packed file was loaded successfully! */
-					parse(e.file);
+					parse(file);
 					return;
 				case 1:
 					/* Non-packed index file could not be found so
@@ -146,14 +146,14 @@ package base.io.file.loaders
 					/* Neither packed or nonpacked could be loaded! */
 			}
 			
-			super.onAllFilesComplete(e);
+			super.onAllFilesComplete(file);
 		}
 		
 		
 		/**
 		 * @param e
 		 */
-		override public function onFileIOError(e:FileIOEvent):void
+		override public function onFileIOError(file:IFile):void
 		{
 			if (_state == 0)
 			{
@@ -163,7 +163,7 @@ package base.io.file.loaders
 			else if (_state == 2)
 			{
 				_state = 3;
-				notifyLoadError(e);
+				notifyLoadError(file);
 			}
 		}
 		

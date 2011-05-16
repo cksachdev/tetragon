@@ -30,8 +30,8 @@ package base.io.resource
 	import base.core.debug.Log;
 	import base.data.Registry;
 
-	import com.hexagonstar.file.FileIOEvent;
 	import com.hexagonstar.file.ZipLoader;
+	import com.hexagonstar.util.debug.Debug;
 
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -82,9 +82,10 @@ package base.io.resource
 			}
 			
 			_loader = new ZipLoader(zipFile);
-			_loader.addEventListener(Event.OPEN, onLoaderOpen);
-			_loader.addEventListener(Event.CLOSE, onLoaderClose);
-			_loader.addEventListener(IOErrorEvent.IO_ERROR, onLoaderError);
+			_loader.openSignal.add(onLoaderOpen);
+			_loader.closeSignal.add(onLoaderClose);
+			_loader.errorSignal.add(onLoaderError);
+			
 			return true;
 		}
 		
@@ -113,15 +114,15 @@ package base.io.resource
 		 */
 		override public function dispose():void
 		{
-			_loader.removeEventListener(Event.OPEN, onLoaderOpen);
-			_loader.removeEventListener(Event.CLOSE, onLoaderClose);
-			_loader.removeEventListener(IOErrorEvent.IO_ERROR, onLoaderError);
-			_loader.removeEventListener(FileIOEvent.OPEN, onBulkFileOpen);
-			_loader.removeEventListener(FileIOEvent.IO_ERROR, onBulkFileError);
-			_loader.removeEventListener(FileIOEvent.SECURITY_ERROR, onBulkFileError);
-			_loader.removeEventListener(FileIOEvent.PROGRESS, onBulkFileProgress);
-			_loader.removeEventListener(FileIOEvent.FILE_COMPLETE, onBulkFileLoaded);
-			_loader.removeEventListener(FileIOEvent.COMPLETE, onLoaderComplete);
+			_loader.openSignal.remove(onLoaderOpen);
+			_loader.closeSignal.remove(onLoaderClose);
+			_loader.errorSignal.remove(onLoaderError);
+			_loader.fileOpenSignal.remove(onBulkFileOpen);
+			_loader.fileProgressSignal.remove(onBulkFileProgress);
+			_loader.fileCompleteSignal.remove(onBulkFileLoaded);
+			_loader.fileIOErrorSignal.remove(onBulkFileError);
+			_loader.fileSecurityErrorSignal.remove(onBulkFileError);
+			_loader.allCompleteSignal.remove(onLoaderComplete);
 			_loader.dispose();
 			_loader = null;
 			super.dispose();
@@ -155,34 +156,25 @@ package base.io.resource
 		// Event Handlers
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @param e
-		 */
 		private function onLoaderOpen(e:Event):void
 		{
-			_loader.addEventListener(FileIOEvent.OPEN, onBulkFileOpen);
-			_loader.addEventListener(FileIOEvent.IO_ERROR, onBulkFileError);
-			_loader.addEventListener(FileIOEvent.SECURITY_ERROR, onBulkFileError);
-			_loader.addEventListener(FileIOEvent.PROGRESS, onBulkFileProgress);
-			_loader.addEventListener(FileIOEvent.FILE_COMPLETE, onBulkFileLoaded);
-			_loader.addEventListener(FileIOEvent.COMPLETE, onLoaderComplete);
+			_loader.fileOpenSignal.add(onBulkFileOpen);
+			_loader.fileProgressSignal.add(onBulkFileProgress);
+			_loader.fileCompleteSignal.add(onBulkFileLoaded);
+			_loader.fileIOErrorSignal.add(onBulkFileError);
+			_loader.fileSecurityErrorSignal.add(onBulkFileError);
+			_loader.allCompleteSignal.add(onLoaderComplete);
 			Log.debug("Opened resource package \"" + _loader.filename + "\".", this);
 			dispatchEvent(e.clone());
 		}
 		
 		
-		/**
-		 * @param e
-		 */
 		private function onLoaderClose(e:Event):void
 		{
 			dispatchEvent(e.clone());
 		}
 		
 		
-		/**
-		 * @param e
-		 */
 		private function onLoaderError(e:IOErrorEvent):void
 		{
 			dispatchEvent(e.clone());
@@ -198,6 +190,7 @@ package base.io.resource
 		 */
 		override protected function reset():void
 		{
+			Debug.trace("RESET!");
 			if (!_loader) return;
 			if (_loader.loading) return;
 			_loader.reset();
