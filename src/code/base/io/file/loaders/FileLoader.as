@@ -31,6 +31,7 @@ package base.io.file.loaders
 	import base.data.Registry;
 
 	import com.hexagonstar.file.BulkLoader;
+	import com.hexagonstar.file.BulkProgress;
 	import com.hexagonstar.file.IFileIOSignalListener;
 	import com.hexagonstar.file.types.IFile;
 	import com.hexagonstar.file.types.XMLFile;
@@ -172,7 +173,7 @@ package base.io.file.loaders
 		/**
 		 * Abstract Method.
 		 */
-		public function onFileProgress(file:IFile):void
+		public function onFileProgress(progress:BulkProgress):void
 		{
 			//Debug.trace(toString() + " Load Progress: " + file.path);
 		}

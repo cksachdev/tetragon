@@ -36,8 +36,10 @@ package base.io.resource
 	import base.io.resource.wrappers.ResourceWrapper;
 	import base.io.resource.wrappers.XMLResourceWrapper;
 
+	import com.hexagonstar.file.BulkProgress;
 	import com.hexagonstar.file.types.IFile;
 	import com.hexagonstar.signals.Signal;
+	import com.hexagonstar.util.debug.Debug;
 	import com.hexagonstar.util.reflection.getClassName;
 	
 	
@@ -225,9 +227,11 @@ package base.io.resource
 		}
 		
 		
-		protected function onBulkFileProgress(file:IFile):void
+		protected function onBulkFileProgress(progress:BulkProgress):void
 		{
-			var bf:ResourceBulkFile = _bulkFiles[file.id];
+			Debug.trace(progress.dump());
+			var bf:ResourceBulkFile = _bulkFiles[progress.file.id];
+			
 			//bf.updateProgress(e);
 			
 			if (_isNextFileOpened)
