@@ -29,13 +29,13 @@ package base.state
 {
 	import base.Main;
 	import base.io.resource.Resource;
-	import base.io.resource.ResourceBulkStats;
 	import base.io.resource.ResourceManager;
 	import base.view.Screen;
 	import base.view.ScreenManager;
 	import base.view.loadprogressbar.BasicLoadProgressDisplay;
 	import base.view.loadprogressbar.LoadProgressDisplay;
 
+	import com.hexagonstar.file.BulkProgress;
 	import com.hexagonstar.signals.Signal;
 	import com.hexagonstar.util.reflection.getClassName;
 
@@ -270,9 +270,9 @@ package base.state
 		/**
 		 * Invoked while a resource for this state is being loaded.
 		 */
-		protected function onResourceProgress(stats:ResourceBulkStats):void
+		protected function onResourceProgress(progress:BulkProgress):void
 		{
-			if (progressSignal) progressSignal.dispatch(stats);
+			if (progressSignal) progressSignal.dispatch(progress);
 		}
 		
 		

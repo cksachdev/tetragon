@@ -169,7 +169,7 @@ package base.command.env
 			{
 				var rm:ResourceManager = main.resourceManager;
 				var ri:ResourceIndex = rm.resourceIndex;
-				for (var i:int = 0; i < _settingsFileIDs.length; i++)
+				for (var i:uint = 0; i < _settingsFileIDs.length; i++)
 				{
 					var r:Resource = ri.getResource(_settingsFileIDs[i]);
 					if (r.status == ResourceStatus.FAILED)

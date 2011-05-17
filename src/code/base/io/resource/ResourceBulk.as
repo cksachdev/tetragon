@@ -42,8 +42,6 @@ package base.io.resource
 		private var _id:String;
 		private var _provider:IResourceProvider;
 		private var _bulkFiles:Object;
-		private var _stats:ResourceBulkStats;
-		private var _currentBulkFile:ResourceBulkFile;
 		
 		private var _filesLoaded:uint = 0;
 		private var _filesTotal:uint = 0;
@@ -67,7 +65,6 @@ package base.io.resource
 			_id = id;
 			_provider = p;
 			_bulkFiles = {};
-			_stats = new ResourceBulkStats(this);
 			
 			_loadedHandler = lh;
 			_failedHandler = fh;
@@ -142,28 +139,6 @@ package base.io.resource
 		
 		
 		/**
-		 * @private
-		 */
-		internal function setCurrentFile(bf:ResourceBulkFile):void
-		{
-			_currentBulkFile = bf;
-			//_bytesLoaded = _bytesTotal + _bytesLoadedTemp;
-			//Debug.trace(_currentBulkFile.path + " (" +_currentBulkFile.bytesLoaded + "/" + _currentBulkFile.bytesTotal + ")");
-			//_bytesTotal += _currentBulkFile.bytesTotal;
-		}
-		
-		
-		/**
-		 * @private
-		 */
-//		internal function updateProgress(e:BulkFileIOEvent):void
-//		{
-//			_event = e;
-//			//Debug.trace(e.file.path + " (" + _event.ratioPercentage + "%)");
-//		}
-		
-		
-		/**
 		 * Returns a String Representation of the class.
 		 * 
 		 * @return A String Representation of the class.
@@ -196,48 +171,21 @@ package base.io.resource
 		}
 		
 		
-		/**
-		 * The statistics object of the resource bulk.
-		 */
-		public function get stats():ResourceBulkStats
-		{
-			return _stats;
-		}
-		
-		
-		internal function get filesLoaded():uint
+		public function get filesLoaded():uint
 		{
 			return _filesLoaded;
 		}
 		
 		
-		internal function get filesTotal():uint
+		public function get filesTotal():uint
 		{
 			return _filesTotal;
 		}
 		
 		
-		internal function get bytesLoaded():uint
+		internal function get isComplete():Boolean
 		{
-			return 0;//_event.bytesLoaded;
-		}
-		
-		
-		internal function get bytesTotal():uint
-		{
-			return 0;//_event.bytesTotal;
-		}
-		
-		
-		internal function get percentage():uint
-		{
-			return 0;//_event.percentage;
-		}
-		
-		
-		internal function get currentBulkFile():ResourceBulkFile
-		{
-			return _currentBulkFile;
+			return _filesLoaded == _filesTotal;
 		}
 		
 		

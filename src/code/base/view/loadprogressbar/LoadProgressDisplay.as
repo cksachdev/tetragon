@@ -27,8 +27,7 @@
  */
 package base.view.loadprogressbar
 {
-	import base.io.resource.ResourceBulkStats;
-
+	import com.hexagonstar.file.BulkProgress;
 	import com.hexagonstar.signals.Signal;
 
 	import flash.display.Sprite;
@@ -86,7 +85,7 @@ package base.view.loadprogressbar
 		/**
 		 * Updates the load progress bar.
 		 */
-		public function update(loadStats:ResourceBulkStats):void
+		public function update(progress:BulkProgress):void
 		{
 			/* Abstract method! */
 		}

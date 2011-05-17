@@ -43,8 +43,6 @@ package base.io.resource
 		private var _path:String;
 		private var _resourceFamily:String;
 		private var _resourceType:String;
-		private var _bytesLoaded:uint = 0;
-		private var _bytesTotal:uint = 0;
 		private var _bulk:ResourceBulk;
 		private var _wrapper:ResourceWrapper;
 		private var _items:Vector.<ResourceBulkItem>;
@@ -154,18 +152,6 @@ package base.io.resource
 		public function get items():Vector.<ResourceBulkItem>
 		{
 			return _items;
-		}
-		
-		
-		internal function get bytesLoaded():uint
-		{
-			return _bytesLoaded;
-		}
-		
-		
-		internal function get bytesTotal():uint
-		{
-			return _bytesTotal;
 		}
 		
 		

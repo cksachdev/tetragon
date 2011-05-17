@@ -39,7 +39,6 @@ package base.io.resource
 	import com.hexagonstar.file.BulkProgress;
 	import com.hexagonstar.file.types.IFile;
 	import com.hexagonstar.signals.Signal;
-	import com.hexagonstar.util.debug.Debug;
 	import com.hexagonstar.util.reflection.getClassName;
 	
 	
@@ -54,7 +53,6 @@ package base.io.resource
 		
 		protected var _dsm:DataSupportManager;
 		private var _resourceManager:ResourceManager;
-		private var _isNextFileOpened:Boolean;
 		
 		/**
 		 * ID of the resource provider, if necessary (PackedResourceProvider needs it!)
@@ -66,6 +64,8 @@ package base.io.resource
 		 * keep track of them in event handlers. Bulk files are mapped by their ID.
 		 */
 		protected var _bulkFiles:Object;
+		
+		protected var _lastBulkFile:ResourceBulkFile;
 		
 		/**
 		 * Determines if a loader has completed loading all files.
@@ -104,7 +104,6 @@ package base.io.resource
 			_dsm = Main.instance.dataSupportManager;
 			_id = id;
 			_bulkFiles = {};
-			_isNextFileOpened = false;
 			
 			_bulkProgressSignal = new Signal();
 			_fileLoadedSignal = new Signal();
@@ -223,33 +222,20 @@ package base.io.resource
 		
 		protected function onBulkFileOpen(file:IFile):void
 		{
-			_isNextFileOpened = true;
 		}
 		
 		
 		protected function onBulkFileProgress(progress:BulkProgress):void
 		{
-			Debug.trace(progress.dump());
 			var bf:ResourceBulkFile = _bulkFiles[progress.file.id];
-			
-			//bf.updateProgress(e);
-			
-			if (_isNextFileOpened)
-			{
-				//Debug.trace(e.file.path + " percentage: " + e.percentage);
-				_isNextFileOpened = false;
-				//bf.bulk.setCurrentFile(bf);
-			}
-			
-			_bulkProgressSignal.dispatch(bf);
-			//_progressSignal.dispatch(bf.bulk.stats);
+			if (!bf && _lastBulkFile) bf = _lastBulkFile;
+			_bulkProgressSignal.dispatch(bf, progress);
 		}
 		
 		
 		protected function onBulkFileLoaded(file:IFile):void
 		{
 			var bf:ResourceBulkFile = _bulkFiles[file.id];
-			//bf.updateProgress(e);
 			bf.wrapper.addEventListener(ResourceEvent.INIT_SUCCESS, onResourceInit);
 			bf.wrapper.addEventListener(ResourceEvent.INIT_FAILED, onResourceInit);
 			bf.wrapper.initialize();
@@ -263,9 +249,14 @@ package base.io.resource
 			bf.wrapper.removeEventListener(ResourceEvent.INIT_FAILED, onResourceInit);
 			
 			if (e.type == ResourceEvent.INIT_FAILED)
+			{
 				fail(bf, e.text);
+			}
 			else
-				processBulkFile(bf);
+			{
+				if (bf.wrapper is XMLResourceWrapper) parseXMLResource(bf);
+				else parseMediaResource(bf);
+			}
 		}
 		
 		
@@ -278,10 +269,8 @@ package base.io.resource
 		
 		protected function onLoaderComplete(file:IFile):void
 		{
-			var bf:ResourceBulkFile = _bulkFiles[file.id];
-			//bf.updateProgress(e);
 			_loaderComplete = true;
-			if (_isBulkComplete) reset();
+			if (_isBulkComplete) finishBulk(_lastBulkFile);
 		}
 		
 		
@@ -346,21 +335,6 @@ package base.io.resource
 		protected function loadFiles():void
 		{
 			/* Abstract method! */
-		}
-		
-		
-		/**
-		 * The processing of resources follows the same procedure regardless from which
-		 * concrete resource provider it came.
-		 * 
-		 * @param bulkFile
-		 */
-		protected function processBulkFile(bulkFile:ResourceBulkFile):void
-		{
-			if (bulkFile.wrapper is XMLResourceWrapper)
-				parseXMLResource(bulkFile);
-			else
-				parseMediaResource(bulkFile);
 		}
 		
 		
@@ -441,7 +415,7 @@ package base.io.resource
 			
 			_fileLoadedSignal.dispatch(bulkFile);
 			bulkFile.bulk.increaseLoadedCount();
-			checkComplete(bulkFile);
+			checkBulkComplete(bulkFile);
 		}
 		
 		
@@ -455,7 +429,7 @@ package base.io.resource
 			r.setStatus(ResourceStatus.LOADED);
 			_fileLoadedSignal.dispatch(bulkFile);
 			bulkFile.bulk.increaseLoadedCount();
-			checkComplete(bulkFile);
+			checkBulkComplete(bulkFile);
 		}
 		
 		
@@ -482,17 +456,32 @@ package base.io.resource
 		 * 
 		 * @param bulkFile
 		 */
-		protected function checkComplete(bulkFile:ResourceBulkFile):void
+		protected function checkBulkComplete(bulkFile:ResourceBulkFile):void
 		{
 			/* Finished files can be removed from temporary map now. */
 			delete _bulkFiles[bulkFile.id];
 			
-			if (bulkFile.bulk.stats.isComplete)
+			if (bulkFile.bulk.isComplete)
 			{
+				/* We have to store the last bulkfile here because it would be removed
+				 * from the bulkFiles map when needed in onLoaderComplete handler! */
+				_lastBulkFile = bulkFile;
 				_isBulkComplete = true;
-				if (_loaderComplete) reset();
-				_bulkLoadedSignal.dispatch(bulkFile);
+				if (_loaderComplete) finishBulk(bulkFile);
 			}
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		protected function finishBulk(bulkFile:ResourceBulkFile):void
+		{
+			_lastBulkFile = null;
+			_isBulkComplete = false;
+			_loaderComplete = false;
+			reset();
+			_bulkLoadedSignal.dispatch(bulkFile);
 		}
 		
 		
@@ -509,7 +498,7 @@ package base.io.resource
 			}
 			bulkFile.bulk.decreaseTotalCount();
 			_fileFailedSignal.dispatch(bulkFile, message);
-			checkComplete(bulkFile);
+			checkBulkComplete(bulkFile);
 		}
 	}
 }

@@ -27,8 +27,7 @@
  */
 package base.view.loadprogressbar
 {
-	import base.io.resource.ResourceBulkStats;
-
+	import com.hexagonstar.file.BulkProgress;
 	import com.hexagonstar.util.display.StageReference;
 
 	import flash.events.MouseEvent;
@@ -64,12 +63,12 @@ package base.view.loadprogressbar
 		}
 		
 		
-		override public function update(loadStats:ResourceBulkStats):void
+		override public function update(progress:BulkProgress):void
 		{
 			if (_isComplete) return;
 			
-			_percentage = loadStats.bytesLoaded / loadStats.bytesTotal * 100;
-			_loadProgressBar.bar.width = _percentage * _factor;
+			//_percentage = loadStats.bytesLoaded / loadStats.bytesTotal * 100;
+			//_loadProgressBar.bar.width = _percentage * _factor;
 			
 			if (_percentage == 100)
 			{

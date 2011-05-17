@@ -114,9 +114,9 @@ package base.core.desktop
 			_settingsManager.put(FULLSCREEN, fs);
 			_settingsManager.store();
 			
-			Log.debug(toString() + " Window bounds stored for \"" + windowID + "\" (x=" + wb.x
+			Log.debug("Window bounds stored for \"" + windowID + "\" (x=" + wb.x
 				+ " y=" + wb.y + " width=" + wb.width + " height=" + wb.height + " fullscreen="
-				+ fs + ").");
+				+ fs + ").", this);
 		}
 		
 		
@@ -168,8 +168,8 @@ package base.core.desktop
 			if (_screenHeight <= w.height) w.y = 0;
 			else w.y = Math.round((_screenHeight / 2) - (w.height / 2));
 			
-			Log.debug(toString() + " Reset base window bounds to x=" + w.x + " y=" + w.y
-				+ ", width=" + w.width + " height=" + w.height);
+			Log.debug("Reset base window bounds to x=" + w.x + " y=" + w.y
+				+ ", width=" + w.width + " height=" + w.height, this);
 		}
 		
 		
@@ -195,7 +195,7 @@ package base.core.desktop
 		 */
 		public function toString():String
 		{
-			return "[WindowBoundsManager]";
+			return "WindowBoundsManager";
 		}
 		
 		

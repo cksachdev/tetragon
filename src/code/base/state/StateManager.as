@@ -30,12 +30,12 @@ package base.state
 	import base.Main;
 	import base.core.debug.Log;
 	import base.data.Registry;
-	import base.io.resource.ResourceBulkStats;
 	import base.view.Screen;
 	import base.view.ScreenManager;
 	import base.view.loadprogressbar.LoadProgressDisplay;
 
 	import com.greensock.TweenLite;
+	import com.hexagonstar.file.BulkProgress;
 	import com.hexagonstar.util.string.TabularText;
 
 	import flash.display.Sprite;
@@ -226,10 +226,10 @@ package base.state
 		/**
 		 * Invoked while a state is loading.
 		 */
-		private function onStateLoadProgress(stats:ResourceBulkStats):void
+		private function onStateLoadProgress(progress:BulkProgress):void
 		{
 			if (!_loadProgressDisplay) return;
-			_loadProgressDisplay.update(stats);
+			_loadProgressDisplay.update(progress);
 		}
 		
 		
