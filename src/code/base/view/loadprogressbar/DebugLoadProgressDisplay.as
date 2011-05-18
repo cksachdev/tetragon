@@ -48,6 +48,8 @@ package base.view.loadprogressbar
 		
 		protected var _tf:TextField;
 		protected var _text:String;
+		protected var _backBuffer:String;
+		protected var _currentFilePath:String;
 		protected var _percentage:Number;
 		protected var _isComplete:Boolean;
 		
@@ -59,6 +61,8 @@ package base.view.loadprogressbar
 		override public function reset():void
 		{
 			_text = "";
+			_backBuffer = "";
+			_currentFilePath = null;
 			_percentage = 0;
 			_isComplete = false;
 		}
@@ -69,20 +73,33 @@ package base.view.loadprogressbar
 			if (_isComplete) return;
 			
 			_percentage = progress.ratioPercentage;
-			_text += "Loading bulkfile: " + progress.file.path
-				+ " (" + progress.file.bytesLoaded + "/" + progress.file.bytesTotal
-				+ ")"
-				+ "\nTotal: " + progress.bytesLoaded + "/" + progress.bytesTotal + "\n";
+			var sAll:String = createProgressBar(_percentage) + " All ... " + _percentage + "%";
 			
 			if (_percentage == 100)
 			{
 				_isComplete = true;
-				_text += "\nAll loading completed.";
+				_text = _backBuffer + sAll + "\n\nAll loading completed.";
 				if (waitForUserInput)
 				{
 					_text += " Press mouse to continue.";
 					StageReference.stage.addEventListener(MouseEvent.CLICK, onMouseClick);
 				}
+			}
+			else
+			{
+				var s1:String = createProgressBar(progress.file.percentLoaded) + " loading \"" + progress.file.path + "\" ... " + int(progress.file.percentLoaded) + "%";
+				var s2:String = s1 + "\n" + sAll;
+				
+				if (progress.file.percentLoaded == 100)
+				{
+					_backBuffer += s1 + "\n";
+					_text = _backBuffer + sAll;
+				}
+				else
+				{
+					_text = _backBuffer + s2;
+				}
+				
 			}
 			
 			_tf.text = _text;
@@ -139,6 +156,22 @@ package base.view.loadprogressbar
 			e.preventDefault();
 			StageReference.stage.removeEventListener(MouseEvent.CLICK, onMouseClick);
 			userInputSignal.dispatch();
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		private function createProgressBar(percentage:uint):String
+		{
+			var p:uint = percentage / 10;
+			var s:String = "";
+			for (var i:uint = 0; i < 10; i++)
+			{
+				if (i <= p) s += "†";
+				else s+= ".";
+			}
+			return "[" + s + "]";
 		}
 	}
 }

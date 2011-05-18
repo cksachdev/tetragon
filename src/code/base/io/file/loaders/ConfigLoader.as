@@ -138,12 +138,12 @@ package base.io.file.loaders
 			
 			for each (var l:String in lines)
 			{
-				var firstChar:String = trim(l).substr(0, 1);
+				const firstChar:String = trim(l).substr(0, 1);
 				
 				/* Ignore lines that are comments or headers */
 				if (firstChar != "#" && firstChar != "[")
 				{
-					var pos:int = l.indexOf("=");
+					const pos:int = l.indexOf("=");
 					key = trim(l.substring(0, pos));
 					val = trim(l.substring(pos + 1, l.length));
 					parseProperty(key, val);

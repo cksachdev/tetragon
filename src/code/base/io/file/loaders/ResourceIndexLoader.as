@@ -249,7 +249,7 @@ package base.io.file.loaders
 		{
 			for each (var x:XML in xml.media.*)
 			{
-				var topNodeName:String = x.name();
+				const topNodeName:String = x.name();
 				var resourceClassID:String = topNodeName;
 				
 				for each (var s:XML in x.children())
@@ -278,14 +278,14 @@ package base.io.file.loaders
 		{
 			for each (var x:XML in xml.lists.group)
 			{
-				var type:String = x.@type;
-				var allFileID:String = "" + x.@fileID;
+				const type:String = x.@type;
+				const allFileID:String = "" + x.@fileID;
 				for each (var s:XML in x.children())
 				{
 					if (s.name() != "resource") continue;
 					
-					var fileID:String = allFileID.length > 0 ? allFileID : s.@fileID;
-					var dfp:String = _resourceIndex.getDataFilePath(fileID);
+					const fileID:String = allFileID.length > 0 ? allFileID : s.@fileID;
+					const dfp:String = _resourceIndex.getDataFilePath(fileID);
 					
 					if (!dfp || dfp.length < 1)
 					{
@@ -310,8 +310,8 @@ package base.io.file.loaders
 		{
 			for each (var x:XML in xml.data.group)
 			{
-				var type:String = x.@type;
-				var allFileID:String = "" + x.@fileID;
+				const type:String = x.@type;
+				const allFileID:String = "" + x.@fileID;
 				for each (var s:XML in x.children())
 				{
 					if (s.name() != "resource") continue;
@@ -320,8 +320,8 @@ package base.io.file.loaders
 					 * data file ID can be specified globally for all resources instead
 					 * of having any resource repeat the same data file ID so if we got
 					 * a global data file ID use that one instead. */
-					var fileID:String = allFileID.length > 0 ? allFileID : s.@fileID;
-					var dfp:String = _resourceIndex.getDataFilePath(fileID);
+					const fileID:String = allFileID.length > 0 ? allFileID : s.@fileID;
+					const dfp:String = _resourceIndex.getDataFilePath(fileID);
 					
 					if (!dfp || dfp.length < 1)
 					{
@@ -346,14 +346,14 @@ package base.io.file.loaders
 		{
 			for each (var x:XML in xml.entities.group)
 			{
-				var type:String = x.@type;
-				var allFileID:String = "" + x.@fileID;
+				const type:String = x.@type;
+				const allFileID:String = "" + x.@fileID;
 				for each (var s:XML in x.children())
 				{
 					if (s.name() != "resource") continue;
 					
-					var fileID:String = allFileID.length > 0 ? allFileID : s.@fileID;
-					var dfp:String = _resourceIndex.getDataFilePath(fileID);
+					const fileID:String = allFileID.length > 0 ? allFileID : s.@fileID;
+					const dfp:String = _resourceIndex.getDataFilePath(fileID);
 					
 					if (!dfp || dfp.length < 1)
 					{
@@ -378,12 +378,11 @@ package base.io.file.loaders
 		{
 			for each (var x:XML in xml.elements("text").resource)
 			{
-				var id:String = x.@id;
 				for each (var s:XML in x.locale)
 				{
-					var lang:String = s.@lang;
+					const lang:String = s.@lang;
 					if (lang != _locale) continue;
-					var path:String = s.@path;
+					const path:String = s.@path;
 					
 					/* If text entry for current locale is not available, use default locale! */
 					if (!path || path.length < 1)
@@ -391,7 +390,7 @@ package base.io.file.loaders
 						s = x.locale.(@lang == _main.config.defaultLocale)[0];
 					}
 					
-					s.@id = id;
+					s.@id = x.@id;
 					addResourceEntry(s, ResourceFamily.TEXT, ResourceFamily.TEXT, null);
 				}
 			}

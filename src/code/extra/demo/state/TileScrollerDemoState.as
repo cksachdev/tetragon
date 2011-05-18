@@ -98,6 +98,26 @@ package extra.demo.state
 			registerResource("tileSetDina08x16");
 			
 			registerResource("testTileMap");
+			
+			registerResource("textureGroundMetal001d");
+			registerResource("textureGroundMetal001n");
+			registerResource("textureGroundMetal002d");
+			registerResource("textureGroundMetal002n");
+			registerResource("textureGroundTiles001d");
+			registerResource("textureGroundTiles001n");
+			registerResource("textureGroundTiles002d");
+			registerResource("textureGroundTiles002n");
+			registerResource("textureWallMetal001d");
+			registerResource("textureWallMetal001n");
+			registerResource("textureWallMetal002d");
+			registerResource("textureWallMetal002n");
+			registerResource("textureWallBrick001d");
+			registerResource("textureWallBrick001n");
+			registerResource("textureWallPattern001d");
+			registerResource("textureWallPattern001n");
+			
+			registerResource("background001");
+			registerResource("background002");
 		}
 		
 		
