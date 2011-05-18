@@ -468,8 +468,6 @@ package base.io.resource
 		
 		private function onResourceBulkProgress(bf:ResourceBulkFile, progress:BulkProgress):void
 		{
-			if (!bf) return;
-			
 			for (var i:uint = 0; i < bf.items.length; i++)
 			{
 				var item:ResourceBulkItem = bf.items[i];
@@ -495,7 +493,7 @@ package base.io.resource
 			var b:ResourceBulk = bf.bulk;
 			var a:Array;
 			
-			/* We can decrease the bulk ID anytime a bulk completed loading. */
+			/* We can decrease the bulk ID count anytime a bulk completed loading. */
 			if (_bulkIDCount > 1) _bulkIDCount--;
 			
 			/* If we got queued referenced resources, load these before we finish. */

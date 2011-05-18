@@ -75,7 +75,7 @@ package base.io.resource
 		/**
 		 * Determines if a bulk has completed processing.
 		 */
-		protected var _isBulkComplete:Boolean;
+		protected var _bulkComplete:Boolean;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -270,7 +270,7 @@ package base.io.resource
 		protected function onLoaderComplete(file:IFile):void
 		{
 			_loaderComplete = true;
-			if (_isBulkComplete) finishBulk(_lastBulkFile);
+			if (_bulkComplete) finishBulk(_lastBulkFile);
 		}
 		
 		
@@ -454,6 +454,11 @@ package base.io.resource
 		/**
 		 * Checks whether all resources in the current bulk have been processed.
 		 * 
+		 * It's not guaranteed which occurs first: all resources have been processed
+		 * or the loader has completed. So to make sure that the current loaded bulk
+		 * is finished and ready for use we wait until both the resources and the
+		 * loader is complete.
+		 * 
 		 * @param bulkFile
 		 */
 		protected function checkBulkComplete(bulkFile:ResourceBulkFile):void
@@ -466,7 +471,7 @@ package base.io.resource
 				/* We have to store the last bulkfile here because it would be removed
 				 * from the bulkFiles map when needed in onLoaderComplete handler! */
 				_lastBulkFile = bulkFile;
-				_isBulkComplete = true;
+				_bulkComplete = true;
 				if (_loaderComplete) finishBulk(bulkFile);
 			}
 		}
@@ -478,7 +483,7 @@ package base.io.resource
 		protected function finishBulk(bulkFile:ResourceBulkFile):void
 		{
 			_lastBulkFile = null;
-			_isBulkComplete = false;
+			_bulkComplete = false;
 			_loaderComplete = false;
 			reset();
 			_bulkLoadedSignal.dispatch(bulkFile);

@@ -208,7 +208,7 @@ package base.io.resource
 		 */
 		override protected function loadFiles():void
 		{
-			_isBulkComplete = false;
+			_bulkComplete = false;
 			_loaderComplete = false;
 			_loader.load();
 		}

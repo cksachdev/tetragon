@@ -28,7 +28,6 @@
 package base.view.loadprogressbar
 {
 	import com.hexagonstar.file.BulkProgress;
-	import com.hexagonstar.util.debug.Debug;
 	import com.hexagonstar.util.display.StageReference;
 
 	import flash.events.MouseEvent;
@@ -69,13 +68,11 @@ package base.view.loadprogressbar
 		{
 			if (_isComplete) return;
 			
-			Debug.trace(progress.dump());
-			
-			//_percentage = loadStats.percentage;
-			//_text += "Loading bulkfile: " + loadStats.currentFilePath
-			//	+ " (" + loadStats.currentFileBytesLoaded + "/" + loadStats.currentFileBytesTotal
-			//	+ ")"
-			//	+ "\nTotal: " + loadStats.bytesLoaded + "/" + loadStats.bytesTotal + "\n";
+			_percentage = progress.ratioPercentage;
+			_text += "Loading bulkfile: " + progress.file.path
+				+ " (" + progress.file.bytesLoaded + "/" + progress.file.bytesTotal
+				+ ")"
+				+ "\nTotal: " + progress.bytesLoaded + "/" + progress.bytesTotal + "\n";
 			
 			if (_percentage == 100)
 			{
