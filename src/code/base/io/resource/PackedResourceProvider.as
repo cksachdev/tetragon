@@ -78,6 +78,10 @@ package base.io.resource
 				return false;
 			}
 			
+			ZipLoader.bufferSize = Registry.config.ioZipStreamBufferSize;
+			//ZipLoader.bufferSize = 262144; // 256KB
+			//ZipLoader.bufferSize = 1048576; // 1MB
+			
 			_loader = new ZipLoader(zipFile);
 			_loader.openSignal.add(onLoaderOpen);
 			_loader.closeSignal.add(onLoaderClose);

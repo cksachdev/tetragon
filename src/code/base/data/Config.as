@@ -75,6 +75,7 @@ package base.data
 		public var ioLoadRetries:int;
 		public var ioUseAbsoluteFilePath:Boolean;
 		public var ioPreventFileCaching:Boolean;
+		public var ioZipStreamBufferSize:uint;
 		
 		/* Display-related settings */
 		public var startWithFullscreen:Boolean;
@@ -155,6 +156,7 @@ package base.data
 			ioLoadRetries = 0;
 			ioUseAbsoluteFilePath = false;
 			ioPreventFileCaching = false;
+			ioZipStreamBufferSize = 8192;
 			
 			startWithFullscreen = false;
 			
