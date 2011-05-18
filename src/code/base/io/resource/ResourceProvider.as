@@ -32,7 +32,6 @@ package base.io.resource
 	import base.data.DataSupportManager;
 	import base.data.parsers.DataObjectParser;
 	import base.data.parsers.IDataParser;
-	import base.event.ResourceEvent;
 	import base.io.resource.loaders.ResourceLoader;
 	import base.io.resource.loaders.XMLResourceLoader;
 
@@ -236,27 +235,22 @@ package base.io.resource
 		protected function onBulkFileLoaded(file:IFile):void
 		{
 			var bf:ResourceBulkFile = _bulkFiles[file.id];
-			bf.resourceLoader.addEventListener(ResourceEvent.INIT_SUCCESS, onResourceInit);
-			bf.resourceLoader.addEventListener(ResourceEvent.INIT_FAILED, onResourceInit);
+			bf.resourceLoader.initSuccessSignal.addOnce(onResourceInitSuccess);
+			bf.resourceLoader.initFailedSignal.addOnce(onResourceInitFailed);
 			bf.resourceLoader.initialize();
 		}
 		
 		
-		protected function onResourceInit(e:ResourceEvent):void
+		protected function onResourceInitSuccess(bf:ResourceBulkFile):void
 		{
-			var bf:ResourceBulkFile = e.bulkFile;
-			bf.resourceLoader.removeEventListener(ResourceEvent.INIT_SUCCESS, onResourceInit);
-			bf.resourceLoader.removeEventListener(ResourceEvent.INIT_FAILED, onResourceInit);
-			
-			if (e.type == ResourceEvent.INIT_FAILED)
-			{
-				fail(bf, e.text);
-			}
-			else
-			{
-				if (bf.resourceLoader is XMLResourceLoader) parseXMLResource(bf);
-				else parseMediaResource(bf);
-			}
+			if (bf.resourceLoader is XMLResourceLoader) parseXMLResource(bf);
+			else parseMediaResource(bf);
+		}
+		
+		
+		protected function onResourceInitFailed(bf:ResourceBulkFile, message:String):void
+		{
+			fail(bf, message);
 		}
 		
 		
@@ -463,6 +457,8 @@ package base.io.resource
 		 */
 		protected function checkBulkComplete(bulkFile:ResourceBulkFile):void
 		{
+			bulkFile.resourceLoader.dispose();
+			
 			/* Finished files can be removed from temporary map now. */
 			delete _bulkFiles[bulkFile.id];
 			

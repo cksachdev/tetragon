@@ -27,8 +27,6 @@
  */
 package base.io.resource
 {
-	import base.event.ResourceEvent;
-
 	import com.hexagonstar.file.types.IFile;
 
 	
@@ -128,8 +126,8 @@ package base.io.resource
 		override protected function addBulkFile(bulkFile:ResourceBulkFile):void
 		{
 			super.addBulkFile(bulkFile);
-			bulkFile.resourceLoader.addEventListener(ResourceEvent.INIT_SUCCESS, onResourceInit);
-			bulkFile.resourceLoader.addEventListener(ResourceEvent.INIT_FAILED, onResourceInit);
+			bulkFile.resourceLoader.initSuccessSignal.addOnce(onResourceInitSuccess);
+			bulkFile.resourceLoader.initFailedSignal.addOnce(onResourceInitFailed);
 			bulkFile.resourceLoader.initialize(_resourceBundle.getResourceData(bulkFile.path));
 		}
 	}

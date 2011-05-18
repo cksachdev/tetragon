@@ -28,16 +28,15 @@
 package base.io.resource.loaders
 {
 	import base.core.debug.Log;
-	import base.event.ResourceEvent;
 	import base.io.resource.ResourceBulkFile;
 
 	import com.hexagonstar.constants.Status;
 	import com.hexagonstar.exception.IllegalArgumentException;
 	import com.hexagonstar.file.types.IFile;
+	import com.hexagonstar.signals.Signal;
 	import com.hexagonstar.util.reflection.getClassName;
 
 	import flash.events.Event;
-	import flash.events.EventDispatcher;
 	import flash.utils.ByteArray;
 	
 	
@@ -54,7 +53,7 @@ package base.io.resource.loaders
 	 * 
 	 * <p>Resource loaders can load files from the filesystem as well as embedded files.</p>
 	 */
-	public class ResourceLoader extends EventDispatcher
+	public class ResourceLoader
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -68,6 +67,23 @@ package base.io.resource.loaders
 		//-----------------------------------------------------------------------------------------
 		// Signals
 		//-----------------------------------------------------------------------------------------
+		
+		protected var _initSuccessSignal:Signal;
+		protected var _initFailedSignal:Signal;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Constructor
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Creates a new instance of the class.
+		 */
+		public function ResourceLoader()
+		{
+			_initSuccessSignal = new Signal();
+			_initFailedSignal = new Signal();
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -107,11 +123,23 @@ package base.io.resource.loaders
 		
 		
 		/**
+		 * Disposes the class.
+		 */
+		public function dispose():void
+		{
+			_initSuccessSignal.removeAll();
+			_initFailedSignal.removeAll();
+			_initSuccessSignal = null;
+			_initFailedSignal = null;
+		}
+		
+		
+		/**
 		 * Returns a String Representation of the class.
 		 * 
 		 * @return A String Representation of the class.
 		 */
-		override public function toString():String
+		public function toString():String
 		{
 			return getClassName(this);
 		}
@@ -172,6 +200,18 @@ package base.io.resource.loaders
 		}
 		
 		
+		public function get initSuccessSignal():Signal
+		{
+			return _initSuccessSignal;
+		}
+		
+		
+		public function get initFailedSignal():Signal
+		{
+			return _initFailedSignal;
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Event Handlers
 		//-----------------------------------------------------------------------------------------
@@ -204,7 +244,7 @@ package base.io.resource.loaders
 				if (onContentReady(e ? e.target["content"] : null))
 				{
 					_file = null;
-					dispatchEvent(new ResourceEvent(ResourceEvent.INIT_SUCCESS, _bulkFile));
+					_initSuccessSignal.dispatch(_bulkFile);
 					return;
 				}
 				else
@@ -229,7 +269,7 @@ package base.io.resource.loaders
 		protected function onFailed(message:String):void
 		{
 			_file = null;
-			dispatchEvent(new ResourceEvent(ResourceEvent.INIT_FAILED, _bulkFile, message));
+			_initFailedSignal.dispatch(_bulkFile, message);
 		}
 		
 		
@@ -242,7 +282,7 @@ package base.io.resource.loaders
 		 */
 		protected function initializeFromLoaded():void
 		{
-			dispatchEvent(new ResourceEvent(ResourceEvent.INIT_SUCCESS, _bulkFile));
+			_initSuccessSignal.dispatch(_bulkFile);
 		}
 		
 		

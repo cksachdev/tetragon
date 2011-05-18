@@ -84,17 +84,6 @@ package base.io.resource
 		
 		
 		/**
-		 * @private
-		 */
-//		internal function updateProgress(e:BulkFileIOEvent):void
-//		{
-//			_bytesLoaded = e.currentFileBytesLoaded;
-//			_bytesTotal = e.currentFileBytesTotal;
-//			_bulk.updateProgress(e);
-//		}
-		
-		
-		/**
 		 * Returns a String Representation of the class.
 		 * 
 		 * @return A String Representation of the class.
