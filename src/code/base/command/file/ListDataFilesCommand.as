@@ -33,17 +33,10 @@ package base.command.file
 
 	
 	/**
-	 * CLI command to list all resources mapped by the resource manager.
+	 * CLI command to list all data files that are mapped.
 	 */
-	public class ListResourcesCommand extends CLICommand
+	public class ListDataFilesCommand extends CLICommand
 	{
-		//-----------------------------------------------------------------------------------------
-		// Properties
-		//-----------------------------------------------------------------------------------------
-		
-		private var _filter:String = "all";
-		
-		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
@@ -53,7 +46,7 @@ package base.command.file
 		 */
 		override public function execute():void 
 		{
-			main.console.log(main.resourceManager.resourceIndex.dump(_filter), LogLevel.INFO);
+			main.console.log(main.resourceManager.resourceIndex.dumpDataFileList(), LogLevel.INFO);
 			complete();
 		}
 		
@@ -67,48 +60,7 @@ package base.command.file
 		 */
 		override public function get name():String 
 		{
-			return "listResources";
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function get signature():Array
-		{
-			return ["+filter:Identifier"];
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function get helpText():String
-		{
-			return "Outputs a list of all resources that are mapped in the resource index. Optionally one of the following"
-				+ " filters can be specified as an argument:\n\n"
-				+ "\t\tall:      List all resources (default).\n"
-				+ "\t\tloaded:   Only list resources that are currently loaded (i.e. resources whose refcount is larger than 0).\n"
-				+ "\t\tunloaded: Only list resources that are not loaded (i.e. resource whose refcount is 0).\n\n";
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function get example():String
-		{
-			return "listresources loaded";
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// CLI Command Signature Arguments
-		//-----------------------------------------------------------------------------------------
-		
-		public function set filter(v:String):void
-		{
-			_filter = v;
+			return "listDataFiles";
 		}
 	}
 }

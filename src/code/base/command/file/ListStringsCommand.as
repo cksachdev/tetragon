@@ -46,7 +46,7 @@ package base.command.file
 		 */
 		override public function execute():void 
 		{
-			main.console.log(main.resourceManager.dumpStringList(), LogLevel.INFO);
+			main.console.log(main.resourceManager.stringIndex.dump(), LogLevel.INFO);
 			complete();
 		}
 		

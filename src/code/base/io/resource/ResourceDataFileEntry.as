@@ -27,7 +27,7 @@
  */
 package base.io.resource
 {
-	public class ResourceDataFileEntry
+	public final class ResourceDataFileEntry
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

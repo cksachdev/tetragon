@@ -374,6 +374,35 @@ package base.io.resource
 		
 		
 		/**
+		 * Returns a string dump of all mapped resource package files.
+		 */
+		public function dumpPackageList():String
+		{
+			var t:TabularText = new TabularText(2, true, "  ", null, "  ", 0, ["ID", "PATH"]);
+			for (var id:String in _packageFiles)
+			{
+				t.add([id, _packageFiles[id]]);
+			}
+			return toString() + ": Resource Package Files\n" + t;
+		}
+		
+		
+		/**
+		 * Returns a string dump of all mapped data files.
+		 */
+		public function dumpDataFileList():String
+		{
+			var t:TabularText = new TabularText(3, true, "  ", null, "  ", 0, ["ID", "PATH", "PAKID"]);
+			for (var id:String in _dataFiles)
+			{
+				var dfe:ResourceDataFileEntry = _dataFiles[id];
+				t.add([id, dfe.path, dfe.packageID]);
+			}
+			return toString() + ": Resource Data Files\n" + t;
+		}
+		
+		
+		/**
 		 * Returns a String Representation of the class.
 		 * 
 		 * @return A String Representation of the class.

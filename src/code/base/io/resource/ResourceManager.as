@@ -367,24 +367,6 @@ package base.io.resource
 		
 		
 		/**
-		 * Returns a dump of the resource list.
-		 */
-		public function dumpResourceList(filter:String = "all"):String
-		{
-			return _resourceIndex.dump(filter);
-		}
-		
-		
-		/**
-		 * Returns a dump of the string list.
-		 */
-		public function dumpStringList():String
-		{
-			return _stringIndex.dump();
-		}
-		
-		
-		/**
 		 * Returns a String Representation of ResourceManager.
 		 * 
 		 * @return A String Representation of ResourceManager.

@@ -29,6 +29,7 @@ package base.core.cli
 {
 	import base.Main;
 	import base.command.env.*;
+	import base.command.file.ListPaksCommand;
 	
 	
 	/**
@@ -61,6 +62,7 @@ package base.core.cli
 		{
 			cli.registerCommand("env", "resetwinbounds", ResetWinBoundsCommand, "Resets the window size and position.");
 			cli.registerCommand("env", "checkupdate", CheckUpdateCommand, "Checks if an update of the application is available.");
+			cli.registerCommand("file", "listpaks", ListPaksCommand, "Outputs a list of all resource package files (paks).");
 		}
 	}
 }
