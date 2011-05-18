@@ -27,12 +27,10 @@
  */
 package base.data.parsers
 {
-	import base.Main;
-	import base.data.DataSupportManager;
 	import base.data.Registry;
 	import base.data.Settings;
 	import base.data.types.KeyValuePair;
-	import base.io.resource.wrappers.XMLResourceWrapper;
+	import base.io.resource.loaders.XMLResourceLoader;
 	
 	
 	/**
@@ -47,10 +45,9 @@ package base.data.parsers
 		/**
 		 * @inheritDoc
 		 */
-		public function parse(wrapper:XMLResourceWrapper, model:*):void
+		public function parse(loader:XMLResourceLoader, model:*):void
 		{
-			_xml = wrapper.xml;
-			var dsm:DataSupportManager = Main.instance.dataSupportManager;
+			_xml = loader.xml;
 			var settings:Settings = Registry.settings;
 			
 			for each (var p:XML in _xml.children())

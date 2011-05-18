@@ -33,8 +33,8 @@ package base.io.resource
 	import base.data.parsers.DataObjectParser;
 	import base.data.parsers.IDataParser;
 	import base.event.ResourceEvent;
-	import base.io.resource.wrappers.ResourceWrapper;
-	import base.io.resource.wrappers.XMLResourceWrapper;
+	import base.io.resource.loaders.ResourceLoader;
+	import base.io.resource.loaders.XMLResourceLoader;
 
 	import com.hexagonstar.file.BulkProgress;
 	import com.hexagonstar.file.types.IFile;
@@ -133,8 +133,8 @@ package base.io.resource
 		{
 			for each (var bf:ResourceBulkFile in bulk.bulkFiles)
 			{
-				createWrapperFor(bf);
-				if (bf.wrapper) addBulkFile(bf);
+				createLoaderFor(bf);
+				if (bf.resourceLoader) addBulkFile(bf);
 			}
 			loadFiles();
 		}
@@ -236,17 +236,17 @@ package base.io.resource
 		protected function onBulkFileLoaded(file:IFile):void
 		{
 			var bf:ResourceBulkFile = _bulkFiles[file.id];
-			bf.wrapper.addEventListener(ResourceEvent.INIT_SUCCESS, onResourceInit);
-			bf.wrapper.addEventListener(ResourceEvent.INIT_FAILED, onResourceInit);
-			bf.wrapper.initialize();
+			bf.resourceLoader.addEventListener(ResourceEvent.INIT_SUCCESS, onResourceInit);
+			bf.resourceLoader.addEventListener(ResourceEvent.INIT_FAILED, onResourceInit);
+			bf.resourceLoader.initialize();
 		}
 		
 		
 		protected function onResourceInit(e:ResourceEvent):void
 		{
 			var bf:ResourceBulkFile = e.bulkFile;
-			bf.wrapper.removeEventListener(ResourceEvent.INIT_SUCCESS, onResourceInit);
-			bf.wrapper.removeEventListener(ResourceEvent.INIT_FAILED, onResourceInit);
+			bf.resourceLoader.removeEventListener(ResourceEvent.INIT_SUCCESS, onResourceInit);
+			bf.resourceLoader.removeEventListener(ResourceEvent.INIT_FAILED, onResourceInit);
 			
 			if (e.type == ResourceEvent.INIT_FAILED)
 			{
@@ -254,7 +254,7 @@ package base.io.resource
 			}
 			else
 			{
-				if (bf.wrapper is XMLResourceWrapper) parseXMLResource(bf);
+				if (bf.resourceLoader is XMLResourceLoader) parseXMLResource(bf);
 				else parseMediaResource(bf);
 			}
 		}
@@ -288,29 +288,29 @@ package base.io.resource
 		
 		
 		/**
-		 * Tries to instantiate the resource wrapper class for the resource in the specified
+		 * Tries to instantiate the resource loader class for the resource in the specified
 		 * bulk file.
 		 * 
 		 * @param bulkFile
 		 */
-		protected function createWrapperFor(bulkFile:ResourceBulkFile):void
+		protected function createLoaderFor(bulkFile:ResourceBulkFile):void
 		{
-			var w:ResourceWrapper;
+			var loader:ResourceLoader;
 			var item:ResourceBulkItem = bulkFile.item;
-			var clazz:Class = item.resource.wrapperClass;
+			var clazz:Class = item.resource.loaderClass;
 			try
 			{
-				w = new clazz();
+				loader = new clazz();
 			}
 			catch (err:Error)
 			{
-				fail(bulkFile, "The specified resource wrapper class \"" + item.resource.wrapperClass
+				fail(bulkFile, "The specified resource loader class \"" + item.resource.loaderClass
 					+ "\" for resource with ID \"" + item.resource.id + "\" could not be"
-					+ " instantiated because it is not of type ResourceFile (" + err.message + ").");
+					+ " instantiated because it is not of type ResourceLoader (" + err.message + ").");
 				return;
 			}
 			
-			bulkFile.wrapper = w;
+			bulkFile.resourceLoader = loader;
 		}
 		
 		
@@ -343,7 +343,7 @@ package base.io.resource
 		 */
 		protected function parseXMLResource(bulkFile:ResourceBulkFile):void
 		{
-			var w:XMLResourceWrapper = XMLResourceWrapper(bulkFile.wrapper);
+			var w:XMLResourceLoader = XMLResourceLoader(bulkFile.resourceLoader);
 			if (!w.valid)
 			{
 				fail(bulkFile, w.status);
@@ -425,7 +425,7 @@ package base.io.resource
 		protected function parseMediaResource(bulkFile:ResourceBulkFile):void
 		{
 			var r:Resource = bulkFile.item.resource;
-			r.setContent(bulkFile.wrapper.content);
+			r.setContent(bulkFile.resourceLoader.content);
 			r.setStatus(ResourceStatus.LOADED);
 			_fileLoadedSignal.dispatch(bulkFile);
 			bulkFile.bulk.increaseLoadedCount();

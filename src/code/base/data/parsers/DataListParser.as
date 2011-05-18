@@ -31,7 +31,7 @@ package base.data.parsers
 	import base.data.DataList;
 	import base.data.types.KeyValuePair;
 	import base.io.resource.ResourceIndex;
-	import base.io.resource.wrappers.XMLResourceWrapper;
+	import base.io.resource.loaders.XMLResourceLoader;
 
 	
 	/**
@@ -46,9 +46,9 @@ package base.data.parsers
 		/**
 		 * @inheritDoc
 		 */
-		public function parse(wrapper:XMLResourceWrapper, model:*):void
+		public function parse(loader:XMLResourceLoader, model:*):void
 		{
-			_xml = wrapper.xml;
+			_xml = loader.xml;
 			var index:ResourceIndex = model;
 			var p:XML;
 			var pair:KeyValuePair;
@@ -60,7 +60,7 @@ package base.data.parsers
 				var id:String = extractString(l, "@id");
 				
 				/* Only parse the list(s) that we want! */
-				if (!wrapper.hasResourceID(id)) continue;
+				if (!loader.hasResourceID(id)) continue;
 				
 				Log.debug("Parsing list data for " + id + " ...", this);
 				

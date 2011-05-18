@@ -62,11 +62,6 @@ package base.data.parsers
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Public Methods
-		//-----------------------------------------------------------------------------------------
-		
-		
-		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
@@ -103,8 +98,8 @@ package base.data.parsers
 		 */
 		protected function parseProperty(p:XML):KeyValuePair
 		{
-			var key:String = p.name();
-			var value:String = p.toString();
+			const key:String = p.name();
+			const value:String = p.toString();
 			var pair:KeyValuePair;
 			
 			/* Check if property has a complex type assigned. */
@@ -172,7 +167,7 @@ package base.data.parsers
 		 */
 		protected static function parseComplexTypeParams(type:Object, params:String):Object
 		{
-			var len:int = params.length;
+			const len:int = params.length;
 			var quotesCount:int = 0;
 			var isInsideQuotes:Boolean = false;
 			var current:String;

@@ -25,14 +25,14 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.io.resource.wrappers
+package base.io.resource.loaders
 {
 	/**
-	 * This is a ResourceFile subclass for image data. It allows you to load an image file
+	 * This is a resource loader subclass for image data. It allows you to load an image file
 	 * format supported by Flash (JPG, PNG, or GIF) and access it as a BitmapData or
-	 * Bitmap. Image32ResourceFile provides a 32bit bitmap.
+	 * Bitmap. Image32ResourceLoader provides a 32bit bitmap.
 	 */
-	public class Image32ResourceWrapper extends ImageResourceWrapper
+	public class Image32ResourceLoader extends ImageResourceLoader
 	{
 		//-----------------------------------------------------------------------------------------
 		// Constructor
@@ -41,7 +41,7 @@ package base.io.resource.wrappers
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function Image32ResourceWrapper()
+		public function Image32ResourceLoader()
 		{
 			_transparent = true;
 		}

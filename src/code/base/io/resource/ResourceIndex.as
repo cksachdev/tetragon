@@ -354,11 +354,11 @@ package base.io.resource
 				else if (filter == "unloaded" && e.referenceCount > 0) continue;
 				
 				/* Remove class part from class name. */
-				var rclass:String = String(e.wrapperClass);
+				var rclass:String = String(e.loaderClass);
 				if (rclass && rclass.indexOf("[class ") != -1)
 				{
 					rclass = rclass.substr(7, rclass.length - 8);
-					var li:int = rclass.lastIndexOf("ResourceWrapper");
+					var li:int = rclass.lastIndexOf("ResourceLoader");
 					if (li != -1) rclass = rclass.substr(0, li);
 				}
 				

@@ -25,7 +25,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.io.resource.wrappers
+package base.io.resource.loaders
 {
 	import base.io.resource.ResourceBulkFile;
 
@@ -35,7 +35,10 @@ package base.io.resource.wrappers
 	import flash.utils.ByteArray;
 	
 	
-	public class BinaryResourceWrapper extends ResourceWrapper
+	/**
+	 * Resource loader for binary data.
+	 */
+	public class BinaryResourceLoader extends ResourceLoader
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -105,7 +108,7 @@ package base.io.resource.wrappers
 			if (!(embeddedData is ByteArray))
 			{
 				throw new IllegalArgumentException(toString()
-					+ " The BinaryResource can only process ByteArrays.");
+					+ " The BinaryResourceLoader can only process ByteArrays.");
 			}
 			else
 			{

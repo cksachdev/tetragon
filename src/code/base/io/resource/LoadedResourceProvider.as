@@ -136,7 +136,7 @@ package base.io.resource
 		override protected function addBulkFile(bulkFile:ResourceBulkFile):void
 		{
 			/* For files loaded from the filesystem we need to add the resourcefolder to the path. */
-			var file:IFile = bulkFile.wrapper.file;
+			var file:IFile = bulkFile.resourceLoader.file;
 			file.path = Registry.config.resourceFolder + "/" + file.path;
 			_loader.addFile(file);
 			super.addBulkFile(bulkFile);
@@ -148,8 +148,6 @@ package base.io.resource
 		 */
 		override protected function loadFiles():void
 		{
-			_bulkComplete = false;
-			_loaderComplete = false;
 			_loader.load();
 		}
 	}

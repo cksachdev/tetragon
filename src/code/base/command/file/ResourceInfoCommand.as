@@ -103,7 +103,7 @@ package base.command.file
 					+ "\n\tstatus:         " + r.status
 					+ "\n\tcontent:        " + content
 					+ (size ? "\n\tsize:           " + size : "")
-					+ "\n\twrapperClass:   " + r.wrapperClass
+					+ "\n\tloaderClass:    " + r.loaderClass
 					+ "";
 				main.console.log(s, LogLevel.INFO);
 			}

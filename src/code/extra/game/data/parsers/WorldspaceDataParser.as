@@ -30,7 +30,7 @@ package extra.game.data.parsers
 	import base.data.parsers.DataParser;
 	import base.data.parsers.IDataParser;
 	import base.io.resource.ResourceIndex;
-	import base.io.resource.wrappers.XMLResourceWrapper;
+	import base.io.resource.loaders.XMLResourceLoader;
 
 	
 	/**
@@ -45,7 +45,7 @@ package extra.game.data.parsers
 		/**
 		 * @inheritDoc
 		 */
-		public function parse(resourceFile:XMLResourceWrapper, model:*):void
+		public function parse(resourceFile:XMLResourceLoader, model:*):void
 		{
 			_xml = resourceFile.xml;
 			var index:ResourceIndex = model;

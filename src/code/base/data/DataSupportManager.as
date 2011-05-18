@@ -31,13 +31,13 @@ package base.data
 	import base.core.entity.IEntityComponent;
 	import base.data.parsers.*;
 	import base.io.resource.ResourceFamily;
-	import base.io.resource.wrappers.*;
+	import base.io.resource.loaders.*;
 
 	import com.hexagonstar.types.*;
 
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
+	
 	
 	/**
 	 * An odd multi-role class that manages the mapping and creation of several objects
@@ -113,12 +113,12 @@ package base.data
 			_componentIDCount = 0;
 			
 			/* Map default resource file types. */
-			mapResourceFileType(ImageResourceWrapper, ["image", "image-opaque"], ["jpg", "jpeg", "gif"]);
-			mapResourceFileType(Image32ResourceWrapper, ["image-transparent", "image-vector"], ["png", "svg", "svgz"]);
-			mapResourceFileType(SWFResourceWrapper, ["swf"], ["swf"]);
-			mapResourceFileType(XMLResourceWrapper, ["data", "text"], ["xml", "txt", "ini", "css", "htm", "html"]);
-			mapResourceFileType(BinaryResourceWrapper, ["binary", "shader"], ["obj", "pbj", "bin"]);
-			mapResourceFileType(SoundResourceWrapper, ["audio-stream"], ["mp3"]);
+			mapResourceFileType(ImageResourceLoader, ["image", "image-opaque"], ["jpg", "jpeg", "gif"]);
+			mapResourceFileType(Image32ResourceLoader, ["image-transparent", "image-vector"], ["png", "svg", "svgz"]);
+			mapResourceFileType(SWFResourceLoader, ["swf"], ["swf"]);
+			mapResourceFileType(XMLResourceLoader, ["data", "text"], ["xml", "txt", "ini", "css", "htm", "html"]);
+			mapResourceFileType(BinaryResourceLoader, ["binary", "shader"], ["obj", "pbj", "bin"]);
+			mapResourceFileType(SoundResourceLoader, ["audio-stream"], ["mp3"]);
 			mapResourceFileType(null, ["audio-module"], ["mod"]); // TODO
 			
 			/* Map default complex types. */
@@ -144,18 +144,18 @@ package base.data
 		 * Optionally they are also mapped by file extensions, if specified. File
 		 * extensions are only of importance for embedded resource files.
 		 * 
-		 * @param wrapperClass The class to map.
+		 * @param resourceLoaderClass The resource loader class to map.
 		 * @param fileTypeIDs An array of keys to map the class under.
 		 * @param fileTypeExtensions An array of file extensions to map the class under.
 		 */
-		public function mapResourceFileType(wrapperClass:Class, fileTypeIDs:Array,
+		public function mapResourceFileType(resourceLoaderClass:Class, fileTypeIDs:Array,
 			fileTypeExtensions:Array = null):void
 		{
 			var key:String;
 			for each (key in fileTypeIDs)
-				_resourceFileTypeMap[key.toLowerCase()] = wrapperClass;
+				_resourceFileTypeMap[key.toLowerCase()] = resourceLoaderClass;
 			for each (key in fileTypeExtensions)
-				_fileTypeExtensionMap[key.toLowerCase()] = wrapperClass;
+				_fileTypeExtensionMap[key.toLowerCase()] = resourceLoaderClass;
 		}
 		
 		
@@ -202,12 +202,12 @@ package base.data
 		
 		
 		/**
-		 * Returns a resource file type wrapper class that is mapped by the given ID.
+		 * Returns a resource file type loader class that is mapped by the given ID.
 		 * 
 		 * @param fileTypeID
-		 * @return A resource wrapper class.
+		 * @return A resource loader class.
 		 */
-		public function getResourceWrapperClassByID(fileTypeID:String):Class
+		public function getResourceLoaderClassByID(fileTypeID:String):Class
 		{
 			if (fileTypeID == null) return null;
 			return _resourceFileTypeMap[fileTypeID.toLowerCase()];
@@ -215,13 +215,13 @@ package base.data
 		
 		
 		/**
-		 * Returns a resource file type wrapper class that is mapped by the given file
+		 * Returns a resource file type loader class that is mapped by the given file
 		 * type extension.
 		 * 
 		 * @param fileExtension
-		 * @return A resource wrapper class.
+		 * @return A resource loader class.
 		 */
-		public function getResourceWrapperClassByExtension(fileExtension:String):Class
+		public function getResourceLoaderClassByExtension(fileExtension:String):Class
 		{
 			if (fileExtension == null) return null;
 			return _fileTypeExtensionMap[fileExtension.toLowerCase()];

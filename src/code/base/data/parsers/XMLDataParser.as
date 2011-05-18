@@ -29,7 +29,7 @@ package base.data.parsers
 {
 	import base.io.resource.Resource;
 	import base.io.resource.StringIndex;
-	import base.io.resource.wrappers.XMLResourceWrapper;
+	import base.io.resource.loaders.XMLResourceLoader;
 	
 	
 	/**
@@ -45,11 +45,11 @@ package base.data.parsers
 		/**
 		 * @inheritDoc
 		 */
-		public function parse(wrapper:XMLResourceWrapper, model:*):void
+		public function parse(loader:XMLResourceLoader, model:*):void
 		{
-			_xml = wrapper.xml;
+			_xml = loader.xml;
 			var index:StringIndex = model;
-			var r:Resource = wrapper.bulkFile.item.resource;
+			var r:Resource = loader.bulkFile.item.resource;
 			
 			// TODO
 			//for each (var x:XML in _xml.string)

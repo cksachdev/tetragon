@@ -31,9 +31,10 @@ package extra.game.data.parsers
 	import base.data.parsers.DataParser;
 	import base.data.parsers.IDataParser;
 	import base.io.resource.ResourceIndex;
-	import base.io.resource.wrappers.XMLResourceWrapper;
+	import base.io.resource.loaders.XMLResourceLoader;
 
 	import extra.game.render.tile.*;
+
 	
 	
 	/**
@@ -48,7 +49,7 @@ package extra.game.data.parsers
 		/**
 		 * @inheritDoc
 		 */
-		public function parse(wrapper:XMLResourceWrapper, model:*):void
+		public function parse(wrapper:XMLResourceLoader, model:*):void
 		{
 			_xml = wrapper.xml;
 			var index:ResourceIndex = model;

@@ -411,7 +411,7 @@ package base.io.file.loaders
 			var path:String = resourceXML.@path;
 			var packageID:String = resourceXML.@packageID;
 			var dataFileID:String = resourceXML.@fileID;
-			var rc:Class = Main.instance.dataSupportManager.getResourceWrapperClassByID(wrapperClassID);
+			var rc:Class = Main.instance.dataSupportManager.getResourceLoaderClassByID(wrapperClassID);
 			
 			if (!rc)
 			{

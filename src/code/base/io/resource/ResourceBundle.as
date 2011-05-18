@@ -148,10 +148,10 @@ package base.io.resource
 				var clazz:Class;
 				if (resType && resType.length > 0)
 				{
-					clazz = dsm.getResourceWrapperClassByID(resType);
+					clazz = dsm.getResourceLoaderClassByID(resType);
 					if (!clazz)
 					{
-						Log.warn("No resource file type wrapper class found for embedded resource with ID \""
+						Log.warn("No resource file type loader class found for embedded resource with ID \""
 							+ resID + "\" (resID: " + resType + "). Falling back to file extension detection.", this);
 					}
 				}
@@ -162,7 +162,7 @@ package base.io.resource
 					var ext:String = resPath.substring(resPath.lastIndexOf(".") + 1);
 					
 					/* Check if the extension type is recognized or not. */
-					clazz = dsm.getResourceWrapperClassByExtension(ext);
+					clazz = dsm.getResourceLoaderClassByExtension(ext);
 					if (clazz == null)
 					{
 						Log.error("Could not determine the resource file type class definition for"

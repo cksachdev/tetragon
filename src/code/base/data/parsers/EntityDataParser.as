@@ -31,7 +31,7 @@ package base.data.parsers
 	import base.core.entity.EntityDefinition;
 	import base.data.types.KeyValuePair;
 	import base.io.resource.ResourceIndex;
-	import base.io.resource.wrappers.XMLResourceWrapper;
+	import base.io.resource.loaders.XMLResourceLoader;
 
 	
 	/**
@@ -46,19 +46,19 @@ package base.data.parsers
 		/**
 		 * @inheritDoc
 		 */
-		public function parse(wrapper:XMLResourceWrapper, model:*):void
+		public function parse(loader:XMLResourceLoader, model:*):void
 		{
-			_xml = wrapper.xml;
-			var index:ResourceIndex = model;
+			_xml = loader.xml;
+			const index:ResourceIndex = model;
 			
 			/* Loop through all items in data file. */
 			for each (var x:XML in _xml.item)
 			{
 				/* Get the current item's ID. */
-				var id:String = extractString(x, "@id");
+				const id:String = extractString(x, "@id");
 				
 				/* Only parse the item(s) that we want! */
-				if (!wrapper.hasResourceID(id)) continue;
+				if (!loader.hasResourceID(id)) continue;
 				
 				Log.debug("Parsing entity data for " + id + " ...", this);
 				
@@ -68,8 +68,8 @@ package base.data.parsers
 				/* Loop through the item's component definitions. */
 				for each (var c:XML in x.components.component)
 				{
-					var componentClassID:String = extractString(c, "@classID");
-					var componentClass:Class = dataSupportManager.getEntityComponentClass(componentClassID);
+					const componentClassID:String = extractString(c, "@classID");
+					const componentClass:Class = dataSupportManager.getEntityComponentClass(componentClassID);
 					
 					if (componentClass)
 					{

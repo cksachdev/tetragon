@@ -27,7 +27,7 @@
  */
 package base.io.resource
 {
-	import base.io.resource.wrappers.ResourceWrapper;
+	import base.io.resource.loaders.ResourceLoader;
 	
 	
 	/**
@@ -44,7 +44,7 @@ package base.io.resource
 		private var _resourceFamily:String;
 		private var _resourceType:String;
 		private var _bulk:ResourceBulk;
-		private var _wrapper:ResourceWrapper;
+		private var _resourceLoader:ResourceLoader;
 		private var _items:Vector.<ResourceBulkItem>;
 		
 		
@@ -155,14 +155,17 @@ package base.io.resource
 		}
 		
 		
-		internal function get wrapper():ResourceWrapper
+		/**
+		 * The resource loader used to load the resource file.
+		 */
+		internal function get resourceLoader():ResourceLoader
 		{
-			return _wrapper;
+			return _resourceLoader;
 		}
-		internal function set wrapper(v:ResourceWrapper):void
+		internal function set resourceLoader(v:ResourceLoader):void
 		{
-			_wrapper = v;
-			_wrapper.setup(this);
+			_resourceLoader = v;
+			_resourceLoader.setup(this);
 		}
 		
 		

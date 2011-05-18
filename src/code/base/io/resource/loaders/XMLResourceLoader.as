@@ -25,7 +25,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.io.resource.wrappers
+package base.io.resource.loaders
 {
 	import base.io.resource.ResourceBulkFile;
 	import base.io.resource.ResourceBulkItem;
@@ -35,7 +35,10 @@ package base.io.resource.wrappers
 	import flash.utils.ByteArray;
 	
 	
-	public class XMLResourceWrapper extends ResourceWrapper
+	/**
+	 * A resource loader for XML data.
+	 */
+	public class XMLResourceLoader extends ResourceLoader
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -62,7 +65,7 @@ package base.io.resource.wrappers
 		
 		
 		/**
-		 * Checks if the bulk file that is wrapped by this wrapper contains the
+		 * Checks if the bulk file that is wrapped by this loader contains the
 		 * resource with the specified ID. This can be used to filter out unwanted
 		 * resources that are in the same resource file while parsing.
 		 */

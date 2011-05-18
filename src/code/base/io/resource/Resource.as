@@ -48,7 +48,7 @@ package base.io.resource
 		private var _referenceCount:int;
 		private var _status:String;
 		private var _content:*;
-		private var _wrapperClass:Class;
+		private var _loaderClass:Class;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -78,7 +78,7 @@ package base.io.resource
 			_dataType = t;
 			_embedded = e;
 			_referenceCount = 0;
-			_wrapperClass = c;
+			_loaderClass = c;
 			_status = ResourceStatus.INIT;
 		}
 		
@@ -116,11 +116,11 @@ package base.io.resource
 		
 		
 		/**
-		 * The resource file wrapper class that is used to load the file for this resource.
+		 * The resource loader class that is used to load the file for this resource.
 		 */
-		public function get wrapperClass():Class
+		public function get loaderClass():Class
 		{
-			return _wrapperClass;
+			return _loaderClass;
 		}
 		
 		

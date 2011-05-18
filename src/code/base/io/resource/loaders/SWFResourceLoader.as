@@ -25,7 +25,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.io.resource.wrappers
+package base.io.resource.loaders
 {
 	import base.io.resource.ResourceBulkFile;
 
@@ -37,7 +37,10 @@ package base.io.resource.wrappers
 	import flash.system.ApplicationDomain;
 	
 	
-	public class SWFResourceWrapper extends ResourceWrapper
+	/**
+	 * A resource loader for SWF files.
+	 */
+	public class SWFResourceLoader extends ResourceLoader
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

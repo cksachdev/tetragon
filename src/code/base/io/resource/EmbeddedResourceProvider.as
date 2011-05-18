@@ -128,9 +128,9 @@ package base.io.resource
 		override protected function addBulkFile(bulkFile:ResourceBulkFile):void
 		{
 			super.addBulkFile(bulkFile);
-			bulkFile.wrapper.addEventListener(ResourceEvent.INIT_SUCCESS, onResourceInit);
-			bulkFile.wrapper.addEventListener(ResourceEvent.INIT_FAILED, onResourceInit);
-			bulkFile.wrapper.initialize(_resourceBundle.getResourceData(bulkFile.path));
+			bulkFile.resourceLoader.addEventListener(ResourceEvent.INIT_SUCCESS, onResourceInit);
+			bulkFile.resourceLoader.addEventListener(ResourceEvent.INIT_FAILED, onResourceInit);
+			bulkFile.resourceLoader.initialize(_resourceBundle.getResourceData(bulkFile.path));
 		}
 	}
 }

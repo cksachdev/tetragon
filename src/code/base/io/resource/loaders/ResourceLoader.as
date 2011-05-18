@@ -25,7 +25,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.io.resource.wrappers
+package base.io.resource.loaders
 {
 	import base.core.debug.Log;
 	import base.event.ResourceEvent;
@@ -42,18 +42,19 @@ package base.io.resource.wrappers
 	
 	
 	/**
-	 * The base class for resource wrappers. A resource wrapper is used by the resource
-	 * manager and resource providers to temporarily wrap resource files that are being
-	 * loaded. Depending on the loaded resource file the method how it is loaded differs.
+	 * The base class for resource loaders. A resource loader is used by the resource
+	 * manager and resource providers to load resources through the AS3 API that supports
+	 * loading them correctly. Depending on the loaded resource file the method how it is
+	 * loaded differs.
 	 * 
 	 * <p>For example the implementation for loading a sound file is different than that for
-	 * an image file. The resource wrappers take care that those files are loaded the way
-	 * they need to be loaded. In other words: A resource wrapper essentially represents
-	 * the resource file type.</p>
+	 * an image file. The resource loaders take care that those files are loaded the way
+	 * they need to be loaded. In other words: A resource loader essentially represents
+	 * the basic resource file type.</p>
 	 * 
-	 * <p>Resource wrappers can load files from the filesystem as well as embedded files.</p>
+	 * <p>Resource loaders can load files from the filesystem as well as embedded files.</p>
 	 */
-	public class ResourceWrapper extends EventDispatcher
+	public class ResourceLoader extends EventDispatcher
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -121,7 +122,7 @@ package base.io.resource.wrappers
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Returns the ID of the resource file (which is the same as it's wrapped resource).
+		 * Returns the ID of the resource loader (which is the same as it's loaded resource).
 		 */
 		public function get id():String
 		{
@@ -130,22 +131,11 @@ package base.io.resource.wrappers
 		
 		
 		/**
-		 * Returns the resource object that this resource file acts as a wrapper for.
+		 * Returns the resource object that this resource loader acts as a loader for.
 		 */
 		public function get bulkFile():ResourceBulkFile
 		{
 			return _bulkFile;
-		}
-		
-		
-		/**
-		 * Returns the file that is wrapped by the ResourceFile. Used only by the resource
-		 * provider to load the resource. Once the resource is loaded this object will be null.
-		 * @private
-		 */
-		public function get file():IFile
-		{
-			return _file;
 		}
 		
 		
@@ -159,7 +149,7 @@ package base.io.resource.wrappers
 		
 		
 		/**
-		 * The status of the resource file. If the data was validated successfully,
+		 * The status of the resource loader. If the data was validated successfully,
 		 * this is FileErrorStatus.OK, if the XML data was not validated successfully, for
 		 * example because it contains malformed XML syntax, the errorStatus will contain
 		 * the error message returned by the parser.
@@ -167,6 +157,18 @@ package base.io.resource.wrappers
 		public function get status():String
 		{
 			return _status;
+		}
+		
+		
+		/**
+		 * Returns the file that is loaded  by the ResourceLoader. Used only by the resource
+		 * provider to load the resource. Once the resource is loaded this object will be null.
+		 * 
+		 * @private
+		 */
+		public function get file():IFile
+		{
+			return _file;
 		}
 		
 		
@@ -193,7 +195,7 @@ package base.io.resource.wrappers
 		 * must be called by, and only by, subclasses that override the initialize
 		 * method.
 		 * 
-		 * @param event This can be ignored by subclasses.
+		 * @param e This can be ignored by subclasses.
 		 */
 		protected function onLoadComplete(e:Event = null):void
 		{
@@ -252,7 +254,7 @@ package base.io.resource.wrappers
 			if (!(embeddedData is ByteArray))
 			{
 				throw new IllegalArgumentException(toString()
-					+ " Base ResourceFile can only process ByteArrays as embedded data!");
+					+ " Base resource loader can only process ByteArrays as embedded data!");
 			}
 		}
 	}

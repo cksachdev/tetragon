@@ -27,7 +27,7 @@
  */
 package base.data.parsers
 {
-	import base.io.resource.wrappers.XMLResourceWrapper;
+	import base.io.resource.loaders.XMLResourceLoader;
 	
 	
 	/**
@@ -42,10 +42,10 @@ package base.data.parsers
 		/**
 		 * Parses the specified data resource.
 		 * 
-		 * @param resource Data resource to parse.
+		 * @param loader XML Resource Loader from which to get data to parse.
 		 * @param model Data model into which to parse the resource data.
 		 */
-		function parse(resourceFile:XMLResourceWrapper, model:*):void
+		function parse(loader:XMLResourceLoader, model:*):void
 		
 		
 		/**

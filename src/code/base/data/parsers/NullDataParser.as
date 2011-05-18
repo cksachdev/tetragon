@@ -27,7 +27,7 @@
  */
 package base.data.parsers
 {
-	import base.io.resource.wrappers.XMLResourceWrapper;
+	import base.io.resource.loaders.XMLResourceLoader;
 
 	
 	/**
@@ -43,9 +43,9 @@ package base.data.parsers
 		/**
 		 * @inheritDoc
 		 */
-		public function parse(resourceFile:XMLResourceWrapper, model:*):void
+		public function parse(loader:XMLResourceLoader, model:*):void
 		{
-			_xml = resourceFile.xml;
+			_xml = loader.xml;
 			for each (var x:XML in _xml.entry)
 			{
 				/* Create a new object instance of the data model you're using for

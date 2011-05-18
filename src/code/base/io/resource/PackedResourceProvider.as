@@ -192,9 +192,9 @@ package base.io.resource
 			/* If we get false returned by the zip load it is probably because the
 			 * path is wrong, so mark the resource as failed (Otherwise we'd get stuck
 			 * after such a resource). */
-			if (!_loader.addFile(bulkFile.wrapper.file))
+			if (!_loader.addFile(bulkFile.resourceLoader.file))
 			{
-				fail(bulkFile, "Resource file with ID \"" + bulkFile.wrapper.file.id
+				fail(bulkFile, "Resource file with ID \"" + bulkFile.resourceLoader.file.id
 					+ "\" was not added for loading to ZipLoader"
 					+ " (possibly wrong path or unsupported compression format?).");
 				return;
@@ -208,8 +208,6 @@ package base.io.resource
 		 */
 		override protected function loadFiles():void
 		{
-			_bulkComplete = false;
-			_loaderComplete = false;
 			_loader.load();
 		}
 	}

@@ -25,7 +25,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.io.resource.wrappers
+package base.io.resource.loaders
 {
 	import base.io.resource.ResourceBulkFile;
 
@@ -35,7 +35,10 @@ package base.io.resource.wrappers
 	import flash.media.Sound;
 	
 	
-	public class SoundResourceWrapper extends ResourceWrapper
+	/**
+	 * A resource loader for sound data (MP3).
+	 */
+	public class SoundResourceLoader extends ResourceLoader
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -105,7 +108,7 @@ package base.io.resource.wrappers
 			if (!(embeddedData is Sound))
 			{
 				throw new IllegalArgumentException(toString()
-					+ " The SoundResource can only process Sound objects!");
+					+ " The SoundResourceLoader can only process Sound objects!");
 			}
 			else
 			{
