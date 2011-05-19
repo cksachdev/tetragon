@@ -27,8 +27,12 @@
  */
 package base.io.key
 {
+	import base.Main;
 	import base.core.debug.Log;
 
+	import flash.display.Stage;
+	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
 	
 	
@@ -48,6 +52,7 @@ package base.io.key
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
+		private var _stage:Stage;
 		private var _assignmentsDown:Dictionary;
 		private var _assignmentsUp:Dictionary;
 		
@@ -61,6 +66,7 @@ package base.io.key
 		 */
 		public function KeyManager()
 		{
+			_stage = Main.instance.stage;
 			_assignmentsDown = new Dictionary();
 			_assignmentsUp = new Dictionary();
 		}
@@ -70,63 +76,87 @@ package base.io.key
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * Assigns a key or key combination to a callback function.
-		 * 
-		 * @param keyCodes
-		 * @param callback
-		 * @param mode
-		 */
-		public function assign(keyCodes:*, callback:Function, mode:String):Boolean
+		public function activate():void
 		{
-			var c:KeyCombination;
-			if (keyCodes is String)
-			{
-				var codes:Array = getKeyCodes(keyCodes);
-				if (codes != null)
-				{
-					c = new KeyCombination(codes);
-				}
-				else
-				{
-					fail("Could not extract keycodes values from keyCode string: \"" + keyCodes + "\".");
-					return false;
-				}
-			}
-			else if (keyCodes is int)
-			{
-				c = new KeyCombination([keyCodes]);
-			}
-			else if (keyCodes is Array)
-			{
-				c = new KeyCombination(keyCodes);
-			}
-			else if (keyCodes is KeyCombination)
-			{
-				c = keyCodes;
-			}
-			else
-			{
-				fail("Could not assign keycode that is not of type String, uint, Array or KeyCombination.");
-				return false;
-			}
-			
+			_stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			_stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			_stage.addEventListener(Event.DEACTIVATE, onDeactivate);
+		}
+		
+		
+		public function deactivate():void
+		{
+			_stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			_stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			_stage.removeEventListener(Event.DEACTIVATE, onDeactivate);
+		}
+		
+		
+		/**
+		 * Assigns a keyboard key or key combination to a callback function.
+		 * 
+		 * @param value The key value to assign. This can be one of the following
+		 *        object types: String, int, Array or KeyCombination.
+		 * @param callback The method that is called when the key or key combination
+		 *        is triggered.
+		 * @param mode The mode of the key assignment, either <code>KeyMode.DOWN</code> or
+		 *        <code>KeyMode.UP</code>.
+		 * @return true or false.
+		 */
+		public function assign(value:*, callback:Function, mode:String = KeyMode.DOWN):Boolean
+		{
+			var kc:KeyCombination = createKeyCombination(value);
+			if (!kc) return false;
 			if (mode == KeyMode.DOWN)
 			{
-				_assignmentsDown[c] = callback;
+				_assignmentsDown[kc] = callback;
 			}
 			else if (mode == KeyMode.UP)
 			{
-				_assignmentsUp[c] = callback;
+				_assignmentsUp[kc] = callback;
 			}
 			else
 			{
 				fail("Could not assign keycode. Mode \"" + mode + "\" not recognized. Use KeyMode.DOWN or KeyMode.UP constants instead.");
 				return false;
 			}
-			
-			Log.debug("Assigned key codes " + keyCodes + " to callback " + callback, this);
+			Log.debug("Assigned key codes <" + value + "> (mode: " + mode + ").", this);
 			return true;
+		}
+		
+		
+		/**
+		 * Removes a keyboard key or key combination from the key manager. Note that
+		 * if they key or key combination is assigned to more than one callback it
+		 * will be removed from all callbacks it is assigned to.
+		 * 
+		 * @param keyCodes key codes that the key combination consists of.
+		 */
+		public function remove(value:*, callback:Function):Boolean
+		{
+			var kc1:KeyCombination = createKeyCombination(value);
+			if (kc1) return false;
+			for each (var kc2:KeyCombination in _assignmentsDown)
+			{
+				if (equals(kc1, kc2))
+				{
+					var cb:Function = _assignmentsDown[kc2];
+					if (cb == callback)
+					{
+						delete _assignmentsDown[kc2];
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		
+		
+		/**
+		 * Clears all key assignments from the Key manager.
+		 */
+		public function clearAssignments():void
+		{
 		}
 		
 		
@@ -188,10 +218,86 @@ package base.io.key
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
 		
+		private function onKeyDown(e:KeyboardEvent):void
+		{
+		}
+		
+		
+		private function onKeyUp(e:KeyboardEvent):void
+		{
+		}
+		
+		
+		private function onDeactivate(e:Event):void
+		{
+		}
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Determines if the KeyCombination specified in the kc parameter is equal
+		 * to this KeyCombination.
+		 * 
+		 * @param kc The KeyCombination class to compare to this class.
+		 * @return true if the two KeyCombinations contain the same key codes in the
+		 *          same order; otherwise false.
+		 */
+		private function equals(kc1:KeyCombination, kc2:KeyCombination):Boolean
+		{
+			if (kc1 == kc2) return true;
+			var codes1:Vector.<uint> = kc1.keyCodes;
+			var codes2:Vector.<uint> = kc2.keyCodes;
+			var l:uint = codes1.length;
+			if (l != codes2.length) return false;
+			while (l--)
+			{
+				if (codes1[l] != codes2[l]) return false;
+			}
+			return true;
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		private function createKeyCombination(value:*):KeyCombination
+		{
+			if (value is String)
+			{
+				var codes:Array = getKeyCodes(value);
+				if (codes != null)
+				{
+					return new KeyCombination(codes);
+				}
+				else
+				{
+					fail("Could not extract keycodes values from keyCode string: \"" + value + "\".");
+					return null;
+				}
+			}
+			else if (value is int)
+			{
+				return new KeyCombination([value]);
+			}
+			else if (value is Array)
+			{
+				new KeyCombination(value);
+			}
+			else if (value is KeyCombination)
+			{
+				return value;
+			}
+			else
+			{
+				fail("Could not assign keycode that is not of type String, uint, Array or KeyCombination.");
+				return null;
+			}
+			return null;
+		}
+		
 		
 		/**
 		 * @private

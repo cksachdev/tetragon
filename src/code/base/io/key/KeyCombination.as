@@ -27,8 +27,6 @@
  */
 package base.io.key
 {
-	
-	
 	/**
 	 * Represents a combination of keys that are being pressed or held down at the
 	 * same time.
@@ -39,7 +37,7 @@ package base.io.key
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		protected var _keyCodes:Vector.<uint>;
+		private var _keyCodes:Vector.<uint>;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -64,28 +62,6 @@ package base.io.key
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Determines if the KeyCombination specified in the kc parameter is equal
-		 * to this KeyCombination.
-		 * 
-		 * @param kc The KeyCombination class to compare to this class.
-		 * @return true if the two KeyCombinations contain the same key codes in the
-		 *          same order; otherwise false.
-		 */
-		public function equals(kc:KeyCombination):Boolean
-		{
-			if (kc == this) return true;
-			var codes:Vector.<uint> = kc.keyCodes;
-			var l:uint = _keyCodes.length;
-			if (l != codes.length) return false;
-			while (l--)
-			{
-				if (_keyCodes[l] != codes[l]) return false;
-			}
-			return true;
-		}
-		
 		
 		/**
 		 * Returns a String Representation of KeyCombination.
