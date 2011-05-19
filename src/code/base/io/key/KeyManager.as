@@ -27,24 +27,29 @@
  */
 package base.io.key
 {
-	import base.event.KeyCombinationEvent;
+	import base.core.debug.Log;
 
-	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
-
+	
 	
 	/**
-	 * Manages Keyboard Input.
+	 * KeyManager class
 	 */
 	public class KeyManager
 	{
 		//-----------------------------------------------------------------------------------------
+		// Constants
+		//-----------------------------------------------------------------------------------------
+		
+		public static const KEY_COMBINATION_DELIMITER:String = "+";
+		
+		
+		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _key:Key;
 		private var _assignmentsDown:Dictionary;
-		private var _assignmentsRelease:Dictionary;
+		private var _assignmentsUp:Dictionary;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -56,17 +61,8 @@ package base.io.key
 		 */
 		public function KeyManager()
 		{
-			// TODO There is still a bug with KeyCombination when more than 3 keys are used!
-			
 			_assignmentsDown = new Dictionary();
-			_assignmentsRelease = new Dictionary();
-			
-			_key = Key.instance;
-			_key.addEventListener(KeyCombinationEvent.DOWN, onCombinationDown);
-			_key.addEventListener(KeyCombinationEvent.RELEASE, onCombinationRelease);
-			_key.addEventListener(KeyCombinationEvent.SEQUENCE, onCombinationTyped);
-			_key.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-			_key.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			_assignmentsUp = new Dictionary();
 		}
 		
 		
@@ -75,121 +71,134 @@ package base.io.key
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Assigns a new Key Combination to the KeyManager.
+		 * Assigns a key or key combination to a callback function.
 		 * 
-		 * @param keyCodes key codes that the key combination consists of.
-		 * @param callback the function that should be called when the combination is entered.
-		 * @param isRelease true if key comb is triggered when pressed keys are released.
+		 * @param keyCodes
+		 * @param callback
+		 * @param mode
 		 */
-		public function assignKeyCombination(keyCodes:Array,
-											  callback:Function,
-											  isRelease:Boolean = false):void
+		public function assign(keyCodes:*, callback:Function, mode:String):Boolean
 		{
-			var c:KeyCombination = new KeyCombination(keyCodes);
-			if (isRelease)
+			var c:KeyCombination;
+			if (keyCodes is String)
 			{
-				_assignmentsRelease[c] = callback;
+				var codes:Array = getKeyCodes(keyCodes);
+				if (codes != null)
+				{
+					c = new KeyCombination(codes);
+				}
+				else
+				{
+					fail("Could not extract keycodes values from keyCode string: \"" + keyCodes + "\".");
+					return false;
+				}
+			}
+			else if (keyCodes is int)
+			{
+				c = new KeyCombination([keyCodes]);
+			}
+			else if (keyCodes is Array)
+			{
+				c = new KeyCombination(keyCodes);
+			}
+			else if (keyCodes is KeyCombination)
+			{
+				c = keyCodes;
 			}
 			else
 			{
+				fail("Could not assign keycode that is not of type String, uint, Array or KeyCombination.");
+				return false;
+			}
+			
+			if (mode == KeyMode.DOWN)
+			{
 				_assignmentsDown[c] = callback;
 			}
-			_key.addKeyCombination(c);
+			else if (mode == KeyMode.UP)
+			{
+				_assignmentsUp[c] = callback;
+			}
+			else
+			{
+				fail("Could not assign keycode. Mode \"" + mode + "\" not recognized. Use KeyMode.DOWN or KeyMode.UP constants instead.");
+				return false;
+			}
+			
+			Log.debug("Assigned key codes " + keyCodes + " to callback " + callback, this);
+			return true;
 		}
 		
 		
 		/**
-		 * Removes a Key Combination from the KeyManager.
+		 * Returns an array of key code values that are created from the specified
+		 * keyString. The keyString can contain one or more key names combined by the key
+		 * combination delimiter (+), e.g. CTRL+SHIFT+A or just CTRL. If no valid key
+		 * names or key combination was found it returns <code>null</code>.
 		 * 
-		 * @param keyCodes key codes that the key combination consists of.
+		 * @param keyString the string of keys to provide key codes from.
+		 * @return an array comprising of the key codes or <code>null</code>.
 		 */
-		public function removeKeyCombination(keyCodes:Array):void
+		public static function getKeyCodes(keyString:String):Array
 		{
-			var c:KeyCombination = new KeyCombination(keyCodes);
-			_assignmentsRelease[c] = null;
-			_assignmentsDown[c] = null;
-			delete _assignmentsRelease[c];
-			delete _assignmentsDown[c];
-			
-			_key.removeKeyCombination(c);
+			var a:Array = [];
+			var keys:Array = keyString.split(KEY_COMBINATION_DELIMITER);
+			for (var i:int = 0; i < keys.length; i++)
+			{
+				var c:int = KeyCodes.getKeyCode(keys[i]);
+				if (c > -1) a.push(c);
+			}
+			if (a.length > 0) return a;
+			return null;
 		}
 		
 		
 		/**
-		 * Clears all key assignments from the Key manager.
+		 * @private
 		 */
-		public function clearAssignments():void
+		public function checkKeyCode():void
 		{
-			for (var c1:Object in _assignmentsDown)
-			{
-				if (c1 is KeyCombination)
-				{
-					_key.removeKeyCombination(KeyCombination(c1));
-				}
-			}
-			_assignmentsDown = new Dictionary();
-			
-			for (var c2:Object in _assignmentsRelease)
-			{
-				if (c2 is KeyCombination)
-				{
-					_key.removeKeyCombination(KeyCombination(c2));
-				}
-			}
-			_assignmentsRelease = new Dictionary();
+//			var code:uint = keyCodes[i];
+//			if ("0123456789".indexOf(code.toString()) == -1)
+//			{
+//				throw new DataStructureException("A KeyCombination may only be"
+//					+ " defined with number values.");
+//				return;
+//			}
+		}
+		
+		
+		/**
+		 * Returns a String Representation of the class.
+		 * 
+		 * @return A String Representation of the class.
+		 */
+		public function toString():String
+		{
+			return "KeyManager";
 		}
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Event Handlers
+		// Accessors
 		//-----------------------------------------------------------------------------------------
 		
-		private function onCombinationDown(e:KeyCombinationEvent):void
+		
+		//-----------------------------------------------------------------------------------------
+		// Callback Handlers
+		//-----------------------------------------------------------------------------------------
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Private Methods
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @private
+		 */
+		private function fail(message:String):void
 		{
-			for (var c:Object in _assignmentsDown)
-			{
-				if (c is KeyCombination)
-				{
-					if (e.keyCombination.equals(KeyCombination(c)))
-					{
-						var callback:Function = _assignmentsDown[c];
-						callback.apply(null);
-						break;
-					}
-				}
-			}
-		}
-		
-		
-		private function onCombinationRelease(e:KeyCombinationEvent):void
-		{
-			for (var c:Object in _assignmentsRelease)
-			{
-				if (c is KeyCombination)
-				{
-					if (e.keyCombination.equals(KeyCombination(c)))
-					{
-						var callback:Function = _assignmentsRelease[c];
-						callback.apply(null);
-						break;
-					}
-				}
-			}
-		}
-		
-		
-		private function onCombinationTyped(e:KeyCombinationEvent):void
-		{
-		}
-		
-		
-		private function onKeyDown(e:KeyboardEvent):void
-		{
-		}
-		
-		
-		private function onKeyUp(e:KeyboardEvent):void
-		{
+			Log.error(message, this);
 		}
 	}
 }

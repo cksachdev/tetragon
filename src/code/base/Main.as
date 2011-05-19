@@ -27,7 +27,8 @@
  */
 package base
 {
-	import base.assist.*;
+	import base.assist.AIRDesktopAssistor;
+	import base.assist.Assistor;
 	import base.command.Command;
 	import base.command.CommandManager;
 	import base.command.env.InitApplicationCommand;
@@ -40,7 +41,7 @@ package base
 	import base.core.settings.LocalSettingsManager;
 	import base.data.DataSupportManager;
 	import base.data.Registry;
-	import base.io.key.KeyManager;
+	import base.io.keyold.KeyManager;
 	import base.io.resource.ResourceManager;
 	import base.signals.RenderSignal;
 	import base.signals.TickSignal;
@@ -51,7 +52,10 @@ package base
 	import com.hexagonstar.util.debug.HLog;
 	import com.hexagonstar.util.display.StageReference;
 
-	import flash.display.*;
+	import flash.display.DisplayObjectContainer;
+	import flash.display.Sprite;
+	import flash.display.Stage;
+	import flash.display.StageDisplayState;
 	import flash.events.ErrorEvent;
 	import flash.events.UncaughtErrorEvent;
 	import flash.external.ExternalInterface;

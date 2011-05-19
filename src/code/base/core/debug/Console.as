@@ -670,7 +670,7 @@ package base.core.debug
 				var line:String = makeLine(s.length - 2);
 				s = line + "\n  " + s.substring(1, s.length - 1) + "\n  " + line;
 			}
-			return s.replace(/\u2320(.+)\u2321/g, "<a>$1</a>").replace(/\u02CD(.+?)\u02CD/g, "<u>$1</u>");
+			return s.replace(/\u2320([^\u2320^\u2321]+)\u2321/g, "<a>$1</a>").replace(/\u02CD([^\u02CD]+)\u02CD/g, "<u>$1</u>");
 		}
 		
 		

@@ -94,10 +94,11 @@ package base.command.cli
 					
 					if (cmd)
 					{
-						help = "\n\tCOMMAND: " + Console.INV_START + vo.trigger + Console.INV_END
-							+ "\t\tSHORTCUT: " + Console.INV_START + vo.shortcut + Console.INV_END
-							+ "\t\t\tCATEGORY: " + vo.category
-							+ "\n\n\tSUMMARY:\n\t\t"
+						help = "\n    " + Console.INV_START + " COMMAND: " + vo.trigger
+							+ "        SHORTCUT: " + (vo.shortcut ? vo.shortcut : "")
+							+ "        CATEGORY: " + vo.category
+							+ "        " + Console.INV_END
+							+ "\n\tSUMMARY:\n\t\t"
 							+ (cmd.helpText ? cmd.helpText : vo.descr)
 							+ " Any arguments starting with + are optional."
 							+ "\n\n\tUSAGE:\n\t\t" + vo.trigger;

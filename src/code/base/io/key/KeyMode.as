@@ -25,33 +25,18 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base
+package base.io.key
 {
 	/**
-	 * AppInfo
-	 * Ant auto-generated application information class. Do not edit!
+	 * KeyMode class
 	 */
-	public final class AppInfo
+	public final class KeyMode
 	{
-		public static const ID:String				= "com.hexagonstar.tetragon";
-		public static const NAME:String				= "Tetragon Application";
-		public static const DESCRIPTION:String		= "Tetragon Application Test Build";
-		public static const VERSION:String			= "1.0.0";
-		public static const BUILD:String			= "5895";
-		public static const BUILD_DATE:String		= "20-May-2011 00:49";
-		public static const MILESTONE:String		= "foundation";
-		public static const BUILD_TYPE:String		= "desktop";
-		public static const RELEASE_STAGE:String	= "beta";
-		public static const COPYRIGHT:String		= "Hexagon Star Softworks";
-		public static const PUBLISHER:String		= "Hexagon Star Softworks";
-		public static const CREATOR:String			= "Hexagon Star Softworks";
-		public static const CONTRIBUTOR:String		= "Hexagon Star Softworks";
-		public static const YEAR:String				= "2011";
-		public static const WEBSITE:String			= "http://www.hexagonstar.com/";
-		public static const LANGUAGE:String			= "en";
-		public static const FILENAME:String			= "tetragon";
-		public static const DEFAULT_WIDTH:int		= 1024;
-		public static const DEFAULT_HEIGHT:int		= 640;
-		public static const IS_DEBUG:Boolean		= true;
+		//-----------------------------------------------------------------------------------------
+		// Constants
+		//-----------------------------------------------------------------------------------------
+		
+		public static const DOWN:String = "d";
+		public static const UP:String = "u";
 	}
 }
