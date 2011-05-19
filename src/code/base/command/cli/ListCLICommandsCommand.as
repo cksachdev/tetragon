@@ -57,8 +57,8 @@ package base.command.cli
 		{
 			var console:Console = main.console;
 			var cmds:Object = console.cli.commandMap;
-			var t:TabularText = new TabularText(3, true, "  ", null, "  ", 0,
-				["COMMAND", "CATEGORY", "DESCRIPTION"]);
+			var t:TabularText = new TabularText(4, true, "  ", null, "  ", 0,
+				["COMMAND", "SHORTCUT", "CATEGORY", "DESCRIPTION"]);
 			
 			for (var c:String in cmds)
 			{
@@ -70,7 +70,8 @@ package base.command.cli
 					if (vo.category != _filter) continue;
 				}
 				
-				t.add([c, vo.category, vo.descr]);
+				var shortcut:String = vo.shortcut ? vo.shortcut : "";
+				t.add([c, shortcut, vo.category, vo.descr]);
 			}
 			
 			console.log("\n" + t.toString());

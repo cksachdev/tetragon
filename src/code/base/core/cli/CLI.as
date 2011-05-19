@@ -39,7 +39,7 @@ package base.core.cli
 	/**
 	 * A Comand Line Interpreter that processes inputs made in the Console's command line.
 	 */
-	public class CLI
+	public final class CLI
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -92,6 +92,21 @@ package base.core.cli
 			var type:String = token.type;
 			var vo:CLICommandVO = _commandMap[trigger];
 			var cmd:CLICommand;
+			
+			/* If commandVO wasn't found by it's mapped key, try with shortcut. */
+			if (!vo)
+			{
+				for (var tr:String in _commandMap)
+				{
+					var o:CLICommandVO = _commandMap[tr];
+					if (trigger == o.shortcut)
+					{
+						trigger = tr;
+						vo = o;
+						break;
+					}
+				}
+			}
 			
 			if (vo)
 			{
@@ -158,8 +173,8 @@ package base.core.cli
 					var len:int = tokens.length;
 					if (len < argCount)
 					{
-						fail("Command argument count mismatch. Command " + input
-							+ " expects at least " + argCount + " argument(s).");
+						fail("Command argument count mismatch. Command <" + trigger
+							+ "> expects at least " + argCount + " argument(s).");
 						return null;
 					}
 					else if (len > args.length)

@@ -46,9 +46,9 @@ package base.setup
 		override public function registerCLICommands():void
 		{
 			registerCommand("env", "resetwinbounds", "rwb", ResetWinBoundsCommand, "Resets the window size and position.");
-			registerCommand("env", "checkupdate", "cu", CheckUpdateCommand, "Checks if an update of the application is available.");
-			registerCommand("file", "listpackages", "lpk", ListPackagesCommand, "Outputs a list of all resource package files (paks).");
-			registerCommand("file", "listpackagecontents", "lpc", ListPackageContentsCommand, "Outputs a list of the contents of a resource package file.");
+			registerCommand("env", "checkupdate", "cup", CheckUpdateCommand, "Checks if an update of the application is available.");
+			registerCommand("file", "listpackages", "pak", ListPackagesCommand, "Outputs a list of all resource package files (paks).");
+			registerCommand("file", "listpackagecontents", "pkc", ListPackageContentsCommand, "Outputs a list of the contents of a resource package file.");
 		}
 	}
 }

@@ -63,7 +63,23 @@ package base.command.cli
 			if (_command)
 			{
 				var cmd:CLICommand;
-				var vo:CLICommandVO = console.cli.commandMap[_command];
+				var map:Object = console.cli.commandMap;
+				var vo:CLICommandVO = map[_command];
+				
+				/* If commandVO wasn't found by it's mapped key, try with shortcut. */
+				if (!vo)
+				{
+					for (var tr:String in map)
+					{
+						var o:CLICommandVO = map[tr];
+						if (_command == o.shortcut)
+						{
+							_command = tr;
+							vo = o;
+							break;
+						}
+					}
+				}
 				
 				if (vo)
 				{
@@ -79,6 +95,7 @@ package base.command.cli
 					if (cmd)
 					{
 						help = "\n\tCOMMAND: " + Console.INV_START + vo.trigger + Console.INV_END
+							+ "\t\tSHORTCUT: " + Console.INV_START + vo.shortcut + Console.INV_END
 							+ "\t\t\tCATEGORY: " + vo.category
 							+ "\n\n\tSUMMARY:\n\t\t"
 							+ (cmd.helpText ? cmd.helpText : vo.descr)
