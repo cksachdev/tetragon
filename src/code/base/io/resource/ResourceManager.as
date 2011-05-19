@@ -356,6 +356,21 @@ package base.io.resource
 		
 		
 		/**
+		 * Returns the resource provider that is used to provide the resource with the
+		 * specified id. Embedded and loaded resources both use their own provider and
+		 * are identified with either EmbeddedResourceProvider.ID or LoadedResourceProvider.ID
+		 * but packed resources are identified by their package file ID since every package
+		 * file needs to use it's own dedicated resource provider.
+		 * 
+		 * @param id
+		 */
+		public function getResourceProvider(id:String):IResourceProvider
+		{
+			return _resourceProviders[id];
+		}
+		
+		
+		/**
 		 * dispose
 		 */
 		public function dispose():void 
@@ -574,21 +589,6 @@ package base.io.resource
 		private function createBulkID():String
 		{
 			return "bulk" + (_bulkIDCount++);
-		}
-		
-		
-		/**
-		 * Returns the resource provider that is used to provide the resource with the
-		 * specified id. Embedded and loaded resources both use their own provider and
-		 * are identified with either EmbeddedResourceProvider.ID or LoadedResourceProvider.ID
-		 * but packed resources are identified by their package file ID since every package
-		 * file needs to use it's own dedicated resource provider.
-		 * 
-		 * @param id
-		 */
-		private function getResourceProvider(id:String):IResourceProvider
-		{
-			return _resourceProviders[id];
 		}
 		
 		

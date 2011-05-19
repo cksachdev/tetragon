@@ -25,46 +25,42 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.core.cli
+package base.command.file
 {
-	import base.Main;
-	import base.command.env.*;
-	import base.command.file.ListPackageContentsCommand;
-	import base.command.file.ListPackagesCommand;
-	
+	import base.command.CLICommand;
+
+	import com.hexagonstar.util.debug.LogLevel;
+
 	
 	/**
-	 * Registry for CLI commands that are available only for desktop builds. You can register
-	 * any commands here that you want to have usable in the CLI for desktop builds only.
+	 * CLI command to list all resource package files (paks) that are mapped.
 	 */
-	public class CLICommandRegistryDesktop
+	public class ListPackagesCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
-		// Constructor
+		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Creates a new instance of the class.
+		 * @inheritDoc
 		 */
-		public function CLICommandRegistryDesktop(main:Main)
+		override public function execute():void 
 		{
-			registerCommands(main.console.cli);
+			main.console.log(main.resourceManager.resourceIndex.dumpPackageList(), LogLevel.INFO);
+			complete();
 		}
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Private Methods
+		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @private
+		 * @inheritDoc
 		 */
-		private function registerCommands(cli:CLI):void
+		override public function get name():String 
 		{
-			cli.registerCommand("env", "resetwinbounds", ResetWinBoundsCommand, "Resets the window size and position.");
-			cli.registerCommand("env", "checkupdate", CheckUpdateCommand, "Checks if an update of the application is available.");
-			cli.registerCommand("file", "listpackages", ListPackagesCommand, "Outputs a list of all resource package files (paks).");
-			cli.registerCommand("file", "listpackagecontents", ListPackageContentsCommand, "Outputs a list of the contents of a resource package file.");
+			return "listPackages";
 		}
 	}
 }

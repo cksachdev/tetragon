@@ -130,6 +130,16 @@ package base.io.resource
 		}
 		
 		
+		/**
+		 * @private
+		 */
+		public function dump():String
+		{
+			if (_loader && _loader.opened) return _loader.dump(80, true);
+			return null;
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Getters & Setters
 		//-----------------------------------------------------------------------------------------

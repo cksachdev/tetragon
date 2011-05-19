@@ -28,15 +28,24 @@
 package base.command.file
 {
 	import base.command.CLICommand;
+	import base.io.resource.IResourceProvider;
+	import base.io.resource.PackedResourceProvider;
 
 	import com.hexagonstar.util.debug.LogLevel;
 
 	
 	/**
-	 * CLI command to list all resource package files (paks) that are mapped.
+	 * CLI command to list the contents of a resource package file.
 	 */
-	public class ListPaksCommand extends CLICommand
+	public class ListPackageContentsCommand extends CLICommand
 	{
+		//-----------------------------------------------------------------------------------------
+		// Properties
+		//-----------------------------------------------------------------------------------------
+		
+		private var _packageID:String;
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
@@ -46,7 +55,26 @@ package base.command.file
 		 */
 		override public function execute():void 
 		{
-			main.console.log(main.resourceManager.resourceIndex.dumpPackageList(), LogLevel.INFO);
+			var rp:IResourceProvider = main.resourceManager.getResourceProvider(_packageID);
+			if (rp == null)
+			{
+				main.console.log("no resource package with ID \"" + _packageID
+					+ "\" found! Use the command 'listpackages' to see a list of all used"
+					+ " resource packages and their IDs.", LogLevel.ERROR);
+				complete();
+				return;
+			}
+			
+			if (rp is PackedResourceProvider)
+			{
+				main.console.log("\n" + PackedResourceProvider(rp).dump(), LogLevel.INFO);
+			}
+			else
+			{
+				main.console.log("You specified the ID of a non-PackedResourceProvider."
+					+ " These cannot be output with this command.", LogLevel.ERROR);
+			}
+			
 			complete();
 		}
 		
@@ -60,7 +88,26 @@ package base.command.file
 		 */
 		override public function get name():String 
 		{
-			return "listPaks";
+			return "listPackageContents";
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function get signature():Array
+		{
+			return ["packageID:String"];
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// CLI Command Signature Arguments
+		//-----------------------------------------------------------------------------------------
+		
+		public function set packageID(v:String):void
+		{
+			_packageID = v;
 		}
 	}
 }
