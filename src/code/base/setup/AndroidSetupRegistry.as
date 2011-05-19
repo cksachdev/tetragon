@@ -27,69 +27,25 @@
  */
 package base.setup
 {
-	import base.core.cli.CLICommandRegistryMobile;
-
-	import flash.desktop.NativeApplication;
+	import base.command.file.*;
 	
 	
 	/**
-	 * AIRIOSSetup contains setup instructions exclusively for iOS-based applications.
+	 * android setup registry class.
 	 */
-	public class AIRIOSSetup extends Setup
+	public class AndroidSetupRegistry extends SetupRegistry implements ISetupRegistry
 	{
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @inheritDoc
+		 * Extra CLI commands which should only be available for Android builds.
 		 */
-		override public function initialSetup():void
+		override public function registerCLICommands():void
 		{
-			/* set this to false, when we close the application we first do an update. */
-			NativeApplication.nativeApplication.autoExit = false;
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function postConfigSetup():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function postSettingsSetup():void
-		{
-		}
-		
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function finalSetup():void
-		{
-			/* Register mobile-specific CLI commands if we have the Console available. */
-			if (main.console && main.console.cli)
-			{
-				new CLICommandRegistryMobile(main);
-			}
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function get name():String
-		{
-			return "ios";
+			registerCommand("file", "listpackages", "lpk", ListPackagesCommand, "Outputs a list of all resource package files (paks).");
+			registerCommand("file", "listpackagecontents", "lpc", ListPackageContentsCommand, "Outputs a list of the contents of a resource package file.");
 		}
 	}
 }

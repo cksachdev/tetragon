@@ -79,7 +79,7 @@ package base.command.cli
 					if (cmd)
 					{
 						help = "\n\tCOMMAND: " + Console.INV_START + vo.trigger + Console.INV_END
-							+ "\t\t\tGROUP: " + vo.group
+							+ "\t\t\tCATEGORY: " + vo.category
 							+ "\n\n\tSUMMARY:\n\t\t"
 							+ (cmd.helpText ? cmd.helpText : vo.descr)
 							+ " Any arguments starting with + are optional."

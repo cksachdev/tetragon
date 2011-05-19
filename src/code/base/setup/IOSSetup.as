@@ -25,39 +25,73 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.core.cli
+package base.setup
 {
-	import base.Main;
+	import flash.desktop.NativeApplication;
 	
 	
 	/**
-	 * Registry for CLI commands that are available only for mobile builds. You can register
-	 * any commands here that you want to have usable in the CLI for mobile builds only.
+	 * IOSSetup contains setup instructions exclusively for iOS-based applications.
 	 */
-	public class CLICommandRegistryMobile
+	public class IOSSetup extends Setup
 	{
 		//-----------------------------------------------------------------------------------------
-		// Constructor
+		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Creates a new instance of the class.
+		 * @inheritDoc
 		 */
-		public function CLICommandRegistryMobile(main:Main)
+		override public function initialSetup():void
 		{
-			registerCommands(main.console.cli);
+			/* set this to false, when we close the application we first do an update. */
+			NativeApplication.nativeApplication.autoExit = false;
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function postConfigSetup():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function postSettingsSetup():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function finalSetup():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registrySetup():void
+		{
+			new IOSSetupRegistry().execute();
 		}
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Private Methods
+		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * @private
+		 * @inheritDoc
 		 */
-		private function registerCommands(cli:CLI):void
+		override public function get name():String
 		{
+			return "ios";
 		}
 	}
 }

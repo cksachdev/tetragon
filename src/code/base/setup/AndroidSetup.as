@@ -25,33 +25,73 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base
+package base.setup
 {
+	import flash.desktop.NativeApplication;
+	
+	
 	/**
-	 * AppInfo
-	 * Ant auto-generated application information class. Do not edit!
+	 * AndroidSetup contains setup instructions exclusively for android-based applications.
 	 */
-	public final class AppInfo
+	public class AndroidSetup extends Setup
 	{
-		public static const ID:String				= "com.hexagonstar.tetragon";
-		public static const NAME:String				= "Tetragon Application";
-		public static const DESCRIPTION:String		= "Tetragon Application Test Build";
-		public static const VERSION:String			= "1.0.0";
-		public static const BUILD:String			= "5856";
-		public static const BUILD_DATE:String		= "19-May-2011 17:55";
-		public static const MILESTONE:String		= "foundation";
-		public static const BUILD_TYPE:String		= "ios";
-		public static const RELEASE_STAGE:String	= "beta";
-		public static const COPYRIGHT:String		= "Hexagon Star Softworks";
-		public static const PUBLISHER:String		= "Hexagon Star Softworks";
-		public static const CREATOR:String			= "Hexagon Star Softworks";
-		public static const CONTRIBUTOR:String		= "Hexagon Star Softworks";
-		public static const YEAR:String				= "2011";
-		public static const WEBSITE:String			= "http://www.hexagonstar.com/";
-		public static const LANGUAGE:String			= "en";
-		public static const FILENAME:String			= "tetragon";
-		public static const DEFAULT_WIDTH:int		= 1024;
-		public static const DEFAULT_HEIGHT:int		= 640;
-		public static const IS_DEBUG:Boolean		= true;
+		//-----------------------------------------------------------------------------------------
+		// Public Methods
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function initialSetup():void
+		{
+			/* set this to false, when we close the application we first do an update. */
+			NativeApplication.nativeApplication.autoExit = false;
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function postConfigSetup():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function postSettingsSetup():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function finalSetup():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registrySetup():void
+		{
+			new AndroidSetupRegistry().execute();
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Getters & Setters
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function get name():String
+		{
+			return "android";
+		}
 	}
 }

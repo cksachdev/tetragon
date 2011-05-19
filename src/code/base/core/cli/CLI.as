@@ -205,11 +205,12 @@ package base.core.cli
 		/**
 		 * registerCommand
 		 */
-		public function registerCommand(group:String, trigger:String, commandClass:Class,
-			description:String = null):void
+		public function registerCommand(category:String, trigger:String, shortcut:String,
+			commandClass:Class, description:String = null):void
 		{
 			if (_commandMap[trigger] != null) return;
-			_commandMap[trigger] = new CLICommandVO(trigger, commandClass, description, group);
+			_commandMap[trigger] = new CLICommandVO(trigger, shortcut, commandClass, description,
+				category);
 		}
 		
 		

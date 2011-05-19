@@ -70,17 +70,17 @@ package base
 			/* Add Desktop-specific setup if this is an AIR Desktop build. */
 			CONFIG::IS_DESKTOP_BUILD
 			{
-				_setups.push(AIRDesktopSetup);
+				_setups.push(DesktopSetup);
 			}
 			/* Add Android-specific setup if this is an AIR Android build. */
 			CONFIG::IS_ANDROID_BUILD
 			{
-				_setups.push(AIRAndroidSetup);
+				_setups.push(AndroidSetup);
 			}
 			/* Add iOS-specific setup if this is an AIR iOS build. */
 			CONFIG::IS_IOS_BUILD
 			{
-				_setups.push(AIRIOSSetup);
+				_setups.push(IOSSetup);
 			}
 			
 			/* You can add setups for extra code branches here if needed. */

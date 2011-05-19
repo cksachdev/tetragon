@@ -27,8 +27,11 @@
  */
 package base.setup
 {
-	import base.state.SplashState;
-	import base.view.splash.SplashScreen;
+	import base.command.cli.*;
+	import base.command.env.*;
+	import base.command.file.*;
+	import base.state.*;
+	import base.view.splash.*;
 	
 	
 	/**
@@ -39,6 +42,50 @@ package base.setup
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * CLI commands that should be available for all build types.
+		 */
+		override public function registerCLICommands():void
+		{
+			registerCommand("cli", "commands", "c", ListCLICommandsCommand, "Lists all available CLI commands.");
+			registerCommand("cli", "log", "l", LogCommand, "Sends the specified message to the logger.");
+			registerCommand("cli", "help", "h", HelpCommand, "Shows help summary about the console or a specified command.");
+			registerCommand("cli", "size", "s", ToggleConsoleSizeCommand, "Toggles between different console sizes.");
+			registerCommand("cli", "listmeta", "lm", ListMetaDataCommand, "Displays the full meta data of the application.");
+			registerCommand("cli", "listcaps", "lcs", ListCapabilitiesCommand, "Lists the current runtime's capabilities.");
+			registerCommand("cli", "listconfig", "lc", ListConfigCommand, "Lists the current application configuration.");
+			registerCommand("cli", "listlocalsettings", "lls", ListLocalSettingsCommand, "Lists all locally stored settings.");
+			registerCommand("cli", "listsettings", "ls", ListSettingsCommand, "Lists all application settings.");
+			registerCommand("cli", "listfonts", "lf", ListFontsCommand, "Lists all available fonts.");
+			registerCommand("cli", "clear", "cl", ClearConsoleCommand, "Clears the console buffer.");
+			registerCommand("cli", "hide", "hd", HideConsoleCommand, "Hides the console.");
+			registerCommand("cli", "setalpha", "sa", SetConsoleAlphaCommand, "Sets the console transparency to a value between 0.0 and 1.0.");
+			registerCommand("cli", "setcolor", "sc", SetConsoleColorCommand, "Sets the console background color.");
+			registerCommand("cli", "appinfo", "ai", OutputAppInfoCommand, "Displays application information string.");
+			registerCommand("cli", "runtime", "rt", OutputRuntimeInfoCommand, "Displays information about the runtime.");
+			registerCommand("cli", "listscreens", "lscr", ListScreensCommand, "Lists all registered screens.");
+			registerCommand("cli", "liststates", "lsta", ListStatesCommand, "Lists all registered states.");
+			
+			registerCommand("env", "fullscreen", "fs", ToggleFullscreenCommand, "Toggles fullscreen mode (if supported).");
+			registerCommand("env", "setfps", "sf", SetFramerateCommand, "Sets the stage framerate to the specified value.");
+			registerCommand("env", "gc", null, ForceGCCommand, "Forces a garbage collection mark/sweep.");
+			registerCommand("env", "exit", null, ExitApplicationCommand, "Exits the application.");
+			registerCommand("env", "fps", null, ToggleFPSMonitorCommand, "Toggles the FPS Monitor on/off.");
+			registerCommand("env", "fpspos", "sfp", ToggleFPSMonitorPosCommand, "Switches between different FPS Monitor positions.");
+			registerCommand("env", "init", null, AppInitCommand, "Initializes the application.");
+			registerCommand("env", "openscreen", "os", OpenScreenCommand, "Opens the screen that is registered with the specified screen ID.");
+			
+			registerCommand("file", "liststrings", "lstr", ListStringsCommand, "Outputs a list of all mapped strings.");
+			registerCommand("file", "listresources", "res", ListResourcesCommand, "Outputs a list of all mapped resources.");
+			registerCommand("file", "listdatafiles", "ldf", ListDataFilesCommand, "Outputs a list of all mapped resources data files.");
+			registerCommand("file", "loadresource", "ldr", LoadResourceCommand, "Loads a resource by it's resource ID.");
+			registerCommand("file", "unloadresource", "ulr", UnloadResourceCommand, "Unloads a previously loaded resource.");
+			registerCommand("file", "unloadallresources", "ula", UnloadAllResourcesCommand, "Forces unloading of all previously loaded resources.");
+			registerCommand("file", "resourceinfo", "ri", ResourceInfoCommand, "Outputs info about the resource with the specified ID.");
+			registerCommand("file", "dump", "d", DumpCommand, "Outputs a string dump of the resource with the specified ID.");
+		}
+		
 		
 		/**
 		 * @inheritDoc

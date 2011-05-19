@@ -25,46 +25,27 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.core.cli
+package base.setup
 {
-	import base.Main;
-	import base.command.env.*;
-	import base.command.file.ListPackageContentsCommand;
-	import base.command.file.ListPackagesCommand;
+	import base.command.file.*;
 	
 	
 	/**
-	 * Registry for CLI commands that are available only for desktop builds. You can register
-	 * any commands here that you want to have usable in the CLI for desktop builds only.
+	 * iOS setup registry class.
 	 */
-	public class CLICommandRegistryDesktop
+	public class IOSSetupRegistry extends SetupRegistry implements ISetupRegistry
 	{
 		//-----------------------------------------------------------------------------------------
-		// Constructor
+		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Creates a new instance of the class.
+		 * Extra CLI commands which should only be available for iOS builds.
 		 */
-		public function CLICommandRegistryDesktop(main:Main)
+		override public function registerCLICommands():void
 		{
-			registerCommands(main.console.cli);
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @private
-		 */
-		private function registerCommands(cli:CLI):void
-		{
-			cli.registerCommand("env", "resetwinbounds", ResetWinBoundsCommand, "Resets the window size and position.");
-			cli.registerCommand("env", "checkupdate", CheckUpdateCommand, "Checks if an update of the application is available.");
-			cli.registerCommand("file", "listpackages", ListPackagesCommand, "Outputs a list of all resource package files (paks).");
-			cli.registerCommand("file", "listpackagecontents", ListPackageContentsCommand, "Outputs a list of the contents of a resource package file.");
+			registerCommand("file", "listpackages", "lpk", ListPackagesCommand, "Outputs a list of all resource package files (paks).");
+			registerCommand("file", "listpackagecontents", "lpc", ListPackageContentsCommand, "Outputs a list of the contents of a resource package file.");
 		}
 	}
 }

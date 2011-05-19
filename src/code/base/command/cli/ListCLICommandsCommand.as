@@ -58,7 +58,7 @@ package base.command.cli
 			var console:Console = main.console;
 			var cmds:Object = console.cli.commandMap;
 			var t:TabularText = new TabularText(3, true, "  ", null, "  ", 0,
-				["COMMAND", "GROUP", "DESCRIPTION"]);
+				["COMMAND", "CATEGORY", "DESCRIPTION"]);
 			
 			for (var c:String in cmds)
 			{
@@ -67,10 +67,10 @@ package base.command.cli
 				/* Apply filters. */
 				if (_filter != "all")
 				{
-					if (vo.group != _filter) continue;
+					if (vo.category != _filter) continue;
 				}
 				
-				t.add([c, vo.group, vo.descr]);
+				t.add([c, vo.category, vo.descr]);
 			}
 			
 			console.log("\n" + t.toString());
@@ -106,11 +106,11 @@ package base.command.cli
 		override public function get helpText():String
 		{
 			return "Outputs a list of all CLI commands that can be used with the console. Optionally the output can be"
-				+ " filtered to a specific command group by using the command group's name as an argument:\n\n"
+				+ " filtered to a specific command group by using the command category's name as an argument:\n\n"
 				+ "\t\tall:      List all commands (default).\n"
-				+ "\t\tcli:      Only list commands that are part of the CLI group.\n"
-				+ "\t\tenv:      Only list commands that are part of the env group.\n"
-				+ "\t\tfile:     Only list commands that are part of the file group.\n\n";
+				+ "\t\tcli:      Only list commands that are part of the CLI category.\n"
+				+ "\t\tenv:      Only list commands that are part of the env category.\n"
+				+ "\t\tfile:     Only list commands that are part of the file category.\n\n";
 		}
 		
 		

@@ -29,7 +29,6 @@ package base.setup
 {
 	import base.assist.AIRDesktopAssistor;
 	import base.command.env.ToggleFullscreenCommand;
-	import base.core.cli.CLICommandRegistryDesktop;
 	import base.core.desktop.WindowBoundsManager;
 	import base.core.update.UpdateManager;
 	import base.data.Registry;
@@ -41,9 +40,9 @@ package base.setup
 	
 	
 	/**
-	 * AIRDesktopSetup contains setup instructions exclusively for desktop-based applications.
+	 * DesktopSetup contains setup instructions exclusively for desktop-based applications.
 	 */
-	public class AIRDesktopSetup extends Setup
+	public class DesktopSetup extends Setup
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -99,12 +98,6 @@ package base.setup
 				main.assistor = new AIRDesktopAssistor();
 			}
 			
-			/* Register desktop-specific CLI commands if we have the Console available. */
-			if (main.console && main.console.cli)
-			{
-				new CLICommandRegistryDesktop(main);
-			}
-			
 			/* Correct stage dimensions which might be wrong due to system chrome. */
 			windowBoundsManager.calculateWindowChromeExtra();
 			
@@ -131,6 +124,15 @@ package base.setup
 				//_updateManager.addEventListener(UpdateManagerEvent.FINISHED, onUpdateManagerFinished);
 				//_updateManager.initialize();
 			}
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registrySetup():void
+		{
+			new DesktopSetupRegistry().execute();
 		}
 		
 		

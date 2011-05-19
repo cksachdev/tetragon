@@ -28,13 +28,15 @@
 package base.setup
 {
 	import base.Main;
+	import base.core.cli.CLI;
+	import base.core.debug.Console;
 	import base.core.debug.Log;
 	import base.core.entity.EntitySystemManager;
 	import base.data.DataSupportManager;
 	import base.state.StateManager;
 	import base.view.ScreenManager;
-	import com.hexagonstar.util.reflection.getClassName;
 
+	import com.hexagonstar.util.reflection.getClassName;
 	
 	
 	/**
@@ -46,6 +48,7 @@ package base.setup
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
+		private var _cli:CLI;
 		private var _stateManager:StateManager;
 		private var _screenManager:ScreenManager;
 		private var _entitySystemManager:EntitySystemManager;
@@ -61,6 +64,8 @@ package base.setup
 		 */
 		public function SetupRegistry()
 		{
+			var console:Console = Main.instance.console;
+			if (console) _cli = console.cli;
 			_stateManager = Main.instance.stateManager;
 			_screenManager = Main.instance.screenManager;
 			_entitySystemManager = Main.instance.entitySystemManager;
@@ -77,6 +82,7 @@ package base.setup
 		 */
 		public function execute():void
 		{
+			if (_cli) registerCLICommands();
 			registerResourceFileTypes();
 			registerComplexTypes();
 			registerDataTypes();
@@ -84,6 +90,15 @@ package base.setup
 			registerEntityComponents();
 			registerStates();
 			registerScreens();
+		}
+		
+		
+		/**
+		 * Used to register commands for the CLI.
+		 */
+		public function registerCLICommands():void
+		{
+			/* Abstract method! */
 		}
 		
 		
@@ -203,6 +218,20 @@ package base.setup
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @param category
+		 * @param trigger
+		 * @param shortcut
+		 * @param commandClass
+		 * @param description
+		 */
+		protected function registerCommand(category:String, trigger:String, shortcut:String,
+			commandClass:Class, description:String = null):void
+		{
+			_cli.registerCommand(category, trigger, shortcut, commandClass, description);
+		}
+		
 		
 		/**
 		 * @param wrapperClass

@@ -34,9 +34,10 @@ package base.core.cli
 		//-----------------------------------------------------------------------------------------
 		
 		public var trigger:String;
+		public var shortcut:String;
 		public var clazz:Class;
 		public var descr:String;
-		public var group:String;
+		public var category:String;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -46,12 +47,13 @@ package base.core.cli
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function CLICommandVO(t:String, c:Class, d:String = null, g:String = null)
+		public function CLICommandVO(t:String, s:String, c:Class, d:String = null, g:String = null)
 		{
 			trigger = t;
+			shortcut = s;
 			clazz = c;
 			descr = d;
-			group = g;
+			category = g;
 		}
 	}
 }
