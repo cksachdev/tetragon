@@ -30,7 +30,7 @@ package base.io.key
 	/**
 	 * Static class that holds a table of common key name/key code pairs.
 	 */
-	public class KeyCodes
+	public final class KeyCodes
 	{
 		//-----------------------------------------------------------------------------------------
 		// Constants
@@ -44,16 +44,24 @@ package base.io.key
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		protected static var _keyCodes:Object =
+		private static var _keyCodes:Object =
 		{
 			"backspace":	8,
 			"tab":			9,
 			"return":		13,
 			"enter":		13,
 			"shift":		16,
+			"lshift":		16,
+			"rshift":		16,
 			"ctrl":			17,
+			"lctrl":		17,
+			"rctrl":		17,
 			"control":		17,
+			"lcontrol":		17,
+			"rcontrol":		17,
 			"alt":			18,
+			"lalt":			18,
+			"ralt":			18,
 			"pause":		19,
 			"capslock":		20,
 			"escape":		27,
@@ -169,15 +177,25 @@ package base.io.key
 		 * identify keys or key combinations (e.g. 'page_up'). The character
 		 * case is irrelevant here, i.e. PAGE_UP is the same as page_up.
 		 * 
-		 * @param keyName the name of the key for that the key code should be returned.
+		 * @param keyString the name of the key for that the key code should be returned.
 		 * @return the key code or -1 if the key name was not found in the code table.
 		 */
-		public static function getKeyCode(keyName:String):int
+		public static function getKeyCode(keyString:String):int
 		{
-			if (keyName == null) return -1;
-			var code:* = _keyCodes[keyName.toLowerCase()];
+			if (keyString == null || keyString.length < 1) return -1;
+			var code:* = _keyCodes[keyString.toLowerCase()];
 			if (!code) return -1;
 			return code;
+		}
+		
+		
+		public static function getKeyString(keyCode:uint):String
+		{
+			for (var s:String in _keyCodes)
+			{
+				if (_keyCodes[s] == keyCode) return s;
+			}
+			return null;
 		}
 		
 		

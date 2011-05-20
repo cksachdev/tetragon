@@ -25,31 +25,21 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base
+package base.io.key
 {
-	import flash.display.NativeWindow;
-	import flash.display.Sprite;
-	import flash.display.StageAlign;
-	import flash.display.StageScaleMode;
-	
-	
-	[SWF(width="1024", height="640", backgroundColor="#000000", frameRate="60")]
-	
 	/**
-	 * Entry acts as the entry point and base display object container (or: context view) for
-	 * the application. This is the class that the compiler is being told to compile and from
-	 * which all other application logic is being initiated, in particular Main which acts as
-	 * the main hub for the application.
-	 * 
-	 * <p>IMPORTANT: Auto-generated class. Do not edit!</p>
+	 * Key class
 	 */
-	public final class Entry extends Sprite
+	public final class Key implements IKeyAssignment
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _main:Main;
+		private var _id:String;
+		private var _code:uint;
+		private var _location:uint;
+		private var _callback:Function;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -59,18 +49,52 @@ package base
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function Entry()
+		public function Key(code:uint, location:uint = 0)
 		{
-			if (AppInfo.IS_DEBUG && NativeWindow.isSupported)
-			{
-				stage.nativeWindow.visible = true;
-			}
-			
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP_LEFT;
-			
-			_main = Main.instance;
-			_main.init(this);
+			_code = code;
+			_location = location;
+			_id = _code + "_" + _location;
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Accessors
+		//-----------------------------------------------------------------------------------------
+		
+		public function get id():String
+		{
+			return _id;
+		}
+		
+		
+		public function get code():uint
+		{
+			return _code;
+		}
+		
+		
+		public function get location():uint
+		{
+			return _location;
+		}
+		
+		
+		/**
+		 * A Key object always has a length of 1.
+		 */
+		public function get length():uint
+		{
+			return 1;
+		}
+		
+		
+		public function get callback():Function
+		{
+			return _callback;
+		}
+		public function set callback(v:Function):void
+		{
+			_callback = v;
 		}
 	}
 }

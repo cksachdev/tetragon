@@ -27,6 +27,7 @@
  */
 package base
 {
+	import flash.display.NativeWindow;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -60,6 +61,11 @@ package base
 		 */
 		public function Entry()
 		{
+			if (AppInfo.IS_DEBUG && NativeWindow.isSupported)
+			{
+				stage.nativeWindow.visible = true;
+			}
+			
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			

@@ -31,13 +31,15 @@ package base.io.key
 	 * Represents a combination of keys that are being pressed or held down at the
 	 * same time.
 	 */
-	public final class KeyCombination
+	public final class KeyCombination implements IKeyAssignment
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _keyCodes:Vector.<uint>;
+		private var _id:String;
+		private var _keys:Vector.<Key>;
+		private var _callback:Function;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -46,31 +48,18 @@ package base.io.key
 		
 		/**
 		 * Creates a new instance of the class.
-		 * 
-		 * @param keyCodes A series of key codes that define the key combination.
 		 */
-		public function KeyCombination(keyCodes:Array)
+		public function KeyCombination(keys:Array)
 		{
-			_keyCodes = new Vector.<uint>();
-			for (var i:uint = 0; i < keyCodes.length; i++)
+			_id = "";
+			_keys = new Vector.<Key>();
+			var len:uint = keys.length;
+			for (var i:uint = 0; i < len; i++)
 			{
-				_keyCodes.push(keyCodes[i]);
+				var key:Key = keys[i];
+				_id += key.id + (i < len - 1 ? "_" : "");
+				_keys.push(key);
 			}
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Public Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Returns a String Representation of KeyCombination.
-		 * 
-		 * @return A String Representation of KeyCombination.
-		 */
-		public function toString():String
-		{
-			return "[KeyCombination, keyCodes=" + _keyCodes + "]";
 		}
 		
 		
@@ -78,12 +67,21 @@ package base.io.key
 		// Accessors
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * Returns the key codes that compose this KeyCombination.
-		 */
-		public function get keyCodes():Vector.<uint>
+		public function get id():String
 		{
-			return _keyCodes.concat();
+			return _id;
+		}
+		
+		
+		public function get code():uint
+		{
+			return 0;
+		}
+		
+		
+		public function get keys():Vector.<Key>
+		{
+			return _keys;
 		}
 		
 		
@@ -92,7 +90,17 @@ package base.io.key
 		 */
 		public function get length():uint
 		{
-			return _keyCodes.length;
+			return _keys.length;
+		}
+		
+		
+		public function get callback():Function
+		{
+			return _callback;
+		}
+		public function set callback(v:Function):void
+		{
+			_callback = v;
 		}
 	}
 }
