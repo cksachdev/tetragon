@@ -41,7 +41,7 @@ package base
 	import base.core.settings.LocalSettingsManager;
 	import base.data.DataSupportManager;
 	import base.data.Registry;
-	import base.io.keyold.KeyManager;
+	import base.io.key.KeyManager;
 	import base.io.resource.ResourceManager;
 	import base.signals.RenderSignal;
 	import base.signals.TickSignal;

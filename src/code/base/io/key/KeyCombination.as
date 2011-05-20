@@ -31,15 +31,17 @@ package base.io.key
 	 * Represents a combination of keys that are being pressed or held down at the
 	 * same time.
 	 */
-	public final class KeyCombination implements IKeyAssignment
+	public final class KeyCombination
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _id:String;
-		private var _keys:Vector.<Key>;
-		private var _callback:Function;
+		internal var id:String;
+		internal var codes:Vector.<uint>;
+		internal var mode:String;
+		internal var callback:Function;
+		internal var params:Array;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -49,16 +51,16 @@ package base.io.key
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function KeyCombination(keys:Array)
+		public function KeyCombination(codes:Array)
 		{
-			_id = "";
-			_keys = new Vector.<Key>();
-			var len:uint = keys.length;
-			for (var i:uint = 0; i < len; i++)
+			id = "";
+			this.codes = new Vector.<uint>();
+			var l:uint = codes.length;
+			for (var i:uint = 0; i < l; i++)
 			{
-				var key:Key = keys[i];
-				_id += key.id + (i < len - 1 ? "_" : "");
-				_keys.push(key);
+				var code:uint = codes[i];
+				this.codes.push(code);
+				id += code + (i < l - 1 ? "_" : "");
 			}
 		}
 		
@@ -67,40 +69,12 @@ package base.io.key
 		// Accessors
 		//-----------------------------------------------------------------------------------------
 		
-		public function get id():String
-		{
-			return _id;
-		}
-		
-		
-		public function get code():uint
-		{
-			return 0;
-		}
-		
-		
-		public function get keys():Vector.<Key>
-		{
-			return _keys;
-		}
-		
-		
 		/**
 		 * The length of the key combination, i.e. how many keys are in it.
 		 */
 		public function get length():uint
 		{
-			return _keys.length;
-		}
-		
-		
-		public function get callback():Function
-		{
-			return _callback;
-		}
-		public function set callback(v:Function):void
-		{
-			_callback = v;
+			return codes.length;
 		}
 	}
 }

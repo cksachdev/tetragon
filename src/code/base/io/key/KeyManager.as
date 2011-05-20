@@ -29,8 +29,8 @@ package base.io.key
 {
 	import base.Main;
 	import base.core.debug.Log;
+	import base.data.Registry;
 
-	import com.hexagonstar.signals.Signal;
 	import com.hexagonstar.util.string.TabularText;
 
 	import flash.display.Stage;
@@ -50,32 +50,20 @@ package base.io.key
 		
 		public static const KEY_COMBINATION_DELIMITER:String = "+";
 		
-		//private static const KEY_CODE_SHIFT:uint = 16;
-		//private static const KEY_CODE_CTRL:uint = 17;
-		//private static const KEY_CODE_ALT:uint = 18;
-		
 		
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
 		private var _stage:Stage;
-		private var _assignmentsDown:Object;
-		private var _assignmentsUp:Object;
+		private var _assignments:Object;
 		private var _keysDown:Object;
 		private var _keysTyped:Vector.<uint>;
-		private var _combsDown:Vector.<KeyCombination>;
-		private var _combs:Vector.<KeyCombination>;
-		private var _longestComb:int;
+		private var _combinationsDown:Vector.<KeyCombination>;
+		private var _longestCombination:int;
 		
-		
-		//-----------------------------------------------------------------------------------------
-		// Properties
-		//-----------------------------------------------------------------------------------------
-		
-		private var _keyDownSignal:Signal;
-		private var _keyUpSignal:Signal;
-		private var _keySequenceSignal:Signal;
+		private var _consoleKeyCombination:KeyCombination;
+		private var _consoleFocussed:Boolean;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -88,22 +76,34 @@ package base.io.key
 		public function KeyManager()
 		{
 			_stage = Main.instance.stage;
-			_assignmentsDown = {};
-			_assignmentsUp = {};
+			_assignments = {};
 			_keysDown = {};
 			_keysTyped = new Vector.<uint>();
-			_combsDown = new Vector.<KeyCombination>();
-			_combs = new Vector.<KeyCombination>();
-			_longestComb = 0;
-			
-			_keyDownSignal = new Signal();
-			_keyUpSignal = new Signal();
+			_combinationsDown = new Vector.<KeyCombination>();
+			_longestCombination = 0;
+			_consoleFocussed = false;
 		}
 		
 		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
+		
+		public function init():void
+		{
+			clearAssignments();
+			if (Registry.config.consoleEnabled)
+			{
+				_consoleKeyCombination = assign(Registry.config.consoleKey, Main.instance.console.toggle);
+			}
+			
+			if (Registry.config.fpsMonitorEnabled)
+			{
+				assign(Registry.config.fpsMonitorKey, Main.instance.fpsMonitor.toggle);
+				assign(Registry.config.fpsMonitorPositionKey, Main.instance.fpsMonitor.togglePosition);
+			}
+		}
+		
 		
 		/**
 		 * Activates the key manager.
@@ -131,46 +131,58 @@ package base.io.key
 		 * Assigns a keyboard key or key combination to a callback function.
 		 * 
 		 * @param value The key value to assign. This can be one of the following
-		 *        object types: String, int, Array, Key or KeyCombination.
+		 *        object types: String, Number, Array, Key or KeyCombination.
 		 * @param callback The method that is called when the key or key combination
 		 *        is triggered.
 		 * @param mode The mode of the key assignment, either <code>KeyMode.DOWN</code> or
 		 *        <code>KeyMode.UP</code>.
 		 * @return true if the assignment succeeded, otherwise false.
 		 */
-		public function assign(value:*, callback:Function, mode:String = KeyMode.DOWN):Boolean
+		public function assign(value:*, callback:Function, params:Array = null, mode:String = KeyMode.DOWN):KeyCombination
 		{
-			var assignment:IKeyAssignment;
+			var combination:KeyCombination;
 			
-			if (value is String) assignment = createAssignmentFromString(value);
-			else if (value is uint) assignment = createAssignmentFromNumber(value);
-			else if (value is Array) assignment = createAssignmentFromArray(value);
-			else if (value is Key || value is KeyCombination) assignment = value;
-			else
+			if (value is String)
 			{
-				fail("Cannot assign key value that is not of type String, uint, Array,"
-					+ " Key or KeyCombination.");
-				return false;
+				var s:String = value;
+				if (s.length > 0) combination = createKeyCombination(s);
 			}
-			if (!assignment) return false;
-			assignment.callback = callback;
-			if (mode == KeyMode.DOWN)
+			else if (value is Number)
 			{
-				_assignmentsDown[assignment.id] = assignment;
+				combination = createKeyCombination(Number(value).toString());
 			}
-			else if (mode == KeyMode.UP)
+			else if (value is Array)
 			{
-				_assignmentsUp[assignment.id] = assignment;
+				var a:Array = value;
+				if (a.length > 0) {}// TODO
 			}
-			else
+			else if (value is Key || value is KeyCombination)
 			{
-				fail("Could not assign keycode. Mode \"" + mode + "\" not recognized. Use"
-					+ " KeyMode.DOWN or KeyMode.UP constants instead.");
-				return false;
+				combination = value;
 			}
-			_longestComb = Math.max(_longestComb, assignment.length);
+			
+			if (!combination)
+			{
+				fail("Could not assign key combination for value: \"" + value + "\".");
+				return null;
+			}
+			
+			combination.mode = mode;
+			combination.callback = callback;
+			if (params && params.length > 0) combination.params = params;
+			_assignments[combination.id] = combination;
+			_longestCombination = Math.max(_longestCombination, combination.length);
 			Log.debug("Assigned key codes <" + value + "> (mode: " + mode + ").", this);
-			return true;
+			return combination;
+		}
+		
+		
+		/**
+		 * Clears all key assignments from the Key manager.
+		 */
+		public function clearAssignments():void
+		{
+			// TODO
 		}
 		
 		
@@ -187,59 +199,25 @@ package base.io.key
 		
 		public function dump():String
 		{
-			var t:TabularText = new TabularText(4, true, "  ", null, "  ", 80,
-				["KEY(S)", "CODE(S)", "LENGTH", "ID"]);
-			for each (var a:IKeyAssignment in _assignmentsDown)
+			var t:TabularText = new TabularText(5, true, "  ", null, "  ", 80,
+				["KEY(S)", "CODE(S)", "LENGTH", "MODE", "ID"]);
+			for each (var kc:KeyCombination in _assignments)
 			{
-				var l:uint = a.length;
 				var s:String;
 				var string:String = "";
 				var code:String = "";
-				if (l == 1)
+				var codes:Vector.<uint> = kc.codes;
+				var kl:uint = codes.length;
+				for (var i:uint = 0; i < kl; i++)
 				{
-					s = KeyCodes.getKeyString(a.code);
-					if (s) string = s.toUpperCase();
-					code = "" + a.code;
+					var c:uint = codes[i];
+					s = KeyCodes.getKeyString(c);
+					if (s) string += s.toUpperCase() + (i < kl - 1 ? "+" : "");
+					code += c + (i < kl - 1 ? "," : "");
 				}
-				else
-				{
-					var kc:KeyCombination = KeyCombination(a);
-					var keys:Vector.<Key> = kc.keys;
-					var kl:uint = keys.length;
-					for (var i:uint = 0; i < kl; i++)
-					{
-						var key:Key = keys[i];
-						s = KeyCodes.getKeyString(key.code);
-						if (s) string += s.toUpperCase() + (i < kl - 1 ? "+" : "");
-						code += key.code  + (i < kl - 1 ? "," : "");
-					}
-					
-				}
-				t.add([string, code, l, a.id]);
+				t.add([string, code, kc.length, kc.mode, kc.id]);
 			}
 			return toString() + ": Key Assignments\n" + t;
-		}
-		
-		
-		/**
-		 * Creates a single-key object from a string that defines a single key.
-		 * 
-		 * @see base.io.key.KeyCodes
-		 * @param singleKeyString A string that defines a single key.
-		 * @return A Key object or <code>null</code>.
-		 */
-		public static function createKey(singleKeyString:String):Key
-		{
-			if (singleKeyString == null || singleKeyString.length < 1) return null;
-			var ks:String = singleKeyString.toLowerCase();
-			var code:int = KeyCodes.getKeyCode(ks);
-			if (code == -1) return null;
-			var location:uint = KeyLocation.STANDARD;
-			if (ks == "lshift" || ks == "lctrl" || ks == "lcontrol" || ks == "lalt")
-				location = KeyLocation.LEFT;
-			else if (ks == "rshift" || ks == "rctrl" || ks == "rcontrol" || ks == "ralt")
-				location = KeyLocation.RIGHT;
-			return new Key(code, location);
 		}
 		
 		
@@ -251,41 +229,61 @@ package base.io.key
 		 *            <code>KeyManager.KEY_COMBINATION_DELIMITER</code> (+), e.g. CTRL+C.
 		 * @return A KeyCombination object or <code>null</code>.
 		 */
-		public static function createKeyCombination(multiKeyString:String):KeyCombination
+		public static function createKeyCombination(keyString:String):KeyCombination
 		{
-			if (multiKeyString == null || multiKeyString.length < 1) return null;
+			if (keyString == null || keyString.length < 1) return null;
 			var keys:Array = [];
-			var a:Array = multiKeyString.split(KEY_COMBINATION_DELIMITER);
+			var a:Array = keyString.split(KEY_COMBINATION_DELIMITER);
 			for (var i:uint = 0; i < a.length; i++)
 			{
-				var key:Key = createKey(a[i]);
-				if (key) keys.push(key);
+				var ks:String = String(a[i]).toLowerCase();
+				var code:int = KeyCodes.getKeyCode(ks);
+				if (code == -1) return null;
+				var location:uint = KeyLocation.STANDARD;
+				if (ks == "lshift" || ks == "lctrl" || ks == "lcontrol" || ks == "lalt")
+					location = KeyLocation.LEFT;
+				else if (ks == "rshift" || ks == "rctrl" || ks == "rcontrol" || ks == "ralt")
+					location = KeyLocation.RIGHT;
+				keys.push(code);
 			}
 			if (keys.length == 0) return null;
 			return new KeyCombination(keys);
 		}
 		
 		
+		/**
+		 * Creates a single-key object from a string that defines a single key.
+		 * 
+		 * @see base.io.key.KeyCodes
+		 * @param singleKeyString A string that defines a single key.
+		 * @return A Key object or <code>null</code>.
+		 */
+		//public static function createKey(singleKeyString:String):Key
+		//{
+		//	if (singleKeyString == null || singleKeyString.length < 1) return null;
+		//	var ks:String = singleKeyString.toLowerCase();
+		//	var code:int = KeyCodes.getKeyCode(ks);
+		//	if (code == -1) return null;
+		//	var location:uint = KeyLocation.STANDARD;
+		//	if (ks == "lshift" || ks == "lctrl" || ks == "lcontrol" || ks == "lalt")
+		//		location = KeyLocation.LEFT;
+		//	else if (ks == "rshift" || ks == "rctrl" || ks == "rcontrol" || ks == "ralt")
+		//		location = KeyLocation.RIGHT;
+		//	return new Key(code, location);
+		//}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Accessors
 		//-----------------------------------------------------------------------------------------
 		
-		public function get keyDownSignal():Signal
+		public function get consoleFocussed():Boolean
 		{
-			return _keyDownSignal;
+			return _consoleFocussed;
 		}
-		
-		
-		public function get keyUpSignal():Signal
+		public function set consoleFocussed(v:Boolean):void
 		{
-			return _keyUpSignal;
-		}
-		
-		
-		public function get keySequenceSignal():Signal
-		{
-			if (!_keySequenceSignal) _keySequenceSignal = new Signal();
-			return _keySequenceSignal;
+			_consoleFocussed = v;
 		}
 		
 		
@@ -295,47 +293,47 @@ package base.io.key
 		
 		private function onKeyDown(e:KeyboardEvent):void
 		{
-			var keyID:String = "" + e.keyCode;
-			var alreadyDown:Boolean = _keysDown[keyID];
-			var l:uint = _combs.length;
+			if (_consoleFocussed) return;
 			
-			_keysDown[keyID] = true;
-			_keysTyped.push(keyID);
+			var alreadyDown:Boolean = _keysDown[e.keyCode];
+			_keysDown[e.keyCode] = true;
+			_keysTyped.push(e.keyCode);
 			
-			if (_keysTyped.length > _longestComb)
+			if (_keysTyped.length > _longestCombination)
 			{
 				_keysTyped.splice(0, 1);
 			}
 			
-			while (l--)
+			for each (var kc:KeyCombination in _assignments)
 			{
-				//checkTypedKeys(_combs[l]);
-				//if (!alreadyDown) checkDownKeys(_combs[l]);
+				checkTypedKeys(kc);
+				if (!alreadyDown) checkDownKeys(kc);
 			}
 		}
 		
 		
 		private function onKeyUp(e:KeyboardEvent):void
 		{
-			var keyID:String = "" + e.keyCode;
-			var l:uint = _combsDown.length;
-			
-			while (l--)
+			var i:int = _combinationsDown.length;
+			while (i--)
 			{
-				//if (_combsDown[l].codes.indexOf(keyID) != -1)
-				//{
-				//	_keyUpSignal.dispatch();
-				//	_combsDown.splice(l, 1);
-				//}
+				if (_combinationsDown[i].mode == KeyMode.UP)
+				{
+					var cb:Function = _combinationsDown[i].callback;
+					if (cb != null) cb();
+				}
+				if (_combinationsDown[i].codes.indexOf(e.keyCode) != -1)
+				{
+					_combinationsDown.splice(i, 1);
+				}
 			}
-			delete _keysDown[keyID];
+			delete _keysDown[e.keyCode];
 		}
 		
 		
 		private function onDeactivate(e:Event):void
 		{
-			_keyUpSignal.dispatch();
-			_combsDown = new Vector.<KeyCombination>();
+			_combinationsDown = new Vector.<KeyCombination>();
 			_keysDown = {};
 		}
 		
@@ -344,134 +342,45 @@ package base.io.key
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
-		private function createAssignmentFromString(s:String):IKeyAssignment
-		{
-			if (s.length < 1)
-			{
-				fail("Cannot extract keycode values from an empty string.");
-				return null;
-			}
-			if (s.indexOf("+") == -1)
-			{
-				var key:Key = createKey(s);
-				if (!key)
-				{
-					fail("Could not create key object from key code string: \"" + s + "\".");
-					return null;
-				}
-				return key;
-			}
-			else
-			{
-				var kc:KeyCombination = createKeyCombination(s);
-				if (!kc)
-				{
-					fail("Could not create key combination object from key code string: \"" + s + "\".");
-					return null;
-				}
-				return kc;
-			}
-		}
-		
-		
-		private function createAssignmentFromNumber(n:Number):IKeyAssignment
-		{
-			var key:Key = createKey(n.toString());
-			if (!key)
-			{
-				fail("Could not create key object from key code: \"" + n + "\".");
-				return null;
-			}
-			return key;
-		}
-		
-		
-		private function createAssignmentFromArray(a:Array):IKeyAssignment
-		{
-			if (a.length < 1)
-			{
-				fail("Cannot extract keycode values from an empty array.");
-				return null;
-			}
-			if (a.length == 1)
-			{
-			}
-			else
-			{
-			}
-			return null;
-		}
-		
-		
-		/**
-		 * Returns a unique ID for the specified key code and key location.
-		 * 
-		 * @param keyCode
-		 * @param keyLocation
-		 * @return A unique key ID.
-		 */
-		//private function getKeyID(keyCode:uint, keyLocation:uint):String
-		//{
-		//	return keyCode + "_" + keyLocation;
-		//}
-		
-		
-		/**
-		 * Determines if the KeyCombination specified in the kc parameter is equal
-		 * to this KeyCombination.
-		 * 
-		 * @param kc The KeyCombination class to compare to this class.
-		 * @return true if the two KeyCombinations contain the same key codes in the
-		 *          same order; otherwise false.
-		 */
-//		private function equals(kc1:KeyCombination, kc2:KeyCombination):Boolean
-//		{
-//			if (kc1 == kc2) return true;
-//			var codes1:Vector.<uint> = kc1.codes;
-//			var codes2:Vector.<uint> = kc2.codes;
-//			var l:uint = codes1.length;
-//			if (l != codes2.length) return false;
-//			while (l--)
-//			{
-//				if (codes1[l] != codes2[l]) return false;
-//			}
-//			return true;
-//		}
-		
-		
 		private function checkTypedKeys(kc:KeyCombination):void
 		{
-//			var c1:Vector.<uint> = kc.codes;
-//			var l:uint = c1.length;
-//			var c2:Vector.<uint> = _keysTyped.slice(-l);
-//			var isEqual:Boolean = true;
-//			if (l != c2.length)
-//			{
-//				isEqual = false;
-//			}
-//			else
-//			{
-//				while (l--)
-//				{
-//					if (c1[l] != c2[l]) isEqual = false;
-//				}
-//			}
-//			
-//			if (!isEqual) return;
-//			if (_keySequenceSignal) _keySequenceSignal.dispatch();
+			var c1:Vector.<uint> = kc.codes;
+			var i:int = c1.length;
+			var c2:Vector.<uint> = _keysTyped.slice(-i);
+			if (i != c2.length) return;
+			var isEqual:Boolean = true;
+			while (i--)
+			{
+				if (c1[i] != c2[i]) isEqual = false;
+			}
+			
+			if (isEqual) return;
+			//dispatchEvent(new KeyCombinationEvent(KeyCombinationEvent.SEQUENCE, kc));
 		}
 		
 		
 		private function checkDownKeys(kc:KeyCombination):void
 		{
-//			var uniqueCombination:Vector.<uint> = kc.codes.filter(duplicatesFilter);
-//			var i:int = uniqueCombination.length;
-//			while (i--)
-//			{
-//				if (!_keysDown[uniqueCombination[i]]) return;
-//			}
-//			_keyDownSignal.dispatch();
-//			_combsDown.push(kc);
+			var uniqueCombination:Vector.<uint> = kc.codes.filter(duplicatesFilter);
+			var i:int = uniqueCombination.length;
+			while (i--)
+			{
+				if (!_keysDown[uniqueCombination[i]]) return;
+			}
+			_combinationsDown.push(kc);
+			for (i = 0; i < _combinationsDown.length; i++)
+			{
+				if (_combinationsDown[i].mode == KeyMode.DOWN)
+				{
+					var cb:Function = _combinationsDown[i].callback;
+					if (cb != null)
+					{
+						var p:Array = _combinationsDown[i].params;
+						if (p) cb.apply(null, p);
+						else cb();
+					}
+				}
+			}
 		}
 		
 		
@@ -488,13 +397,9 @@ package base.io.key
 		}
 		
 		
-		/**
-		 * @private
-		 */
-		private function fail(message:String):Boolean
+		private function fail(message:String):void
 		{
 			Log.error(message, this);
-			return false;
 		}
 	}
 }

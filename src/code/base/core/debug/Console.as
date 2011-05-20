@@ -30,6 +30,7 @@ package base.core.debug
 	import base.Main;
 	import base.core.cli.CLI;
 	import base.data.Registry;
+	import base.io.key.KeyManager;
 
 	import com.greensock.TweenLite;
 	import com.greensock.data.TweenLiteVars;
@@ -41,6 +42,7 @@ package base.core.debug
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.Event;
+	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
 	import flash.text.Font;
 	import flash.text.StyleSheet;
@@ -84,6 +86,7 @@ package base.core.debug
 		
 		private var _container:DisplayObjectContainer;
 		private var _stage:Stage;
+		private var _keyManager:KeyManager;
 		private var _bg:RectangleShape;
 		private var _ta:ConsoleTextArea;
 		private var _ti:ConsoleTextInput;
@@ -117,6 +120,7 @@ package base.core.debug
 			
 			_container = container;
 			_stage = Main.instance.contextView.stage;
+			_keyManager = Main.instance.keyManager;
 		}
 		
 		
@@ -426,6 +430,24 @@ package base.core.debug
 		/**
 		 * @private
 		 */
+		private function onFocusIn(e:FocusEvent):void
+		{
+			_keyManager.consoleFocussed = true;
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		private function onFocusOut(e:FocusEvent):void
+		{
+			_keyManager.consoleFocussed = false;
+		}
+		
+		
+		/**
+		 * @private
+		 */
 		private function onTextInputKeyDown(e:KeyboardEvent):void
 		{
 			if (!_allowInput) return;
@@ -548,6 +570,7 @@ package base.core.debug
 				{
 					_container.visible = false;
 				}
+				onFocusOut(null);
 			}
 		}
 		
@@ -594,11 +617,16 @@ package base.core.debug
 		private function addEventListeners():void
 		{
 			_stage.addEventListener(Event.RESIZE, onStageResize);
+			_ti.tf.addEventListener(FocusEvent.FOCUS_IN, onFocusIn);
+			_ti.tf.addEventListener(FocusEvent.FOCUS_OUT, onFocusOut);
 			_ti.tf.addEventListener(KeyboardEvent.KEY_DOWN, onTextInputKeyDown);
 			_ti.tf.addEventListener(Event.CHANGE, onTextInputChange);
 			_ti.tf.addEventListener(KeyboardEvent.KEY_UP, onTextInputKeyUp);
+			
+			_ta.tf.addEventListener(FocusEvent.FOCUS_IN, onFocusIn);
+			_ta.tf.addEventListener(FocusEvent.FOCUS_OUT, onFocusOut);
 		}
-
+		
 		
 		/**
 		 * @private

@@ -29,6 +29,7 @@ package extra.demo.view.display
 {
 	import base.Main;
 	import base.command.env.ToggleFullscreenCommand;
+	import base.io.key.KeyManager;
 	import base.view.Display;
 
 	import extra.game.render.tile.TileMap;
@@ -75,6 +76,17 @@ package extra.demo.view.display
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
+		override public function start():void
+		{
+			var km:KeyManager = main.keyManager;
+			km.assign("cursorleft", _tileScroller.scroll, ["l"]);
+			km.assign("cursorright", _tileScroller.scroll, ["r"]);
+			km.assign("cursorup", _tileScroller.scroll, ["u"]);
+			km.assign("cursordown", _tileScroller.scroll, ["d"]);
+			km.assign("f", Main.instance.commandManager.execute, [new ToggleFullscreenCommand()]);
+		}
+		
+		
 		override public function stop():void
 		{
 			_tileScroller.stop();
@@ -101,19 +113,19 @@ package extra.demo.view.display
 			{
 				case Keyboard.LEFT:
 				case 65:
-					_tileScroller.scroll("l");
+					//_tileScroller.scroll("l");
 					break;
 				case Keyboard.RIGHT:
 				case 68:
-					_tileScroller.scroll("r");
+					//_tileScroller.scroll("r");
 					break;
 				case Keyboard.UP:
 				case 87:
-					_tileScroller.scroll("u");
+					//_tileScroller.scroll("u");
 					break;
 				case Keyboard.DOWN:
 				case 83:
-					_tileScroller.scroll("d");
+					//_tileScroller.scroll("d");
 					break;
 				case 71:
 					_tileScroller.showAreas = !_tileScroller.showAreas;
@@ -140,7 +152,7 @@ package extra.demo.view.display
 					_tileScroller.autoScrollV = !_tileScroller.autoScrollV;
 					break;
 				case 70:
-					Main.instance.commandManager.execute(new ToggleFullscreenCommand());
+					//Main.instance.commandManager.execute(new ToggleFullscreenCommand());
 					break;
 				case 69:
 					switchEdgeMode();
