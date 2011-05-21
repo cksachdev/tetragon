@@ -82,6 +82,10 @@ package extra.demo.view.display
 			km.assign([Keyboard.LEFT, Keyboard.A], 0, _tileScroller.scroll, "l");
 			km.assign([Keyboard.DOWN, Keyboard.S], 0, _tileScroller.scroll, "d");
 			km.assign([Keyboard.RIGHT, Keyboard.D], 0, _tileScroller.scroll, "r");
+			km.assign([Keyboard.UP, Keyboard.W], 1, _tileScroller.stopScroll, "u");
+			km.assign([Keyboard.LEFT, Keyboard.A], 1, _tileScroller.stopScroll, "l");
+			km.assign([Keyboard.DOWN, Keyboard.S], 1, _tileScroller.stopScroll, "d");
+			km.assign([Keyboard.RIGHT, Keyboard.D], 1, _tileScroller.stopScroll, "r");
 			km.assign(Keyboard.F, 0, main.commandManager.execute, new ToggleFullscreenCommand());
 			km.assign(Keyboard.E, 0, switchEdgeMode);
 			km.assign(Keyboard.K, 0, resizeViewport, false);
@@ -93,6 +97,18 @@ package extra.demo.view.display
 			km.assign(["SHIFT+NUMPAD-", "SHIFT+-"], 0, changeScrollSpeed, -1, "h");
 			km.assign(["CTRL+NUMPADPLUS", "CTRL+="], 0, changeScrollSpeed, 1, "v");
 			km.assign(["CTRL+NUMPAD-", "CTRL+-"], 0, changeScrollSpeed, -1, "v");
+			km.assign(Keyboard.NUMBER_1, 0, createTilemap, 1, 0);
+			km.assign("CTRL+1", 0, createTilemap, 1, 1);
+			km.assign("SHIFT+1", 0, createTilemap, 1, 2);
+			km.assign("SHIFT+CTRL+1", 0, createTilemap, 1, 3);
+			km.assign(Keyboard.NUMBER_2, 0, createTilemap, 2, 0);
+			km.assign("CTRL+2", 0, createTilemap, 2, 1);
+			km.assign("SHIFT+2", 0, createTilemap, 2, 2);
+			km.assign("SHIFT+CTRL+2", 0, createTilemap, 2, 3);
+			km.assign(Keyboard.NUMBER_3, 0, createTilemap, 3, 0);
+			km.assign("CTRL+3", 0, createTilemap, 3, 1);
+			km.assign("SHIFT+3", 0, createTilemap, 3, 2);
+			km.assign("SHIFT+CTRL+3", 0, createTilemap, 3, 3);
 			
 			//km.assign(71, _tileScroller.showAreas, [!_tileScroller.showAreas]);
 		}
@@ -175,53 +191,11 @@ package extra.demo.view.display
 				case 48:
 					if (e.shiftKey) _tileScroller.scale += 0.5;
 					break;
-				case 49:
-					if (e.ctrlKey && e.shiftKey) createTilemap(1, 2);
-					else if (e.ctrlKey) createTilemap(1, 1);
-					else if (e.shiftKey) createTilemap(1, 3);
-					else createTilemap(1, 0);
-					break;
-				case 50:
-					if (e.ctrlKey && e.shiftKey) createTilemap(2, 2);
-					else if (e.ctrlKey) createTilemap(2, 1);
-					else if (e.shiftKey) createTilemap(2, 3);
-					else createTilemap(2, 0);
-					break;
-				case 51:
-					if (e.ctrlKey && e.shiftKey) createTilemap(3, 2);
-					else if (e.ctrlKey) createTilemap(3, 1);
-					else if (e.shiftKey) createTilemap(3, 3);
-					else createTilemap(3, 0);
-					break;
 				case 52:
 					//if (e.ctrlKey && e.shiftKey) createTilemap(4, 2);
 					//else if (e.ctrlKey) createTilemap(4, 1);
 					//else if (e.shiftKey) createTilemap(4, 3);
 					//else createTilemap(4, 0);
-					break;
-			}
-		}
-		
-		
-		private function onKeyUp(e:KeyboardEvent):void
-		{
-			switch (e.keyCode)
-			{
-				case Keyboard.LEFT:
-				case 65:
-					_tileScroller.stopScroll("l");
-					break;
-				case Keyboard.RIGHT:
-				case 68:
-					_tileScroller.stopScroll("r");
-					break;
-				case Keyboard.UP:
-				case 87:
-					_tileScroller.stopScroll("u");
-					break;
-				case Keyboard.DOWN:
-				case 83:
-					_tileScroller.stopScroll("d");
 					break;
 			}
 		}
@@ -275,7 +249,6 @@ package extra.demo.view.display
 		override protected function addListeners():void
 		{
 			main.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-			main.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 		}
 		
 		

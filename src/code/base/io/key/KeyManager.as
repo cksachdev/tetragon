@@ -65,6 +65,7 @@ package base.io.key
 		private var _combinationsDown:Vector.<KeyCombination>;
 		private var _longestCombination:int;
 		
+		private var _active:Boolean;
 		private var _consoleFocussed:Boolean;
 		private var _consoleKC:KeyCombination;
 		private var _fpsMonKC:KeyCombination;
@@ -81,6 +82,7 @@ package base.io.key
 		public function KeyManager()
 		{
 			_stage = Main.instance.stage;
+			_active = false;
 			_consoleFocussed = false;
 		}
 		
@@ -96,7 +98,6 @@ package base.io.key
 		public function init():void
 		{
 			clearAssignments();
-			assignDefaults();
 		}
 		
 		
@@ -105,6 +106,8 @@ package base.io.key
 		 */
 		public function activate():void
 		{
+			if (_active) return;
+			_active = true;
 			_stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			_stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			_stage.addEventListener(Event.DEACTIVATE, onDeactivate);
@@ -116,9 +119,11 @@ package base.io.key
 		 */
 		public function deactivate():void
 		{
+			if (!_active) return;
 			_stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			_stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			_stage.removeEventListener(Event.DEACTIVATE, onDeactivate);
+			_active = false;
 		}
 		
 		
@@ -186,11 +191,15 @@ package base.io.key
 		 */
 		public function clearAssignments():void
 		{
+			var wasActive:Boolean = _active;
+			deactivate();
 			_assignments = {};
 			_keysDown = {};
 			_keysTyped = new Vector.<uint>();
 			_combinationsDown = new Vector.<KeyCombination>();
 			_longestCombination = 0;
+			assignDefaults();
+			if (wasActive) activate();
 		}
 		
 		
@@ -201,12 +210,11 @@ package base.io.key
 		{
 			var id:String = "";
 			var codes:Vector.<uint> = kc.codes;
-			var l:uint = codes.length;
-			for (var i:uint = 0; i < l; i++)
+			for (var i:uint = 0; i < codes.length; i++)
 			{
-				id += codes[i] + (i < l - 1 ? "_" : "");
+				id += codes[i] + "-";
 			}
-			return id;
+			return id + kc.mode;
 		}
 		
 		
@@ -299,6 +307,14 @@ package base.io.key
 		
 		private function onKeyDown(e:KeyboardEvent):void
 		{
+			// TODO Fix key manager to not allow single keys being triggered that are
+			// part of a multi-key combination. Example: If CTRL+1 is assigned but also
+			// a single key '1' is assigned, the callback for '1' would also be triggered
+			// if CTRL+1 is pressed.
+			
+			// TODO Add support for key locations so that modifier keys can be distinct.
+			// E.g. being able to distinct between Left Shift and Right Shift keys etc.
+			
 			var isAlreadyDown:Boolean = _keysDown[e.keyCode];
 			_keysDown[e.keyCode] = true;
 			_keysTyped.push(e.keyCode);
@@ -359,7 +375,9 @@ package base.io.key
 				if (_combinationsDown[i].mode == KeyMode.UP)
 				{
 					var cb:Function = _combinationsDown[i].callback;
-					if (cb != null) cb();
+					var p:Array = _combinationsDown[i].params;
+					if (p) cb.apply(null, p);
+					else cb();
 				}
 				if (_combinationsDown[i].codes.indexOf(e.keyCode) != -1)
 				{
@@ -442,7 +460,15 @@ package base.io.key
 			combination.callback = callback;
 			if (params && params.length > 0) combination.params = params;
 			
-			_assignments[getKeyCombinationID(combination)] = combination;
+			var id:String = getKeyCombinationID(combination);
+			if (_assignments[id])
+			{
+				Log.warn("A key combination with the ID \"" + id + "\" has already been assigned."
+					+ " New assignment for key value [" + keyValue + "] was ignored.", this);
+				return null;
+			}
+			
+			_assignments[id] = combination;
 			_longestCombination = Math.max(_longestCombination, combination.codes.length);
 			Log.debug("Assigned key codes <" + keyValue + "> (mode: " + mode + ").", this);
 			return combination;
