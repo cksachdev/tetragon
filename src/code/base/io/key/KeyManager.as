@@ -67,8 +67,10 @@ package base.io.key
 		private var _combinationsDown:Vector.<KeyCombination>;
 		private var _longestCombination:int;
 		
-		private var _consoleKC:KeyCombination;
 		private var _consoleFocussed:Boolean;
+		private var _consoleKC:KeyCombination;
+		private var _fpsMonKC:KeyCombination;
+		private var _fpsMonPosKC:KeyCombination;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -359,9 +361,7 @@ package base.io.key
 		
 		private function onKeyDown(e:KeyboardEvent):void
 		{
-			if (_consoleFocussed) return;
-			
-			var alreadyDown:Boolean = _keysDown[e.keyCode];
+			var isAlreadyDown:Boolean = _keysDown[e.keyCode];
 			_keysDown[e.keyCode] = true;
 			_keysTyped.push(e.keyCode);
 			
@@ -373,7 +373,42 @@ package base.io.key
 			for each (var kc:KeyCombination in _assignments)
 			{
 				checkTypedKeys(kc);
-				if (!alreadyDown) checkDownKeys(kc);
+				
+				if (isAlreadyDown) continue;
+				
+				/* Check down keys. */
+				var uniqueCodes:Vector.<uint> = kc.codes.filter(
+					function (e:uint, i:int, v:Vector.<uint>):Boolean
+					{return (i == 0) ? true : v.lastIndexOf(e, i - 1) == -1;});
+				var i:int = uniqueCodes.length;
+				var isUnique:Boolean = true;
+				while (i--)
+				{
+					if (!_keysDown[uniqueCodes[i]])
+					{
+						isUnique = false;
+						break;
+					}
+				}
+				if (!isUnique) continue;
+				
+				/* While console is focussed, only allow console-related keys! */
+				if (_consoleFocussed && !(kc == _consoleKC || _fpsMonKC && (kc == _fpsMonKC || kc == _fpsMonPosKC)))
+				{
+					continue;
+				}
+				
+				_combinationsDown.push(kc);
+				for (i = 0; i < _combinationsDown.length; i++)
+				{
+					if (_combinationsDown[i].mode < 1)
+					{
+						var cb:Function = _combinationsDown[i].callback;
+						var p:Array = _combinationsDown[i].params;
+						if (p) cb.apply(null, p);
+						else cb();
+					}
+				}
 			}
 		}
 		
@@ -425,44 +460,6 @@ package base.io.key
 		}
 		
 		
-		private function checkDownKeys(kc:KeyCombination):void
-		{
-			var uniqueCombination:Vector.<uint> = kc.codes.filter(duplicatesFilter);
-			var i:int = uniqueCombination.length;
-			while (i--)
-			{
-				if (!_keysDown[uniqueCombination[i]]) return;
-			}
-			_combinationsDown.push(kc);
-			for (i = 0; i < _combinationsDown.length; i++)
-			{
-				if (_combinationsDown[i].mode == KeyMode.DOWN)
-				{
-					var cb:Function = _combinationsDown[i].callback;
-					if (cb != null)
-					{
-						var p:Array = _combinationsDown[i].params;
-						if (p) cb.apply(null, p);
-						else cb();
-					}
-				}
-			}
-		}
-		
-		
-		/**
-		 * Used as filter function for removeDuplicates method.
-		 * 
-		 * @param e Item
-		 * @param i Index
-		 * @param v Vector
-		 */
-		private function duplicatesFilter(e:uint, i:int, v:Vector.<uint>):Boolean
-		{
-			return (i == 0) ? true : v.lastIndexOf(e, i - 1) == -1;
-		}
-		
-		
 		/**
 		 * Assigns several default key combinations that are used by the application to
 		 * make it possible to use the debug console, fps monitor etc.
@@ -478,8 +475,8 @@ package base.io.key
 			
 			if (Registry.config.fpsMonitorEnabled)
 			{
-				assign(cfg.fpsMonitorKey, 0, main.fpsMonitor.toggle);
-				assign(cfg.fpsMonitorPositionKey, 0, main.fpsMonitor.togglePosition);
+				_fpsMonKC = assign(cfg.fpsMonitorKey, 0, main.fpsMonitor.toggle);
+				_fpsMonPosKC = assign(cfg.fpsMonitorPositionKey, 0, main.fpsMonitor.togglePosition);
 			}
 		}
 		
