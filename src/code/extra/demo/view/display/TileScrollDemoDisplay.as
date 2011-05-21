@@ -27,7 +27,6 @@
  */
 package extra.demo.view.display
 {
-	import base.Main;
 	import base.command.env.ToggleFullscreenCommand;
 	import base.io.key.KeyManager;
 	import base.view.Display;
@@ -85,7 +84,18 @@ package extra.demo.view.display
 			km.assign([Keyboard.LEFT, Keyboard.A], 0, _tileScroller.scroll, "l");
 			km.assign([Keyboard.DOWN, Keyboard.S], 0, _tileScroller.scroll, "d");
 			km.assign([Keyboard.RIGHT, Keyboard.D], 0, _tileScroller.scroll, "r");
-			km.assign(Keyboard.F, 0, Main.instance.commandManager.execute, new ToggleFullscreenCommand());
+			km.assign(Keyboard.F, 0, main.commandManager.execute, new ToggleFullscreenCommand());
+			km.assign(Keyboard.E, 0, switchEdgeMode);
+			km.assign(Keyboard.K, 0, resizeViewport, false);
+			km.assign(Keyboard.L, 0, resizeViewport, true);
+			km.assign(Keyboard.SLASH, 0, _tileScroller.reset);
+			km.assign([Keyboard.NUMPAD_ADD, Keyboard.EQUAL], 0, changeScrollSpeed, 1);
+			km.assign([Keyboard.NUMPAD_SUBTRACT, Keyboard.MINUS], 0, changeScrollSpeed, -1);
+			km.assign(["SHIFT+NUMPADPLUS", "SHIFT+="], 0, changeScrollSpeed, 1, "h");
+			km.assign(["SHIFT+NUMPAD-", "SHIFT+-"], 0, changeScrollSpeed, -1, "h");
+			km.assign(["CTRL+NUMPADPLUS", "CTRL+="], 0, changeScrollSpeed, 1, "v");
+			km.assign(["CTRL+NUMPAD-", "CTRL+-"], 0, changeScrollSpeed, -1, "v");
+			
 			//km.assign(71, _tileScroller.showAreas, [!_tileScroller.showAreas]);
 			
 			Debug.trace(km.dump());
@@ -116,22 +126,6 @@ package extra.demo.view.display
 		{
 			switch (e.keyCode)
 			{
-				case Keyboard.LEFT:
-				case 65:
-					//_tileScroller.scroll("l");
-					break;
-				case Keyboard.RIGHT:
-				case 68:
-					//_tileScroller.scroll("r");
-					break;
-				case Keyboard.UP:
-				case 87:
-					//_tileScroller.scroll("u");
-					break;
-				case Keyboard.DOWN:
-				case 83:
-					//_tileScroller.scroll("d");
-					break;
 				case 71:
 					_tileScroller.showAreas = !_tileScroller.showAreas;
 					break;
@@ -156,26 +150,8 @@ package extra.demo.view.display
 				case 86:
 					_tileScroller.autoScrollV = !_tileScroller.autoScrollV;
 					break;
-				case 70:
-					//Main.instance.commandManager.execute(new ToggleFullscreenCommand());
-					break;
-				case 69:
-					switchEdgeMode();
-					break;
 				case 84:
 					_tileScroller.useTimer = !_tileScroller.useTimer;
-					break;
-				case 189:
-				case 109:
-					if (e.ctrlKey) _tileScroller.speedV--;
-					else if (e.shiftKey) _tileScroller.speedH--;
-					else _tileScroller.speed--;
-					break;
-				case 187:
-				case 107:
-					if (e.ctrlKey) _tileScroller.speedV++;
-					else if (e.shiftKey) _tileScroller.speedH++;
-					else _tileScroller.speed++;
 					break;
 				case 188:
 					if (_tileScroller.frameRate > 10) _tileScroller.frameRate--;
@@ -203,12 +179,6 @@ package extra.demo.view.display
 				case 48:
 					if (e.shiftKey) _tileScroller.scale += 0.5;
 					break;
-				case 75:
-					resizeViewport(false);
-					break;
-				case 76:
-					resizeViewport(true);
-					break;
 				case 49:
 					if (e.ctrlKey && e.shiftKey) createTilemap(1, 2);
 					else if (e.ctrlKey) createTilemap(1, 1);
@@ -232,9 +202,6 @@ package extra.demo.view.display
 					//else if (e.ctrlKey) createTilemap(4, 1);
 					//else if (e.shiftKey) createTilemap(4, 3);
 					//else createTilemap(4, 0);
-					break;
-				case 191:
-					_tileScroller.reset();
 					break;
 			}
 		}
@@ -352,21 +319,24 @@ package extra.demo.view.display
 		private function switchEdgeMode():void
 		{
 			if (_tileScroller.edgeMode == TileScroller.EDGE_MODE_OFF)
-			{
 				_tileScroller.edgeMode = TileScroller.EDGE_MODE_HALT;
-			}
 			else if (_tileScroller.edgeMode == TileScroller.EDGE_MODE_HALT)
-			{
 				_tileScroller.edgeMode = TileScroller.EDGE_MODE_WRAP;
-			}
 			else if (_tileScroller.edgeMode == TileScroller.EDGE_MODE_WRAP)
-			{
 				_tileScroller.edgeMode = TileScroller.EDGE_MODE_BOUNCE;
-			}
 			else if (_tileScroller.edgeMode == TileScroller.EDGE_MODE_BOUNCE)
-			{
 				_tileScroller.edgeMode = TileScroller.EDGE_MODE_OFF;
-			}
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		private function changeScrollSpeed(value:int, direction:String = ""):void
+		{
+			if (direction == "h") _tileScroller.speedH += value;
+			else if (direction == "v") _tileScroller.speedV += value;
+			else _tileScroller.speed += value;
 		}
 	}
 }

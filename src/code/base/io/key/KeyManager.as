@@ -170,49 +170,7 @@ package base.io.key
 		 */
 		public function assign(keyValue:*, mode:int, callback:Function, ...params):KeyCombination
 		{
-			var combination:KeyCombination;
-			if (keyValue is String)
-			{
-				var s:String = keyValue;
-				if (s.length > 0) combination = createKeyCombination(s);
-			}
-			else if (keyValue is uint)
-			{
-				combination = createKeyCombination(String(keyValue), true);
-			}
-			else if (keyValue is KeyCombination)
-			{
-				combination = keyValue;
-			}
-			else if (keyValue is Array)
-			{
-				var a:Array = keyValue;
-				if (a.length > 0)
-				{
-					var kc:KeyCombination;
-					for (var i:uint = 0; i < a.length; i++)
-					{
-						var result:KeyCombination = assign(a[i], mode, callback, params);
-						if (result) kc = result;
-					}
-					return kc;
-				}
-			}
-			
-			if (!combination)
-			{
-				fail("Could not assign key combination for key value: \"" + keyValue + "\".");
-				return null;
-			}
-			
-			combination.mode = mode < 0 ? 0 : mode > 1 ? 1 : mode;
-			combination.callback = callback;
-			if (params && params.length > 0) combination.params = params;
-			
-			_assignments[getKeyCombinationID(combination)] = combination;
-			_longestCombination = Math.max(_longestCombination, combination.codes.length);
-			Log.debug("Assigned key codes <" + keyValue + "> (mode: " + mode + ").", this);
-			return combination;
+			return assign2(keyValue, mode, callback, params);
 		}
 		
 		
@@ -221,6 +179,7 @@ package base.io.key
 		 */
 		public function remove():void
 		{
+			// TODO
 		}
 		
 		
@@ -314,11 +273,12 @@ package base.io.key
 		 */
 		public function dump():String
 		{
-			var t:TabularText = new TabularText(5, true, "  ", null, "  ", 80,
-				["KEY(S)", "CODE(S)", "LENGTH", "MODE", "ID"]);
+			var t:TabularText = new TabularText(6, true, "  ", null, "  ", 60,
+				["KEY(S)", "CODE(S)", "LENGTH", "MODE", "ID", "PARAMS"]);
 			for (var id:String in _assignments)
 			{
 				var kc:KeyCombination = _assignments[id];
+				var p:String = kc.params ? kc.params.toString() : "";
 				var s:String;
 				var string:String = "";
 				var code:String = "";
@@ -331,7 +291,7 @@ package base.io.key
 					if (s) string += s.toUpperCase() + (i < kl - 1 ? "+" : "");
 					code += c + (i < kl - 1 ? "," : "");
 				}
-				t.add([string, code, kc.codes.length, kc.mode, id]);
+				t.add([string, code, kc.codes.length, kc.mode, id, p]);
 			}
 			return toString() + ": Key Assignments\n" + t;
 		}
@@ -456,7 +416,58 @@ package base.io.key
 			}
 			
 			if (isEqual) return;
+			// TODO
 			//dispatchEvent(new KeyCombinationEvent(KeyCombinationEvent.SEQUENCE, kc));
+		}
+		
+		
+		/**
+		 * Internal assign method used by the public assign API. This method exists so that
+		 * any params arrays are 'unwrapped' and don't result in arrays wrapped into arrays
+		 * if we do assignments that happen by iteration due to an Array keyValue.
+		 * 
+		 * However by using a second method that takes the params explicitly as an Array
+		 * object we can iterate the method without causing nested params arrays. On the
+		 * other hand we can still use the ...rest operator on the public assign method.
+		 */
+		private function assign2(keyValue:*, mode:int, callback:Function, params:Array):KeyCombination
+		{
+			var combination:KeyCombination;
+			if (keyValue is String)
+				combination = createKeyCombination(keyValue);
+			else if (keyValue is uint)
+				combination = createKeyCombination(String(keyValue), true);
+			else if (keyValue is KeyCombination)
+				combination = keyValue;
+			else if (keyValue is Array)
+			{
+				var a:Array = keyValue;
+				if (a.length > 0)
+				{
+					var kc:KeyCombination;
+					for (var i:uint = 0; i < a.length; i++)
+					{
+						var result:KeyCombination = assign2(a[i], mode, callback, params);
+						if (result) kc = result;
+					}
+					return kc;
+				}
+			}
+			
+			if (!combination)
+			{
+				fail("Could not assign key combination for key value: \"" + keyValue + "\".");
+				return null;
+			}
+			
+			combination.mode = mode < 0 ? 0 : mode > 1 ? 1 : mode;
+			combination.callback = callback;
+			if (params && params.length > 0) combination.params = params;
+			
+			_assignments[getKeyCombinationID(combination)] = combination;
+			_longestCombination = Math.max(_longestCombination, combination.codes.length);
+			Log.debug("Assigned key codes <" + keyValue + "> (mode: " + mode + ").", this);
+			return combination;
 		}
 		
 		

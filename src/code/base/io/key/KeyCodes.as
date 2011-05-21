@@ -133,7 +133,7 @@ package base.io.key
 			"numpad8":		104,
 			"numpad9":		105,
 			"numpad*":		106,
-			"numpad+":		107,
+			"numpadplus":	107,
 			"numpad-":		109,
 			"numpad.":		110,
 			"numpad/":		111,
@@ -189,6 +189,9 @@ package base.io.key
 		}
 		
 		
+		/**
+		 * Returns the key string for the specified key code.
+		 */
 		public static function getKeyString(keyCode:uint):String
 		{
 			for (var s:String in _keyCodes)
