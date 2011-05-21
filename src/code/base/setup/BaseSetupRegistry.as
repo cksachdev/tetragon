@@ -66,6 +66,7 @@ package base.setup
 			registerCommand("cli", "runtime", "rt", OutputRuntimeInfoCommand, "Displays information about the runtime.");
 			registerCommand("cli", "listscreens", "lsc", ListScreensCommand, "Lists all registered screens.");
 			registerCommand("cli", "liststates", "lss", ListStatesCommand, "Lists all registered states.");
+			registerCommand("cli", "listkeyassignments", "lka", ListKeyAssignmentsCommand, "Outputs a list of all current key assignments.");
 			
 			registerCommand("env", "fullscreen", "fs", ToggleFullscreenCommand, "Toggles fullscreen mode (if supported).");
 			registerCommand("env", "setfps", "stf", SetFramerateCommand, "Sets the stage framerate to the specified value.");

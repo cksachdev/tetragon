@@ -25,21 +25,65 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base.io.key
+package base.command.cli
 {
-	/**
-	 * Represents a combination of keys that are being pressed or held down at the
-	 * same time.
-	 */
-	public final class KeyCombination
+	import base.command.CLICommand;
+	import base.io.key.KeyCodes;
+	import base.io.key.KeyCombination;
+
+	import com.hexagonstar.util.debug.LogLevel;
+	import com.hexagonstar.util.string.TabularText;
+
+	
+	public class ListKeyAssignmentsCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
-		// Properties
+		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
-		public var codes:Vector.<uint>;
-		public var mode:int;
-		public var callback:Function;
-		public var params:Array;
+		/**
+		 * @inheritDoc
+		 */
+		override public function execute():void 
+		{
+			var assignments:Object = main.keyManager.assignments;
+			var t:TabularText = new TabularText(6, true, "  ", null, "  ", 60,
+				["KEY(S)", "CODE(S)", "LENGTH", "MODE", "ID", "PARAMS"]);
+			
+			for (var id:String in assignments)
+			{
+				var kc:KeyCombination = assignments[id];
+				var p:String = kc.params ? kc.params.toString() : "";
+				var s:String;
+				var string:String = "";
+				var code:String = "";
+				var codes:Vector.<uint> = kc.codes;
+				var kl:uint = codes.length;
+				for (var i:uint = 0; i < kl; i++)
+				{
+					var c:uint = codes[i];
+					s = KeyCodes.getKeyString(c);
+					if (s) string += s.toUpperCase() + (i < kl - 1 ? "+" : "");
+					code += c + (i < kl - 1 ? "," : "");
+				}
+				t.add([string, code, kc.codes.length, kc.mode, id, p]);
+			}
+			
+			main.console.log("Key Assignments\n" + t, LogLevel.INFO);
+			complete();
+		}
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Getters & Setters
+		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function get name():String
+		{
+			return "listKeyAssignments";
+		}
 	}
 }

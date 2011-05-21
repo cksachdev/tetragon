@@ -32,8 +32,6 @@ package base.io.key
 	import base.data.Config;
 	import base.data.Registry;
 
-	import com.hexagonstar.util.string.TabularText;
-
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -268,35 +266,6 @@ package base.io.key
 		}
 		
 		
-		/**
-		 * Returns a string dump of all assigned keys.
-		 */
-		public function dump():String
-		{
-			var t:TabularText = new TabularText(6, true, "  ", null, "  ", 60,
-				["KEY(S)", "CODE(S)", "LENGTH", "MODE", "ID", "PARAMS"]);
-			for (var id:String in _assignments)
-			{
-				var kc:KeyCombination = _assignments[id];
-				var p:String = kc.params ? kc.params.toString() : "";
-				var s:String;
-				var string:String = "";
-				var code:String = "";
-				var codes:Vector.<uint> = kc.codes;
-				var kl:uint = codes.length;
-				for (var i:uint = 0; i < kl; i++)
-				{
-					var c:uint = codes[i];
-					s = KeyCodes.getKeyString(c);
-					if (s) string += s.toUpperCase() + (i < kl - 1 ? "+" : "");
-					code += c + (i < kl - 1 ? "," : "");
-				}
-				t.add([string, code, kc.codes.length, kc.mode, id, p]);
-			}
-			return toString() + ": Key Assignments\n" + t;
-		}
-		
-		
 		//-----------------------------------------------------------------------------------------
 		// Accessors
 		//-----------------------------------------------------------------------------------------
@@ -312,6 +281,15 @@ package base.io.key
 		public function set consoleFocussed(v:Boolean):void
 		{
 			_consoleFocussed = v;
+		}
+		
+		
+		/**
+		 * An map that contains all assigned KeyCombination objects mapped by their ID.
+		 */
+		public function get assignments():Object
+		{
+			return _assignments;
 		}
 		
 		

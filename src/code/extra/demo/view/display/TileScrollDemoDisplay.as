@@ -36,8 +36,6 @@ package extra.demo.view.display
 	import extra.game.render.tile.TileScroller;
 	import extra.game.render.tile.TileSet;
 
-	import com.hexagonstar.util.debug.Debug;
-
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 	
@@ -97,8 +95,6 @@ package extra.demo.view.display
 			km.assign(["CTRL+NUMPAD-", "CTRL+-"], 0, changeScrollSpeed, -1, "v");
 			
 			//km.assign(71, _tileScroller.showAreas, [!_tileScroller.showAreas]);
-			
-			Debug.trace(km.dump());
 		}
 		
 		
