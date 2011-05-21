@@ -63,6 +63,8 @@ package extra.demo.state
 		
 		override protected function onScreenOpened(screen:Screen):void
 		{
+			if (main.console) main.console.toggle();
+			if (main.fpsMonitor) main.fpsMonitor.toggle();
 		}
 		
 		
