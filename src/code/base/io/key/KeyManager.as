@@ -29,6 +29,7 @@ package base.io.key
 {
 	import base.Main;
 	import base.core.debug.Log;
+	import base.data.Config;
 	import base.data.Registry;
 
 	import com.hexagonstar.util.string.TabularText;
@@ -48,6 +49,10 @@ package base.io.key
 		// Constants
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * A string that is used in key combinations to divide between single keys
+		 * in the combination.
+		 */
 		public static const KEY_COMBINATION_DELIMITER:String = "+";
 		
 		
@@ -62,7 +67,7 @@ package base.io.key
 		private var _combinationsDown:Vector.<KeyCombination>;
 		private var _longestCombination:int;
 		
-		private var _consoleKeyCombination:KeyCombination;
+		private var _consoleKC:KeyCombination;
 		private var _consoleFocussed:Boolean;
 		
 		
@@ -76,11 +81,6 @@ package base.io.key
 		public function KeyManager()
 		{
 			_stage = Main.instance.stage;
-			_assignments = {};
-			_keysDown = {};
-			_keysTyped = new Vector.<uint>();
-			_combinationsDown = new Vector.<KeyCombination>();
-			_longestCombination = 0;
 			_consoleFocussed = false;
 		}
 		
@@ -89,19 +89,14 @@ package base.io.key
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * Initializes the key manager. This clears all key assignments if there are any and
+		 * then assigns some default key combinations that are used for the engine.
+		 */
 		public function init():void
 		{
 			clearAssignments();
-			if (Registry.config.consoleEnabled)
-			{
-				_consoleKeyCombination = assign(Registry.config.consoleKey, Main.instance.console.toggle);
-			}
-			
-			if (Registry.config.fpsMonitorEnabled)
-			{
-				assign(Registry.config.fpsMonitorKey, Main.instance.fpsMonitor.toggle);
-				assign(Registry.config.fpsMonitorPositionKey, Main.instance.fpsMonitor.togglePosition);
-			}
+			assignDefaults();
 		}
 		
 		
@@ -128,68 +123,183 @@ package base.io.key
 		
 		
 		/**
-		 * Assigns a keyboard key or key combination to a callback function.
+		 * Assigns a keyboard key or key combination to a callback function. The specified
+		 * <code>keyValue</code> can be either a <code>String</code>, a <code>uint</code>,
+		 * a <code>KeyCombination</code> object or an <code>Array</code>.
 		 * 
-		 * @param value The key value to assign. This can be one of the following
-		 *        object types: String, Number, Array, Key or KeyCombination.
-		 * @param callback The method that is called when the key or key combination
-		 *        is triggered.
-		 * @param mode The mode of the key assignment, either <code>KeyMode.DOWN</code> or
-		 *        <code>KeyMode.UP</code>.
-		 * @return true if the assignment succeeded, otherwise false.
+		 * <p>By specifying a <code>String</code> you can assign a key combination which
+		 * determines that the exact keys in this combination need to be pressed to
+		 * trigger the callback. The String can contain one or more key identifiers which
+		 * are divided by the <code>KEY_COMBINATION_DELIMITER</code> constant (a plus sign
+		 * '+'), for example <code>F1</code>, <code>CTRL+A</code> or
+		 * <code>SHIFT+CTRL+1</code>.</p>
+		 * 
+		 * <p>By specifying a <code>uint</code> you can assign one key by it's key code
+		 * directly. With this you can also use the numeric contants from ActionScript's
+		 * native Keyboard class.</p>
+		 * 
+		 * <p>By specifying a <code>KeyCombination</code> object the key manager assigns
+		 * the KeyCombination object with the key codes that are already listed in the
+		 * KeyCombination.</p>
+		 * 
+		 * <p>By specifying an Array you can assign multiple key combinations to the same
+		 * callback. The Array can contain a combination of String key identifiers, uints
+		 * and/or KeyCombination objects.</p>
+		 * 
+		 * @see base.io.key.KeyCodes
+		 * 
+		 * @param keyValue The key value to assign. This can be one of the following
+		 *            object types: String, uint, KeyCombination or Array.
+		 * @param mode The mode of the key assignment that determines when the callback is
+		 *            triggered, either when the key is pressed or released. You can use
+		 *            either <code>KeyMode.DOWN</code> or <code>KeyMode.UP</code> or
+		 *            numbers 0 (down) or 1 (up).
+		 * @param callback The method that is called when the key or key combination is
+		 *            triggered.
+		 * @param params A list of optional parameters that are provided as arguments to
+		 *            the callback function.
+		 * @return A <code>KeyCombination</code> object or <code>null</code>. If the
+		 *         assignment succeeded the resulting <code>KeyCombination</code> object
+		 *         is returned, if the assignment failed <code>null</code> is returned. If
+		 *         the specified <code>keyValue</code> is an <code>Array</code> only the
+		 *         last successful assignment from the arrays' containing key values is
+		 *         returned. if all assignments from the array failed, <code>null</code>
+		 *         is returned.
 		 */
-		public function assign(value:*, callback:Function, params:Array = null, mode:String = KeyMode.DOWN):KeyCombination
+		public function assign(keyValue:*, mode:int, callback:Function, ...params):KeyCombination
 		{
 			var combination:KeyCombination;
-			
-			if (value is String)
+			if (keyValue is String)
 			{
-				var s:String = value;
+				var s:String = keyValue;
 				if (s.length > 0) combination = createKeyCombination(s);
 			}
-			else if (value is Number)
+			else if (keyValue is uint)
 			{
-				combination = createKeyCombination(Number(value).toString());
+				combination = createKeyCombination(String(keyValue), true);
 			}
-			else if (value is Array)
+			else if (keyValue is KeyCombination)
 			{
-				var a:Array = value;
-				if (a.length > 0) {}// TODO
+				combination = keyValue;
 			}
-			else if (value is Key || value is KeyCombination)
+			else if (keyValue is Array)
 			{
-				combination = value;
+				var a:Array = keyValue;
+				if (a.length > 0)
+				{
+					var kc:KeyCombination;
+					for (var i:uint = 0; i < a.length; i++)
+					{
+						var result:KeyCombination = assign(a[i], mode, callback, params);
+						if (result) kc = result;
+					}
+					return kc;
+				}
 			}
 			
 			if (!combination)
 			{
-				fail("Could not assign key combination for value: \"" + value + "\".");
+				fail("Could not assign key combination for key value: \"" + keyValue + "\".");
 				return null;
 			}
 			
-			combination.mode = mode;
+			combination.mode = mode < 0 ? 0 : mode > 1 ? 1 : mode;
 			combination.callback = callback;
 			if (params && params.length > 0) combination.params = params;
-			_assignments[combination.id] = combination;
-			_longestCombination = Math.max(_longestCombination, combination.length);
-			Log.debug("Assigned key codes <" + value + "> (mode: " + mode + ").", this);
+			
+			_assignments[getKeyCombinationID(combination)] = combination;
+			_longestCombination = Math.max(_longestCombination, combination.codes.length);
+			Log.debug("Assigned key codes <" + keyValue + "> (mode: " + mode + ").", this);
 			return combination;
 		}
 		
 		
 		/**
-		 * Clears all key assignments from the Key manager.
+		 * Removes a key assigment from the key manager.
 		 */
-		public function clearAssignments():void
+		public function remove():void
 		{
-			// TODO
 		}
 		
 		
 		/**
-		 * Returns a String Representation of the class.
+		 * Clears all key assignments from the key manager.
+		 */
+		public function clearAssignments():void
+		{
+			_assignments = {};
+			_keysDown = {};
+			_keysTyped = new Vector.<uint>();
+			_combinationsDown = new Vector.<KeyCombination>();
+			_longestCombination = 0;
+		}
+		
+		
+		/**
+		 * Generates an ID for the specified KeyCombination object.
+		 */
+		public static function getKeyCombinationID(kc:KeyCombination):String
+		{
+			var id:String = "";
+			var codes:Vector.<uint> = kc.codes;
+			var l:uint = codes.length;
+			for (var i:uint = 0; i < l; i++)
+			{
+				id += codes[i] + (i < l - 1 ? "_" : "");
+			}
+			return id;
+		}
+		
+		
+		/**
+		 * Creates a key-combination object from a string that defines one or multiple
+		 * keys or a key code.
 		 * 
-		 * @return A String Representation of the class.
+		 * @see base.io.key.KeyCodes
+		 * @param keyString A string that defines a key identifier or multiple key
+		 *            identifiers, separated by the
+		 *            <code>KeyManager.KEY_COMBINATION_DELIMITER</code> (+), e.g. CTRL+C.
+		 * @param isCode Set this to true if the specified keyString is a key code that
+		 *            should be used directly.
+		 * @return A KeyCombination object or <code>null</code>.
+		 */
+		public static function createKeyCombination(keyString:String,
+			isCode:Boolean = false):KeyCombination
+		{
+			if (keyString == null || keyString.length < 1) return null;
+			var codes:Vector.<uint>;
+			if (isCode)
+			{
+				codes = new Vector.<uint>(1, true);
+				codes[0] = uint(keyString);
+			}
+			else
+			{
+				var a:Array = keyString.split(KEY_COMBINATION_DELIMITER);
+				codes = new Vector.<uint>(a.length, true);
+				for (var i:uint = 0; i < codes.length; i++)
+				{
+					var ks:String = String(a[i]).toLowerCase();
+					var code:int = KeyCodes.getKeyCode(ks);
+					if (code == -1) return null;
+					var location:uint = KeyLocation.STANDARD;
+					if (ks == "lshift" || ks == "lctrl" || ks == "lcontrol" || ks == "lalt")
+						location = KeyLocation.LEFT;
+					else if (ks == "rshift" || ks == "rctrl" || ks == "rcontrol" || ks == "ralt")
+						location = KeyLocation.RIGHT;
+					codes[i] = code;
+				}
+			}
+			var kc:KeyCombination = new KeyCombination();
+			kc.codes = codes;
+			return kc;
+		}
+		
+		
+		/**
+		 * Returns a String representation of the class.
+		 * 
+		 * @return A String representation of the class.
 		 */
 		public function toString():String
 		{
@@ -197,12 +307,16 @@ package base.io.key
 		}
 		
 		
+		/**
+		 * Returns a string dump of all assigned keys.
+		 */
 		public function dump():String
 		{
 			var t:TabularText = new TabularText(5, true, "  ", null, "  ", 80,
 				["KEY(S)", "CODE(S)", "LENGTH", "MODE", "ID"]);
-			for each (var kc:KeyCombination in _assignments)
+			for (var id:String in _assignments)
 			{
+				var kc:KeyCombination = _assignments[id];
 				var s:String;
 				var string:String = "";
 				var code:String = "";
@@ -215,68 +329,20 @@ package base.io.key
 					if (s) string += s.toUpperCase() + (i < kl - 1 ? "+" : "");
 					code += c + (i < kl - 1 ? "," : "");
 				}
-				t.add([string, code, kc.length, kc.mode, kc.id]);
+				t.add([string, code, kc.codes.length, kc.mode, id]);
 			}
 			return toString() + ": Key Assignments\n" + t;
 		}
-		
-		
-		/**
-		 * Creates a key-combination object from a string that defines multiple keys.
-		 * 
-		 * @see base.io.key.KeyCodes
-		 * @param multiKeyString A string that defines a multiple keys, separated by the
-		 *            <code>KeyManager.KEY_COMBINATION_DELIMITER</code> (+), e.g. CTRL+C.
-		 * @return A KeyCombination object or <code>null</code>.
-		 */
-		public static function createKeyCombination(keyString:String):KeyCombination
-		{
-			if (keyString == null || keyString.length < 1) return null;
-			var keys:Array = [];
-			var a:Array = keyString.split(KEY_COMBINATION_DELIMITER);
-			for (var i:uint = 0; i < a.length; i++)
-			{
-				var ks:String = String(a[i]).toLowerCase();
-				var code:int = KeyCodes.getKeyCode(ks);
-				if (code == -1) return null;
-				var location:uint = KeyLocation.STANDARD;
-				if (ks == "lshift" || ks == "lctrl" || ks == "lcontrol" || ks == "lalt")
-					location = KeyLocation.LEFT;
-				else if (ks == "rshift" || ks == "rctrl" || ks == "rcontrol" || ks == "ralt")
-					location = KeyLocation.RIGHT;
-				keys.push(code);
-			}
-			if (keys.length == 0) return null;
-			return new KeyCombination(keys);
-		}
-		
-		
-		/**
-		 * Creates a single-key object from a string that defines a single key.
-		 * 
-		 * @see base.io.key.KeyCodes
-		 * @param singleKeyString A string that defines a single key.
-		 * @return A Key object or <code>null</code>.
-		 */
-		//public static function createKey(singleKeyString:String):Key
-		//{
-		//	if (singleKeyString == null || singleKeyString.length < 1) return null;
-		//	var ks:String = singleKeyString.toLowerCase();
-		//	var code:int = KeyCodes.getKeyCode(ks);
-		//	if (code == -1) return null;
-		//	var location:uint = KeyLocation.STANDARD;
-		//	if (ks == "lshift" || ks == "lctrl" || ks == "lcontrol" || ks == "lalt")
-		//		location = KeyLocation.LEFT;
-		//	else if (ks == "rshift" || ks == "rctrl" || ks == "rcontrol" || ks == "ralt")
-		//		location = KeyLocation.RIGHT;
-		//	return new Key(code, location);
-		//}
 		
 		
 		//-----------------------------------------------------------------------------------------
 		// Accessors
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * Determines whether the console currently has focus or not. This is set
+		 * automatically by the console whenever it gains or looses key focus.
+		 */
 		public function get consoleFocussed():Boolean
 		{
 			return _consoleFocussed;
@@ -397,6 +463,30 @@ package base.io.key
 		}
 		
 		
+		/**
+		 * Assigns several default key combinations that are used by the application to
+		 * make it possible to use the debug console, fps monitor etc.
+		 */
+		private function assignDefaults():void
+		{
+			var main:Main = Main.instance;
+			var cfg:Config = Registry.config;
+			if (Registry.config.consoleEnabled)
+			{
+				_consoleKC = assign(cfg.consoleKey, 0, main.console.toggle);
+			}
+			
+			if (Registry.config.fpsMonitorEnabled)
+			{
+				assign(cfg.fpsMonitorKey, 0, main.fpsMonitor.toggle);
+				assign(cfg.fpsMonitorPositionKey, 0, main.fpsMonitor.togglePosition);
+			}
+		}
+		
+		
+		/**
+		 * Sends an error message to the logger.
+		 */
 		private function fail(message:String):void
 		{
 			Log.error(message, this);

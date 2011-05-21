@@ -37,6 +37,8 @@ package extra.demo.view.display
 	import extra.game.render.tile.TileScroller;
 	import extra.game.render.tile.TileSet;
 
+	import com.hexagonstar.util.debug.Debug;
+
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 	
@@ -79,11 +81,14 @@ package extra.demo.view.display
 		override public function start():void
 		{
 			var km:KeyManager = main.keyManager;
-			km.assign("cursorleft", _tileScroller.scroll, ["l"]);
-			km.assign("cursorright", _tileScroller.scroll, ["r"]);
-			km.assign("cursorup", _tileScroller.scroll, ["u"]);
-			km.assign("cursordown", _tileScroller.scroll, ["d"]);
-			km.assign("f", Main.instance.commandManager.execute, [new ToggleFullscreenCommand()]);
+			km.assign([Keyboard.UP, Keyboard.W], 0, _tileScroller.scroll, "u");
+			km.assign([Keyboard.LEFT, Keyboard.A], 0, _tileScroller.scroll, "l");
+			km.assign([Keyboard.DOWN, Keyboard.S], 0, _tileScroller.scroll, "d");
+			km.assign([Keyboard.RIGHT, Keyboard.D], 0, _tileScroller.scroll, "r");
+			km.assign(Keyboard.F, 0, Main.instance.commandManager.execute, new ToggleFullscreenCommand());
+			//km.assign(71, _tileScroller.showAreas, [!_tileScroller.showAreas]);
+			
+			Debug.trace(km.dump());
 		}
 		
 		

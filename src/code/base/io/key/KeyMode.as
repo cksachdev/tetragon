@@ -36,7 +36,7 @@ package base.io.key
 		// Constants
 		//-----------------------------------------------------------------------------------------
 		
-		public static const DOWN:String = "d";
-		public static const UP:String = "u";
+		public static const DOWN:int = 0;
+		public static const UP:int = 1;
 	}
 }

@@ -37,44 +37,9 @@ package base.io.key
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		internal var id:String;
 		internal var codes:Vector.<uint>;
-		internal var mode:String;
+		internal var mode:int;
 		internal var callback:Function;
 		internal var params:Array;
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Constructor
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Creates a new instance of the class.
-		 */
-		public function KeyCombination(codes:Array)
-		{
-			id = "";
-			this.codes = new Vector.<uint>();
-			var l:uint = codes.length;
-			for (var i:uint = 0; i < l; i++)
-			{
-				var code:uint = codes[i];
-				this.codes.push(code);
-				id += code + (i < l - 1 ? "_" : "");
-			}
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Accessors
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * The length of the key combination, i.e. how many keys are in it.
-		 */
-		public function get length():uint
-		{
-			return codes.length;
-		}
 	}
 }
