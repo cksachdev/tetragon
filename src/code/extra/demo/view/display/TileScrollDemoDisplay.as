@@ -36,7 +36,6 @@ package extra.demo.view.display
 	import extra.game.render.tile.TileScroller;
 	import extra.game.render.tile.TileSet;
 
-	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 	
 	
@@ -77,40 +76,7 @@ package extra.demo.view.display
 		
 		override public function start():void
 		{
-			var km:KeyManager = main.keyManager;
-			km.assign([Keyboard.UP, Keyboard.W], 0, _tileScroller.scroll, "u");
-			km.assign([Keyboard.LEFT, Keyboard.A], 0, _tileScroller.scroll, "l");
-			km.assign([Keyboard.DOWN, Keyboard.S], 0, _tileScroller.scroll, "d");
-			km.assign([Keyboard.RIGHT, Keyboard.D], 0, _tileScroller.scroll, "r");
-			km.assign([Keyboard.UP, Keyboard.W], 1, _tileScroller.stopScroll, "u");
-			km.assign([Keyboard.LEFT, Keyboard.A], 1, _tileScroller.stopScroll, "l");
-			km.assign([Keyboard.DOWN, Keyboard.S], 1, _tileScroller.stopScroll, "d");
-			km.assign([Keyboard.RIGHT, Keyboard.D], 1, _tileScroller.stopScroll, "r");
-			km.assign(Keyboard.F, 0, main.commandManager.execute, new ToggleFullscreenCommand());
-			km.assign(Keyboard.E, 0, switchEdgeMode);
-			km.assign(Keyboard.K, 0, resizeViewport, false);
-			km.assign(Keyboard.L, 0, resizeViewport, true);
-			km.assign(Keyboard.SLASH, 0, _tileScroller.reset);
-			km.assign([Keyboard.NUMPAD_ADD, Keyboard.EQUAL], 0, changeScrollSpeed, 1);
-			km.assign([Keyboard.NUMPAD_SUBTRACT, Keyboard.MINUS], 0, changeScrollSpeed, -1);
-			km.assign(["SHIFT+NUMPADPLUS", "SHIFT+="], 0, changeScrollSpeed, 1, "h");
-			km.assign(["SHIFT+NUMPAD-", "SHIFT+-"], 0, changeScrollSpeed, -1, "h");
-			km.assign(["CTRL+NUMPADPLUS", "CTRL+="], 0, changeScrollSpeed, 1, "v");
-			km.assign(["CTRL+NUMPAD-", "CTRL+-"], 0, changeScrollSpeed, -1, "v");
-			km.assign(Keyboard.NUMBER_1, 0, createTilemap, 1, 0);
-			km.assign("CTRL+1", 0, createTilemap, 1, 1);
-			km.assign("SHIFT+1", 0, createTilemap, 1, 2);
-			km.assign("SHIFT+CTRL+1", 0, createTilemap, 1, 3);
-			km.assign(Keyboard.NUMBER_2, 0, createTilemap, 2, 0);
-			km.assign("CTRL+2", 0, createTilemap, 2, 1);
-			km.assign("SHIFT+2", 0, createTilemap, 2, 2);
-			km.assign("SHIFT+CTRL+2", 0, createTilemap, 2, 3);
-			km.assign(Keyboard.NUMBER_3, 0, createTilemap, 3, 0);
-			km.assign("CTRL+3", 0, createTilemap, 3, 1);
-			km.assign("SHIFT+3", 0, createTilemap, 3, 2);
-			km.assign("SHIFT+CTRL+3", 0, createTilemap, 3, 3);
-			
-			//km.assign(71, _tileScroller.showAreas, [!_tileScroller.showAreas]);
+			addKeyAssignments();
 		}
 		
 		
@@ -133,72 +99,6 @@ package extra.demo.view.display
 		//-----------------------------------------------------------------------------------------
 		// Event Handlers
 		//-----------------------------------------------------------------------------------------
-		
-		private function onKeyDown(e:KeyboardEvent):void
-		{
-			switch (e.keyCode)
-			{
-				case 71:
-					_tileScroller.showAreas = !_tileScroller.showAreas;
-					break;
-				case 77:
-					_tileScroller.showMapBoundaries = !_tileScroller.showMapBoundaries;
-					break;
-				case 66:
-					_tileScroller.showBoundingBoxes = !_tileScroller.showBoundingBoxes;
-					break;
-				case 82:
-					_tileScroller.showBuffer = !_tileScroller.showBuffer;
-					break;
-				case 67:
-					_tileScroller.cacheObjects = !_tileScroller.cacheObjects;
-					break;
-				case 80:
-					_tileScroller.paused = !_tileScroller.paused;
-					break;
-				case 72:
-					_tileScroller.autoScrollH = !_tileScroller.autoScrollH;
-					break;
-				case 86:
-					_tileScroller.autoScrollV = !_tileScroller.autoScrollV;
-					break;
-				case 84:
-					_tileScroller.useTimer = !_tileScroller.useTimer;
-					break;
-				case 188:
-					if (_tileScroller.frameRate > 10) _tileScroller.frameRate--;
-					break;
-				case 190:
-					if (_tileScroller.frameRate < 200) _tileScroller.frameRate++;
-					break;
-				case 186:
-					if (!e.ctrlKey && stage.frameRate > 10) stage.frameRate--;
-					else if (e.ctrlKey) _tileScroller.tileAnimFrameRate--;
-					break;
-				case 222:
-					if (!e.ctrlKey && stage.frameRate < 200) stage.frameRate++;
-					else if (e.ctrlKey) _tileScroller.tileAnimFrameRate++;
-					break;
-				case 219:
-					if (e.shiftKey) _tileScroller.deceleration -= .01;
-					break;
-				case 221:
-					if (e.shiftKey) _tileScroller.deceleration += .01;
-					break;
-				case 57:
-					if (e.shiftKey) _tileScroller.scale -= 0.5;
-					break;
-				case 48:
-					if (e.shiftKey) _tileScroller.scale += 0.5;
-					break;
-				case 52:
-					//if (e.ctrlKey && e.shiftKey) createTilemap(4, 2);
-					//else if (e.ctrlKey) createTilemap(4, 1);
-					//else if (e.shiftKey) createTilemap(4, 3);
-					//else createTilemap(4, 0);
-					break;
-			}
-		}
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -248,7 +148,62 @@ package extra.demo.view.display
 		
 		override protected function addListeners():void
 		{
-			main.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+		}
+		
+		
+		protected function addKeyAssignments():void
+		{
+			var km:KeyManager = main.keyManager;
+			km.assign([Keyboard.UP, Keyboard.W], 0, _tileScroller.scroll, "u");
+			km.assign([Keyboard.LEFT, Keyboard.A], 0, _tileScroller.scroll, "l");
+			km.assign([Keyboard.DOWN, Keyboard.S], 0, _tileScroller.scroll, "d");
+			km.assign([Keyboard.RIGHT, Keyboard.D], 0, _tileScroller.scroll, "r");
+			km.assign([Keyboard.UP, Keyboard.W], 1, _tileScroller.stopScroll, "u");
+			km.assign([Keyboard.LEFT, Keyboard.A], 1, _tileScroller.stopScroll, "l");
+			km.assign([Keyboard.DOWN, Keyboard.S], 1, _tileScroller.stopScroll, "d");
+			km.assign([Keyboard.RIGHT, Keyboard.D], 1, _tileScroller.stopScroll, "r");
+			km.assign(Keyboard.F, 0, main.commandManager.execute, new ToggleFullscreenCommand());
+			km.assign(Keyboard.E, 0, switchEdgeMode);
+			km.assign(Keyboard.K, 0, resizeViewport, false);
+			km.assign(Keyboard.L, 0, resizeViewport, true);
+			km.assign(Keyboard.SLASH, 0, _tileScroller.reset);
+			km.assign([Keyboard.NUMPAD_ADD, Keyboard.EQUAL], 0, changeScrollSpeed, 1);
+			km.assign([Keyboard.NUMPAD_SUBTRACT, Keyboard.MINUS], 0, changeScrollSpeed, -1);
+			km.assign(["SHIFT+NUMPADPLUS", "SHIFT+="], 0, changeScrollSpeed, 1, "h");
+			km.assign(["SHIFT+NUMPAD-", "SHIFT+-"], 0, changeScrollSpeed, -1, "h");
+			km.assign(["CTRL+NUMPADPLUS", "CTRL+="], 0, changeScrollSpeed, 1, "v");
+			km.assign(["CTRL+NUMPAD-", "CTRL+-"], 0, changeScrollSpeed, -1, "v");
+			km.assign(Keyboard.G, 0, function():void {_tileScroller.showAreas = !_tileScroller.showAreas;});
+			km.assign(Keyboard.M, 0, function():void {_tileScroller.showMapBoundaries = !_tileScroller.showMapBoundaries;});
+			km.assign(Keyboard.B, 0, function():void {_tileScroller.showBoundingBoxes = !_tileScroller.showBoundingBoxes;});
+			km.assign(Keyboard.R, 0, function():void {_tileScroller.showBuffer = !_tileScroller.showBuffer;});
+			km.assign(Keyboard.C, 0, function():void {_tileScroller.cacheObjects = !_tileScroller.cacheObjects;});
+			km.assign(Keyboard.P, 0, function():void {_tileScroller.paused = !_tileScroller.paused;});
+			km.assign(Keyboard.H, 0, function():void {_tileScroller.autoScrollH = !_tileScroller.autoScrollH;});
+			km.assign(Keyboard.V, 0, function():void {_tileScroller.autoScrollV = !_tileScroller.autoScrollV;});
+			km.assign(Keyboard.T, 0, function():void {_tileScroller.useTimer = !_tileScroller.useTimer;});
+			km.assign(Keyboard.COMMA, 0, function():void {if (_tileScroller.frameRate > 10) _tileScroller.frameRate--;});
+			km.assign(Keyboard.PERIOD, 0, function():void {if (_tileScroller.frameRate < 200) _tileScroller.frameRate++;});
+			km.assign(Keyboard.SEMICOLON, 0, function():void {if (stage.frameRate > 10) stage.frameRate--;});
+			km.assign("CTRL+;", 0, function():void {_tileScroller.tileAnimFrameRate--;});
+			km.assign(Keyboard.QUOTE, 0, function():void {if (stage.frameRate < 200) stage.frameRate++;});
+			km.assign("CTRL+'", 0, function():void {_tileScroller.tileAnimFrameRate++;});
+			km.assign("SHIFT+[", 0, function():void {_tileScroller.deceleration -= .01;});
+			km.assign("SHIFT+]", 0, function():void {_tileScroller.deceleration += .01;});
+			km.assign("SHIFT+9", 0, function():void {_tileScroller.scale -= 0.5;});
+			km.assign("SHIFT+0", 0, function():void {_tileScroller.scale += 0.5;});
+			km.assign(Keyboard.NUMBER_1, 0, createTilemap, 1, 0);
+			km.assign("CTRL+1", 0, createTilemap, 1, 1);
+			km.assign("SHIFT+1", 0, createTilemap, 1, 2);
+			km.assign("SHIFT+CTRL+1", 0, createTilemap, 1, 3);
+			km.assign(Keyboard.NUMBER_2, 0, createTilemap, 2, 0);
+			km.assign("CTRL+2", 0, createTilemap, 2, 1);
+			km.assign("SHIFT+2", 0, createTilemap, 2, 2);
+			km.assign("SHIFT+CTRL+2", 0, createTilemap, 2, 3);
+			km.assign(Keyboard.NUMBER_3, 0, createTilemap, 3, 0);
+			km.assign("CTRL+3", 0, createTilemap, 3, 1);
+			km.assign("SHIFT+3", 0, createTilemap, 3, 2);
+			km.assign("SHIFT+CTRL+3", 0, createTilemap, 3, 3);
 		}
 		
 		

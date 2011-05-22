@@ -47,6 +47,7 @@ package base.command.cli
 		override public function execute():void 
 		{
 			var assignments:Object = main.keyManager.assignments;
+			var count:int = 0;
 			var t:TabularText = new TabularText(6, true, "  ", null, "  ", 60,
 				["KEY(S)", "CODE(S)", "LENGTH", "MODE", "ID", "PARAMS"]);
 			
@@ -67,9 +68,10 @@ package base.command.cli
 					code += c + (i < kl - 1 ? "," : "");
 				}
 				t.add([string, code, kc.codes.length, kc.mode, id, p]);
+				count++;
 			}
 			
-			main.console.log("Key Assignments\n" + t, LogLevel.INFO);
+			main.console.log("Key Assignments (count: " + count + "):\n" + t, LogLevel.INFO);
 			complete();
 		}
 		
