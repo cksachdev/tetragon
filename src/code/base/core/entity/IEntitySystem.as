@@ -27,7 +27,7 @@
  */
 package base.core.entity
 {
-	import base.core.IDisposable;
+	import com.hexagonstar.types.IDisposable;
 	
 	
 	/**

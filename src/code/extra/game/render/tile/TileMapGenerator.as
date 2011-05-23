@@ -31,9 +31,7 @@
  */
 package extra.game.render.tile
 {
-	import base.data.constants.Palettes;
-
-	import com.hexagonstar.util.color.getRandomColor;
+	import com.hexagonstar.types.PaletteC64;
 	import com.hexagonstar.util.number.Dice;
 	import com.hexagonstar.util.number.random;
 
@@ -123,7 +121,7 @@ package extra.game.render.tile
 			else _tilemap.margin = random(20, 200);
 			
 			/* Random bg color */
-			_tilemap.backgroundColor = getRandomColor(Palettes.C64);
+			_tilemap.backgroundColor = new PaletteC64().getRandomColorValue();
 			_tilemap.edgeMode = TileScroller.EDGE_MODE_HALT;
 			
 			var hBorder:TileGroupDefinition = _tileset.getGroupDefinitionByID("hBorder");
@@ -231,7 +229,7 @@ package extra.game.render.tile
 			else _tilemap.margin = random(20, 200);
 			
 			/* Random bg color */
-			_tilemap.backgroundColor = getRandomColor(Palettes.C64);
+			_tilemap.backgroundColor = new PaletteC64().getRandomColorValue();
 			_tilemap.edgeMode = TileScroller.EDGE_MODE_HALT;
 			
 			var x:int;

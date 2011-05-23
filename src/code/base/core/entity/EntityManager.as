@@ -27,8 +27,9 @@
  */
 package base.core.entity
 {
-	import base.core.IDisposable;
 	import base.core.debug.Log;
+
+	import com.hexagonstar.types.IDisposable;
 
 	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
