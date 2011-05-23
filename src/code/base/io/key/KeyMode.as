@@ -36,9 +36,28 @@ package base.io.key
 		// Constants
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * Constant for key mode DOWN which determines that a key is once triggered
+		 * as soon as it is pressed down.
+		 */
 		public static const DOWN:int = 0;
+		
+		/**
+		 * Constant for key mode REPEAT which determines that a key is repeatedly triggered
+		 * when it is pressed down.
+		 */
 		public static const REPEAT:int = 1;
+		
+		/**
+		 * Constant for key mode UP which determines that a key is once triggered
+		 * as soon as it is released after it was pressed down.
+		 */
 		public static const UP:int = 2;
+		
+		/**
+		 * Constant for key mode SEQ which determines that a number of keys need to be
+		 * entered in sequence to trigger the callback.
+		 */
 		public static const SEQ:int = 3;
 	}
 }

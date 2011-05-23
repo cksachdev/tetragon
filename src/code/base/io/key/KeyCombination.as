@@ -37,6 +37,7 @@ package base.io.key
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
+		public var id:String;
 		public var codes:Vector.<uint>;
 		public var mode:int;
 		public var callback:Function;

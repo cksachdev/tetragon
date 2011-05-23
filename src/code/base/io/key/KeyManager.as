@@ -32,8 +32,6 @@ package base.io.key
 	import base.data.Config;
 	import base.data.Registry;
 
-	import com.hexagonstar.util.debug.Debug;
-
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -63,8 +61,8 @@ package base.io.key
 		private var _stage:Stage;
 		private var _assignments:Object;
 		private var _keysDown:Object;
+		private var _combinationsDown:Object;
 		private var _keysTyped:Vector.<uint>;
-		private var _combinationsDown:Vector.<KeyCombination>;
 		private var _longestCombination:int;
 		
 		private var _active:Boolean;
@@ -197,8 +195,8 @@ package base.io.key
 			deactivate();
 			_assignments = {};
 			_keysDown = {};
+			_combinationsDown = {};
 			_keysTyped = new Vector.<uint>();
-			_combinationsDown = new Vector.<KeyCombination>();
 			_longestCombination = 0;
 			assignDefaults();
 			if (wasActive) activate();
@@ -361,21 +359,19 @@ package base.io.key
 				}
 				
 				/* Store combination in currently pressed combinations list. */
-				_combinationsDown.push(kc);
-				Debug.trace("_combinationsDown.length: " + _combinationsDown.length);
+				_combinationsDown[kc.id] = kc;
 				
 				/* Loop through all currently pressed combinations and check if any of them
 				 * still has a callback to trigger. */
-				for (i = 0; i < _combinationsDown.length; i++)
+				for each (var cd:KeyCombination in _combinationsDown)
 				{
-					var c:KeyCombination = _combinationsDown[i];
-					Debug.trace(c.codes + "-" + c.mode);
-					if (!c.triggered && c.mode < 2)
+					if (!cd.triggered && cd.mode < 2)
 					{
-						if (c.mode == 0) c.triggered = true;
+						if (cd.mode == 0) cd.triggered = true;
+						else if (cd.mode == 1) delete _keysDown[e.keyCode];
 						//Debug.trace("triggered: " + _combinationsDown[i].codes);
-						if (c.params) c.callback.apply(null, c.params);
-						else c.callback();
+						if (cd.params) cd.callback.apply(null, cd.params);
+						else cd.callback();
 					}
 				}
 			}
@@ -384,10 +380,8 @@ package base.io.key
 		
 		private function onKeyUp(e:KeyboardEvent):void
 		{
-			var i:int = _combinationsDown.length;
-			while (i--)
+			for each (var c:KeyCombination in _combinationsDown)
 			{
-				var c:KeyCombination = _combinationsDown[i];
 				if (c.codes.indexOf(e.keyCode) != -1)
 				{
 					if (c.mode == 2)
@@ -396,7 +390,7 @@ package base.io.key
 						else c.callback();
 					}
 					c.triggered = false;
-					_combinationsDown.splice(i, 1);
+					delete _combinationsDown[c.id];
 				}
 			}
 			delete _keysDown[e.keyCode];
@@ -405,7 +399,7 @@ package base.io.key
 		
 		private function onDeactivate(e:Event):void
 		{
-			_combinationsDown = new Vector.<KeyCombination>();
+			_combinationsDown = {};
 			_keysDown = {};
 		}
 		
@@ -483,6 +477,7 @@ package base.io.key
 				return null;
 			}
 			
+			combination.id = id;
 			_assignments[id] = combination;
 			_longestCombination = Math.max(_longestCombination, combination.codes.length);
 			Log.debug("Assigned key codes <" + keyValue + "> (mode: " + mode + ").", this);
@@ -500,13 +495,13 @@ package base.io.key
 			var cfg:Config = Registry.config;
 			if (Registry.config.consoleEnabled)
 			{
-				_consoleKC = assign(cfg.consoleKey, 0, main.console.toggle);
+				_consoleKC = assign(cfg.consoleKey, KeyMode.DOWN, main.console.toggle);
 			}
 			
 			if (Registry.config.fpsMonitorEnabled)
 			{
-				_fpsMonKC = assign(cfg.fpsMonitorKey, 0, main.fpsMonitor.toggle);
-				_fpsMonPosKC = assign(cfg.fpsMonitorPositionKey, 0, main.fpsMonitor.togglePosition);
+				_fpsMonKC = assign(cfg.fpsMonitorKey, KeyMode.DOWN, main.fpsMonitor.toggle);
+				_fpsMonPosKC = assign(cfg.fpsMonitorPositionKey, KeyMode.DOWN, main.fpsMonitor.togglePosition);
 			}
 		}
 		
