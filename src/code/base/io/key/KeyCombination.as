@@ -42,6 +42,10 @@ package base.io.key
 		public var mode:int;
 		public var callback:Function;
 		public var params:Array;
-		public var triggered:Boolean;
+		
+		internal var hasShift:Boolean;
+		internal var hasCtrl:Boolean;
+		internal var hasAlt:Boolean;
+		internal var isTriggered:Boolean;
 	}
 }

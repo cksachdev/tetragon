@@ -28,7 +28,7 @@
 package base.io.key
 {
 	/**
-	 * KeyMode class
+	 * Defines key mode contants for use with the KeyManager.
 	 */
 	public final class KeyMode
 	{
@@ -56,7 +56,7 @@ package base.io.key
 		
 		/**
 		 * Constant for key mode SEQ which determines that a number of keys need to be
-		 * entered in sequence to trigger the callback.
+		 * entered in sequence to trigger a callback.
 		 */
 		public static const SEQ:int = 3;
 	}

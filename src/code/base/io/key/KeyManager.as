@@ -36,6 +36,7 @@ package base.io.key
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.ui.KeyLocation;
+	import flash.ui.Keyboard;
 	
 	
 	/**
@@ -259,6 +260,9 @@ package base.io.key
 			}
 			var kc:KeyCombination = new KeyCombination();
 			kc.codes = codes;
+			kc.hasShift = codes.indexOf(Keyboard.SHIFT) != -1;
+			kc.hasCtrl = codes.indexOf(Keyboard.CONTROL) != -1;
+			kc.hasAlt = codes.indexOf(Keyboard.ALTERNATE) != -1;
 			return kc;
 		}
 		
@@ -307,11 +311,6 @@ package base.io.key
 		
 		private function onKeyDown(e:KeyboardEvent):void
 		{
-			// TODO Fix key manager to not allow single keys being triggered that are
-			// part of a multi-key combination. Example: If CTRL+1 is assigned but also
-			// a single key '1' is assigned, the callback for '1' would also be triggered
-			// if CTRL+1 is pressed.
-			
 			// TODO Add support for key locations so that modifier keys can be distinct.
 			// E.g. being able to distinct between Left Shift and Right Shift keys etc.
 			
@@ -334,11 +333,18 @@ package base.io.key
 			{
 				//checkTypedKeys(kc);
 				
+				/* If modifier keys are pressed we have to filter out any other keys
+				 * that might have a single key code assignment but also have an
+				 * assignment together with the mod key or we might end up triggering
+				 * only the single code one if it's found before the multi-code one. */
+				if (e.shiftKey && !kc.hasShift) continue;
+				if (e.ctrlKey && !kc.hasCtrl) continue;
+				if (e.altKey && !kc.hasAlt) continue;
+				
 				/* Remove duplicate characters from entered key sequences. */
 				var uniqueCodes:Vector.<uint> = kc.codes.filter(
 					function (e:uint, i:int, v:Vector.<uint>):Boolean
 					{return (i == 0) ? true : v.lastIndexOf(e, i - 1) == -1;});
-				
 				
 				var i:int = uniqueCodes.length;
 				var isUnique:Boolean = true;
@@ -365,11 +371,12 @@ package base.io.key
 				 * still has a callback to trigger. */
 				for each (var cd:KeyCombination in _combinationsDown)
 				{
-					if (!cd.triggered && cd.mode < 2)
+					//Debug.trace("down: " + cd.id);
+					if (!cd.isTriggered && cd.mode < 2)
 					{
-						if (cd.mode == 0) cd.triggered = true;
+						if (cd.mode == 0) cd.isTriggered = true;
 						else if (cd.mode == 1) delete _keysDown[e.keyCode];
-						//Debug.trace("triggered: " + _combinationsDown[i].codes);
+						//Debug.trace("triggered: " + cd.id);
 						if (cd.params) cd.callback.apply(null, cd.params);
 						else cd.callback();
 					}
@@ -389,7 +396,7 @@ package base.io.key
 						if (c.params) c.callback.apply(null, c.params);
 						else c.callback();
 					}
-					c.triggered = false;
+					c.isTriggered = false;
 					delete _combinationsDown[c.id];
 				}
 			}
