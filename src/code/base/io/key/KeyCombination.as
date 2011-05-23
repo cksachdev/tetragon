@@ -41,5 +41,6 @@ package base.io.key
 		public var mode:int;
 		public var callback:Function;
 		public var params:Array;
+		public var triggered:Boolean;
 	}
 }

@@ -37,8 +37,8 @@ package base.io.key
 		//-----------------------------------------------------------------------------------------
 		
 		public static const DOWN:int = 0;
-		public static const UP:int = 1;
-		public static const REPEAT:int = 2;
+		public static const REPEAT:int = 1;
+		public static const UP:int = 2;
 		public static const SEQ:int = 3;
 	}
 }

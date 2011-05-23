@@ -32,6 +32,8 @@ package base.io.key
 	import base.data.Config;
 	import base.data.Registry;
 
+	import com.hexagonstar.util.debug.Debug;
+
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -316,24 +318,30 @@ package base.io.key
 			// E.g. being able to distinct between Left Shift and Right Shift keys etc.
 			
 			var isAlreadyDown:Boolean = _keysDown[e.keyCode];
+			
+			/* Store all keys that are currently pressed. */
 			_keysDown[e.keyCode] = true;
-			_keysTyped.push(e.keyCode);
 			
-			if (_keysTyped.length > _longestCombination)
-			{
-				_keysTyped.splice(0, 1);
-			}
+			/* Store typed keys for sequence checking. */
+			//_keysTyped.push(e.keyCode);
+			//if (_keysTyped.length > _longestCombination)
+			//{
+			//	_keysTyped.splice(0, 1);
+			//}
 			
+			if (isAlreadyDown) return;
+			
+			/* loop through all key combinations and check if any of them are pressed. */
 			for each (var kc:KeyCombination in _assignments)
 			{
-				checkTypedKeys(kc);
+				//checkTypedKeys(kc);
 				
-				if (isAlreadyDown) continue;
-				
-				/* Check down keys. */
+				/* Remove duplicate characters from entered key sequences. */
 				var uniqueCodes:Vector.<uint> = kc.codes.filter(
 					function (e:uint, i:int, v:Vector.<uint>):Boolean
 					{return (i == 0) ? true : v.lastIndexOf(e, i - 1) == -1;});
+				
+				
 				var i:int = uniqueCodes.length;
 				var isUnique:Boolean = true;
 				while (i--)
@@ -352,15 +360,22 @@ package base.io.key
 					continue;
 				}
 				
+				/* Store combination in currently pressed combinations list. */
 				_combinationsDown.push(kc);
+				Debug.trace("_combinationsDown.length: " + _combinationsDown.length);
+				
+				/* Loop through all currently pressed combinations and check if any of them
+				 * still has a callback to trigger. */
 				for (i = 0; i < _combinationsDown.length; i++)
 				{
-					if (_combinationsDown[i].mode < 1)
+					var c:KeyCombination = _combinationsDown[i];
+					Debug.trace(c.codes + "-" + c.mode);
+					if (!c.triggered && c.mode < 2)
 					{
-						var cb:Function = _combinationsDown[i].callback;
-						var p:Array = _combinationsDown[i].params;
-						if (p) cb.apply(null, p);
-						else cb();
+						if (c.mode == 0) c.triggered = true;
+						//Debug.trace("triggered: " + _combinationsDown[i].codes);
+						if (c.params) c.callback.apply(null, c.params);
+						else c.callback();
 					}
 				}
 			}
@@ -372,15 +387,15 @@ package base.io.key
 			var i:int = _combinationsDown.length;
 			while (i--)
 			{
-				if (_combinationsDown[i].mode == KeyMode.UP)
+				var c:KeyCombination = _combinationsDown[i];
+				if (c.codes.indexOf(e.keyCode) != -1)
 				{
-					var cb:Function = _combinationsDown[i].callback;
-					var p:Array = _combinationsDown[i].params;
-					if (p) cb.apply(null, p);
-					else cb();
-				}
-				if (_combinationsDown[i].codes.indexOf(e.keyCode) != -1)
-				{
+					if (c.mode == 2)
+					{
+						if (c.params) c.callback.apply(null, c.params);
+						else c.callback();
+					}
+					c.triggered = false;
 					_combinationsDown.splice(i, 1);
 				}
 			}
@@ -456,7 +471,7 @@ package base.io.key
 				return null;
 			}
 			
-			combination.mode = mode < 0 ? 0 : mode > 1 ? 1 : mode;
+			combination.mode = mode < 0 ? 0 : mode > 3 ? 3 : mode;
 			combination.callback = callback;
 			if (params && params.length > 0) combination.params = params;
 			
