@@ -283,7 +283,7 @@ package base.state
 		{
 			setup();
 			// TODO Where is addListeners() best placed?
-			addListeners();
+			//addListeners();
 			enteredSignal.dispatch();
 		}
 		

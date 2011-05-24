@@ -374,9 +374,9 @@ package base.io.key
 				
 				/* Filter any key combinations if their modifier key location matters and
 				 * we don't have that key location pressed. */
-				if (_lastShiftKeyLocation > 0 && kc.shiftKeyLocation != _lastShiftKeyLocation) continue;
-				if (_lastCtrlKeyLocation > 0 && kc.ctrlKeyLocation != _lastCtrlKeyLocation) continue;
-				if (_lastAltKeyLocation > 0 && kc.altKeyLocation != _lastAltKeyLocation) continue;
+				if (kc.shiftKeyLocation > 0 && kc.shiftKeyLocation != _lastShiftKeyLocation) continue;
+				if (kc.ctrlKeyLocation > 0 && kc.ctrlKeyLocation != _lastCtrlKeyLocation) continue;
+				if (kc.altKeyLocation > 0 && kc.altKeyLocation != _lastAltKeyLocation) continue;
 				
 				/* Remove duplicate characters from entered key sequences. */
 				var uniqueCodes:Vector.<uint> = kc.codes.filter(

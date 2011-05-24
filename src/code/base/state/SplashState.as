@@ -95,6 +95,7 @@ package base.state
 			_timer.start();
 			var sound:Sound = getResource("audioLogoTetragon");
 			if (sound) _tetragonLogoSoundChannel = sound.play();
+			addListeners();
 		}
 		
 		
