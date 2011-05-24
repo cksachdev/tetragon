@@ -43,9 +43,13 @@ package base.io.key
 		public var callback:Function;
 		public var params:Array;
 		
-		internal var hasShift:Boolean;
-		internal var hasCtrl:Boolean;
-		internal var hasAlt:Boolean;
+		public var shiftKeyLocation:uint = 0;
+		public var ctrlKeyLocation:uint = 0;
+		public var altKeyLocation:uint = 0;
+		
+		internal var hasShiftKey:Boolean;
+		internal var hasCtrlKey:Boolean;
+		internal var hasAltKey:Boolean;
 		internal var isTriggered:Boolean;
 	}
 }

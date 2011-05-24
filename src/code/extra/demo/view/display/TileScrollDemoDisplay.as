@@ -170,10 +170,10 @@ package extra.demo.view.display
 			km.assign(Keyboard.SLASH, 0, _tileScroller.reset);
 			km.assign([Keyboard.NUMPAD_ADD, Keyboard.EQUAL], KeyMode.REPEAT, changeScrollSpeed, 1);
 			km.assign([Keyboard.NUMPAD_SUBTRACT, Keyboard.MINUS], KeyMode.REPEAT, changeScrollSpeed, -1);
-			km.assign(["SHIFT+NUMPADPLUS", "SHIFT+="], KeyMode.REPEAT, changeScrollSpeed, 1, "h");
-			km.assign(["SHIFT+NUMPAD-", "SHIFT+-"], KeyMode.REPEAT, changeScrollSpeed, -1, "h");
-			km.assign(["CTRL+NUMPADPLUS", "CTRL+="], KeyMode.REPEAT, changeScrollSpeed, 1, "v");
-			km.assign(["CTRL+NUMPAD-", "CTRL+-"], KeyMode.REPEAT, changeScrollSpeed, -1, "v");
+			km.assign(["LSHIFT+NUMPADPLUS", "LSHIFT+="], KeyMode.REPEAT, changeScrollSpeed, 1, "h");
+			km.assign(["LSHIFT+NUMPAD-", "LSHIFT+-"], KeyMode.REPEAT, changeScrollSpeed, -1, "h");
+			km.assign(["LCTRL+NUMPADPLUS", "LCTRL+="], KeyMode.REPEAT, changeScrollSpeed, 1, "v");
+			km.assign(["LCTRL+NUMPAD-", "LCTRL+-"], KeyMode.REPEAT, changeScrollSpeed, -1, "v");
 			km.assign(Keyboard.G, 0, function():void {_tileScroller.showAreas = !_tileScroller.showAreas;});
 			km.assign(Keyboard.M, 0, function():void {_tileScroller.showMapBoundaries = !_tileScroller.showMapBoundaries;});
 			km.assign(Keyboard.B, 0, function():void {_tileScroller.showBoundingBoxes = !_tileScroller.showBoundingBoxes;});
@@ -189,8 +189,8 @@ package extra.demo.view.display
 			km.assign("CTRL+;", 0, function():void {_tileScroller.tileAnimFrameRate--;});
 			km.assign(Keyboard.QUOTE, 0, function():void {if (stage.frameRate < 200) stage.frameRate++;});
 			km.assign("CTRL+'", 0, function():void {_tileScroller.tileAnimFrameRate++;});
-			km.assign("SHIFT+[", KeyMode.REPEAT, function():void {_tileScroller.deceleration -= .01;});
-			km.assign("SHIFT+]", KeyMode.REPEAT, function():void {_tileScroller.deceleration += .01;});
+			km.assign("RSHIFT+[", KeyMode.REPEAT, function():void {_tileScroller.deceleration -= .01;});
+			km.assign("RSHIFT+]", KeyMode.REPEAT, function():void {_tileScroller.deceleration += .01;});
 			km.assign("SHIFT+9", 0, function():void {_tileScroller.scale -= 0.5;});
 			km.assign("SHIFT+0", 0, function():void {_tileScroller.scale += 0.5;});
 			km.assign(Keyboard.NUMBER_1, 0, createTilemap, 1, 0);

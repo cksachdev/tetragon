@@ -72,6 +72,10 @@ package base.io.key
 		private var _fpsMonKC:KeyCombination;
 		private var _fpsMonPosKC:KeyCombination;
 		
+		private var _lastShiftKeyLocation:uint;
+		private var _lastCtrlKeyLocation:uint;
+		private var _lastAltKeyLocation:uint;
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Constructor
@@ -235,6 +239,7 @@ package base.io.key
 			isCode:Boolean = false):KeyCombination
 		{
 			if (keyString == null || keyString.length < 1) return null;
+			var kc:KeyCombination = new KeyCombination();
 			var codes:Vector.<uint>;
 			if (isCode)
 			{
@@ -250,19 +255,19 @@ package base.io.key
 					var ks:String = String(a[i]).toLowerCase();
 					var code:int = KeyCodes.getKeyCode(ks);
 					if (code == -1) return null;
-					var location:uint = KeyLocation.STANDARD;
-					if (ks == "lshift" || ks == "lctrl" || ks == "lcontrol" || ks == "lalt")
-						location = KeyLocation.LEFT;
-					else if (ks == "rshift" || ks == "rctrl" || ks == "rcontrol" || ks == "ralt")
-						location = KeyLocation.RIGHT;
+					if (ks == "lshift") kc.shiftKeyLocation = KeyLocation.LEFT;
+					else if (ks == "rshift") kc.shiftKeyLocation = KeyLocation.RIGHT;
+					else if (ks == "lctrl" || ks == "lcontrol") kc.ctrlKeyLocation = KeyLocation.LEFT;
+					else if (ks == "rctrl" || ks == "rcontrol") kc.ctrlKeyLocation = KeyLocation.RIGHT;
+					else if (ks == "lalt") kc.altKeyLocation = KeyLocation.LEFT;
+					else if (ks == "ralt") kc.altKeyLocation = KeyLocation.RIGHT;
 					codes[i] = code;
 				}
 			}
-			var kc:KeyCombination = new KeyCombination();
 			kc.codes = codes;
-			kc.hasShift = codes.indexOf(Keyboard.SHIFT) != -1;
-			kc.hasCtrl = codes.indexOf(Keyboard.CONTROL) != -1;
-			kc.hasAlt = codes.indexOf(Keyboard.ALTERNATE) != -1;
+			kc.hasShiftKey = codes.indexOf(Keyboard.SHIFT) != -1;
+			kc.hasCtrlKey = codes.indexOf(Keyboard.CONTROL) != -1;
+			kc.hasAltKey = codes.indexOf(Keyboard.ALTERNATE) != -1;
 			return kc;
 		}
 		
@@ -311,9 +316,6 @@ package base.io.key
 		
 		private function onKeyDown(e:KeyboardEvent):void
 		{
-			// TODO Add support for key locations so that modifier keys can be distinct.
-			// E.g. being able to distinct between Left Shift and Right Shift keys etc.
-			
 			var isAlreadyDown:Boolean = _keysDown[e.keyCode];
 			
 			/* Store all keys that are currently pressed. */
@@ -328,6 +330,12 @@ package base.io.key
 			
 			if (isAlreadyDown) return;
 			
+			/* Store last used modifier keys if any of them are pressed. We can't use
+			 * e.shiftKey etc. here and have to fallback checking key codes. */
+			if (e.keyCode == 16 && _lastShiftKeyLocation == 0) _lastShiftKeyLocation = e.keyLocation;
+			else if (e.keyCode == 17 && _lastCtrlKeyLocation == 0) _lastCtrlKeyLocation = e.keyLocation;
+			else if (e.keyCode == 18 && _lastAltKeyLocation == 0) _lastAltKeyLocation = e.keyLocation;
+			
 			/* loop through all key combinations and check if any of them are pressed. */
 			for each (var kc:KeyCombination in _assignments)
 			{
@@ -337,9 +345,15 @@ package base.io.key
 				 * that might have a single key code assignment but also have an
 				 * assignment together with the mod key or we might end up triggering
 				 * only the single code one if it's found before the multi-code one. */
-				if (e.shiftKey && !kc.hasShift) continue;
-				if (e.ctrlKey && !kc.hasCtrl) continue;
-				if (e.altKey && !kc.hasAlt) continue;
+				if (e.shiftKey && !kc.hasShiftKey) continue;
+				if (e.ctrlKey && !kc.hasCtrlKey) continue;
+				if (e.altKey && !kc.hasAltKey) continue;
+				
+				/* Filter any key combinations if their modifier key location matters and
+				 * we don't have that key location pressed. */
+				if (_lastShiftKeyLocation > 0 && kc.shiftKeyLocation != _lastShiftKeyLocation) continue;
+				if (_lastCtrlKeyLocation > 0 && kc.ctrlKeyLocation != _lastCtrlKeyLocation) continue;
+				if (_lastAltKeyLocation > 0 && kc.altKeyLocation != _lastAltKeyLocation) continue;
 				
 				/* Remove duplicate characters from entered key sequences. */
 				var uniqueCodes:Vector.<uint> = kc.codes.filter(
@@ -387,17 +401,22 @@ package base.io.key
 		
 		private function onKeyUp(e:KeyboardEvent):void
 		{
-			for each (var c:KeyCombination in _combinationsDown)
+			/* Clear last used modifier keys if any of them is released. */
+			if (e.keyCode == 16) _lastShiftKeyLocation = 0;
+			else if (e.keyCode == 17) _lastCtrlKeyLocation = 0;
+			else if (e.keyCode == 18) _lastAltKeyLocation = 0;
+			
+			for each (var kc:KeyCombination in _combinationsDown)
 			{
-				if (c.codes.indexOf(e.keyCode) != -1)
+				if (kc.codes.indexOf(e.keyCode) != -1)
 				{
-					if (c.mode == 2)
+					if (kc.mode == 2)
 					{
-						if (c.params) c.callback.apply(null, c.params);
-						else c.callback();
+						if (kc.params) kc.callback.apply(null, kc.params);
+						else kc.callback();
 					}
-					c.isTriggered = false;
-					delete _combinationsDown[c.id];
+					kc.isTriggered = false;
+					delete _combinationsDown[kc.id];
 				}
 			}
 			delete _keysDown[e.keyCode];
@@ -408,6 +427,7 @@ package base.io.key
 		{
 			_combinationsDown = {};
 			_keysDown = {};
+			_lastShiftKeyLocation = _lastCtrlKeyLocation = _lastAltKeyLocation = 0;
 		}
 		
 		

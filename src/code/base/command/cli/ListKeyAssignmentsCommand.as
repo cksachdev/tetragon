@@ -48,8 +48,8 @@ package base.command.cli
 		{
 			var assignments:Object = main.keyManager.assignments;
 			var count:int = 0;
-			var t:TabularText = new TabularText(6, true, "  ", null, "  ", 60,
-				["KEY(S)", "CODE(S)", "LENGTH", "MODE", "ID", "PARAMS"]);
+			var t:TabularText = new TabularText(7, true, "  ", null, "  ", 60,
+				["KEY(S)", "CODE(S)", "LENGTH", "MODE", "LOCATION", "ID", "PARAMS"]);
 			
 			for (var id:String in assignments)
 			{
@@ -67,7 +67,8 @@ package base.command.cli
 					if (s) string += s.toUpperCase() + (i < kl - 1 ? "+" : "");
 					code += c + (i < kl - 1 ? "," : "");
 				}
-				t.add([string, code, kc.codes.length, kc.mode, id, p]);
+				var loc:String = "s" + kc.shiftKeyLocation + " c" + kc.ctrlKeyLocation + " a" + kc.altKeyLocation;
+				t.add([string, code, kc.codes.length, kc.mode, loc, id, p]);
 				count++;
 			}
 			
