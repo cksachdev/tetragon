@@ -40,7 +40,8 @@ package base.io.key
 	
 	
 	/**
-	 * KeyManager class
+	 * The KeyManager class can be used to assign key combinations to trigger a callback
+	 * method.
 	 */
 	public final class KeyManager
 	{
@@ -157,13 +158,15 @@ package base.io.key
 		 * and/or KeyCombination objects.</p>
 		 * 
 		 * @see base.io.key.KeyCodes
+		 * @see base.io.key.KeyMode
 		 * 
 		 * @param keyValue The key value to assign. This can be one of the following
 		 *            object types: String, uint, KeyCombination or Array.
 		 * @param mode The mode of the key assignment that determines when the callback is
-		 *            triggered, either when the key is pressed or released. You can use
-		 *            either <code>KeyMode.DOWN</code> or <code>KeyMode.UP</code> or
-		 *            numbers 0 (down) or 1 (up).
+		 *            triggered, either when the key is pressed or released or whether it
+		 *            is repeatedly triggered or a sequence of keys that need to be
+		 *            entered to trigger the callback. You can use the KeyMode class with
+		 *            it's constants.
 		 * @param callback The method that is called when the key or key combination is
 		 *            triggered.
 		 * @param params A list of optional parameters that are provided as arguments to
@@ -185,7 +188,7 @@ package base.io.key
 		/**
 		 * Removes a key assigment from the key manager.
 		 */
-		public function remove():void
+		public function remove(keyValue:*, mode:int):void
 		{
 			// TODO
 		}
@@ -209,23 +212,8 @@ package base.io.key
 		
 		
 		/**
-		 * Generates an ID for the specified KeyCombination object.
-		 */
-		public static function getKeyCombinationID(kc:KeyCombination):String
-		{
-			var id:String = "";
-			var codes:Vector.<uint> = kc.codes;
-			for (var i:uint = 0; i < codes.length; i++)
-			{
-				id += codes[i] + "-";
-			}
-			return id + kc.mode;
-		}
-		
-		
-		/**
-		 * Creates a key-combination object from a string that defines one or multiple
-		 * keys or a key code.
+		 * Creates a key-combination object from a string that defines either one or
+		 * multiple keys, a key code or a key sequence.
 		 * 
 		 * @see base.io.key.KeyCodes
 		 * @param keyString A string that defines a key identifier or multiple key
@@ -233,6 +221,8 @@ package base.io.key
 		 *            <code>KeyManager.KEY_COMBINATION_DELIMITER</code> (+), e.g. CTRL+C.
 		 * @param isCode Set this to true if the specified keyString is a key code that
 		 *            should be used directly.
+		 * @param isSeq Set this to true if the keyString is a key sequence to be used
+		 *            with KeyMode.SEQ, works only with String-based keyStrings.
 		 * @return A KeyCombination object or <code>null</code>.
 		 */
 		public static function createKeyCombination(keyString:String,
@@ -515,7 +505,7 @@ package base.io.key
 			combination.callback = callback;
 			if (params && params.length > 0) combination.params = params;
 			
-			var id:String = getKeyCombinationID(combination);
+			var id:String = generateKeyCombinationID(combination.codes, combination.mode);
 			if (_assignments[id])
 			{
 				Log.warn("A key combination with the ID \"" + id + "\" has already been assigned."
@@ -558,6 +548,20 @@ package base.io.key
 		private function fail(message:String):void
 		{
 			Log.error(message, this);
+		}
+		
+		
+		/**
+		 * Generates an ID for the specified KeyCombination object.
+		 */
+		private static function generateKeyCombinationID(codes:Vector.<uint>, mode:int):String
+		{
+			var id:String = "";
+			for (var i:uint = 0; i < codes.length; i++)
+			{
+				id += codes[i] + "-";
+			}
+			return id + mode;
 		}
 	}
 }
