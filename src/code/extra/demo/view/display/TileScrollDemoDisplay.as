@@ -27,15 +27,17 @@
  */
 package extra.demo.view.display
 {
-	import base.io.key.KeyMode;
 	import base.command.env.ToggleFullscreenCommand;
 	import base.io.key.KeyManager;
+	import base.io.key.KeyMode;
 	import base.view.Display;
 
 	import extra.game.render.tile.TileMap;
 	import extra.game.render.tile.TileMapGenerator;
 	import extra.game.render.tile.TileScroller;
 	import extra.game.render.tile.TileSet;
+
+	import com.hexagonstar.util.debug.Debug;
 
 	import flash.ui.Keyboard;
 	
@@ -205,6 +207,8 @@ package extra.demo.view.display
 			km.assign("CTRL+3", 0, createTilemap, 3, 1);
 			km.assign("SHIFT+3", 0, createTilemap, 3, 2);
 			km.assign("SHIFT+CTRL+3", 0, createTilemap, 3, 3);
+			
+			km.assign("you", KeyMode.SEQ, function():void { Debug.trace("Triggered Key sequence!"); });
 		}
 		
 		

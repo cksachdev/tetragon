@@ -30,6 +30,7 @@ package base.command.cli
 	import base.command.CLICommand;
 	import base.io.key.KeyCodes;
 	import base.io.key.KeyCombination;
+	import base.io.key.KeyMode;
 
 	import com.hexagonstar.util.debug.LogLevel;
 	import com.hexagonstar.util.string.TabularText;
@@ -48,27 +49,43 @@ package base.command.cli
 		{
 			var assignments:Object = main.keyManager.assignments;
 			var count:int = 0;
-			var t:TabularText = new TabularText(7, true, "  ", null, "  ", 60,
+			var t:TabularText = new TabularText(7, true, "  ", null, "  ", 40,
 				["KEY(S)", "CODE(S)", "LENGTH", "MODE", "LOCATION", "ID", "PARAMS"]);
 			
 			for (var id:String in assignments)
 			{
 				var kc:KeyCombination = assignments[id];
 				var p:String = kc.params ? kc.params.toString() : "";
-				var s:String;
 				var string:String = "";
 				var code:String = "";
 				var codes:Vector.<uint> = kc.codes;
-				var kl:uint = codes.length;
-				for (var i:uint = 0; i < kl; i++)
+				var len:uint = codes.length;
+				
+				for (var i:uint = 0; i < len; i++)
 				{
 					var c:uint = codes[i];
-					s = KeyCodes.getKeyString(c);
-					if (s) string += s.toUpperCase() + (i < kl - 1 ? "+" : "");
-					code += c + (i < kl - 1 ? "," : "");
+					code += c + (i < len - 1 ? "," : "");
+					if (kc.mode == KeyMode.SEQ)
+					{
+						string += String.fromCharCode(c);
+					}
+					else
+					{
+						var s:String = KeyCodes.getKeyString(c);
+						if (s) string += s.toUpperCase() + (i < len - 1 ? "+" : "");
+					}
 				}
-				var loc:String = "s" + kc.shiftKeyLocation + " c" + kc.ctrlKeyLocation + " a" + kc.altKeyLocation;
-				t.add([string, code, kc.codes.length, kc.mode, loc, id, p]);
+				
+				var mode:String = kc.mode == KeyMode.DOWN ? "down"
+					: kc.mode == KeyMode.REPEAT ? "repeat"
+					: kc.mode == KeyMode.UP ? "up"
+					: kc.mode == KeyMode.SEQ ? "seq"
+					: "" + kc.mode;
+				
+				var loc:String = "s" + kc.shiftKeyLocation + " c" + kc.ctrlKeyLocation
+					+ " a" + kc.altKeyLocation;
+				
+				t.add([string, code, kc.codes.length, mode, loc, id, p]);
 				count++;
 			}
 			

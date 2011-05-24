@@ -236,21 +236,31 @@ package base.io.key
 		 * @return A KeyCombination object or <code>null</code>.
 		 */
 		public static function createKeyCombination(keyString:String,
-			isCode:Boolean = false):KeyCombination
+			isCode:Boolean = false, isSeq:Boolean = false):KeyCombination
 		{
 			if (keyString == null || keyString.length < 1) return null;
 			var kc:KeyCombination = new KeyCombination();
 			var codes:Vector.<uint>;
+			var i:uint;
+			
 			if (isCode)
 			{
 				codes = new Vector.<uint>(1, true);
 				codes[0] = uint(keyString);
 			}
+			else if (isSeq)
+			{
+				codes = new Vector.<uint>(keyString.length, true);
+				for (i = 0; i < keyString.length; i++)
+				{
+					codes[i] = keyString.charCodeAt(i);
+				}
+			}
 			else
 			{
 				var a:Array = keyString.split(KEY_COMBINATION_DELIMITER);
 				codes = new Vector.<uint>(a.length, true);
-				for (var i:uint = 0; i < codes.length; i++)
+				for (i = 0; i < codes.length; i++)
 				{
 					var ks:String = String(a[i]).toLowerCase();
 					var code:int = KeyCodes.getKeyCode(ks);
@@ -317,16 +327,17 @@ package base.io.key
 		private function onKeyDown(e:KeyboardEvent):void
 		{
 			var isAlreadyDown:Boolean = _keysDown[e.keyCode];
+			var i:int;
 			
 			/* Store all keys that are currently pressed. */
 			_keysDown[e.keyCode] = true;
 			
 			/* Store typed keys for sequence checking. */
-			//_keysTyped.push(e.keyCode);
-			//if (_keysTyped.length > _longestCombination)
-			//{
-			//	_keysTyped.splice(0, 1);
-			//}
+			_keysTyped.push(e.charCode);
+			if (_keysTyped.length > _longestCombination)
+			{
+				_keysTyped.splice(0, 1);
+			}
 			
 			if (isAlreadyDown) return;
 			
@@ -339,7 +350,29 @@ package base.io.key
 			/* loop through all key combinations and check if any of them are pressed. */
 			for each (var kc:KeyCombination in _assignments)
 			{
-				//checkTypedKeys(kc);
+				/* Check for key sequences. */
+				if (kc.mode == KeyMode.SEQ)
+				{
+					var c1:Vector.<uint> = kc.codes;
+					i = c1.length;
+					var c2:Vector.<uint> = _keysTyped.slice(-i);
+					if (i != c2.length) continue;
+					var isEqual:Boolean = true;
+					while (i--)
+					{
+						if (c1[i] != c2[i])
+						{
+							isEqual = false;
+							break;
+						}
+					}
+					if (isEqual)
+					{
+						if (kc.params) kc.callback.apply(null, kc.params);
+						else kc.callback();
+					}
+					continue;
+				}
 				
 				/* If modifier keys are pressed we have to filter out any other keys
 				 * that might have a single key code assignment but also have an
@@ -360,7 +393,7 @@ package base.io.key
 					function (e:uint, i:int, v:Vector.<uint>):Boolean
 					{return (i == 0) ? true : v.lastIndexOf(e, i - 1) == -1;});
 				
-				var i:int = uniqueCodes.length;
+				i = uniqueCodes.length;
 				var isUnique:Boolean = true;
 				while (i--)
 				{
@@ -385,12 +418,10 @@ package base.io.key
 				 * still has a callback to trigger. */
 				for each (var cd:KeyCombination in _combinationsDown)
 				{
-					//Debug.trace("down: " + cd.id);
 					if (!cd.isTriggered && cd.mode < 2)
 					{
 						if (cd.mode == 0) cd.isTriggered = true;
 						else if (cd.mode == 1) delete _keysDown[e.keyCode];
-						//Debug.trace("triggered: " + cd.id);
 						if (cd.params) cd.callback.apply(null, cd.params);
 						else cd.callback();
 					}
@@ -435,24 +466,6 @@ package base.io.key
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
-		private function checkTypedKeys(kc:KeyCombination):void
-		{
-			var c1:Vector.<uint> = kc.codes;
-			var i:int = c1.length;
-			var c2:Vector.<uint> = _keysTyped.slice(-i);
-			if (i != c2.length) return;
-			var isEqual:Boolean = true;
-			while (i--)
-			{
-				if (c1[i] != c2[i]) isEqual = false;
-			}
-			
-			if (isEqual) return;
-			// TODO
-			//dispatchEvent(new KeyCombinationEvent(KeyCombinationEvent.SEQUENCE, kc));
-		}
-		
-		
 		/**
 		 * Internal assign method used by the public assign API. This method exists so that
 		 * any params arrays are 'unwrapped' and don't result in arrays wrapped into arrays
@@ -466,7 +479,7 @@ package base.io.key
 		{
 			var combination:KeyCombination;
 			if (keyValue is String)
-				combination = createKeyCombination(keyValue);
+				combination = createKeyCombination(keyValue, false, mode == KeyMode.SEQ);
 			else if (keyValue is uint)
 				combination = createKeyCombination(String(keyValue), true);
 			else if (keyValue is KeyCombination)
@@ -488,7 +501,13 @@ package base.io.key
 			
 			if (!combination)
 			{
-				fail("Could not assign key combination for key value: \"" + keyValue + "\".");
+				fail("Could not create key combination for key value: \"" + keyValue + "\".");
+				return null;
+			}
+			if (callback == null)
+			{
+				fail("Failed to assign key combination for key value: \"" + keyValue
+					+ "\". Callback may not be null!");
 				return null;
 			}
 			
@@ -500,7 +519,7 @@ package base.io.key
 			if (_assignments[id])
 			{
 				Log.warn("A key combination with the ID \"" + id + "\" has already been assigned."
-					+ " New assignment for key value [" + keyValue + "] was ignored.", this);
+					+ " New assignment for key value <" + keyValue + "> was ignored.", this);
 				return null;
 			}
 			
