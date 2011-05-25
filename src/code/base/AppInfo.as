@@ -34,12 +34,12 @@ package base
 	public final class AppInfo
 	{
 		public static const ID:String				= "com.hexagonstar.tetragon";
-		public static const NAME:String				= "Tetragon Application";
-		public static const DESCRIPTION:String		= "Tetragon Application Test Build";
+		public static const NAME:String				= "Tetragon Demo Application";
+		public static const DESCRIPTION:String		= "Tetragon Demo Application Test Build";
 		public static const VERSION:String			= "1.0.0";
-		public static const BUILD:String			= "6159";
-		public static const BUILD_DATE:String		= "25-May-2011 18:58";
-		public static const MILESTONE:String		= "foundation";
+		public static const BUILD:String			= "6215";
+		public static const BUILD_DATE:String		= "26-May-2011 02:46";
+		public static const MILESTONE:String		= "Sol";
 		public static const BUILD_TYPE:String		= "desktop";
 		public static const RELEASE_STAGE:String	= "beta";
 		public static const COPYRIGHT:String		= "Hexagon Star Softworks";

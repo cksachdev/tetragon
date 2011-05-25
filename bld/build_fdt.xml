@@ -14,8 +14,8 @@
 <project default="FDT Launch" basedir=".." name="tetragon.fdt">
 	
 	<property file="bld/build.properties"/>
-	<property file="${password.properties}"/>
-	<taskdef resource="flexTasks.tasks" classpath="${sdk}/ant/lib/flexTasks.jar"/>
+	<property file="${env.properties}"/>
+	<taskdef resource="flexTasks.tasks" classpath="${flextasks.jar}"/>
 	<basename property="proj.name" file="${basedir}"/>
 	
 	
@@ -115,10 +115,10 @@
 				-define=CONFIG::IS_MOBILE_BUILD,false
 				-define=CONFIG::IS_ANDROID_BUILD,false
 				-define=CONFIG::IS_IOS_BUILD,false
-				-define=CONFIG::EXTRA_TEST,${extra.test}
 				-define=CONFIG::EXTRA_GAME,${extra.game}
 				-define=CONFIG::EXTRA_RPG,${extra.rpg}
 				-define=CONFIG::EXTRA_TBS,${extra.tbs}
+				-define=CONFIG::EXTRA_DEMO,${extra.demo}
 				-define=CONFIG::USE_EMBEDDED_RESOURCES,${resource.useEmbed}
 				-title='${meta.title}'
 				-description='${meta.description}'
@@ -177,10 +177,10 @@
 				-define=CONFIG::IS_MOBILE_BUILD,false
 				-define=CONFIG::IS_ANDROID_BUILD,false
 				-define=CONFIG::IS_IOS_BUILD,false
-				-define=CONFIG::EXTRA_TEST,${extra.test}
 				-define=CONFIG::EXTRA_GAME,${extra.game}
 				-define=CONFIG::EXTRA_RPG,${extra.rpg}
 				-define=CONFIG::EXTRA_TBS,${extra.tbs}
+				-define=CONFIG::EXTRA_DEMO,${extra.demo}
 				-define=CONFIG::USE_EMBEDDED_RESOURCES,${resource.useEmbed}
 				-title='${meta.title}'
 				-description='${meta.description}'

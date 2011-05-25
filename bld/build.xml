@@ -14,8 +14,8 @@
 <project default=".Init" basedir=".." name="tetragon">
 	
 	<property file="bld/build.properties"/>
-	<property file="${password.properties}"/>
-	<taskdef resource="flexTasks.tasks" classpath="${sdk}/ant/lib/flexTasks.jar"/>
+	<property file="${env.properties}"/>
+	<taskdef resource="flexTasks.tasks" classpath="${flextasks.jar}"/>
 	
 	
 	<!-- == DEFAULT TARGETS =================================================================== -->
@@ -542,7 +542,7 @@
 				<source-path path-element="${path.src.code}"/>
 				
 				<!-- Additional Source Paths should only be used during development! -->
-				<source-path path-element="${path.src.hexagonlib}"/>
+				<!-- <source-path path-element="${path.src.hexagonlib}"/> -->
 				
 				<!-- Flex Framework Libraries should not be appended! -->
 				<compiler.library-path dir="${FLEX_HOME}/frameworks/libs/@{libpath}" append="false">
@@ -803,7 +803,7 @@
 	<macrodef name="launchWebDebug">
 		<sequential>
 			<echo message="Opening ${app.swfname.full} in Flash Player (Debug) ..." level="info"/>
-			<exec executable="${flash.player.debug}" spawn="true">
+			<exec executable="${flash.player}" spawn="true">
 				<arg value="${path.bin.fp}${app.swfname.full}"/>
 			</exec>
 		</sequential>
