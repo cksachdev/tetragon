@@ -83,6 +83,7 @@ package base.io.resource
 			//ZipLoader.bufferSize = 1048576; // 1MB
 			
 			_loader = new ZipLoader(zipFile);
+			_loader.distributedLoading = true;
 			_loader.openSignal.add(onLoaderOpen);
 			_loader.closeSignal.add(onLoaderClose);
 			_loader.errorSignal.add(onLoaderError);

@@ -208,7 +208,66 @@ package extra.demo.view.display
 			km.assign("SHIFT+3", 0, createTilemap, 3, 2);
 			km.assign("SHIFT+CTRL+3", 0, createTilemap, 3, 3);
 			
+			km.assign("CTRL+R", 0, removeKeyAssignments);
 			km.assign("you", KeyMode.SEQ, function():void { Debug.trace("Triggered Key sequence!"); });
+		}
+		
+		
+		protected function removeKeyAssignments():void
+		{
+			var km:KeyManager = main.keyManager;
+			km.remove([Keyboard.UP, Keyboard.W], 0);
+			km.remove([Keyboard.LEFT, Keyboard.A], 0);
+			km.remove([Keyboard.DOWN, Keyboard.S], 0);
+			km.remove([Keyboard.RIGHT, Keyboard.D], 0);
+			km.remove([Keyboard.UP, Keyboard.W], KeyMode.UP);
+			km.remove([Keyboard.LEFT, Keyboard.A], KeyMode.UP);
+			km.remove([Keyboard.DOWN, Keyboard.S], KeyMode.UP);
+			km.remove([Keyboard.RIGHT, Keyboard.D], KeyMode.UP);
+			km.remove(Keyboard.F, 0);
+			km.remove(Keyboard.E, 0);
+			km.remove(Keyboard.K, 0);
+			km.remove(Keyboard.L, 0);
+			km.remove(Keyboard.SLASH, 0);
+			km.remove([Keyboard.NUMPAD_ADD, Keyboard.EQUAL], KeyMode.REPEAT);
+			km.remove([Keyboard.NUMPAD_SUBTRACT, Keyboard.MINUS], KeyMode.REPEAT);
+			km.remove(["LSHIFT+NUMPADPLUS", "LSHIFT+="], KeyMode.REPEAT);
+			km.remove(["LSHIFT+NUMPAD-", "LSHIFT+-"], KeyMode.REPEAT);
+			km.remove(["LCTRL+NUMPADPLUS", "LCTRL+="], KeyMode.REPEAT);
+			km.remove(["LCTRL+NUMPAD-", "LCTRL+-"], KeyMode.REPEAT);
+			km.remove(Keyboard.G, 0);
+			km.remove(Keyboard.M, 0);
+			km.remove(Keyboard.B, 0);
+			km.remove(Keyboard.R, 0);
+			km.remove(Keyboard.C, 0);
+			km.remove(Keyboard.P, 0);
+			km.remove(Keyboard.H, 0);
+			km.remove(Keyboard.V, 0);
+			km.remove(Keyboard.T, 0);
+			km.remove(Keyboard.COMMA, 0);
+			km.remove(Keyboard.PERIOD, 0);
+			km.remove(Keyboard.SEMICOLON, 0);
+			km.remove("CTRL+;", 0);
+			km.remove(Keyboard.QUOTE, 0);
+			km.remove("CTRL+'", 0);
+			km.remove("RSHIFT+[", KeyMode.REPEAT);
+			km.remove("RSHIFT+]", KeyMode.REPEAT);
+			km.remove("SHIFT+9", 0);
+			km.remove("SHIFT+0", 0);
+			km.remove(Keyboard.NUMBER_1, 0);
+			km.remove("CTRL+1", 0);
+			km.remove("SHIFT+1", 0);
+			km.remove("SHIFT+CTRL+1", 0);
+			km.remove(Keyboard.NUMBER_2, 0);
+			km.remove("CTRL+2", 0);
+			km.remove("SHIFT+2", 0);
+			km.remove("SHIFT+CTRL+2", 0);
+			km.remove(Keyboard.NUMBER_3, 0);
+			km.remove("CTRL+3", 0);
+			km.remove("SHIFT+3", 0);
+			km.remove("SHIFT+CTRL+3", 0);
+			km.remove("CTRL+R", 0);
+			km.remove("you", KeyMode.SEQ);
 		}
 		
 		

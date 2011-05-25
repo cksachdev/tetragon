@@ -29,7 +29,7 @@ package base.io.key
 {
 	/**
 	 * Represents a combination of keys that are being pressed or held down at the
-	 * same time.
+	 * same time to trigger a callback.
 	 */
 	public final class KeyCombination
 	{
@@ -37,14 +37,45 @@ package base.io.key
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * The unique ID of the key combination.
+		 */
 		public var id:String;
+		
+		/**
+		 * A list containing the key codes.
+		 */
 		public var codes:Vector.<uint>;
+		
+		/**
+		 * The key mode of the key combination.
+		 * @see base.io.key.KeyCodes
+		 */
 		public var mode:int;
+		
+		/**
+		 * The callback function that is called when they key combination is triggered.
+		 */
 		public var callback:Function;
+		
+		/**
+		 * Optional parameters for the callback function.
+		 */
 		public var params:Array;
 		
+		/**
+		 * Keyboard location of the SHIFT key, if the key combination has any.
+		 */
 		public var shiftKeyLocation:uint = 0;
+		
+		/**
+		 * Keyboard location of the CONTROL key, if the key combination has any.
+		 */
 		public var ctrlKeyLocation:uint = 0;
+		
+		/**
+		 * Keyboard location of the ALT key, if the key combination has any.
+		 */
 		public var altKeyLocation:uint = 0;
 		
 		internal var hasShiftKey:Boolean;

@@ -55,6 +55,10 @@ package base.io.key
 		 */
 		public static const KEY_COMBINATION_DELIMITER:String = "+";
 		
+		public static const TYPE_KEYSTRING:int = 0;
+		public static const TYPE_KEYCODE:int = 1;
+		public static const TYPE_KEYSEQ:int = 2;
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -186,11 +190,52 @@ package base.io.key
 		
 		
 		/**
-		 * Removes a key assigment from the key manager.
+		 * Allows to remove a specific key assignment from the key manager.
+		 * 
+		 * @param keyValue The key value to remove. This can be either a String, a uint
+		 *        a KeyCombination object or an Array containing any of these.
+		 * @param mode The key mode of the to-be-removed key assignment.
+		 * @return The KeyCombination object that was removed or null if no key mapping was
+		 *       found with the specified keyValue and mode.
 		 */
-		public function remove(keyValue:*, mode:int):void
+		public function remove(keyValue:*, mode:int = KeyMode.DOWN):KeyCombination
 		{
-			// TODO
+			var vo:KeyCodesVO;
+			var kc:KeyCombination;
+			
+			if (keyValue is String)
+				vo = createKeyCodes(keyValue, (mode == KeyMode.SEQ ? TYPE_KEYSEQ : TYPE_KEYSTRING));
+			else if (keyValue is uint)
+				vo = createKeyCodes(keyValue, TYPE_KEYCODE);
+			else if (keyValue is KeyCombination)
+			{
+				vo = new KeyCodesVO();
+				vo.codes = KeyCombination(keyValue).codes;
+			}
+			else if (keyValue is Array)
+			{
+				var a:Array = keyValue;
+				if (a.length > 0)
+				{
+					for (var i:uint = 0; i < a.length; i++)
+					{
+						var result:KeyCombination = remove(a[i], mode);
+						if (result) kc = result;
+					}
+					return kc;
+				}
+			}
+			
+			if (!vo) return null;
+			var id:String = generateKeyCombinationID(vo.codes, mode);
+			if (_assignments[id])
+			{
+				kc = _assignments[id];
+				delete _assignments[id];
+				Log.debug("Removed key assignment for ID \"" + id + "\".", this);
+				return kc;
+			}
+			return null;
 		}
 		
 		
@@ -213,61 +258,29 @@ package base.io.key
 		
 		/**
 		 * Creates a key-combination object from a string that defines either one or
-		 * multiple keys, a key code or a key sequence.
+		 * multiple keys identifier strings, a key code or a key sequence.
 		 * 
 		 * @see base.io.key.KeyCodes
 		 * @param keyString A string that defines a key identifier or multiple key
 		 *            identifiers, separated by the
 		 *            <code>KeyManager.KEY_COMBINATION_DELIMITER</code> (+), e.g. CTRL+C.
-		 * @param isCode Set this to true if the specified keyString is a key code that
-		 *            should be used directly.
-		 * @param isSeq Set this to true if the keyString is a key sequence to be used
-		 *            with KeyMode.SEQ, works only with String-based keyStrings.
+		 * @param type The type of the specified string, can be either TYPE_KEYSTRING,
+		 *            TYPE_KEYCODE or TYPE_KEYSEQ.
 		 * @return A KeyCombination object or <code>null</code>.
 		 */
-		public static function createKeyCombination(keyString:String,
-			isCode:Boolean = false, isSeq:Boolean = false):KeyCombination
+		public static function createKeyCombination(keyString:String, type:int):KeyCombination
 		{
 			if (keyString == null || keyString.length < 1) return null;
+			var vo:KeyCodesVO = createKeyCodes(keyString, type);
+			if (!vo) return null;
 			var kc:KeyCombination = new KeyCombination();
-			var codes:Vector.<uint>;
-			var i:uint;
-			
-			if (isCode)
-			{
-				codes = new Vector.<uint>(1, true);
-				codes[0] = uint(keyString);
-			}
-			else if (isSeq)
-			{
-				codes = new Vector.<uint>(keyString.length, true);
-				for (i = 0; i < keyString.length; i++)
-				{
-					codes[i] = keyString.charCodeAt(i);
-				}
-			}
-			else
-			{
-				var a:Array = keyString.split(KEY_COMBINATION_DELIMITER);
-				codes = new Vector.<uint>(a.length, true);
-				for (i = 0; i < codes.length; i++)
-				{
-					var ks:String = String(a[i]).toLowerCase();
-					var code:int = KeyCodes.getKeyCode(ks);
-					if (code == -1) return null;
-					if (ks == "lshift") kc.shiftKeyLocation = KeyLocation.LEFT;
-					else if (ks == "rshift") kc.shiftKeyLocation = KeyLocation.RIGHT;
-					else if (ks == "lctrl" || ks == "lcontrol") kc.ctrlKeyLocation = KeyLocation.LEFT;
-					else if (ks == "rctrl" || ks == "rcontrol") kc.ctrlKeyLocation = KeyLocation.RIGHT;
-					else if (ks == "lalt") kc.altKeyLocation = KeyLocation.LEFT;
-					else if (ks == "ralt") kc.altKeyLocation = KeyLocation.RIGHT;
-					codes[i] = code;
-				}
-			}
-			kc.codes = codes;
-			kc.hasShiftKey = codes.indexOf(Keyboard.SHIFT) != -1;
-			kc.hasCtrlKey = codes.indexOf(Keyboard.CONTROL) != -1;
-			kc.hasAltKey = codes.indexOf(Keyboard.ALTERNATE) != -1;
+			kc.codes = vo.codes;
+			kc.shiftKeyLocation = vo.shiftKeyLoc;
+			kc.ctrlKeyLocation = vo.ctrlKeyLoc;
+			kc.altKeyLocation = vo.altKeyLoc;
+			kc.hasShiftKey = vo.codes.indexOf(Keyboard.SHIFT) != -1;
+			kc.hasCtrlKey = vo.codes.indexOf(Keyboard.CONTROL) != -1;
+			kc.hasAltKey = vo.codes.indexOf(Keyboard.ALTERNATE) != -1;
 			return kc;
 		}
 		
@@ -469,9 +482,9 @@ package base.io.key
 		{
 			var combination:KeyCombination;
 			if (keyValue is String)
-				combination = createKeyCombination(keyValue, false, mode == KeyMode.SEQ);
+				combination = createKeyCombination(keyValue, (mode == KeyMode.SEQ ? TYPE_KEYSEQ : TYPE_KEYSTRING));
 			else if (keyValue is uint)
-				combination = createKeyCombination(String(keyValue), true);
+				combination = createKeyCombination(String(keyValue), TYPE_KEYCODE);
 			else if (keyValue is KeyCombination)
 				combination = keyValue;
 			else if (keyValue is Array)
@@ -552,6 +565,49 @@ package base.io.key
 		
 		
 		/**
+		 * Creates a KeyCode value object that contains a list of key codes.
+		 */
+		private static function createKeyCodes(keyString:String, type:int):KeyCodesVO
+		{
+			var vo:KeyCodesVO = new KeyCodesVO();
+			var i:uint;
+			switch (type)
+			{
+				case TYPE_KEYCODE:
+					vo.codes = new Vector.<uint>(1, true);
+					vo.codes[0] = uint(keyString);
+					return vo;
+				case TYPE_KEYSEQ:
+					vo.codes = new Vector.<uint>(keyString.length, true);
+					for (i = 0; i < keyString.length; i++)
+					{
+						vo.codes[i] = keyString.charCodeAt(i);
+					}
+					return vo;
+				case TYPE_KEYSTRING:
+					var a:Array = keyString.split(KEY_COMBINATION_DELIMITER);
+					vo.codes = new Vector.<uint>(a.length, true);
+					for (i = 0; i < vo.codes.length; i++)
+					{
+						var ks:String = String(a[i]).toLowerCase();
+						var code:int = KeyCodes.getKeyCode(ks);
+						if (code == -1) return null;
+						if (ks == "lshift") vo.shiftKeyLoc = KeyLocation.LEFT;
+						else if (ks == "rshift") vo.shiftKeyLoc = KeyLocation.RIGHT;
+						else if (ks == "lctrl" || ks == "lcontrol") vo.ctrlKeyLoc = KeyLocation.LEFT;
+						else if (ks == "rctrl" || ks == "rcontrol") vo.ctrlKeyLoc = KeyLocation.RIGHT;
+						else if (ks == "lalt") vo.altKeyLoc = KeyLocation.LEFT;
+						else if (ks == "ralt") vo.altKeyLoc = KeyLocation.RIGHT;
+						vo.codes[i] = code;
+					}
+					return vo;
+				default:
+					return null;
+			}
+		}
+		
+		
+		/**
 		 * Generates an ID for the specified KeyCombination object.
 		 */
 		private static function generateKeyCombinationID(codes:Vector.<uint>, mode:int):String
@@ -564,4 +620,13 @@ package base.io.key
 			return id + mode;
 		}
 	}
+}
+
+
+final class KeyCodesVO
+{
+	public var codes:Vector.<uint>;
+	public var shiftKeyLoc:uint = 0;
+	public var ctrlKeyLoc:uint = 0;
+	public var altKeyLoc:uint = 0;
 }

@@ -37,8 +37,8 @@ package base
 		public static const NAME:String				= "Tetragon Application";
 		public static const DESCRIPTION:String		= "Tetragon Application Test Build";
 		public static const VERSION:String			= "1.0.0";
-		public static const BUILD:String			= "6149";
-		public static const BUILD_DATE:String		= "24-May-2011 22:27";
+		public static const BUILD:String			= "6159";
+		public static const BUILD_DATE:String		= "25-May-2011 18:58";
 		public static const MILESTONE:String		= "foundation";
 		public static const BUILD_TYPE:String		= "desktop";
 		public static const RELEASE_STAGE:String	= "beta";
