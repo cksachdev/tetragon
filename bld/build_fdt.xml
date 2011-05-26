@@ -237,7 +237,7 @@
 			<tstamp>
 				<format property="build.date" pattern="dd-MMMM-yyyy HH:mm" unit="minute" locale="en"/>
 			</tstamp>
-			<echo message="*** ${project.name} version: ${app.version} build #${build.number} (@{buildType}), ${build.date} ***" level="info"/>
+			<echo message="*** ${app.name} version: ${app.version} build #${build.number} (@{buildType}), ${build.date} ***" level="info"/>
 			<generateAppInfoClass buildType="@{buildType}" debug="@{debug}"/>
 			<generateEntryClass entryClassTemplate="@{entryClassTemplate}"/>
 		</sequential>
