@@ -39,7 +39,7 @@ package base.io.resource
 	/**
 	 * The ResourceIndex is the storage index for all resources that can be loaded.
 	 */
-	public class ResourceIndex
+	public final class ResourceIndex
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

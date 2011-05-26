@@ -30,5 +30,5 @@ package base
 	/**
 	 * tetragon_internal namespace.
 	 */
-	public namespace tetragon_internal = "http://www.hexagonstar.com/tetragon/2011";
+	public namespace tetragon_internal = "http://tetragon.hexagonstar.com/2011";
 }

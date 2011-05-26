@@ -33,7 +33,7 @@ package base.io.resource
 	/**
 	 * Provider for resources that are embedded in the SWF file via [Embed] metatag.
 	 */
-	public class EmbeddedResourceProvider extends ResourceProvider implements IResourceProvider
+	public final class EmbeddedResourceProvider extends ResourceProvider implements IResourceProvider
 	{
 		//-----------------------------------------------------------------------------------------
 		// Constants

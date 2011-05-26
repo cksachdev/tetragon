@@ -37,7 +37,7 @@ package base.io.resource
 	/**
 	 * Provider for resources that are loaded from the file system.
 	 */
-	public class LoadedResourceProvider extends ResourceProvider implements IResourceProvider
+	public final class LoadedResourceProvider extends ResourceProvider implements IResourceProvider
 	{
 		//-----------------------------------------------------------------------------------------
 		// Constants

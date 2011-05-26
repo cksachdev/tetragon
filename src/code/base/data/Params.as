@@ -31,7 +31,7 @@ package base.data
 	 * A data object that contains parameters which are being fetched from parameters
 	 * from the HTML/PHP file that embeds the SWF file. only used for web-based build!
 	 */
-	public class Params
+	public final class Params
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

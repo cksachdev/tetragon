@@ -44,7 +44,7 @@ package base.state
 	/**
 	 * StateManager class
 	 */
-	public class StateManager
+	public final class StateManager
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

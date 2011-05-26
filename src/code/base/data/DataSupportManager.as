@@ -45,7 +45,7 @@ package base.data
 	 * parser-, entity component- and complex type classes by mapping data parser classes
 	 * to datatype IDs and entity component classes to component class IDs.
 	 */
-	public class DataSupportManager
+	public final class DataSupportManager
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

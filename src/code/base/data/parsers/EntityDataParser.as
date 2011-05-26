@@ -29,9 +29,10 @@ package base.data.parsers
 {
 	import base.core.debug.Log;
 	import base.core.entity.EntityDefinition;
-	import base.data.types.KeyValuePair;
 	import base.io.resource.ResourceIndex;
 	import base.io.resource.loaders.XMLResourceLoader;
+
+	import com.hexagonstar.types.KeyValuePair;
 
 	
 	/**

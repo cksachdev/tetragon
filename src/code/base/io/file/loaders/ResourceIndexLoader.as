@@ -44,7 +44,7 @@ package base.io.file.loaders
 	 * The ResourceIndexLoader loads the resource index file and parses it into the
 	 * ResourceIndex.
 	 */
-	public class ResourceIndexLoader extends FileLoader
+	public final class ResourceIndexLoader extends FileLoader
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

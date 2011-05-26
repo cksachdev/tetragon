@@ -39,7 +39,7 @@ package base.io.resource
 	import flash.utils.Dictionary;
 	
 	
-	public class ResourceManager extends EventDispatcher
+	public final class ResourceManager extends EventDispatcher
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

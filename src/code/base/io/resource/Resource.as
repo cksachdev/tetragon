@@ -32,7 +32,7 @@ package base.io.resource
 	 * index. Once the resource file for a Resource has been loaded (and parsed)
 	 * the Resource object will also contain it's loaded data.
 	 */
-	public class Resource
+	public final class Resource
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

@@ -43,7 +43,7 @@ package base.view
 	/**
 	 * Manages the creation, opening and closing as well as updating of screens.
 	 */
-	public class ScreenManager
+	public final class ScreenManager
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

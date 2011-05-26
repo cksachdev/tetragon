@@ -31,7 +31,7 @@ package base.io.resource
 	 * Contains constants used by the resource manager and resource data providers
 	 * to determine in what state a resource is in.
 	 */
-	public class ResourceStatus
+	public final class ResourceStatus
 	{
 		//-----------------------------------------------------------------------------------------
 		// Constants

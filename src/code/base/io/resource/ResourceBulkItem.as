@@ -30,7 +30,7 @@ package base.io.resource
 	/**
 	 * An item used to wrap a single resource during resource bulk loading.
 	 */
-	public class ResourceBulkItem
+	public final class ResourceBulkItem
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

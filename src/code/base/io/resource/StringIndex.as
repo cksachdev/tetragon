@@ -33,7 +33,7 @@ package base.io.resource
 	/**
 	 * A Hashmap that stores strings.
 	 */
-	public class StringIndex
+	public final class StringIndex
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

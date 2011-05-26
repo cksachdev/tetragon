@@ -43,7 +43,7 @@ package base.io.file.loaders
 	 * The Config model should contain all properties that are also found in the config file.
 	 * See the Config class for more info.
 	 */
-	public class ConfigLoader extends FileLoader
+	public final class ConfigLoader extends FileLoader
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

@@ -30,8 +30,9 @@ package base.data.parsers
 	import base.Main;
 	import base.core.debug.Log;
 	import base.data.DataSupportManager;
-	import base.data.types.KeyValuePair;
 	import base.io.resource.ResourceIDType;
+
+	import com.hexagonstar.types.KeyValuePair;
 	
 	
 	/**
@@ -100,7 +101,6 @@ package base.data.parsers
 		{
 			const key:String = p.name();
 			const value:String = p.toString();
-			var pair:KeyValuePair;
 			
 			/* Check if property has a complex type assigned. */
 			var ctype:String = p.@ctype;

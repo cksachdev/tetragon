@@ -47,7 +47,7 @@ package base
 	 * and find a way to conviently set in the build properties which setup classes should
 	 * be included in the build. (If Ant only would support iteration!!)</p>
 	 */
-	public class AppSetups
+	public final class AppSetups
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

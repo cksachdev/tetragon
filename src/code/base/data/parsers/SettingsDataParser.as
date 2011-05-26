@@ -29,8 +29,9 @@ package base.data.parsers
 {
 	import base.data.Registry;
 	import base.data.Settings;
-	import base.data.types.KeyValuePair;
 	import base.io.resource.loaders.XMLResourceLoader;
+
+	import com.hexagonstar.types.KeyValuePair;
 	
 	
 	/**

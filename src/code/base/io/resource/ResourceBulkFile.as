@@ -33,7 +33,7 @@ package base.io.resource
 	/**
 	 * A value object used by the resource manager to load resource files.
 	 */
-	public class ResourceBulkFile
+	public final class ResourceBulkFile
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

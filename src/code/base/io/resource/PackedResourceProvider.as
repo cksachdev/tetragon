@@ -38,7 +38,7 @@ package base.io.resource
 	/**
 	 * Provider for resources that are loaded from a packed (zipped) resource container file.
 	 */
-	public class PackedResourceProvider extends ResourceProvider implements IResourceProvider
+	public final class PackedResourceProvider extends ResourceProvider implements IResourceProvider
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

@@ -42,7 +42,7 @@ package base.io.resource
 	 * Contains initialization code that the ResourceManager uses briefly after
 	 * application startup.
 	 */
-	public class ResourceManagerHelper
+	public final class ResourceManagerHelper
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

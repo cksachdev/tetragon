@@ -33,7 +33,7 @@ package base.io.resource
 	 * manager to load resources and contains a collection of files which in
 	 * turn contain one or more resource items.
 	 */
-	public class ResourceBulk
+	public final class ResourceBulk
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties

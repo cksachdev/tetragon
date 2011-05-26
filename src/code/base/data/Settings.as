@@ -33,7 +33,7 @@ package base.data
 	/**
 	 * A class that acts as the map for the application's settings.
 	 */
-	public class Settings
+	public final class Settings
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -100,10 +100,5 @@ package base.data
 			}
 			return toString() + "\n" + t;
 		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
 	}
 }

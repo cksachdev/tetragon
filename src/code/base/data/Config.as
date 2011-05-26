@@ -30,7 +30,7 @@ package base.data
 	/**
 	 * The application's global config model. Access this object via Registry!
 	 */
-	public class Config
+	public final class Config
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
