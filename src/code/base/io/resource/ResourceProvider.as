@@ -337,10 +337,10 @@ package base.io.resource
 		 */
 		protected function parseXMLResource(bulkFile:ResourceBulkFile):void
 		{
-			var w:XMLResourceLoader = XMLResourceLoader(bulkFile.resourceLoader);
-			if (!w.valid)
+			var rl:XMLResourceLoader = XMLResourceLoader(bulkFile.resourceLoader);
+			if (!rl.valid)
 			{
-				fail(bulkFile, w.status);
+				fail(bulkFile, rl.status);
 				return;
 			}
 			
@@ -353,7 +353,7 @@ package base.io.resource
 				parser = _dsm.createDataTypeParser(resourceFamily);
 				if (parser)
 				{
-					parser.parse(w, resourceManager.stringIndex);
+					parser.parse(rl, resourceManager.stringIndex);
 				}
 				else
 				{
@@ -361,6 +361,11 @@ package base.io.resource
 						+ "! Text parser not created.");
 					return;
 				}
+			}
+			else if (resourceFamily == ResourceFamily.XML)
+			{
+				parser = _dsm.createDataTypeParser(ResourceFamily.XML);
+				parser.parse(rl, resourceManager.resourceIndex);
 			}
 			else
 			{
@@ -385,7 +390,7 @@ package base.io.resource
 				
 				if (parser)
 				{
-					parser.parse(w, resourceManager.resourceIndex);
+					parser.parse(rl, resourceManager.resourceIndex);
 				}
 				else
 				{
@@ -457,7 +462,7 @@ package base.io.resource
 		 */
 		protected function checkBulkComplete(bulkFile:ResourceBulkFile):void
 		{
-			bulkFile.resourceLoader.dispose();
+			if (bulkFile.resourceLoader) bulkFile.resourceLoader.dispose();
 			
 			/* Finished files can be removed from temporary map now. */
 			delete _bulkFiles[bulkFile.id];

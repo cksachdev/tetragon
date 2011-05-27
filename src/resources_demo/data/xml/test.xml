@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+	<data id="textXML">
+		<moreData>
+			<![CDATA[This file contains XML that is not parsed but instead used as raw XML.]]>
+		</moreData>
+	</data>
+</xml>

@@ -180,6 +180,7 @@ package base.io.resource
 		
 		private function onLoaderError(message:String):void
 		{
+			Log.error(message, this);
 			if (_errorSignal) _errorSignal.dispatch(this);
 		}
 		
@@ -210,8 +211,8 @@ package base.io.resource
 			if (!_loader.addFile(bulkFile.resourceLoader.file))
 			{
 				fail(bulkFile, "Resource file with ID \"" + bulkFile.resourceLoader.file.id
-					+ "\" was not added for loading to ZipLoader"
-					+ " (possibly wrong path or unsupported compression format?).");
+					+ "\" and path \"" + bulkFile.resourceLoader.file.path
+					+ "\" was not added for loading to ZipLoader.");
 				return;
 			}
 			super.addBulkFile(bulkFile);

@@ -83,7 +83,7 @@ package base.io.resource
 		internal function addItem(item:ResourceBulkItem):void
 		{
 			/* Get file ID for resource file. If it's a data file it has a dedicated ID,
-			 * otherwise for media files we use the path as it's ID. */
+			 * otherwise for media or raw XML files we use the path as it's ID. */
 			var fileID:String = item.resource.dataFileID;
 			if (fileID == null || fileID.length < 1) fileID = item.resource.path;
 			

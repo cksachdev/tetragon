@@ -34,6 +34,7 @@ package base.io.resource
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.system.System;
 	
 	
 	/**
@@ -237,6 +238,22 @@ package base.io.resource
 		
 		
 		/**
+		 * Adds a loaded raw XML resource to the index. called by XML data parsers.
+		 */
+		public function addXMLResource(resourceID:String, xml:XML):void
+		{
+			var r:Resource = _resources[resourceID];
+			if (r == null || r.family != ResourceFamily.XML)
+			{
+				Log.error("Tried to add raw XML resource data with an unmapped resource ID \""
+					+ resourceID + "\" or to a resource that is not of XML resource family.", this);
+				return;
+			}
+			r.setContent(xml);
+		}
+		
+		
+		/**
 		 * Returns the resource that is mapped under the specified ID.
 		 * 
 		 * @param id The ID of the resource.
@@ -313,6 +330,10 @@ package base.io.resource
 						BitmapData(r.content).dispose();
 					}
 				}
+			}
+			CONFIG::IS_AIR_BUILD
+			{
+				if (r.content is XML) System.disposeXML(XML(r.content));
 			}
 			r.reset();
 		}

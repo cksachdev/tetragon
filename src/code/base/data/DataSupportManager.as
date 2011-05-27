@@ -116,7 +116,7 @@ package base.data
 			mapResourceFileType(ImageResourceLoader, ["image", "image-opaque"], ["jpg", "jpeg", "gif"]);
 			mapResourceFileType(Image32ResourceLoader, ["image-transparent", "image-vector"], ["png", "svg", "svgz"]);
 			mapResourceFileType(SWFResourceLoader, ["swf"], ["swf"]);
-			mapResourceFileType(XMLResourceLoader, ["data", "text"], ["xml", "txt", "ini", "css", "htm", "html"]);
+			mapResourceFileType(XMLResourceLoader, ["data", "xml", "text"], ["xml", "txt", "ini", "css", "htm", "html"]);
 			mapResourceFileType(BinaryResourceLoader, ["binary", "shader"], ["obj", "pbj", "bin"]);
 			mapResourceFileType(SoundResourceLoader, ["audio-stream"], ["mp3"]);
 			mapResourceFileType(null, ["audio-module"], ["mod"]); // TODO

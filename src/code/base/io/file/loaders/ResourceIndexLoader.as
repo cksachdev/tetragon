@@ -211,6 +211,7 @@ package base.io.file.loaders
 			parseLists(xml);
 			parseData(xml);
 			parseEntities(xml);
+			parseXML(xml);
 			parseText(xml);
 			
 			CONFIG::IS_AIR_BUILD
@@ -372,6 +373,20 @@ package base.io.file.loaders
 		
 		
 		/**
+		 * Parses raw XML resource entries.
+		 */
+		private function parseXML(xml:XML):void
+		{
+			for each (var x:XML in xml.xml.resource)
+			{
+				/* Set fileID as the same like ID for raw XML resources! */
+				x.@fileID = x.@id;
+				addResourceEntry(x, ResourceFamily.XML, ResourceFamily.XML, null);
+			}
+		}
+		
+		
+		/**
 		 * Parses text resource entries.
 		 */
 		private function parseText(xml:XML):void
@@ -399,23 +414,23 @@ package base.io.file.loaders
 		
 		/**
 		 * @param resourceXML
-		 * @param wrapperClassID
+		 * @param loaderClassID
 		 * @param resourceFamily
 		 * @param resourceType Only used for data and entity resource families.
 		 */
-		private function addResourceEntry(resourceXML:XML, wrapperClassID:String,
+		private function addResourceEntry(resourceXML:XML, loaderClassID:String,
 			resourceFamily:String, resourceType:String):void
 		{
 			var id:String = resourceXML.@id;
 			var path:String = resourceXML.@path;
 			var packageID:String = resourceXML.@packageID;
 			var dataFileID:String = resourceXML.@fileID;
-			var rc:Class = Main.instance.dataSupportManager.getResourceLoaderClassByID(wrapperClassID);
+			var rc:Class = Main.instance.dataSupportManager.getResourceLoaderClassByID(loaderClassID);
 			
 			if (!rc)
 			{
-				Log.warn("No resource file type wrapper class found for resource with ID \"" + id
-					+ "\" (wrapperClassID: " + wrapperClassID + ").", this);
+				Log.warn("No resource file type loader class found for resource with ID \"" + id
+					+ "\" (loaderClassID: " + loaderClassID + ").", this);
 			}
 			
 			_resourceIndex.addResource(id, path, packageID, dataFileID, rc, resourceFamily, resourceType);

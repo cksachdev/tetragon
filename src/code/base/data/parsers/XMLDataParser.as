@@ -27,8 +27,7 @@
  */
 package base.data.parsers
 {
-	import base.io.resource.Resource;
-	import base.io.resource.StringIndex;
+	import base.io.resource.ResourceIndex;
 	import base.io.resource.loaders.XMLResourceLoader;
 	
 	
@@ -47,20 +46,7 @@ package base.data.parsers
 		 */
 		public function parse(loader:XMLResourceLoader, model:*):void
 		{
-			_xml = loader.xml;
-			var index:StringIndex = model;
-			var r:Resource = loader.bulkFile.item.resource;
-			
-			// TODO
-			//for each (var x:XML in _xml.string)
-			//{
-			//	var id:String = extractString(x, "@id");
-			//	if (id && id.length > 0)
-			//	{
-			//		index.add(id, extractText(x), r);
-			//	}
-			//}
-			
+			ResourceIndex(model).addXMLResource(loader.bulkFile.id, loader.xml);
 			dispose();
 		}
 	}
