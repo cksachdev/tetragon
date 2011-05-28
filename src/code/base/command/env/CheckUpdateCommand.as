@@ -28,7 +28,6 @@
 package base.command.env
 {
 	import base.command.CLICommand;
-	import base.core.update.UpdateManager;
 
 	
 	public class CheckUpdateCommand extends CLICommand
@@ -47,7 +46,8 @@ package base.command.env
 		 */
 		override public function execute():void 
 		{
-			UpdateManager.instance.checkForUpdate();
+			// TODO
+			//UpdateManager.instance.checkForUpdate();
 			complete();
 		}
 		

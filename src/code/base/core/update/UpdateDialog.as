@@ -27,17 +27,49 @@
  */
 package base.core.update
 {
-	import flash.display.Sprite;
+	import flash.display.NativeWindow;
+	import flash.display.NativeWindowInitOptions;
+	import flash.display.NativeWindowSystemChrome;
+	import flash.display.NativeWindowType;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
+	import flash.geom.Rectangle;
 	
 	
 	/**
-	 * ApplicationUpdaterUI class
+	 * UpdateDialog class
 	 */
-	public class ApplicationUpdaterUI extends Sprite
+	public class UpdateDialog extends NativeWindow
 	{
+		//-----------------------------------------------------------------------------------------
+		// Constants
+		//-----------------------------------------------------------------------------------------		
+		
+		public static var EVENT_CHECK_UPDATE:String = "checkUpdate";
+		public static var EVENT_INSTALL_UPDATE:String = "installUpdate";
+		public static var EVENT_DOWNLOAD_UPDATE:String = "downloadUpdate";
+		public static var EVENT_CANCEL_UPDATE:String = "cancelUpdate";
+		public static var EVENT_INSTALL_LATER:String = "installLater";
+		
+		public static var UPDATE_DOWNLOADING:String = "updateDownloading";
+		public static var INSTALL_UPDATE:String = "installUpdate";
+		public static var UPDATE_AVAILABLE:String = "updateAvailable";
+		public static var NO_UPDATE:String = "noUpdate";
+		public static var CHECK_UPDATE:String = "checkUpdate";
+		public static var UPDATE_ERROR:String = "updateError";
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
+		
+		private var _isFirstRun:Boolean;
+		private var _installedVersion:String;
+		private var _updateVersion:String;
+		private var _updateDescription:String;
+		private var _applicationName:String;
+		private var _updateState:String;
+		private var _errorText:String = "There was an error checking for updates.";
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -47,8 +79,18 @@ package base.core.update
 		/**
 		 * Creates a new instance of the class.
 		 */
-		public function ApplicationUpdaterUI()
+		public function UpdateDialog()
 		{
+			var wo:NativeWindowInitOptions = new NativeWindowInitOptions();
+			wo.systemChrome = NativeWindowSystemChrome.STANDARD;
+			wo.type = NativeWindowType.NORMAL;
+			
+			super(wo);
+			
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
+			bounds = new Rectangle(100, 100, 800, 800);
+			activate();
 		}
 		
 		
@@ -56,10 +98,53 @@ package base.core.update
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
+		public function open():void
+		{
+		}
+		
+		
+		public function updateDownloadProgress(percent:Number):void
+		{
+		}
+		
+		
+		public function dispose():void
+		{
+		}
+		
 		
 		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
+		// Accessors
 		//-----------------------------------------------------------------------------------------
+		
+		public function set isFirstRun(v:Boolean):void
+		{
+			_isFirstRun = v;
+		}
+		public function set installedVersion(v:String):void
+		{
+			_installedVersion = v;
+		}
+		public function set upateVersion(v:String):void
+		{
+			_updateVersion = v;
+		}
+		public function set updateState(v:String):void
+		{
+			_updateState = v;
+		}
+		public function set applicationName(v:String):void
+		{
+			_applicationName = v;
+		}
+		public function set description(v:String):void
+		{
+			_updateDescription = v;
+		}
+		public function set errorText(v:String):void
+		{
+			_errorText = v;
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------

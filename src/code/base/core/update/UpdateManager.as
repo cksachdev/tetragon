@@ -1,71 +1,40 @@
-/*
- *      _________  __      __
- *    _/        / / /____ / /________ ____ ____  ___
- *   _/        / / __/ -_) __/ __/ _ `/ _ `/ _ \/ _ \
- *  _/________/  \__/\__/\__/_/  \_,_/\_, /\___/_//_/
- *                                   /___/
- * 
- * tetragon : Engine for Flash-based web and desktop games.
- * Licensed under the MIT License.
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 package base.core.update
 {
 	import air.update.ApplicationUpdater;
 	import air.update.events.DownloadErrorEvent;
+	import air.update.events.StatusFileUpdateErrorEvent;
+	import air.update.events.StatusFileUpdateEvent;
 	import air.update.events.StatusUpdateErrorEvent;
 	import air.update.events.StatusUpdateEvent;
 	import air.update.events.UpdateEvent;
 
 	import base.core.debug.Log;
-	import base.data.Config;
 	import base.data.Registry;
-	import base.event.UpdateManagerEvent;
 
-	import com.hexagonstar.exception.SingletonException;
-
+	import flash.desktop.NativeApplication;
 	import flash.events.ErrorEvent;
-	import flash.events.EventDispatcher;
+	import flash.events.Event;
 	import flash.events.ProgressEvent;
 	
 	
-	/**
-	 * TODO make non-Singleton!
-	 * 
-	 * Handles updates for AIR applications.
-	 */
-	public class UpdateManager extends EventDispatcher
+	public class UpdateManager
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		/** @private */
-		private static var _instance:UpdateManager;
-		/** @private */
-		private static var _singletonLock:Boolean = false;
-		/** @private */
 		private var _updater:ApplicationUpdater;
-		/** @private */
-		private var _config:Config;
-		/** @private */
-		private var _isInstallPostponed:Boolean;
+		private var _dialog:UpdateDialog;
+		
+		private var _currentVersion:String;
+		private var _updateVersion:String;
+		private var _applicationName:String;
+		private var _description:String;
+		
+		private var _isFirstRun:Boolean;
+		private var _isInstallPostponed:Boolean = false;
+		private var _initializeCheckNow:Boolean = false;
+		private var _showCheckState:Boolean = true;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -73,13 +42,17 @@ package base.core.update
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Creates a new instance of the class.
+		 * Constructer for UpdateManager Class
+		 * 
+		 * @param showCheckState Boolean value to show the Check Now dialog box.
+		 * @param initializeCheckNow Boolean value to initialize application and run check
+		 * on instantiation of the Class.
 		 */
-		public function UpdateManager()
+		public function UpdateManager(showCheckState:Boolean = false, initializeCheckNow:Boolean = true)
 		{
-			if (!_singletonLock) throw new SingletonException(this);
-			setup();
-			addEventListeners();
+			_showCheckState = showCheckState;
+			_initializeCheckNow = initializeCheckNow;
+			initialize();
 		}
 		
 		
@@ -87,67 +60,22 @@ package base.core.update
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * initialize
-		 */
-		public function initialize():void
+		public function checkNow():void
 		{
-			if (_updater)
-			{
-				_updater.initialize();
-			}
-		}
-		
-		
-		/**
-		 * checkForUpdate
-		 */
-		public function checkForUpdate():void
-		{
-			if (!_updater) return;
 			_isInstallPostponed = false;
-			_updater.checkNow();
+			if (_showCheckState) createDialog(UpdateDialog.CHECK_UPDATE);
+			else _updater.checkNow();
 		}
 		
 		
 		/**
-		 * Disposes the class.
-		 */
-		public function dispose():void
-		{
-			removeEventListeners();
-			_updater = null;
-			_instance = null;
-		}
-		
-		
-		/**
-		 * Returns a String Representation of UpdateManager.
+		 * Returns a String Representation of the class.
 		 * 
-		 * @return A String Representation of UpdateManager.
+		 * @return A String Representation of the class.
 		 */
-		override public function toString():String
+		public function toString():String
 		{
-			return "[UpdateManager]";
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Getters & Setters
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Returns the singleton instance of the class.
-		 */
-		public static function get instance():UpdateManager
-		{
-			if (_instance == null)
-			{
-				_singletonLock = true;
-				_instance = new UpdateManager();
-				_singletonLock = false;
-			}
-			return _instance;
+			return "UpdateManager";
 		}
 		
 		
@@ -155,38 +83,6 @@ package base.core.update
 		// Event Handlers
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @private
-		 */
-		private function onInitialized(e:UpdateEvent):void 
-		{
-			if (_updater)
-			{
-				Log.debug("Initialized. (currentVersion: " + _updater.currentVersion + ").", this);
-				_updater.checkNow();
-			}
-		}
-		
-		
-		/**
-		 * @private
-		 */
-		private function onUpdateStatus(e:StatusUpdateEvent):void 
-		{
-			if (e.available)
-			{
-				finish();
-			}
-			else
-			{
-				finish();
-			}
-		}
-		
-		
-		/**
-		 * @private
-		 */
 		private function onBeforeInstall(e:UpdateEvent):void
 		{
 			if (_isInstallPostponed)
@@ -197,124 +93,307 @@ package base.core.update
 		}
 		
 		
-		/**
-		 * @private
-		 */
+		private function onUpdaterInitialized(e:UpdateEvent):void
+		{
+			_isFirstRun = _updater.isFirstRun;
+			_applicationName = getApplicationName();
+			_currentVersion = _updater.currentVersion;
+			
+			Log.debug("Initialized (current version: " + _currentVersion + ").", this);
+			
+			if (_showCheckState && _initializeCheckNow) createDialog(UpdateDialog.CHECK_UPDATE);
+			else if (_initializeCheckNow) _updater.checkNow();
+		}
+		
+		
+		private function onStatusUpdate(e:StatusUpdateEvent):void
+		{
+			e.preventDefault();
+			if (e.available)
+			{
+				_description = getUpdateDescription(e.details);
+				_updateVersion = e.version;
+				
+				Log.debug("Update available: v" + _updateVersion, this);
+				
+				if (!_showCheckState)
+				{
+					createDialog(UpdateDialog.UPDATE_AVAILABLE);
+				}
+				else if (_dialog)
+				{
+					_dialog.applicationName = _applicationName;
+					_dialog.installedVersion = _currentVersion;
+					_dialog.upateVersion = _updateVersion;
+					_dialog.description = _description;
+					_dialog.updateState = UpdateDialog.UPDATE_AVAILABLE;
+				}
+			}
+			else
+			{
+				createDialog(UpdateDialog.NO_UPDATE);
+			}
+		}
+		
+		
+		private function onStatusUpdateError(e:StatusUpdateErrorEvent):void
+		{
+			e.preventDefault();
+			if (!_dialog) createDialog(UpdateDialog.UPDATE_ERROR);
+			else _dialog.updateState = UpdateDialog.UPDATE_ERROR;
+		}
+		
+		
+		private function onStatusFileUpdate(e:StatusFileUpdateEvent):void
+		{
+			e.preventDefault();
+			if (e.available)
+			{
+				_dialog.updateState = UpdateDialog.UPDATE_DOWNLOADING;
+				_updater.downloadUpdate();
+			}
+			else
+			{
+				_dialog.updateState = UpdateDialog.UPDATE_ERROR;
+			}
+		}
+		
+		
+		private function onStatusFileUpdateError(e:StatusFileUpdateErrorEvent):void
+		{
+			e.preventDefault();
+			_dialog.updateState = UpdateDialog.UPDATE_ERROR;
+		}
+		
+		
 		private function onDownloadStarted(e:UpdateEvent):void
 		{
+			_dialog.updateState = UpdateDialog.UPDATE_DOWNLOADING;
 		}
 		
 		
-		/**
-		 * @private
-		 */
-		private function onProgress(e:ProgressEvent):void 
+		private function onDownloadProgress(e:ProgressEvent):void
 		{
-			//Log.debug("Progress ...", this);
+			_dialog.updateState = UpdateDialog.UPDATE_DOWNLOADING;
+			var percent:Number = (e.bytesLoaded / e.bytesTotal) * 100;
+			_dialog.updateDownloadProgress(percent);
 		}
 		
 		
-		/**
-		 * @private
-		 */
 		private function onDownloadComplete(e:UpdateEvent):void
 		{
+			e.preventDefault();
+			_dialog.updateState = UpdateDialog.INSTALL_UPDATE;
 		}
 		
 		
-		/**
-		 * @private
-		 */
-		private function onUpdateError(e:StatusUpdateErrorEvent):void 
+		private function onDownloadError(e:DownloadErrorEvent):void
 		{
-			Log.warn("Update Error: " + e.text + " (errorID: " + e.errorID + ", subErrorID: "
-				+ e.subErrorID + ").", this);
-			dispatchEvent(e);
+			e.preventDefault();
+			_dialog.updateState = UpdateDialog.UPDATE_ERROR;
 		}
 		
 		
-		/**
-		 * @private
-		 */
-		private function onDownloadError(e:DownloadErrorEvent):void 
+		private function onUpdateError(e:ErrorEvent):void
 		{
-			Log.warn("Update Download Error: " + e.text, this);
-			finish();
+			Log.error("Update Error: " + e.text, this);
+			if (_dialog)
+			{
+				_dialog.errorText = e.text;
+				_dialog.updateState = UpdateDialog.UPDATE_ERROR;
+			}
+		}
+
+
+		private function onCheckUpdate(e:Event):void
+		{
+			_updater.checkNow();
 		}
 		
 		
-		/**
-		 * @private
-		 */
-		private function onError(e:ErrorEvent):void
+		private function onInstallUpdate(e:Event):void
 		{
-			Log.warn("Update Error: " + e.text, this);
-			dispatchEvent(e);
+			_updater.installUpdate();
+		}
+		
+		
+		private function onInstallLater(e:Event):void
+		{
+			_isInstallPostponed = true;
+			_updater.installUpdate();
+			disposeDialog();
+		}
+		
+		
+		private function onDownloadUpdate(e:Event):void
+		{
+			_updater.downloadUpdate();
+		}
+		
+		
+		private function onCancelUpdate(e:Event):void
+		{
+			_updater.cancelUpdate();
+			disposeDialog();
 		}
 		
 		
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
-		//-----------------------------------------------------------------------------------------
+		//-----------------------------------------------------------------------------------------		
 		
-		/**
-		 * @private
-		 */
-		private function setup():void
+		private function initialize():void
 		{
-			_config = Registry.config;
-			
-			if (_config.updateURL != null && _config.updateURL.length > 0)
+			if (!_updater)
 			{
 				_updater = new ApplicationUpdater();
-				_updater.updateURL = _config.updateURL;
-				_updater.delay = _config.updateCheckInterval;
+				_updater.addEventListener(UpdateEvent.INITIALIZED, onUpdaterInitialized);
+				_updater.addEventListener(StatusUpdateEvent.UPDATE_STATUS, onStatusUpdate);
+				_updater.addEventListener(UpdateEvent.BEFORE_INSTALL, onBeforeInstall);
+				_updater.addEventListener(StatusUpdateErrorEvent.UPDATE_ERROR, onStatusUpdateError);
+				_updater.addEventListener(UpdateEvent.DOWNLOAD_START, onDownloadStarted);
+				_updater.addEventListener(ProgressEvent.PROGRESS, onDownloadProgress);
+				_updater.addEventListener(UpdateEvent.DOWNLOAD_COMPLETE, onDownloadComplete);
+				_updater.addEventListener(DownloadErrorEvent.DOWNLOAD_ERROR, onDownloadError);
+				_updater.addEventListener(ErrorEvent.ERROR, onUpdateError);
+				_updater.updateURL = Registry.config.updateURL;
+				_updater.delay = Registry.config.updateCheckInterval;
+				_updater.initialize();
 			}
 		}
 		
 		
-		/**
-		 * @private
-		 */
-		private function addEventListeners():void
+		private function createDialog(state:String):void
 		{
-			if (!_updater) return;
-			_updater.addEventListener(UpdateEvent.INITIALIZED, onInitialized);
-			_updater.addEventListener(StatusUpdateEvent.UPDATE_STATUS, onUpdateStatus);
-			_updater.addEventListener(UpdateEvent.BEFORE_INSTALL, onBeforeInstall);
-			_updater.addEventListener(StatusUpdateErrorEvent.UPDATE_ERROR, onUpdateError);
-			_updater.addEventListener(UpdateEvent.DOWNLOAD_START, onDownloadStarted);
-			_updater.addEventListener(ProgressEvent.PROGRESS, onProgress);
-			_updater.addEventListener(UpdateEvent.DOWNLOAD_COMPLETE, onDownloadComplete);
-			_updater.addEventListener(DownloadErrorEvent.DOWNLOAD_ERROR, onDownloadError);
-			_updater.addEventListener(ErrorEvent.ERROR, onError);
+			if (!_dialog)
+			{
+				_dialog = new UpdateDialog();
+				_dialog.isFirstRun = _isFirstRun;
+				_dialog.applicationName = _applicationName;
+				_dialog.installedVersion = _currentVersion;
+				_dialog.upateVersion = _updateVersion;
+				_dialog.updateState = state;
+				_dialog.description = _description;
+				_dialog.addEventListener(UpdateDialog.EVENT_CHECK_UPDATE, onCheckUpdate);
+				_dialog.addEventListener(UpdateDialog.EVENT_INSTALL_UPDATE, onInstallUpdate);
+				_dialog.addEventListener(UpdateDialog.EVENT_CANCEL_UPDATE, onCancelUpdate);
+				_dialog.addEventListener(UpdateDialog.EVENT_DOWNLOAD_UPDATE, onDownloadUpdate);
+				_dialog.addEventListener(UpdateDialog.EVENT_INSTALL_LATER, onInstallLater);
+				_dialog.open();
+			}
+		}
+		
+		
+		private function dispose():void
+		{
+			if (_updater)
+			{
+				_updater.removeEventListener(UpdateEvent.INITIALIZED, onUpdaterInitialized);
+				_updater.removeEventListener(StatusUpdateEvent.UPDATE_STATUS, onStatusUpdate);
+				_updater.removeEventListener(StatusUpdateErrorEvent.UPDATE_ERROR, onStatusUpdateError);
+				_updater.removeEventListener(UpdateEvent.DOWNLOAD_START, onDownloadStarted);
+				_updater.removeEventListener(ProgressEvent.PROGRESS, onDownloadProgress);
+				_updater.removeEventListener(UpdateEvent.DOWNLOAD_COMPLETE, onDownloadComplete);
+				_updater.removeEventListener(DownloadErrorEvent.DOWNLOAD_ERROR, onDownloadError);
+				_updater.removeEventListener(UpdateEvent.BEFORE_INSTALL, onBeforeInstall);
+				_updater.removeEventListener(ErrorEvent.ERROR, onUpdateError);
+				_updater = null;
+			}
+			disposeDialog();
+		}
+		
+		
+		private function disposeDialog():void
+		{
+			if (_dialog)
+			{
+				_dialog.dispose();
+				_dialog.removeEventListener(UpdateDialog.EVENT_CHECK_UPDATE, onCheckUpdate);
+				_dialog.removeEventListener(UpdateDialog.EVENT_INSTALL_UPDATE, onInstallUpdate);
+				_dialog.removeEventListener(UpdateDialog.EVENT_CANCEL_UPDATE, onCancelUpdate);
+				_dialog.removeEventListener(UpdateDialog.EVENT_DOWNLOAD_UPDATE, onDownloadUpdate);
+				_dialog.removeEventListener(UpdateDialog.EVENT_INSTALL_LATER, onInstallLater);
+				_dialog.close();
+				_dialog = null;
+			}
+			_isInstallPostponed = false;
 		}
 		
 		
 		/**
-		 * @private
+		 * Getter method to get the version of the application
+		 *
+		 * @return String Version of application
 		 */
-		private function removeEventListeners():void
+		private function getApplicationVersion():String
 		{
-			if (!_updater) return;
-			_updater.removeEventListener(UpdateEvent.INITIALIZED, onInitialized);
-			_updater.removeEventListener(StatusUpdateEvent.UPDATE_STATUS, onUpdateStatus);
-			_updater.removeEventListener(UpdateEvent.BEFORE_INSTALL, onBeforeInstall);
-			_updater.removeEventListener(StatusUpdateErrorEvent.UPDATE_ERROR, onUpdateError);
-			_updater.removeEventListener(UpdateEvent.DOWNLOAD_START, onDownloadStarted);
-			_updater.removeEventListener(ProgressEvent.PROGRESS, onProgress);
-			_updater.removeEventListener(UpdateEvent.DOWNLOAD_COMPLETE, onDownloadComplete);
-			_updater.removeEventListener(DownloadErrorEvent.DOWNLOAD_ERROR, onDownloadError);
-			_updater.removeEventListener(ErrorEvent.ERROR, onError);
+			var appXML:XML = NativeApplication.nativeApplication.applicationDescriptor;
+			var ns:Namespace = appXML.namespace();
+			return appXML.ns::version;
 		}
 		
 		
 		/**
-		 * @private
+		 * Getter method to get the name of the application file
+		 *
+		 * @return String name of application
 		 */
-		private function finish():void
+		private function getApplicationFileName():String
 		{
-			dispatchEvent(new UpdateManagerEvent(UpdateManagerEvent.FINISHED));
+			var appXML:XML = NativeApplication.nativeApplication.applicationDescriptor;
+			var ns:Namespace = appXML.namespace();
+			return appXML.ns::filename;
+		}
+		
+		
+		/**
+		 * Getter method to get the name of the application, this does not support multi-language.
+		 * Based on a method from Adobes ApplicationUpdaterDialogs.mxml, which is part of Adobes
+		 * AIR Updater Framework.
+		 *
+		 * @return String name of application
+		 */
+		private function getApplicationName():String
+		{
+			var applicationName:String;
+			var xmlNS:Namespace = new Namespace("http://www.w3.org/XML/1998/namespace");
+			var xml:XML = NativeApplication.nativeApplication.applicationDescriptor;
+			var ns:Namespace = xml.namespace();
+			
+			// filename is mandatory
+			var elem:XMLList = xml.ns::filename;
+			
+			// use name is if it exists in the application descriptor
+			if (XMLList(xml.ns::name).length() != 0)
+			{
+				elem = XMLList(xml.ns::name);
+			}
+			
+			// See if element contains simple content
+			if (elem.hasSimpleContent())
+			{
+				applicationName = elem.toString();
+			}
+			
+			return applicationName;
+		}
+		
+		
+		/**
+		 * Helper method to get release notes, this does not support multi-language.
+		 * Based on a method from Adobes ApplicationUpdaterDialogs.mxml, which is part of Adobes AIR Updater Framework
+		 *
+		 * @param detail Array of details
+		 * @return String Release notes depending on locale chain
+		 */
+		protected function getUpdateDescription(details:Array):String
+		{
+			var text:String = "";
+			if (details.length == 1)
+			{
+				text = details[0][1];
+			}
+			return text;
 		}
 	}
 }

@@ -30,9 +30,7 @@ package base.setup
 	import base.assist.AIRDesktopAssistor;
 	import base.command.env.ToggleFullscreenCommand;
 	import base.core.desktop.WindowBoundsManager;
-	import base.core.update.UpdateManager;
 	import base.data.Registry;
-	import base.event.UpdateManagerEvent;
 
 	import flash.desktop.NativeApplication;
 	import flash.display.NativeWindow;
@@ -48,7 +46,7 @@ package base.setup
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _updateManager:UpdateManager;
+		//private var _updateManager:UpdateManager;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -117,12 +115,12 @@ package base.setup
 				stage.nativeWindow.activate();
 			}
 			
-			if (Registry.config.updateEnabled)
+			if (Registry.config.updateEnabled && Registry.config.updateURL != null
+				&& Registry.config.updateURL.length > 0)
 			{
 				/* TODO UpdateManager disabled until we build a custom update manager! */
 				//_updateManager = new UpdateManager();
-				//_updateManager.addEventListener(UpdateManagerEvent.FINISHED, onUpdateManagerFinished);
-				//_updateManager.initialize();
+				//_updateManager.checkNow();
 			}
 		}
 		
@@ -159,11 +157,11 @@ package base.setup
 		// Event Handlers
 		//-----------------------------------------------------------------------------------------
 		
-		private function onUpdateManagerFinished(e:UpdateManagerEvent):void 
+		private function onUpdateManagerFinished():void 
 		{
-			_updateManager.removeEventListener(UpdateManagerEvent.FINISHED, onUpdateManagerFinished);
-			_updateManager.dispose();
-			_updateManager = null;
+			//_updateManager.finishedSignal.remove(onUpdateManagerFinished);
+			//_updateManager.dispose();
+			//_updateManager = null;
 		}
 	}
 }
