@@ -34,7 +34,6 @@ package base.core.update
 		private var _isFirstRun:Boolean;
 		private var _isInstallPostponed:Boolean = false;
 		private var _checkAfterInitialize:Boolean = true;
-		private var _showCheckState:Boolean = false;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -57,8 +56,7 @@ package base.core.update
 		public function checkNow():void
 		{
 			_isInstallPostponed = false;
-			if (_showCheckState) createDialog(UpdateDialog.CHECK_UPDATE);
-			else _updater.checkNow();
+			_updater.checkNow();
 		}
 		
 		
@@ -92,11 +90,8 @@ package base.core.update
 			_isFirstRun = _updater.isFirstRun;
 			_applicationName = getApplicationName();
 			_currentVersion = _updater.currentVersion;
-			
 			Log.debug("Initialized (current version: " + _currentVersion + ").", this);
-			
-			if (_showCheckState && _checkAfterInitialize) createDialog(UpdateDialog.CHECK_UPDATE);
-			else if (_checkAfterInitialize) _updater.checkNow();
+			if (_checkAfterInitialize) _updater.checkNow();
 		}
 		
 		
@@ -107,25 +102,8 @@ package base.core.update
 			{
 				_description = getUpdateDescription(e.details);
 				_updateVersion = e.version;
-				
 				Log.debug("Update available: v" + _updateVersion, this);
-				
-				if (!_showCheckState)
-				{
-					createDialog(UpdateDialog.UPDATE_AVAILABLE);
-				}
-				else if (_dialog)
-				{
-					_dialog.applicationName = _applicationName;
-					_dialog.installedVersion = _currentVersion;
-					_dialog.upateVersion = _updateVersion;
-					_dialog.description = _description;
-					_dialog.updateState = UpdateDialog.UPDATE_AVAILABLE;
-				}
-			}
-			else
-			{
-				createDialog(UpdateDialog.NO_UPDATE);
+				createDialog(UpdateDialog.UPDATE_AVAILABLE);
 			}
 		}
 		
@@ -134,7 +112,7 @@ package base.core.update
 		{
 			e.preventDefault();
 			if (!_dialog) createDialog(UpdateDialog.UPDATE_ERROR);
-			else _dialog.updateState = UpdateDialog.UPDATE_ERROR;
+			else _dialog.currentState = UpdateDialog.UPDATE_ERROR;
 		}
 		
 		
@@ -143,12 +121,12 @@ package base.core.update
 			e.preventDefault();
 			if (e.available)
 			{
-				_dialog.updateState = UpdateDialog.UPDATE_DOWNLOADING;
+				_dialog.currentState = UpdateDialog.UPDATE_DOWNLOADING;
 				_updater.downloadUpdate();
 			}
 			else
 			{
-				_dialog.updateState = UpdateDialog.UPDATE_ERROR;
+				_dialog.currentState = UpdateDialog.UPDATE_ERROR;
 			}
 		}
 		
@@ -156,35 +134,7 @@ package base.core.update
 		private function onStatusFileUpdateError(e:StatusFileUpdateErrorEvent):void
 		{
 			e.preventDefault();
-			_dialog.updateState = UpdateDialog.UPDATE_ERROR;
-		}
-		
-		
-		private function onDownloadStarted(e:UpdateEvent):void
-		{
-			_dialog.updateState = UpdateDialog.UPDATE_DOWNLOADING;
-		}
-		
-		
-		private function onDownloadProgress(e:ProgressEvent):void
-		{
-			_dialog.updateState = UpdateDialog.UPDATE_DOWNLOADING;
-			var percent:Number = (e.bytesLoaded / e.bytesTotal) * 100;
-			_dialog.updateDownloadProgress(percent);
-		}
-		
-		
-		private function onDownloadComplete(e:UpdateEvent):void
-		{
-			e.preventDefault();
-			_dialog.updateState = UpdateDialog.INSTALL_UPDATE;
-		}
-		
-		
-		private function onDownloadError(e:DownloadErrorEvent):void
-		{
-			e.preventDefault();
-			_dialog.updateState = UpdateDialog.UPDATE_ERROR;
+			_dialog.currentState = UpdateDialog.UPDATE_ERROR;
 		}
 		
 		
@@ -194,7 +144,7 @@ package base.core.update
 			if (_dialog)
 			{
 				_dialog.errorText = e.text;
-				_dialog.updateState = UpdateDialog.UPDATE_ERROR;
+				_dialog.currentState = UpdateDialog.UPDATE_ERROR;
 			}
 		}
 
@@ -222,6 +172,34 @@ package base.core.update
 		private function onDownloadUpdate(e:Event):void
 		{
 			_updater.downloadUpdate();
+		}
+		
+		
+		private function onDownloadStarted(e:UpdateEvent):void
+		{
+			_dialog.currentState = UpdateDialog.UPDATE_DOWNLOADING;
+		}
+		
+		
+		private function onDownloadProgress(e:ProgressEvent):void
+		{
+			_dialog.currentState = UpdateDialog.UPDATE_DOWNLOADING;
+			var percent:Number = (e.bytesLoaded / e.bytesTotal) * 100;
+			_dialog.updateDownloadProgress(percent);
+		}
+		
+		
+		private function onDownloadComplete(e:UpdateEvent):void
+		{
+			e.preventDefault();
+			_dialog.currentState = UpdateDialog.INSTALL_UPDATE;
+		}
+		
+		
+		private function onDownloadError(e:DownloadErrorEvent):void
+		{
+			e.preventDefault();
+			_dialog.currentState = UpdateDialog.UPDATE_ERROR;
 		}
 		
 		
@@ -264,10 +242,10 @@ package base.core.update
 				_dialog = new UpdateDialog();
 				_dialog.isFirstRun = _isFirstRun;
 				_dialog.applicationName = _applicationName;
-				_dialog.installedVersion = _currentVersion;
+				_dialog.currentVersion = _currentVersion;
 				_dialog.upateVersion = _updateVersion;
-				_dialog.updateState = state;
 				_dialog.description = _description;
+				_dialog.currentState = state;
 				_dialog.addEventListener(UpdateDialog.EVENT_CHECK_UPDATE, onCheckUpdate);
 				_dialog.addEventListener(UpdateDialog.EVENT_INSTALL_UPDATE, onInstallUpdate);
 				_dialog.addEventListener(UpdateDialog.EVENT_CANCEL_UPDATE, onCancelUpdate);

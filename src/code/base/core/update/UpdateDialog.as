@@ -38,8 +38,11 @@ package base.core.update
 	import flash.display.NativeWindowInitOptions;
 	import flash.display.NativeWindowSystemChrome;
 	import flash.display.NativeWindowType;
+	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	import flash.text.TextFormat;
 	
@@ -62,8 +65,6 @@ package base.core.update
 		public static var UPDATE_DOWNLOADING:String = "updateDownloading";
 		public static var INSTALL_UPDATE:String = "installUpdate";
 		public static var UPDATE_AVAILABLE:String = "updateAvailable";
-		public static var NO_UPDATE:String = "noUpdate";
-		public static var CHECK_UPDATE:String = "checkUpdate";
 		public static var UPDATE_ERROR:String = "updateError";
 		
 		
@@ -71,18 +72,26 @@ package base.core.update
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
+		private var _uiStateContainer:Sprite;
 		private var _titleLabel:Label;
 		private var _messageLabel:Label;
 		private var _releaseNotes:TextArea;
-		private var _button1:Button;
-		private var _button2:Button;
+		private var _okButton:Button;
+		private var _cancelButton:Button;
+		
+		private var _titleFormat:TextFormat;
+		private var _textFormat:TextFormat;
+		private var _notesFormat:TextFormat;
 		
 		private var _isFirstRun:Boolean;
-		private var _installedVersion:String = "";
+		private var _currentState:String;
+		
+		private var _currentVersion:String = "";
 		private var _updateVersion:String = "";
 		private var _updateDescription:String = "";
 		private var _applicationName:String = "";
-		private var _updateState:String;
+		private var _progress:int = 0;
+		
 		private var _errorText:String = "There was an error checking for updates.";
 		
 		
@@ -105,8 +114,8 @@ package base.core.update
 			super(wo);
 			
 			setup();
-			updateDisplayText();
 			activate();
+			orderToFront();
 		}
 		
 		
@@ -121,11 +130,15 @@ package base.core.update
 		
 		public function updateDownloadProgress(percent:Number):void
 		{
+			_progress = percent;
+			if (_messageLabel) _messageLabel.text = "Progress: " + _progress + "%";
 		}
 		
 		
 		public function dispose():void
 		{
+			stage.removeChild(_uiStateContainer);
+			removeListeners();
 		}
 		
 		
@@ -133,38 +146,35 @@ package base.core.update
 		// Accessors
 		//-----------------------------------------------------------------------------------------
 		
+		public function set currentState(v:String):void
+		{
+			if (v == _currentState) return;
+			_currentState = v;
+			switchState();
+		}
 		public function set isFirstRun(v:Boolean):void
 		{
 			_isFirstRun = v;
 		}
-		public function set installedVersion(v:String):void
+		public function set currentVersion(v:String):void
 		{
-			_installedVersion = v;
-			updateDisplayText();
+			_currentVersion = v;
 		}
 		public function set upateVersion(v:String):void
 		{
 			_updateVersion = v;
-			updateDisplayText();
-		}
-		public function set updateState(v:String):void
-		{
-			_updateState = v;
 		}
 		public function set applicationName(v:String):void
 		{
 			_applicationName = v;
-			updateDisplayText();
 		}
 		public function set description(v:String):void
 		{
 			_updateDescription = v;
-			updateDisplayText();
 		}
 		public function set errorText(v:String):void
 		{
 			_errorText = v;
-			updateDisplayText();
 		}
 		
 		
@@ -172,76 +182,142 @@ package base.core.update
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
 		
+		private function onOKButtonClick(e:MouseEvent):void
+		{
+			if (_currentState == UPDATE_AVAILABLE) dispatchEvent(new Event(EVENT_DOWNLOAD_UPDATE));
+			else if (_currentState == INSTALL_UPDATE) dispatchEvent(new Event(EVENT_INSTALL_UPDATE));
+		}
+		
+		
+		private function onCancelButtonClick(e:MouseEvent):void
+		{
+			if (_currentState == INSTALL_UPDATE)
+			{
+				dispatchEvent(new Event(EVENT_INSTALL_LATER));
+				return;
+			}
+			dispatchEvent(new Event(EVENT_CANCEL_UPDATE));
+		}
+		
 		
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * @private
-		 */
 		private function setup():void
 		{
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
-			
-			var p:NativeWindow = StageReference.stage.nativeWindow;
 			var w:int = 520;
 			var h:int = 330;
+			var p:NativeWindow = StageReference.stage.nativeWindow;
 			bounds = new Rectangle(int(p.x + (p.width * 0.5) - (w * 0.5)), int(p.y + (p.height * 0.5) - (h * 0.5)), w, h);
 			title = "Update";
 			
-			var titleFormat:TextFormat = new TextFormat("Arial", 26, 0xFFFFFF);
-			var textFormat:TextFormat = new TextFormat("Arial", 14, 0xFFFFFF);
-			var notesFormat:TextFormat = new TextFormat("Arial", 12, 0x222222);
+			_titleFormat = new TextFormat("Arial", 26, 0xFFFFFF);
+			_textFormat = new TextFormat("Arial", 14, 0xEEEEEE);
+			_notesFormat = new TextFormat("Arial", 12, 0x222222);
 			
 			var bg:RectangleShape = new RectangleShape(w, h, 0x262626);
+			stage.addChild(bg);
 			var icon:Bitmap = new Bitmap(new UpdateIcon());
 			icon.x = 10;
 			icon.y = 10;
-			
-			_titleLabel = new Label(360, 35);
-			_titleLabel.setStyle("textFormat", titleFormat);
-			_titleLabel.x = 110;
-			_titleLabel.y = 10;
-			
-			_messageLabel = new Label(360, 94);
-			_messageLabel.setStyle("textFormat", textFormat);
-			_messageLabel.x = 110;
-			_messageLabel.y = 50;
-			_messageLabel.wordWrap = true;
-			
-			_releaseNotes = new TextArea(110, 150, 360, 82);
-			_releaseNotes.setStyle("textFormat", notesFormat);
-			_releaseNotes.wordWrap = true;
-			_releaseNotes.editable = false;
-			
-			_button1 = new Button(110, 250, 120, 28);
-			_button1.emphasized = true;
-			
-			_button2 = new Button(240, 250, 120, 28);
-			
-			stage.addChild(bg);
 			stage.addChild(icon);
-			stage.addChild(_titleLabel);
-			stage.addChild(_messageLabel);
-			stage.addChild(_releaseNotes);
-			stage.addChild(_button1);
-			stage.addChild(_button2);
+			
+			_uiStateContainer = new Sprite();
+			stage.addChild(_uiStateContainer);
 		}
 		
 		
-		private function updateDisplayText():void
+		private function switchState():void
 		{
+			while(_uiStateContainer.numChildren > 0)
+			{
+				_uiStateContainer.removeChildAt(0);
+			}
+			removeListeners();
+			switch (_currentState)
+			{
+				case UPDATE_AVAILABLE:
+					createUpdateAvailableState();
+					break;
+				case UPDATE_DOWNLOADING:
+					createUpdateDownloadState();
+					break;
+			}
+		}
+		
+		
+		private function createUpdateAvailableState():void
+		{
+			_titleLabel = new Label(360, 35);
+			_titleLabel.setStyle("textFormat", _titleFormat);
+			_titleLabel.x = 110;
+			_titleLabel.y = 10;
 			_titleLabel.text = "Update Available";
+			_uiStateContainer.addChild(_titleLabel);
+			
+			_messageLabel = new Label(360, 94);
+			_messageLabel.setStyle("textFormat", _textFormat);
+			_messageLabel.x = 110;
+			_messageLabel.y = 50;
+			_messageLabel.wordWrap = true;
 			_messageLabel.text = "An updated version of " + _applicationName
 				+ " is available and can be downloaded."
-				+ "\n\nInstalled version:\t" + _installedVersion
+				+ "\n\nInstalled version:\t" + _currentVersion
 				+ "\nUpdate version:\t\t" + _updateVersion;
-			_releaseNotes.text = _updateDescription;
+			_uiStateContainer.addChild(_messageLabel);
 			
-			_button1.label = "Download Now";
-			_button2.label = "Download Later";
+			_releaseNotes = new TextArea(110, 150, 360, 82);
+			_releaseNotes.setStyle("textFormat", _notesFormat);
+			_releaseNotes.wordWrap = true;
+			_releaseNotes.editable = false;
+			_releaseNotes.text = _updateDescription;
+			_uiStateContainer.addChild(_releaseNotes);
+			
+			_okButton = new Button(110, 250, 120, 28);
+			_okButton.emphasized = true;
+			_okButton.label = "Download Now";
+			_okButton.addEventListener(MouseEvent.CLICK, onOKButtonClick);
+			_uiStateContainer.addChild(_okButton);
+			
+			_cancelButton = new Button(240, 250, 120, 28);
+			_cancelButton.label = "Download Later";
+			_cancelButton.addEventListener(MouseEvent.CLICK, onCancelButtonClick);
+			_uiStateContainer.addChild(_cancelButton);
+		}
+		
+		
+		private function createUpdateDownloadState():void
+		{
+			_titleLabel = new Label(360, 35);
+			_titleLabel.setStyle("textFormat", _titleFormat);
+			_titleLabel.x = 110;
+			_titleLabel.y = 10;
+			_titleLabel.text = "Downloading Update";
+			_uiStateContainer.addChild(_titleLabel);
+			
+			_messageLabel = new Label(360, 94);
+			_messageLabel.setStyle("textFormat", _textFormat);
+			_messageLabel.x = 110;
+			_messageLabel.y = 50;
+			_messageLabel.text = "Progress: " + _progress + "%";
+			_uiStateContainer.addChild(_messageLabel);
+			
+			// TODO Add progress bar!
+			
+			_cancelButton = new Button(110, 250, 120, 28);
+			_cancelButton.label = "Cancel";
+			_cancelButton.addEventListener(MouseEvent.CLICK, onCancelButtonClick);
+			_uiStateContainer.addChild(_cancelButton);
+		}
+		
+		
+		private function removeListeners():void
+		{
+			if (_okButton) _okButton.removeEventListener(MouseEvent.CLICK, onOKButtonClick);
+			if (_cancelButton) _cancelButton.removeEventListener(MouseEvent.CLICK, onCancelButtonClick);
 		}
 	}
 }
