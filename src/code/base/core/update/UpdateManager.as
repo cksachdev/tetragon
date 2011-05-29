@@ -33,8 +33,8 @@ package base.core.update
 		
 		private var _isFirstRun:Boolean;
 		private var _isInstallPostponed:Boolean = false;
-		private var _initializeCheckNow:Boolean = false;
-		private var _showCheckState:Boolean = true;
+		private var _checkAfterInitialize:Boolean = true;
+		private var _showCheckState:Boolean = false;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -43,16 +43,10 @@ package base.core.update
 		
 		/**
 		 * Constructer for UpdateManager Class
-		 * 
-		 * @param showCheckState Boolean value to show the Check Now dialog box.
-		 * @param initializeCheckNow Boolean value to initialize application and run check
-		 * on instantiation of the Class.
 		 */
-		public function UpdateManager(showCheckState:Boolean = false, initializeCheckNow:Boolean = true)
+		public function UpdateManager()
 		{
-			_showCheckState = showCheckState;
-			_initializeCheckNow = initializeCheckNow;
-			initialize();
+			setup();
 		}
 		
 		
@@ -101,8 +95,8 @@ package base.core.update
 			
 			Log.debug("Initialized (current version: " + _currentVersion + ").", this);
 			
-			if (_showCheckState && _initializeCheckNow) createDialog(UpdateDialog.CHECK_UPDATE);
-			else if (_initializeCheckNow) _updater.checkNow();
+			if (_showCheckState && _checkAfterInitialize) createDialog(UpdateDialog.CHECK_UPDATE);
+			else if (_checkAfterInitialize) _updater.checkNow();
 		}
 		
 		
@@ -242,7 +236,7 @@ package base.core.update
 		// Private Methods
 		//-----------------------------------------------------------------------------------------		
 		
-		private function initialize():void
+		private function setup():void
 		{
 			if (!_updater)
 			{

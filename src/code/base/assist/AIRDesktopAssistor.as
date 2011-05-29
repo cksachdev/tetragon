@@ -27,6 +27,8 @@
  */
 package base.assist
 {
+	import base.command.Command;
+	import base.command.env.CheckUpdateCommand;
 	import base.command.env.ExitApplicationCommand;
 	import base.core.desktop.WindowBoundsManager;
 	import base.data.Registry;
@@ -48,6 +50,20 @@ package base.assist
 		//-----------------------------------------------------------------------------------------
 		
 		private var _defaultFramerate:Number;
+		
+		
+		//-----------------------------------------------------------------------------------------
+		// Public Methods
+		//-----------------------------------------------------------------------------------------
+		
+		override public function executePostInitCommands():void
+		{
+			if (Registry.config.updateEnabled && Registry.config.updateURL != null
+				&& Registry.config.updateURL.length > 0)
+			{
+				main.commandManager.execute(new CheckUpdateCommand(), onCheckUpdateComplete);
+			}
+		}
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -98,6 +114,11 @@ package base.assist
 		private function onActivate(e:Event):void 
 		{
 			stage.frameRate = _defaultFramerate;
+		}
+		
+		
+		private function onCheckUpdateComplete(command:Command):void
+		{
 		}
 		
 		

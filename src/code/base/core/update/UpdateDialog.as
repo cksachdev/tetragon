@@ -27,6 +27,8 @@
  */
 package base.core.update
 {
+	import com.hexagonstar.util.display.StageReference;
+
 	import flash.display.NativeWindow;
 	import flash.display.NativeWindowInitOptions;
 	import flash.display.NativeWindowSystemChrome;
@@ -63,6 +65,8 @@ package base.core.update
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
+		private var _ui:UpdateDialogUI;
+		
 		private var _isFirstRun:Boolean;
 		private var _installedVersion:String;
 		private var _updateVersion:String;
@@ -84,12 +88,13 @@ package base.core.update
 			var wo:NativeWindowInitOptions = new NativeWindowInitOptions();
 			wo.systemChrome = NativeWindowSystemChrome.STANDARD;
 			wo.type = NativeWindowType.NORMAL;
+			wo.maximizable = false;
+			wo.minimizable = false;
+			wo.resizable = false;
 			
 			super(wo);
 			
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP_LEFT;
-			bounds = new Rectangle(100, 100, 800, 800);
+			setup();
 			activate();
 		}
 		
@@ -156,5 +161,22 @@ package base.core.update
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
+		/**
+		 * @private
+		 */
+		private function setup():void
+		{
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
+			
+			var p:NativeWindow = StageReference.stage.nativeWindow;
+			var w:int = 512;
+			var h:int = 320;
+			bounds = new Rectangle(int(p.x + (p.width * 0.5) - (w * 0.5)), int(p.y + (p.height * 0.5) - (h * 0.5)), w, h);
+			title = "Update";
+			
+			_ui = new UpdateDialogUI();
+			stage.addChild(_ui);
+		}
 	}
 }

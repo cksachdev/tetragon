@@ -27,8 +27,7 @@
  */
 package base
 {
-	import base.assist.AIRDesktopAssistor;
-	import base.assist.Assistor;
+	import base.assist.*;
 	import base.command.Command;
 	import base.command.CommandManager;
 	import base.command.env.InitApplicationCommand;
@@ -309,6 +308,8 @@ package base
 		 */
 		private function onAppInitComplete(command:Command):void 
 		{
+			//if (_assistor) _assistor.executePostInitCommands();
+			
 			/* Time to open the initial application state. */
 			stateManager.start();
 		}

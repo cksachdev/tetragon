@@ -64,6 +64,12 @@ package base.assist
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
+		public function executePostInitCommands():void
+		{
+			/* Abstract Method! */
+		}
+		
+		
 		/**
 		 * Returns a String representation of the class.
 		 * 

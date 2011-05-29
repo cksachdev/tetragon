@@ -43,13 +43,6 @@ package base.setup
 	public class DesktopSetup extends Setup
 	{
 		//-----------------------------------------------------------------------------------------
-		// Properties
-		//-----------------------------------------------------------------------------------------
-		
-		//private var _updateManager:UpdateManager;
-		
-		
-		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
@@ -114,14 +107,6 @@ package base.setup
 				stage.nativeWindow.visible = true;
 				stage.nativeWindow.activate();
 			}
-			
-			if (Registry.config.updateEnabled && Registry.config.updateURL != null
-				&& Registry.config.updateURL.length > 0)
-			{
-				/* TODO UpdateManager disabled until we build a custom update manager! */
-				//_updateManager = new UpdateManager();
-				//_updateManager.checkNow();
-			}
 		}
 		
 		
@@ -150,18 +135,6 @@ package base.setup
 		protected function get windowBoundsManager():WindowBoundsManager
 		{
 			return WindowBoundsManager.instance;
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Event Handlers
-		//-----------------------------------------------------------------------------------------
-		
-		private function onUpdateManagerFinished():void 
-		{
-			//_updateManager.finishedSignal.remove(onUpdateManagerFinished);
-			//_updateManager.dispose();
-			//_updateManager = null;
 		}
 	}
 }
