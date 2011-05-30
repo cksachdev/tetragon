@@ -27,6 +27,10 @@
  */
 package base.core.update
 {
+	import base.util.ui.createButton;
+	import base.util.ui.createLabel;
+	import base.util.ui.createTextArea;
+
 	import com.hexagonstar.display.shape.RectangleShape;
 	import com.hexagonstar.ui.controls.Button;
 	import com.hexagonstar.ui.controls.Label;
@@ -56,23 +60,23 @@ package base.core.update
 		// Constants
 		//-----------------------------------------------------------------------------------------		
 		
-		public static var EVENT_CHECK_UPDATE:String = "checkUpdate";
-		public static var EVENT_INSTALL_UPDATE:String = "installUpdate";
-		public static var EVENT_DOWNLOAD_UPDATE:String = "downloadUpdate";
-		public static var EVENT_CANCEL_UPDATE:String = "cancelUpdate";
-		public static var EVENT_INSTALL_LATER:String = "installLater";
+		public static var STATUS_DOWNLOADING:String		= "statusDownloading";
+		public static var STATUS_INSTALL:String			= "statusInstall";
+		public static var STATUS_AVAILABLE:String		= "statusAvailable";
+		public static var STATUS_ERROR:String			= "statusError";
 		
-		public static var UPDATE_DOWNLOADING:String = "updateDownloading";
-		public static var INSTALL_UPDATE:String = "installUpdate";
-		public static var UPDATE_AVAILABLE:String = "updateAvailable";
-		public static var UPDATE_ERROR:String = "updateError";
+		public static var EVENT_CHECK_UPDATE:String		= "eventCheckUpdate";
+		public static var EVENT_INSTALL_UPDATE:String	= "eventInstallUpdate";
+		public static var EVENT_DOWNLOAD_UPDATE:String	= "eventDownloadUpdate";
+		public static var EVENT_CANCEL_UPDATE:String	= "eventCancelUpdate";
+		public static var EVENT_INSTALL_LATER:String	= "eventInstallLater";
 		
 		
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _uiStateContainer:Sprite;
+		private var _uiContainer:Sprite;
 		private var _titleLabel:Label;
 		private var _messageLabel:Label;
 		private var _releaseNotes:TextArea;
@@ -90,9 +94,8 @@ package base.core.update
 		private var _updateVersion:String = "";
 		private var _updateDescription:String = "";
 		private var _applicationName:String = "";
+		private var _errorText:String;
 		private var _progress:int = 0;
-		
-		private var _errorText:String = "There was an error checking for updates.";
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -112,10 +115,7 @@ package base.core.update
 			wo.resizable = false;
 			
 			super(wo);
-			
 			setup();
-			activate();
-			orderToFront();
 		}
 		
 		
@@ -125,20 +125,24 @@ package base.core.update
 		
 		public function open():void
 		{
+			activate();
+			orderToFront();
+			visible = true;
 		}
 		
 		
-		public function updateDownloadProgress(percent:Number):void
+		public function updateDownloadProgress(progress:int):void
 		{
-			_progress = percent;
+			_progress = progress;
 			if (_messageLabel) _messageLabel.text = "Progress: " + _progress + "%";
 		}
 		
 		
 		public function dispose():void
 		{
-			stage.removeChild(_uiStateContainer);
-			removeListeners();
+			stage.removeChild(_uiContainer);
+			removeUIListeners();
+			removeEventListener(Event.CLOSE, onClose);
 		}
 		
 		
@@ -150,7 +154,7 @@ package base.core.update
 		{
 			if (v == _currentState) return;
 			_currentState = v;
-			switchState();
+			switchUIState();
 		}
 		public function set isFirstRun(v:Boolean):void
 		{
@@ -184,18 +188,24 @@ package base.core.update
 		
 		private function onOKButtonClick(e:MouseEvent):void
 		{
-			if (_currentState == UPDATE_AVAILABLE) dispatchEvent(new Event(EVENT_DOWNLOAD_UPDATE));
-			else if (_currentState == INSTALL_UPDATE) dispatchEvent(new Event(EVENT_INSTALL_UPDATE));
+			if (_currentState == STATUS_AVAILABLE)
+				dispatchEvent(new Event(EVENT_DOWNLOAD_UPDATE));
+			else if (_currentState == STATUS_INSTALL)
+				dispatchEvent(new Event(EVENT_INSTALL_UPDATE));
 		}
 		
 		
 		private function onCancelButtonClick(e:MouseEvent):void
 		{
-			if (_currentState == INSTALL_UPDATE)
-			{
+			if (_currentState == STATUS_INSTALL)
 				dispatchEvent(new Event(EVENT_INSTALL_LATER));
-				return;
-			}
+			else
+				dispatchEvent(new Event(EVENT_CANCEL_UPDATE));
+		}
+		
+		
+		private function onClose(e:Event):void
+		{
 			dispatchEvent(new Event(EVENT_CANCEL_UPDATE));
 		}
 		
@@ -206,17 +216,18 @@ package base.core.update
 		
 		private function setup():void
 		{
+			visible = false;
+			title = "Update";
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			var w:int = 520;
 			var h:int = 330;
 			var p:NativeWindow = StageReference.stage.nativeWindow;
 			bounds = new Rectangle(int(p.x + (p.width * 0.5) - (w * 0.5)), int(p.y + (p.height * 0.5) - (h * 0.5)), w, h);
-			title = "Update";
 			
-			_titleFormat = new TextFormat("Arial", 26, 0xFFFFFF);
-			_textFormat = new TextFormat("Arial", 14, 0xEEEEEE);
-			_notesFormat = new TextFormat("Arial", 12, 0x222222);
+			_titleFormat = new TextFormat("Bitstream Vera Sans", 26, 0xFFFFFF);
+			_textFormat = new TextFormat("Bitstream Vera Sans", 12, 0xEEEEEE);
+			_notesFormat = new TextFormat("Bitstream Vera Sans", 10, 0x222222);
 			
 			var bg:RectangleShape = new RectangleShape(w, h, 0x262626);
 			stage.addChild(bg);
@@ -225,25 +236,33 @@ package base.core.update
 			icon.y = 10;
 			stage.addChild(icon);
 			
-			_uiStateContainer = new Sprite();
-			stage.addChild(_uiStateContainer);
+			_uiContainer = new Sprite();
+			stage.addChild(_uiContainer);
+			
+			addEventListener(Event.CLOSE, onClose);
 		}
 		
 		
-		private function switchState():void
+		private function switchUIState():void
 		{
-			while(_uiStateContainer.numChildren > 0)
+			while(_uiContainer.numChildren > 0)
 			{
-				_uiStateContainer.removeChildAt(0);
+				_uiContainer.removeChildAt(0);
 			}
-			removeListeners();
+			removeUIListeners();
 			switch (_currentState)
 			{
-				case UPDATE_AVAILABLE:
+				case STATUS_AVAILABLE:
 					createUpdateAvailableState();
 					break;
-				case UPDATE_DOWNLOADING:
+				case STATUS_DOWNLOADING:
 					createUpdateDownloadState();
+					break;
+				case STATUS_INSTALL:
+					createUpdateInstallState();
+					break;
+				case STATUS_ERROR:
+					createUpdateErrorState();
 					break;
 			}
 		}
@@ -251,70 +270,88 @@ package base.core.update
 		
 		private function createUpdateAvailableState():void
 		{
-			_titleLabel = new Label(360, 35);
-			_titleLabel.setStyle("textFormat", _titleFormat);
-			_titleLabel.x = 110;
-			_titleLabel.y = 10;
-			_titleLabel.text = "Update Available";
-			_uiStateContainer.addChild(_titleLabel);
+			_titleLabel = createLabel(110, 10, 360, 35, _titleFormat, false, "Update Available");
+			_uiContainer.addChild(_titleLabel);
 			
-			_messageLabel = new Label(360, 94);
-			_messageLabel.setStyle("textFormat", _textFormat);
-			_messageLabel.x = 110;
-			_messageLabel.y = 50;
-			_messageLabel.wordWrap = true;
-			_messageLabel.text = "An updated version of " + _applicationName
+			var message:String = "An updated version of " + _applicationName
 				+ " is available and can be downloaded."
 				+ "\n\nInstalled version:\t" + _currentVersion
-				+ "\nUpdate version:\t\t" + _updateVersion;
-			_uiStateContainer.addChild(_messageLabel);
+				+ "\nUpdate version:\t" + _updateVersion;
+			_messageLabel = createLabel(110, 50, 360, 94, _textFormat, true, message);
+			_uiContainer.addChild(_messageLabel);
 			
-			_releaseNotes = new TextArea(110, 150, 360, 82);
-			_releaseNotes.setStyle("textFormat", _notesFormat);
-			_releaseNotes.wordWrap = true;
-			_releaseNotes.editable = false;
-			_releaseNotes.text = _updateDescription;
-			_uiStateContainer.addChild(_releaseNotes);
+			_releaseNotes = createTextArea(110, 150, 360, 82, _notesFormat, true, false, _updateDescription);
+			_uiContainer.addChild(_releaseNotes);
 			
-			_okButton = new Button(110, 250, 120, 28);
-			_okButton.emphasized = true;
-			_okButton.label = "Download Now";
+			_okButton = createButton(110, 250, 140, 28, true, "Download now");
 			_okButton.addEventListener(MouseEvent.CLICK, onOKButtonClick);
-			_uiStateContainer.addChild(_okButton);
+			_uiContainer.addChild(_okButton);
 			
-			_cancelButton = new Button(240, 250, 120, 28);
-			_cancelButton.label = "Download Later";
+			_cancelButton = createButton(260, 250, 140, 28, false, "Download later");
 			_cancelButton.addEventListener(MouseEvent.CLICK, onCancelButtonClick);
-			_uiStateContainer.addChild(_cancelButton);
+			_uiContainer.addChild(_cancelButton);
 		}
 		
 		
 		private function createUpdateDownloadState():void
 		{
-			_titleLabel = new Label(360, 35);
-			_titleLabel.setStyle("textFormat", _titleFormat);
-			_titleLabel.x = 110;
-			_titleLabel.y = 10;
-			_titleLabel.text = "Downloading Update";
-			_uiStateContainer.addChild(_titleLabel);
+			_titleLabel = createLabel(110, 10, 360, 35, _titleFormat, false, "Downloading Update");
+			_uiContainer.addChild(_titleLabel);
 			
-			_messageLabel = new Label(360, 94);
-			_messageLabel.setStyle("textFormat", _textFormat);
-			_messageLabel.x = 110;
-			_messageLabel.y = 50;
-			_messageLabel.text = "Progress: " + _progress + "%";
-			_uiStateContainer.addChild(_messageLabel);
+			_messageLabel = createLabel(110, 50, 360, 94, _textFormat, true, "Progress: " + _progress + "%");
+			_uiContainer.addChild(_messageLabel);
 			
 			// TODO Add progress bar!
 			
-			_cancelButton = new Button(110, 250, 120, 28);
-			_cancelButton.label = "Cancel";
+			_cancelButton = createButton(110, 250, 140, 28, false, "Cancel");
 			_cancelButton.addEventListener(MouseEvent.CLICK, onCancelButtonClick);
-			_uiStateContainer.addChild(_cancelButton);
+			_uiContainer.addChild(_cancelButton);
 		}
 		
 		
-		private function removeListeners():void
+		private function createUpdateInstallState():void
+		{
+			_titleLabel = createLabel(110, 10, 360, 35, _titleFormat, false, "Install Update");
+			_uiContainer.addChild(_titleLabel);
+			
+			var message:String = "The update for " + _applicationName + " is downloaded and ready to be installed."
+				+ "\n\nInstalled version:\t" + _currentVersion
+				+ "\nUpdate version:\t" + _updateVersion;
+			_messageLabel = createLabel(110, 50, 360, 94, _textFormat, true, message);
+			_uiContainer.addChild(_messageLabel);
+			
+			_releaseNotes = createTextArea(110, 150, 360, 82, _notesFormat, true, false, _updateDescription);
+			_uiContainer.addChild(_releaseNotes);
+			
+			_okButton = createButton(110, 250, 140, 28, true, "Install now");
+			_okButton.addEventListener(MouseEvent.CLICK, onOKButtonClick);
+			_uiContainer.addChild(_okButton);
+			
+			_cancelButton = createButton(260, 250, 140, 28, false, "Postpone until restart");
+			_cancelButton.addEventListener(MouseEvent.CLICK, onCancelButtonClick);
+			_uiContainer.addChild(_cancelButton);
+		}
+		
+		
+		private function createUpdateErrorState():void
+		{
+			_titleLabel = createLabel(110, 10, 360, 35, _titleFormat, false, "Update Error");
+			_uiContainer.addChild(_titleLabel);
+			
+			var message:String = "An error occured while updating:";
+			_messageLabel = createLabel(110, 70, 360, 34, _textFormat, false, message);
+			_uiContainer.addChild(_messageLabel);
+			
+			_releaseNotes = createTextArea(110, 100, 360, 82, _notesFormat, true, false, _errorText);
+			_uiContainer.addChild(_releaseNotes);
+			
+			_cancelButton = createButton(110, 250, 140, 28, false, "Close");
+			_cancelButton.addEventListener(MouseEvent.CLICK, onCancelButtonClick);
+			_uiContainer.addChild(_cancelButton);
+		}
+		
+		
+		private function removeUIListeners():void
 		{
 			if (_okButton) _okButton.removeEventListener(MouseEvent.CLICK, onOKButtonClick);
 			if (_cancelButton) _cancelButton.removeEventListener(MouseEvent.CLICK, onCancelButtonClick);

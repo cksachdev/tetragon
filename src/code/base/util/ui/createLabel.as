@@ -25,33 +25,37 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base
+package base.util.ui
 {
+	import com.hexagonstar.ui.controls.Label;
+
+	import flash.text.TextFormat;
+	
+	
 	/**
-	 * AppInfo
-	 * Ant auto-generated application information class. Do not edit!
+	 * Creates a UI Label.
+	 * 
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 * @param textFormat
+	 * @param multiline
+	 * @param text
 	 */
-	public final class AppInfo
+	public function createLabel(x:int = 0, y:int = 0, width:int = -1, height:int = -1,
+		textFormat:TextFormat = null, multiline:Boolean = false, text:String = null):Label
 	{
-		public static const ID:String				= "com.hexagonstar.tetragon";
-		public static const NAME:String				= "Tetragon Demo Application";
-		public static const DESCRIPTION:String		= "Tetragon Demo Application Test Build";
-		public static const VERSION:String			= "1.0.0";
-		public static const BUILD:String			= "6447";
-		public static const BUILD_DATE:String		= "30-May-2011 21:44";
-		public static const MILESTONE:String		= "Sol";
-		public static const BUILD_TYPE:String		= "desktop";
-		public static const RELEASE_STAGE:String	= "beta";
-		public static const COPYRIGHT:String		= "Hexagon Star Softworks";
-		public static const PUBLISHER:String		= "Hexagon Star Softworks";
-		public static const CREATOR:String			= "Hexagon Star Softworks";
-		public static const CONTRIBUTOR:String		= "Hexagon Star Softworks";
-		public static const YEAR:String				= "2011";
-		public static const WEBSITE:String			= "http://tetragon.hexagonstar.com/";
-		public static const LANGUAGE:String			= "en";
-		public static const FILENAME:String			= "tetragon";
-		public static const DEFAULT_WIDTH:int		= 1024;
-		public static const DEFAULT_HEIGHT:int		= 640;
-		public static const IS_DEBUG:Boolean		= false;
+		var item:Label = new Label(width, height);
+		item.x = x;
+		item.y = y;
+		item.wordWrap = multiline;
+		if (textFormat)
+		{
+			item.setStyle("textFormat", textFormat);
+			item.setStyle("embedFonts", true);
+		}
+		if (text) item.text = text;
+		return item;
 	}
 }

@@ -44,7 +44,6 @@ package base.core.debug
 	import flash.events.Event;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
-	import flash.text.Font;
 	import flash.text.StyleSheet;
 	import flash.text.TextFormat;
 	import flash.ui.Keyboard;
@@ -584,9 +583,6 @@ package base.core.debug
 		 */
 		private function createChildren():void
 		{
-			Font.registerFont(TerminalscopeFont);
-			Font.registerFont(TerminalscopeInverseFont);
-			
 			_bg = new RectangleShape();
 			addChild(_bg);
 			

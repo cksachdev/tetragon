@@ -50,7 +50,7 @@ package base.command.env
 		override public function execute():void 
 		{
 			_updateManager = new UpdateManager();
-			complete();
+			_updateManager.finishedSignal.addOnce(onUpdateManagerFinished);
 		}
 		
 		
@@ -70,5 +70,14 @@ package base.command.env
 		//-----------------------------------------------------------------------------------------
 		// Event Handlers
 		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @private
+		 */
+		private function onUpdateManagerFinished():void
+		{
+			_updateManager.dispose();
+			complete();
+		}
 	}
 }

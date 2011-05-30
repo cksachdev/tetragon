@@ -8,10 +8,12 @@ package base.core.update
 	import air.update.events.StatusUpdateEvent;
 	import air.update.events.UpdateEvent;
 
+	import base.AppInfo;
 	import base.core.debug.Log;
 	import base.data.Registry;
 
-	import flash.desktop.NativeApplication;
+	import com.hexagonstar.signals.Signal;
+
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.ProgressEvent;
@@ -34,6 +36,12 @@ package base.core.update
 		private var _isFirstRun:Boolean;
 		private var _isInstallPostponed:Boolean = false;
 		private var _checkAfterInitialize:Boolean = true;
+		
+		//-----------------------------------------------------------------------------------------
+		// Properties
+		//-----------------------------------------------------------------------------------------
+		
+		private var _finishedSignal:Signal;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -61,6 +69,16 @@ package base.core.update
 		
 		
 		/**
+		 * Disposes the class.
+		 */
+		public function dispose():void
+		{
+			_finishedSignal.removeAll();
+			disposeUpdater();
+		}
+		
+		
+		/**
 		 * Returns a String Representation of the class.
 		 * 
 		 * @return A String Representation of the class.
@@ -72,26 +90,27 @@ package base.core.update
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Event Handlers
+		// Accessors
 		//-----------------------------------------------------------------------------------------
 		
-		private function onBeforeInstall(e:UpdateEvent):void
+		public function get finishedSignal():Signal
 		{
-			if (_isInstallPostponed)
-			{
-				e.preventDefault();
-				_isInstallPostponed = false;
-			}
+			return _finishedSignal;
 		}
 		
+		
+		//-----------------------------------------------------------------------------------------
+		// Event Handlers
+		//-----------------------------------------------------------------------------------------
 		
 		private function onUpdaterInitialized(e:UpdateEvent):void
 		{
 			_isFirstRun = _updater.isFirstRun;
-			_applicationName = getApplicationName();
+			_applicationName = AppInfo.NAME; //getApplicationName();
 			_currentVersion = _updater.currentVersion;
 			Log.debug("Initialized (current version: " + _currentVersion + ").", this);
 			if (_checkAfterInitialize) _updater.checkNow();
+			else finish();
 		}
 		
 		
@@ -100,19 +119,27 @@ package base.core.update
 			e.preventDefault();
 			if (e.available)
 			{
-				_description = getUpdateDescription(e.details);
+				/* Extract update description notes. */
+				if (e.details && e.details.length == 1) _description = e.details[0][1];
+				else _description = "";
+				
 				_updateVersion = e.version;
 				Log.debug("Update available: v" + _updateVersion, this);
-				createDialog(UpdateDialog.UPDATE_AVAILABLE);
+				createDialog(UpdateDialog.STATUS_AVAILABLE);
+			}
+			else
+			{
+				finish();
 			}
 		}
 		
 		
 		private function onStatusUpdateError(e:StatusUpdateErrorEvent):void
 		{
+			/* Could not reach the update file on the server. Don't bother! */
 			e.preventDefault();
-			if (!_dialog) createDialog(UpdateDialog.UPDATE_ERROR);
-			else _dialog.currentState = UpdateDialog.UPDATE_ERROR;
+			Log.debug("Could not get update status (" + e.text + ").", this);
+			finish();
 		}
 		
 		
@@ -121,12 +148,12 @@ package base.core.update
 			e.preventDefault();
 			if (e.available)
 			{
-				_dialog.currentState = UpdateDialog.UPDATE_DOWNLOADING;
+				_dialog.currentState = UpdateDialog.STATUS_DOWNLOADING;
 				_updater.downloadUpdate();
 			}
 			else
 			{
-				_dialog.currentState = UpdateDialog.UPDATE_ERROR;
+				_dialog.currentState = UpdateDialog.STATUS_ERROR;
 			}
 		}
 		
@@ -134,7 +161,7 @@ package base.core.update
 		private function onStatusFileUpdateError(e:StatusFileUpdateErrorEvent):void
 		{
 			e.preventDefault();
-			_dialog.currentState = UpdateDialog.UPDATE_ERROR;
+			_dialog.currentState = UpdateDialog.STATUS_ERROR;
 		}
 		
 		
@@ -144,14 +171,43 @@ package base.core.update
 			if (_dialog)
 			{
 				_dialog.errorText = e.text;
-				_dialog.currentState = UpdateDialog.UPDATE_ERROR;
+				_dialog.currentState = UpdateDialog.STATUS_ERROR;
 			}
 		}
-
-
+		
+		
 		private function onCheckUpdate(e:Event):void
 		{
 			_updater.checkNow();
+		}
+		
+		
+		private function onDownloadUpdate(e:Event):void
+		{
+			_dialog.currentState = UpdateDialog.STATUS_DOWNLOADING;
+			_updater.downloadUpdate();
+		}
+		
+		
+		private function onDownloadProgress(e:ProgressEvent):void
+		{
+			_dialog.currentState = UpdateDialog.STATUS_DOWNLOADING;
+			var percent:Number = (e.bytesLoaded / e.bytesTotal) * 100;
+			_dialog.updateDownloadProgress(percent);
+		}
+		
+		
+		private function onDownloadComplete(e:UpdateEvent):void
+		{
+			e.preventDefault();
+			_dialog.currentState = UpdateDialog.STATUS_INSTALL;
+		}
+		
+		
+		private function onDownloadError(e:DownloadErrorEvent):void
+		{
+			e.preventDefault();
+			_dialog.currentState = UpdateDialog.STATUS_ERROR;
 		}
 		
 		
@@ -166,40 +222,17 @@ package base.core.update
 			_isInstallPostponed = true;
 			_updater.installUpdate();
 			disposeDialog();
+			finish();
 		}
 		
 		
-		private function onDownloadUpdate(e:Event):void
+		private function onBeforeInstall(e:UpdateEvent):void
 		{
-			_updater.downloadUpdate();
-		}
-		
-		
-		private function onDownloadStarted(e:UpdateEvent):void
-		{
-			_dialog.currentState = UpdateDialog.UPDATE_DOWNLOADING;
-		}
-		
-		
-		private function onDownloadProgress(e:ProgressEvent):void
-		{
-			_dialog.currentState = UpdateDialog.UPDATE_DOWNLOADING;
-			var percent:Number = (e.bytesLoaded / e.bytesTotal) * 100;
-			_dialog.updateDownloadProgress(percent);
-		}
-		
-		
-		private function onDownloadComplete(e:UpdateEvent):void
-		{
-			e.preventDefault();
-			_dialog.currentState = UpdateDialog.INSTALL_UPDATE;
-		}
-		
-		
-		private function onDownloadError(e:DownloadErrorEvent):void
-		{
-			e.preventDefault();
-			_dialog.currentState = UpdateDialog.UPDATE_ERROR;
+			if (_isInstallPostponed)
+			{
+				e.preventDefault();
+				_isInstallPostponed = false;
+			}
 		}
 		
 		
@@ -207,6 +240,7 @@ package base.core.update
 		{
 			_updater.cancelUpdate();
 			disposeDialog();
+			finish();
 		}
 		
 		
@@ -216,6 +250,7 @@ package base.core.update
 		
 		private function setup():void
 		{
+			if (!_finishedSignal) _finishedSignal = new Signal();
 			if (!_updater)
 			{
 				_updater = new ApplicationUpdater();
@@ -223,7 +258,6 @@ package base.core.update
 				_updater.addEventListener(StatusUpdateEvent.UPDATE_STATUS, onStatusUpdate);
 				_updater.addEventListener(UpdateEvent.BEFORE_INSTALL, onBeforeInstall);
 				_updater.addEventListener(StatusUpdateErrorEvent.UPDATE_ERROR, onStatusUpdateError);
-				_updater.addEventListener(UpdateEvent.DOWNLOAD_START, onDownloadStarted);
 				_updater.addEventListener(ProgressEvent.PROGRESS, onDownloadProgress);
 				_updater.addEventListener(UpdateEvent.DOWNLOAD_COMPLETE, onDownloadComplete);
 				_updater.addEventListener(DownloadErrorEvent.DOWNLOAD_ERROR, onDownloadError);
@@ -256,14 +290,13 @@ package base.core.update
 		}
 		
 		
-		private function dispose():void
+		private function disposeUpdater():void
 		{
 			if (_updater)
 			{
 				_updater.removeEventListener(UpdateEvent.INITIALIZED, onUpdaterInitialized);
 				_updater.removeEventListener(StatusUpdateEvent.UPDATE_STATUS, onStatusUpdate);
 				_updater.removeEventListener(StatusUpdateErrorEvent.UPDATE_ERROR, onStatusUpdateError);
-				_updater.removeEventListener(UpdateEvent.DOWNLOAD_START, onDownloadStarted);
 				_updater.removeEventListener(ProgressEvent.PROGRESS, onDownloadProgress);
 				_updater.removeEventListener(UpdateEvent.DOWNLOAD_COMPLETE, onDownloadComplete);
 				_updater.removeEventListener(DownloadErrorEvent.DOWNLOAD_ERROR, onDownloadError);
@@ -293,79 +326,11 @@ package base.core.update
 		
 		
 		/**
-		 * Getter method to get the version of the application
-		 *
-		 * @return String Version of application
+		 * @private
 		 */
-		private function getApplicationVersion():String
+		private function finish():void
 		{
-			var appXML:XML = NativeApplication.nativeApplication.applicationDescriptor;
-			var ns:Namespace = appXML.namespace();
-			return appXML.ns::version;
-		}
-		
-		
-		/**
-		 * Getter method to get the name of the application file
-		 *
-		 * @return String name of application
-		 */
-		private function getApplicationFileName():String
-		{
-			var appXML:XML = NativeApplication.nativeApplication.applicationDescriptor;
-			var ns:Namespace = appXML.namespace();
-			return appXML.ns::filename;
-		}
-		
-		
-		/**
-		 * Getter method to get the name of the application, this does not support multi-language.
-		 * Based on a method from Adobes ApplicationUpdaterDialogs.mxml, which is part of Adobes
-		 * AIR Updater Framework.
-		 *
-		 * @return String name of application
-		 */
-		private function getApplicationName():String
-		{
-			var applicationName:String;
-			var xmlNS:Namespace = new Namespace("http://www.w3.org/XML/1998/namespace");
-			var xml:XML = NativeApplication.nativeApplication.applicationDescriptor;
-			var ns:Namespace = xml.namespace();
-			
-			// filename is mandatory
-			var elem:XMLList = xml.ns::filename;
-			
-			// use name is if it exists in the application descriptor
-			if (XMLList(xml.ns::name).length() != 0)
-			{
-				elem = XMLList(xml.ns::name);
-			}
-			
-			// See if element contains simple content
-			if (elem.hasSimpleContent())
-			{
-				applicationName = elem.toString();
-			}
-			
-			return applicationName;
-		}
-		
-		
-		/**
-		 * Helper method to get release notes, this does not support multi-language.
-		 * Based on a method from Adobes ApplicationUpdaterDialogs.mxml, which is part of Adobes AIR Updater Framework
-		 *
-		 * @param detail Array of details
-		 * @return String Release notes depending on locale chain
-		 */
-		protected function getUpdateDescription(details:Array):String
-		{
-			var text:String = "";
-			if (details.length == 1)
-			{
-				text = details[0][1];
-			}
-			return text;
+			_finishedSignal.dispatch();
 		}
 	}
 }

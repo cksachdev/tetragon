@@ -30,6 +30,7 @@ package base
 	import base.assist.*;
 	import base.command.Command;
 	import base.command.CommandManager;
+	import base.command.env.CheckUpdateCommand;
 	import base.command.env.InitApplicationCommand;
 	import base.core.debug.Console;
 	import base.core.debug.FPSMonitor;
@@ -306,13 +307,30 @@ package base
 		 * 
 		 * @param command The application init command that executed the init phase.
 		 */
-		private function onAppInitComplete(command:Command):void 
+		private function onAppInitComplete(command:Command):void
 		{
-			if (_assistor) _assistor.executePostInitCommands();
-			
+			CONFIG::IS_DESKTOP_BUILD
+			{
+				if (Registry.config.updateEnabled && Registry.config.updateURL != null
+					&& Registry.config.updateURL.length > 0)
+				{
+					commandManager.execute(new CheckUpdateCommand(), onCheckUpdateComplete);
+					return;
+				}
+			}
+			onCheckUpdateComplete(null);
+		}
+		
+		
+		/**
+		 * Invoked once the update check has completed.
+		 */
+		private function onCheckUpdateComplete(command:Command):void
+		{
 			/* Time to open the initial application state. */
 			stateManager.start();
 		}
+		
 		
 		
 		/**

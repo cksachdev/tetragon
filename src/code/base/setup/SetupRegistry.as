@@ -37,6 +37,8 @@ package base.setup
 	import base.view.ScreenManager;
 
 	import com.hexagonstar.util.reflection.getClassName;
+
+	import flash.text.Font;
 	
 	
 	/**
@@ -82,6 +84,7 @@ package base.setup
 		 */
 		public function execute():void
 		{
+			registerFonts();
 			if (_cli) registerCLICommands();
 			registerResourceFileTypes();
 			registerComplexTypes();
@@ -90,6 +93,15 @@ package base.setup
 			registerEntityComponents();
 			registerStates();
 			registerScreens();
+		}
+		
+		
+		/**
+		 * Used to register fonts that arew embedded in a SWC.
+		 */
+		public function registerFonts():void
+		{
+			/* Abstract method! */
 		}
 		
 		
@@ -218,6 +230,15 @@ package base.setup
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @param fontClass
+		 */
+		protected function registerFont(fontClass:Class):void
+		{
+			Font.registerFont(fontClass);
+		}
+		
 		
 		/**
 		 * @param category

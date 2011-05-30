@@ -43,6 +43,16 @@ package base.setup
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
+		
+		override public function registerFonts():void
+		{
+			registerFont(TerminalscopeFont);
+			registerFont(TerminalscopeInverseFont);
+			registerFont(BitstreamVeraSansFont);
+			registerFont(BitstreamVeraSansBoldFont);
+		}
+		
+		
 		/**
 		 * CLI commands that should be available for all build types.
 		 */
