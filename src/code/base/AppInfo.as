@@ -36,9 +36,9 @@ package base
 		public static const ID:String				= "com.hexagonstar.tetragon";
 		public static const NAME:String				= "Tetragon Demo Application";
 		public static const DESCRIPTION:String		= "Tetragon Demo Application Test Build";
-		public static const VERSION:String			= "1.0.0";
-		public static const BUILD:String			= "6448";
-		public static const BUILD_DATE:String		= "30-May-2011 21:56";
+		public static const VERSION:String			= "1.0.1";
+		public static const BUILD:String			= "6478";
+		public static const BUILD_DATE:String		= "31-May-2011 23:16";
 		public static const MILESTONE:String		= "Sol";
 		public static const BUILD_TYPE:String		= "desktop";
 		public static const RELEASE_STAGE:String	= "beta";
