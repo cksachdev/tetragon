@@ -37,7 +37,6 @@ package base.core.update
 	import com.hexagonstar.ui.controls.TextArea;
 	import com.hexagonstar.util.display.StageReference;
 
-	import flash.display.Bitmap;
 	import flash.display.NativeWindow;
 	import flash.display.NativeWindowInitOptions;
 	import flash.display.NativeWindowSystemChrome;
@@ -174,7 +173,8 @@ package base.core.update
 		}
 		public function set description(v:String):void
 		{
-			_updateDescription = v;
+			/* Remove extraneous line-breaks */
+			_updateDescription = v.replace(/(.+)\r\n/g, "$1\n");
 		}
 		public function set errorText(v:String):void
 		{
@@ -231,7 +231,7 @@ package base.core.update
 			
 			var bg:RectangleShape = new RectangleShape(w, h, 0x262626);
 			stage.addChild(bg);
-			var icon:Bitmap = new Bitmap(new UpdateIcon());
+			var icon:UpdateDialogIcon = new UpdateDialogIcon();
 			icon.x = 10;
 			icon.y = 10;
 			stage.addChild(icon);
