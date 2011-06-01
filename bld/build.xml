@@ -17,6 +17,10 @@
 	<property file="${env.properties}"/>
 	<taskdef resource="flexTasks.tasks" classpath="${flextasks.jar}"/>
 	
+	<loadresource property="air.desktop.updatenotes">
+		<file file="${templates.air.shared}/${air.desktop.updatenotes.file}"/>
+	</loadresource>
+	
 	
 	<!-- == DEFAULT TARGETS =================================================================== -->
 	
@@ -699,6 +703,9 @@
 				<arg value="-C"/>
 				<arg value="${path.bin}"/>
 				<arg value="icons"/>
+				<arg value="-C"/>
+				<arg value="${templates.air.shared}"/>
+				<arg value="${air.desktop.updatenotes.file}"/>
 				<arg value="-C"/>
 				<arg value="${path.bin}"/>
 				<arg value="${resource.folder}"/>
