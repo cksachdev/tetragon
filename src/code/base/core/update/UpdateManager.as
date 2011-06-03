@@ -1,11 +1,17 @@
 package base.core.update
 {
+	import air.update.ApplicationUpdater;
+	import air.update.events.DownloadErrorEvent;
+	import air.update.events.StatusFileUpdateErrorEvent;
+	import air.update.events.StatusFileUpdateEvent;
+	import air.update.events.StatusUpdateErrorEvent;
+	import air.update.events.StatusUpdateEvent;
+	import air.update.events.UpdateEvent;
+
 	import base.AppInfo;
 	import base.core.debug.Log;
 	import base.data.Registry;
 
-	import com.hexagonstar.appupdater.ApplicationUpdater;
-	import com.hexagonstar.appupdater.events.*;
 	import com.hexagonstar.signals.Signal;
 
 	import flash.events.ErrorEvent;
@@ -296,7 +302,7 @@ package base.core.update
 				_updater.removeEventListener(DownloadErrorEvent.DOWNLOAD_ERROR, onDownloadError);
 				_updater.removeEventListener(UpdateEvent.BEFORE_INSTALL, onBeforeInstall);
 				_updater.removeEventListener(ErrorEvent.ERROR, onUpdateError);
-				_updater.dispose();
+				//_updater.dispose();
 				_updater = null;
 			}
 			disposeDialog();
