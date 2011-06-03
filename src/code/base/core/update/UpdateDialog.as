@@ -27,6 +27,8 @@
  */
 package base.core.update
 {
+	import air.update.ui.UpdateUI;
+
 	import base.util.ui.createButton;
 	import base.util.ui.createLabel;
 	import base.util.ui.createTextArea;
@@ -35,47 +37,21 @@ package base.core.update
 	import com.hexagonstar.ui.controls.Button;
 	import com.hexagonstar.ui.controls.Label;
 	import com.hexagonstar.ui.controls.TextArea;
-	import com.hexagonstar.util.display.StageReference;
 
-	import flash.display.NativeWindow;
-	import flash.display.NativeWindowInitOptions;
-	import flash.display.NativeWindowSystemChrome;
-	import flash.display.NativeWindowType;
-	import flash.display.Sprite;
-	import flash.display.StageAlign;
-	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.geom.Rectangle;
 	import flash.text.TextFormat;
 	
 	
 	/**
 	 * UpdateDialog class
 	 */
-	public class UpdateDialog extends NativeWindow
+	public class UpdateDialog extends UpdateUI
 	{
-		//-----------------------------------------------------------------------------------------
-		// Constants
-		//-----------------------------------------------------------------------------------------		
-		
-		public static var STATUS_DOWNLOADING:String		= "statusDownloading";
-		public static var STATUS_INSTALL:String			= "statusInstall";
-		public static var STATUS_AVAILABLE:String		= "statusAvailable";
-		public static var STATUS_ERROR:String			= "statusError";
-		
-		public static var EVENT_CHECK_UPDATE:String		= "eventCheckUpdate";
-		public static var EVENT_INSTALL_UPDATE:String	= "eventInstallUpdate";
-		public static var EVENT_DOWNLOAD_UPDATE:String	= "eventDownloadUpdate";
-		public static var EVENT_CANCEL_UPDATE:String	= "eventCancelUpdate";
-		public static var EVENT_INSTALL_LATER:String	= "eventInstallLater";
-		
-		
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _uiContainer:Sprite;
 		private var _titleLabel:Label;
 		private var _messageLabel:Label;
 		private var _releaseNotes:TextArea;
@@ -86,99 +62,15 @@ package base.core.update
 		private var _textFormat:TextFormat;
 		private var _notesFormat:TextFormat;
 		
-		private var _isFirstRun:Boolean;
-		private var _currentState:String;
-		
-		private var _currentVersion:String = "";
-		private var _updateVersion:String = "";
-		private var _updateDescription:String = "";
-		private var _applicationName:String = "";
-		private var _errorText:String;
-		private var _progress:int = 0;
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Constructor
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * Creates a new instance of the class.
-		 */
-		public function UpdateDialog()
-		{
-			var wo:NativeWindowInitOptions = new NativeWindowInitOptions();
-			wo.systemChrome = NativeWindowSystemChrome.STANDARD;
-			wo.type = NativeWindowType.NORMAL;
-			wo.maximizable = false;
-			wo.minimizable = false;
-			wo.resizable = false;
-			
-			super(wo);
-			setup();
-		}
-		
 		
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
-		public function open():void
-		{
-			activate();
-			orderToFront();
-			visible = true;
-		}
-		
-		
-		public function updateDownloadProgress(progress:int):void
+		override public function updateProgress(progress:int):void
 		{
 			_progress = progress;
 			if (_messageLabel) _messageLabel.text = "Progress: " + _progress + "%";
-		}
-		
-		
-		public function dispose():void
-		{
-			stage.removeChild(_uiContainer);
-			removeUIListeners();
-			removeEventListener(Event.CLOSE, onClose);
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Accessors
-		//-----------------------------------------------------------------------------------------
-		
-		public function set currentState(v:String):void
-		{
-			if (v == _currentState) return;
-			_currentState = v;
-			switchUIState();
-		}
-		public function set isFirstRun(v:Boolean):void
-		{
-			_isFirstRun = v;
-		}
-		public function set currentVersion(v:String):void
-		{
-			_currentVersion = v;
-		}
-		public function set upateVersion(v:String):void
-		{
-			_updateVersion = v;
-		}
-		public function set applicationName(v:String):void
-		{
-			_applicationName = v;
-		}
-		public function set description(v:String):void
-		{
-			/* Remove extraneous line-breaks */
-			_updateDescription = v.replace(/(.+)\r\n/g, "$1\n");
-		}
-		public function set errorText(v:String):void
-		{
-			_errorText = v;
 		}
 		
 		
@@ -204,71 +96,27 @@ package base.core.update
 		}
 		
 		
-		private function onClose(e:Event):void
-		{
-			dispatchEvent(new Event(EVENT_CANCEL_UPDATE));
-		}
-		
-		
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
-		private function setup():void
+		override protected function setup():void
 		{
-			visible = false;
-			title = "Update";
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP_LEFT;
-			var w:int = 520;
-			var h:int = 330;
-			var p:NativeWindow = StageReference.stage.nativeWindow;
-			bounds = new Rectangle(int(p.x + (p.width * 0.5) - (w * 0.5)), int(p.y + (p.height * 0.5) - (h * 0.5)), w, h);
-			
 			_titleFormat = new TextFormat("Bitstream Vera Sans", 26, 0xFFFFFF);
 			_textFormat = new TextFormat("Bitstream Vera Sans", 12, 0xEEEEEE);
 			_notesFormat = new TextFormat("Bitstream Vera Sans", 10, 0x222222);
 			
-			var bg:RectangleShape = new RectangleShape(w, h, 0x262626);
-			stage.addChild(bg);
+			var bg:RectangleShape = new RectangleShape(520, 330, 0x262626);
 			var icon:UpdateDialogIcon = new UpdateDialogIcon();
 			icon.x = 10;
 			icon.y = 10;
-			stage.addChild(icon);
 			
-			_uiContainer = new Sprite();
-			stage.addChild(_uiContainer);
-			
-			addEventListener(Event.CLOSE, onClose);
+			addChild(bg);
+			addChild(icon);
 		}
 		
 		
-		private function switchUIState():void
-		{
-			while(_uiContainer.numChildren > 0)
-			{
-				_uiContainer.removeChildAt(0);
-			}
-			removeUIListeners();
-			switch (_currentState)
-			{
-				case STATUS_AVAILABLE:
-					createUpdateAvailableState();
-					break;
-				case STATUS_DOWNLOADING:
-					createUpdateDownloadState();
-					break;
-				case STATUS_INSTALL:
-					createUpdateInstallState();
-					break;
-				case STATUS_ERROR:
-					createUpdateErrorState();
-					break;
-			}
-		}
-		
-		
-		private function createUpdateAvailableState():void
+		override protected function createUpdateAvailableState():void
 		{
 			_titleLabel = createLabel(110, 10, 360, 35, _titleFormat, false, "Update Available");
 			_uiContainer.addChild(_titleLabel);
@@ -293,7 +141,7 @@ package base.core.update
 		}
 		
 		
-		private function createUpdateDownloadState():void
+		override protected function createUpdateDownloadState():void
 		{
 			_titleLabel = createLabel(110, 10, 360, 35, _titleFormat, false, "Downloading Update");
 			_uiContainer.addChild(_titleLabel);
@@ -309,7 +157,7 @@ package base.core.update
 		}
 		
 		
-		private function createUpdateInstallState():void
+		override protected function createUpdateInstallState():void
 		{
 			_titleLabel = createLabel(110, 10, 360, 35, _titleFormat, false, "Install Update");
 			_uiContainer.addChild(_titleLabel);
@@ -333,7 +181,7 @@ package base.core.update
 		}
 		
 		
-		private function createUpdateErrorState():void
+		override protected function createUpdateErrorState():void
 		{
 			_titleLabel = createLabel(110, 10, 360, 35, _titleFormat, false, "Update Error");
 			_uiContainer.addChild(_titleLabel);
@@ -351,7 +199,7 @@ package base.core.update
 		}
 		
 		
-		private function removeUIListeners():void
+		override protected function removeUIListeners():void
 		{
 			if (_okButton) _okButton.removeEventListener(MouseEvent.CLICK, onOKButtonClick);
 			if (_cancelButton) _cancelButton.removeEventListener(MouseEvent.CLICK, onCancelButtonClick);
