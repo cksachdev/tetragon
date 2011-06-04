@@ -36,6 +36,8 @@ package base.core.update
 	import com.hexagonstar.display.shape.RectangleShape;
 	import com.hexagonstar.ui.controls.Button;
 	import com.hexagonstar.ui.controls.Label;
+	import com.hexagonstar.ui.controls.ProgressBar;
+	import com.hexagonstar.ui.controls.ProgressBarMode;
 	import com.hexagonstar.ui.controls.TextArea;
 
 	import flash.events.Event;
@@ -55,6 +57,7 @@ package base.core.update
 		private var _titleLabel:Label;
 		private var _messageLabel:Label;
 		private var _releaseNotes:TextArea;
+		private var _progressBar:ProgressBar;
 		private var _okButton:Button;
 		private var _cancelButton:Button;
 		
@@ -71,6 +74,7 @@ package base.core.update
 		{
 			_progress = progress;
 			if (_messageLabel) _messageLabel.text = "Progress: " + _progress + "%";
+			if (_progressBar) _progressBar.setProgress(_progress, 100);
 		}
 		
 		
@@ -146,10 +150,16 @@ package base.core.update
 			_titleLabel = createLabel(110, 10, 360, 35, _titleFormat, false, "Downloading Update");
 			_uiContainer.addChild(_titleLabel);
 			
-			_messageLabel = createLabel(110, 50, 360, 94, _textFormat, true, "Progress: " + _progress + "%");
+			_messageLabel = createLabel(110, 80, 360, 18, _textFormat, true, "Progress: " + _progress + "%");
 			_uiContainer.addChild(_messageLabel);
 			
-			// TODO Add progress bar!
+			_progressBar = new ProgressBar();
+			_progressBar.x = 110;
+			_progressBar.y = 102;
+			_progressBar.width = 360;
+			_progressBar.height = 10;
+			_progressBar.mode = ProgressBarMode.MANUAL;
+			_uiContainer.addChild(_progressBar);
 			
 			_cancelButton = createButton(110, 250, 140, 28, false, "Cancel");
 			_cancelButton.addEventListener(MouseEvent.CLICK, onCancelButtonClick);
