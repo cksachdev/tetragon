@@ -25,33 +25,22 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base
+package base.view.dummy
 {
+	import base.view.Display;
+	
+	
 	/**
-	 * AppInfo
-	 * Ant auto-generated application information class. Do not edit!
+	 * A dummy display.
 	 */
-	public final class AppInfo
+	public class DummyDisplay extends Display
 	{
-		public static const ID:String				= "com.hexagonstar.tetragon";
-		public static const NAME:String				= "Tetragon Demo Application";
-		public static const DESCRIPTION:String		= "Tetragon Demo Application Test Build";
-		public static const VERSION:String			= "1.0.0";
-		public static const BUILD:String			= "6700";
-		public static const BUILD_DATE:String		= "06-June-2011 15:58";
-		public static const MILESTONE:String		= "Sol";
-		public static const BUILD_TYPE:String		= "desktop";
-		public static const RELEASE_STAGE:String	= "beta";
-		public static const COPYRIGHT:String		= "Hexagon Star Softworks";
-		public static const PUBLISHER:String		= "Hexagon Star Softworks";
-		public static const CREATOR:String			= "Hexagon Star Softworks";
-		public static const CONTRIBUTOR:String		= "Hexagon Star Softworks";
-		public static const YEAR:String				= "2011";
-		public static const WEBSITE:String			= "http://tetragon.hexagonstar.com/";
-		public static const LANGUAGE:String			= "en";
-		public static const FILENAME:String			= "tetragon";
-		public static const DEFAULT_WIDTH:int		= 1024;
-		public static const DEFAULT_HEIGHT:int		= 640;
-		public static const IS_DEBUG:Boolean		= false;
+		//-----------------------------------------------------------------------------------------
+		// Public Methods
+		//-----------------------------------------------------------------------------------------
+		
+		override public function start():void
+		{
+		}
 	}
 }

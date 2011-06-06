@@ -7,6 +7,4 @@
 	<splashScreenWaitTime>6</splashScreenWaitTime>
 	<showSplashScreen>true</showSplashScreen>
 	<allowSplashAbort>true</allowSplashAbort>
-	
-	<essentialIncapMinHealth>20</essentialIncapMinHealth>
 </settings>

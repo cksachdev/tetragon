@@ -43,8 +43,6 @@ package base
 	import base.data.Registry;
 	import base.io.key.KeyManager;
 	import base.io.resource.ResourceManager;
-	import base.signals.RenderSignal;
-	import base.signals.TickSignal;
 	import base.state.StateManager;
 	import base.view.ScreenManager;
 
@@ -94,9 +92,6 @@ package base
 		//-----------------------------------------------------------------------------------------
 		// Signals
 		//-----------------------------------------------------------------------------------------
-		
-		public var tickSignal:TickSignal;
-		public var renderSignal:RenderSignal;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -424,8 +419,6 @@ package base
 			_keyManager = new KeyManager();
 			
 			/* Create entity architecture-related objects. */
-			tickSignal = new TickSignal();
-			renderSignal = new RenderSignal();
 			_entityManager = new EntityManager();
 			_entitySystemManager = new EntitySystemManager();
 			_entityFactory = new EntityFactory();

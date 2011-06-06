@@ -25,74 +25,76 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base
+package base.view.dummy
 {
-	import base.setup.*;
+	import base.view.Screen;
+
+	import flash.events.Event;
 	
 	
 	/**
-	 * A class that contains a list of base/extra setup classes which are being
-	 * initialized during the application init phase.
-	 * 
-	 * <p>The InitApplicationCommand uses this class briefly to get all setup classes that
-	 * are compiled into the build and instantiates them so that the setup packages can be
-	 * connected to the base engine.</p>
-	 * 
-	 * <p>TODO Utimately make this class being auto-generated through the build process
-	 * and find a way to conviently set in the build properties which setup classes should
-	 * be included in the build. (If Ant only would support iteration!!)</p>
+	 * A dummy screen.
 	 */
-	public final class AppSetups
+	public class DummyScreen extends Screen
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _setups:Array;
+		private var _display:DummyDisplay;
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Constructor
+		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Creates a new instance of the class.
+		 * @private
 		 */
-		public function AppSetups()
+		private function onStageResize(e:Event):void
 		{
-			_setups = [];
-			
-			/* Add Desktop-specific setup if this is an AIR Desktop build. */
-			CONFIG::IS_DESKTOP_BUILD
-			{
-				_setups.push(DesktopSetup);
-			}
-			/* Add Android-specific setup if this is an AIR Android build. */
-			CONFIG::IS_ANDROID_BUILD
-			{
-				_setups.push(AndroidSetup);
-			}
-			/* Add iOS-specific setup if this is an AIR iOS build. */
-			CONFIG::IS_IOS_BUILD
-			{
-				_setups.push(IOSSetup);
-			}
-			
-			/* You can add setups for extra code branches here if needed. */
+			layoutChildren();
 		}
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Accessors
+		// Private Methods
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * An array of qualified class names to setup classes that set up additional
-		 * base and extra packages for use with the application.
-		 */
-		public function get setups():Array
+		override protected function createChildren():void
 		{
-			return _setups;
+			_display = new DummyDisplay();
+		}
+		
+		
+		override protected function registerDisplays():void
+		{
+			registerDisplay(_display);
+		}
+		
+		
+		override protected function addChildren():void 
+		{
+			addChild(_display);
+		}
+		
+		
+		override protected function addListeners():void
+		{
+			main.stage.addEventListener(Event.RESIZE, onStageResize);
+		}
+		
+		
+		override protected function removeListeners():void
+		{
+			main.stage.removeEventListener(Event.RESIZE, onStageResize);
+		}
+		
+		
+		override protected function layoutChildren():void
+		{
+			_display.x = getHorizontalCenter(_display);
+			_display.y = getVerticalCenter(_display);
 		}
 	}
 }

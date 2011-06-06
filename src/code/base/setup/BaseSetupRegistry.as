@@ -31,6 +31,7 @@ package base.setup
 	import base.command.env.*;
 	import base.command.file.*;
 	import base.state.*;
+	import base.view.dummy.DummyScreen;
 	import base.view.splash.*;
 	
 	
@@ -144,6 +145,7 @@ package base.setup
 		override public function registerStates():void
 		{
 			registerState("splashState", SplashState);
+			registerState("dummyState", DummyState);
 		}
 		
 		
@@ -153,6 +155,7 @@ package base.setup
 		override public function registerScreens():void
 		{
 			registerScreen("splashScreen", SplashScreen);
+			registerScreen("dummyScreen", DummyScreen);
 		}
 	}
 }

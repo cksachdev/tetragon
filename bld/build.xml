@@ -536,10 +536,6 @@
 				<define name="CONFIG::IS_MOBILE_BUILD" value="@{isMobileBuild}"/>
 				<define name="CONFIG::IS_ANDROID_BUILD" value="@{isAndroidBuild}"/>
 				<define name="CONFIG::IS_IOS_BUILD" value="@{isIOSBuild}"/>
-				<define name="CONFIG::EXTRA_GAME" value="${extra.game}"/>
-				<define name="CONFIG::EXTRA_RPG" value="${extra.rpg}"/>
-				<define name="CONFIG::EXTRA_TBS" value="${extra.tbs}"/>
-				<define name="CONFIG::EXTRA_DEMO" value="${extra.demo}"/>
 				<define name="CONFIG::USE_EMBEDDED_RESOURCES" value="${resource.useEmbed}"/>
 				
 				<!-- Project Source Path -->

@@ -1,14 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-	=====================================================================================
-	RESOURCE INDEX FILE
-	=====================================================================================
-	This file defines all resource files that are being loaded by the application.
-	Every XML data file that should be loaded needs to be added in a 'file' tag and
-	requires a 'parserID' and a 'path' attribute. Files are being loaded in the same
-	order as they are added to this list.
-	=====================================================================================
--->
 <resources>
 	
 	<header version="1.0" entries=""/>
@@ -20,28 +10,7 @@
 	
 	<!-- ************************************************************************************** -->
 	<dataFiles>
-		<file id="testEntityFile" path="data/test/test_entities.xml" packageID="resourcePackage"/>
-		
 		<file id="settingsFile" path="data/settings.xml" packageID="resourcePackage"/>
-		<file id="worldSpaceFile" path="data/world/worldspaces.xml" packageID="resourcePackage"/>
-		<file id="cellsFile" path="data/cells/cells.xml" packageID="resourcePackage"/>
-		
-		<file id="tileSet1File" path="data/tilesets/tilesets1.xml" packageID="resourcePackage"/>
-		<file id="tileSet2File" path="data/tilesets/tilesets2.xml" packageID="resourcePackage"/>
-		<file id="fontTileSetFile" path="data/tilesets/font_tilesets.xml" packageID="resourcePackage"/>
-		<file id="tileMap1File" path="data/tilemaps/tilemaps1.xml" packageID="resourcePackage"/>
-		
-		<file id="spritesetsFile" path="data/sprites/sprites.xml" packageID="resourcePackage"/>
-		<file id="charactersFile" path="data/actors/characters.xml" packageID="resourcePackage"/>
-		<file id="baseEffectsFile" path="data/stats/base_effects.xml" packageID="resourcePackage"/>
-		<file id="statusEffectsFile" path="data/stats/status_effects.xml" packageID="resourcePackage"/>
-		<file id="attributesFile" path="data/stats/attributes.xml" packageID="resourcePackage"/>
-		<file id="skillsFile" path="data/stats/skills.xml" packageID="resourcePackage"/>
-		<file id="abilitiesFile" path="data/stats/abilities.xml" packageID="resourcePackage"/>
-		<file id="professionsFile" path="data/stats/professions.xml" packageID="resourcePackage"/>
-		<file id="itemsFile" path="data/items/items.xml" packageID="resourcePackage"/>
-		<file id="soundsFile" path="data/sounds/sounds.xml" packageID="resourcePackage"/>
-		<file id="musicFile" path="data/sounds/music.xml" packageID="resourcePackage"/>
 	</dataFiles>
 	
 	<!-- ************************************************************************************** -->
@@ -50,20 +19,13 @@
 			<transparent>
 			</transparent>
 			<opaque>
-				<resource id="tileSet1Image" path="images/tilesets/tileset_test.png" packageID="resourcePackage"/>
-				<resource id="tileSet2Image" path="images/tilesets/tileset_bd.png" packageID="resourcePackage"/>
-				<resource id="tileSet3Image" path="images/tilesets/tileset_hn.png" packageID="resourcePackage"/>
-				<resource id="fontDina08x16Image" path="images/fonts/font_dina_08x16.png" packageID="resourcePackage"/>
 			</opaque>
 		</image>
 		
 		<swf>
-			<resource id="swfTest" path="swf/test.swf" packageID="resourcePackage"/>
-			<resource id="particleSymbol" path="swf/particle_symbol.swf" packageID="resourcePackage"/>
 		</swf>
 		
 		<shader>
-			<resource id="shaderScanlines" path="shaders/scanlines.pbj" packageID="resourcePackage"/>
 		</shader>
 		
 		<audio>
@@ -75,148 +37,24 @@
 		</audio>
 		
 		<binary>
-			<resource id="testMesh" path="geometry/testmesh.obj" packageID="resourcePackage"/>
 		</binary>
 	</media>
 	
 	<!-- ************************************************************************************** -->
 	<entities>
-		
-		<group type="ParticleEmitter" fileID="testEntityFile">
-			<resource id="testParticleEmitter"/>
-		</group>
-		
-		<group type="Particle" fileID="testEntityFile">
-			<resource id="testParticle"/>
-		</group>
-		
 	</entities>
+	
+	<!-- ************************************************************************************** -->
+	<lists>
+	</lists>
 	
 	<!-- ************************************************************************************** -->
 	<data>
 		
-		<group type="Settings">
-			<resource id="settings" fileID="settingsFile"/>
+		<group type="Settings" fileID="settingsFile">
+			<resource id="settings"/>
 		</group>
 		
-		<group type="WorldSpace">
-			<resource id="testWorld" fileID="worldSpaceFile"/>
-		</group>
-		
-		<group type="Cell">
-			<resource id="cellOutside" fileID="cellsFile"/>
-			<resource id="cellChurch1" fileID="cellsFile"/>
-			<resource id="cellChurch2" fileID="cellsFile"/>
-			<resource id="cellChurch3" fileID="cellsFile"/>
-			<resource id="cellChurch4" fileID="cellsFile"/>
-			<resource id="cellHouse1" fileID="cellsFile"/>
-			<resource id="cellHouse2" fileID="cellsFile"/>
-			<resource id="cellHouse3" fileID="cellsFile"/>
-			<resource id="cellHouse4" fileID="cellsFile"/>
-			<resource id="cellHouse5" fileID="cellsFile"/>
-			<resource id="cellHouse6" fileID="cellsFile"/>
-			<resource id="cellHouse7" fileID="cellsFile"/>
-			<resource id="cellHouse8" fileID="cellsFile"/>
-			<resource id="cellHouse9" fileID="cellsFile"/>
-			<resource id="cellHouse10" fileID="cellsFile"/>
-			<resource id="cellHouse11" fileID="cellsFile"/>
-			<resource id="cellHouse12" fileID="cellsFile"/>
-			<resource id="cellBarn1" fileID="cellsFile"/>
-			<resource id="cellBarn2" fileID="cellsFile"/>
-			<resource id="cellBarn3" fileID="cellsFile"/>
-			<resource id="cellBarn4" fileID="cellsFile"/>
-		</group>
-		
-		<group type="TileMap">
-			<resource id="testTileMap" fileID="tileMap1File"/>
-		</group>
-		
-		<group type="TileSet">
-			<resource id="testTileSet" fileID="tileSet1File"/>
-			<resource id="bdTileSet" fileID="tileSet1File"/>
-			<resource id="hnTileSet" fileID="tileSet2File"/>
-			<resource id="tileSetDina08x16" fileID="fontTileSetFile"/>
-		</group>
-		
-		<group type="Sprite">
-			<resource id="spriteGerryKing" fileID="spritesetsFile"/>
-		</group>
-		
-		<group type="Character">
-			<resource id="charGerryKing" fileID="charactersFile"/>
-			<resource id="charAmandaBaxter" fileID="charactersFile"/>
-			<resource id="charWendyWatson" fileID="charactersFile"/>
-			<resource id="charBrianBone" fileID="charactersFile"/>
-			<resource id="charStuartPalmer" fileID="charactersFile"/>
-			<resource id="charJason" fileID="charactersFile"/>
-			<resource id="charVacationer7" fileID="charactersFile"/>
-			<resource id="charVacationer8" fileID="charactersFile"/>
-			<resource id="charVacationer9" fileID="charactersFile"/>
-			<resource id="charVacationer10" fileID="charactersFile"/>
-			<resource id="charVacationer11" fileID="charactersFile"/>
-		</group>
-		
-		<group type="Creature">
-		</group>
-		
-		<group type="BaseEffect">
-			<resource id="effectAim" fileID="baseEffectsFile"/>
-			<resource id="effectConfusionShot" fileID="baseEffectsFile"/>
-			<resource id="effectTorsoShot" fileID="baseEffectsFile"/>
-			<resource id="effectBuffEndorphineInjection" fileID="baseEffectsFile"/>
-		</group>
-		
-		<group type="StatusEffect">
-			<resource id="statusEffectDizzy" fileID="statusEffectsFile"/>
-		</group>
-		
-		<group type="Attribute">
-			<resource id="attributes" fileID="attributesFile"/>
-		</group>
-		
-		<group type="Skill">
-			<resource id="skillMeleeDefense" fileID="skillsFile"/>
-			<resource id="skillMeleeSpeed" fileID="skillsFile"/>
-			<resource id="skillMeleeAccuracy" fileID="skillsFile"/>
-			<resource id="skillMeleeDamage" fileID="skillsFile"/>
-			<resource id="skillRangedAccuracy" fileID="skillsFile"/>
-		</group>
-		
-		<group type="Ability">
-			<resource id="abilityTaunt" fileID="abilitiesFile"/>
-			<resource id="abilityKDRecovery" fileID="abilitiesFile"/>
-			<resource id="abilityCenterOfBeing" fileID="abilitiesFile"/>
-			<resource id="abilityConfusionShot" fileID="abilitiesFile"/>
-			<resource id="abilityAim" fileID="abilitiesFile"/>
-			<resource id="abilityTorsoShot" fileID="abilitiesFile"/>
-			<resource id="abilityEndorphineInjection" fileID="abilitiesFile"/>
-		</group>
-		
-		<group type="Profession">
-			<resource id="profBrawler" fileID="professionsFile"/>
-		</group>
-		
-		<group type="ItemWeapon">
-			<resource id="weaponAxe" fileID="itemsFile"/>
-			<resource id="weaponChainsaw" fileID="itemsFile"/>
-			<resource id="weaponFork" fileID="itemsFile"/>
-			<resource id="weaponMachete" fileID="itemsFile"/>
-			<resource id="weaponBat" fileID="itemsFile"/>
-			<resource id="weaponKnife" fileID="itemsFile"/>
-			<resource id="weaponCross" fileID="itemsFile"/>
-		</group>
-		
-		<group type="Sound">
-			<resource id="sfxScream" fileID="soundsFile"/>
-			<resource id="musicWachet" fileID="musicFile"/>
-			<resource id="musicHochzeit" fileID="musicFile"/>
-			<resource id="musicToccata" fileID="musicFile"/>
-			<resource id="musicFuge" fileID="musicFile"/>
-			<resource id="musicPicnic" fileID="musicFile"/>
-			<resource id="musicRobinHood" fileID="musicFile"/>
-			<resource id="musicTrauermarsch" fileID="musicFile"/>
-			<resource id="musicMcDonald" fileID="musicFile"/>
-		</group>
 	</data>
 	
 	<!-- ************************************************************************************** -->
@@ -225,21 +63,6 @@
 	
 	<!-- ************************************************************************************** -->
 	<text>
-		<resource id="textUI">
-			<locale lang="en" path="text/en/ui_text.xml" packageID="resourcePackage"/>
-			<locale lang="de"/>
-			<locale lang="jp"/>
-		</resource>
-		<resource id="textActors">
-			<locale lang="en" path="text/en/actors_text.xml" packageID="resourcePackage"/>
-			<locale lang="de"/>
-			<locale lang="jp"/>
-		</resource>
-		<resource id="textStats">
-			<locale lang="en" path="text/en/stats_text.xml" packageID="resourcePackage"/>
-			<locale lang="de"/>
-			<locale lang="jp"/>
-		</resource>
 	</text>
 	
 </resources>
