@@ -25,74 +25,41 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package base
+package base.command.cli
 {
-	import base.setup.*;
+	import base.AppInfo;
+	import base.command.CLICommand;
+
 	
-	
-	/**
-	 * A class that contains a list of base/extra setup classes which are being
-	 * initialized during the application init phase.
-	 * 
-	 * <p>The InitApplicationCommand uses this class briefly to get all setup classes that
-	 * are compiled into the build and instantiates them so that the setup packages can be
-	 * connected to the base engine.</p>
-	 * 
-	 * <p>TODO Utimately make this class being auto-generated through the build process
-	 * and find a way to conviently set in the build properties which setup classes should
-	 * be included in the build. (If Ant only would support iteration!!)</p>
-	 */
-	public final class AppSetups
+	public class OutputEngineInfoCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
-		// Properties
-		//-----------------------------------------------------------------------------------------
-		
-		private var _setups:Array;
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Constructor
+		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Creates a new instance of the class.
+		 * @inheritDoc
 		 */
-		public function AppSetups()
+		override public function execute():void 
 		{
-			_setups = [];
+			main.console.log(AppInfo.ENGINE_NAME
+				+ " v" + AppInfo.ENGINE_VERSION
+				+ " \"" + AppInfo.ENGINE_MILESTONE + "\"");
 			
-			/* Add Desktop-specific setup if this is an AIR Desktop build. */
-			CONFIG::IS_DESKTOP_BUILD
-			{
-				_setups.push(DesktopSetup);
-			}
-			/* Add Android-specific setup if this is an AIR Android build. */
-			CONFIG::IS_ANDROID_BUILD
-			{
-				_setups.push(AndroidSetup);
-			}
-			/* Add iOS-specific setup if this is an AIR iOS build. */
-			CONFIG::IS_IOS_BUILD
-			{
-				_setups.push(IOSSetup);
-			}
-			
-			/* You can add setups for extra code branches here if needed. */
+			complete();
 		}
 		
 		
 		//-----------------------------------------------------------------------------------------
-		// Accessors
+		// Getters & Setters
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * An array of qualified class names to setup classes that set up additional
-		 * base and extra packages for use with the application.
+		 * @inheritDoc
 		 */
-		public function get setups():Array
+		override public function get name():String 
 		{
-			return _setups;
+			return "outputEngineInfo";
 		}
 	}
 }

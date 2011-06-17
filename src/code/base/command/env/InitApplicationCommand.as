@@ -338,6 +338,9 @@ package base.command.env
 				+ " " + AppInfo.RELEASE_STAGE
 				+ " (" + AppInfo.BUILD_TYPE
 				+ (AppInfo.IS_DEBUG ? " debug" : "") + ")" + Console.LINED);
+			Log.info(AppInfo.ENGINE_NAME
+				+ " v" + AppInfo.ENGINE_VERSION
+				+ " \"" + AppInfo.ENGINE_MILESTONE + "\"");
 			if (main.console) main.console.welcome();
 			Log.linefeed();
 			

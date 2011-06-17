@@ -34,7 +34,7 @@
 	
 	<target name=".Pack Project" description="Creates a zipped version of the whole project.">
 		<cleanAll/>
-		<zip destfile="dst/${app.shortname}_${app.version}.zip"
+		<zip destfile="dst/${app.shortname}_${engine.version}.zip"
 			basedir=""
 			includes="art/**/**,bin/,bld/**/**,doc/,pub/,src/**/**,README"
 			excludes="doc/tetragon/,**/.svn,bld/build.number,**/**.~$lock"
@@ -365,6 +365,9 @@
 						<token key="default_width"		value="${app.width}"/>
 						<token key="default_height"		value="${app.height}"/>
 						<token key="is_debug"			value="@{debug}"/>
+						<token key="engine_name"		value="${engine.name}"/>
+						<token key="engine_version"		value="${engine.version}"/>
+						<token key="engine_milestone"	value="${engine.milestone}"/>
 					</replacetokens>
 				</filterchain>
 			</copy>
@@ -536,10 +539,6 @@
 				<define name="CONFIG::IS_MOBILE_BUILD" value="@{isMobileBuild}"/>
 				<define name="CONFIG::IS_ANDROID_BUILD" value="@{isAndroidBuild}"/>
 				<define name="CONFIG::IS_IOS_BUILD" value="@{isIOSBuild}"/>
-				<define name="CONFIG::EXTRA_GAME" value="${extra.game}"/>
-				<define name="CONFIG::EXTRA_RPG" value="${extra.rpg}"/>
-				<define name="CONFIG::EXTRA_TBS" value="${extra.tbs}"/>
-				<define name="CONFIG::EXTRA_DEMO" value="${extra.demo}"/>
 				<define name="CONFIG::USE_EMBEDDED_RESOURCES" value="${resource.useEmbed}"/>
 				
 				<!-- Project Source Path -->
@@ -555,7 +554,7 @@
 				<compiler.library-path dir="${FLEX_HOME}/frameworks/libs" append="false">
 					<include name="framework.swc"/>
 				</compiler.library-path>
-				<compiler.library-path dir="${FLEX_HOME}/frameworks/locale/en_US" append="false">
+				<compiler.library-path dir="${FLEX_HOME}/frameworks/locale/${app.localestring}" append="false">
 					<include name="*.swc"/>
 				</compiler.library-path>
 				

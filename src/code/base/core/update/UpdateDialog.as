@@ -27,8 +27,6 @@
  */
 package base.core.update
 {
-	import air.update.ui.UpdateUI;
-
 	import base.util.ui.createButton;
 	import base.util.ui.createLabel;
 	import base.util.ui.createProgressBar;
@@ -39,6 +37,7 @@ package base.core.update
 	import com.hexagonstar.ui.controls.Label;
 	import com.hexagonstar.ui.controls.ProgressBar;
 	import com.hexagonstar.ui.controls.TextArea;
+	import com.hexagonstar.update.ui.UpdateUI;
 
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -122,17 +121,17 @@ package base.core.update
 		
 		override protected function createUpdateAvailableState():void
 		{
-			_titleLabel = createLabel(110, 10, 360, 35, _titleFormat, false, "Update Available");
+			_titleLabel = createLabel(110, 10, 370, 35, _titleFormat, false, "Update Available");
 			_uiContainer.addChild(_titleLabel);
 			
 			var message:String = "An updated version of " + _applicationName
 				+ " is available and can be downloaded."
 				+ "\n\nInstalled version:\t" + _currentVersion
 				+ "\nUpdate version:\t" + _updateVersion;
-			_messageLabel = createLabel(110, 50, 360, 94, _textFormat, true, message);
+			_messageLabel = createLabel(110, 50, 370, 94, _textFormat, true, message);
 			_uiContainer.addChild(_messageLabel);
 			
-			_releaseNotes = createTextArea(110, 150, 360, 82, _notesFormat, true, false, _updateDescription);
+			_releaseNotes = createTextArea(110, 140, 380, 92, _notesFormat, true, false, _updateDescription);
 			_uiContainer.addChild(_releaseNotes);
 			
 			_okButton = createButton(110, 250, 140, 28, true, "Download now");
@@ -147,14 +146,17 @@ package base.core.update
 		
 		override protected function createUpdateDownloadState():void
 		{
-			_titleLabel = createLabel(110, 10, 360, 35, _titleFormat, false, "Downloading Update");
+			_titleLabel = createLabel(110, 10, 370, 35, _titleFormat, false, "Downloading Update");
 			_uiContainer.addChild(_titleLabel);
 			
-			_messageLabel = createLabel(110, 80, 360, 18, _textFormat, true, "Progress: " + _progress + "%");
+			_messageLabel = createLabel(110, 70, 370, 18, _textFormat, true, "Progress: " + _progress + "%");
 			_uiContainer.addChild(_messageLabel);
 			
-			_progressBar = createProgressBar(110, 102, 360, 16);
+			_progressBar = createProgressBar(110, 92, 370, 16);
 			_uiContainer.addChild(_progressBar);
+			
+			_releaseNotes = createTextArea(110, 140, 380, 92, _notesFormat, true, false, _updateDescription);
+			_uiContainer.addChild(_releaseNotes);
 			
 			_cancelButton = createButton(110, 250, 140, 28, false, "Cancel");
 			_cancelButton.addEventListener(MouseEvent.CLICK, onCancelButtonClick);
@@ -164,16 +166,16 @@ package base.core.update
 		
 		override protected function createUpdateInstallState():void
 		{
-			_titleLabel = createLabel(110, 10, 360, 35, _titleFormat, false, "Install Update");
+			_titleLabel = createLabel(110, 10, 370, 35, _titleFormat, false, "Install Update");
 			_uiContainer.addChild(_titleLabel);
 			
 			var message:String = "The update for " + _applicationName + " is downloaded and ready to be installed."
 				+ "\n\nInstalled version:\t" + _currentVersion
 				+ "\nUpdate version:\t" + _updateVersion;
-			_messageLabel = createLabel(110, 50, 360, 94, _textFormat, true, message);
+			_messageLabel = createLabel(110, 50, 370, 94, _textFormat, true, message);
 			_uiContainer.addChild(_messageLabel);
 			
-			_releaseNotes = createTextArea(110, 150, 360, 82, _notesFormat, true, false, _updateDescription);
+			_releaseNotes = createTextArea(110, 140, 380, 92, _notesFormat, true, false, _updateDescription);
 			_uiContainer.addChild(_releaseNotes);
 			
 			_okButton = createButton(110, 250, 140, 28, true, "Install now");

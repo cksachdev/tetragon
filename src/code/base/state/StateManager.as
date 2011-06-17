@@ -306,7 +306,12 @@ package base.state
 				Log.debug("Entering " + _currentState.toString() + " ...", this);
 				
 				_currentState.enteredSignal.addOnce(onStateEntered);
-				_loadProgressDisplay = _currentState.loadProgressDisplay;
+					
+				/* We only need the load progress display if we actually got resources. */
+				if (_currentState.resourceCount > 0)
+				{
+					_loadProgressDisplay = _currentState.loadProgressDisplay;
+				}
 				
 				if (_loadProgressDisplay)
 				{

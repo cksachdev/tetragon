@@ -31,6 +31,7 @@ package base.setup
 	import base.command.env.*;
 	import base.command.file.*;
 	import base.state.*;
+	import base.view.dummy.DummyScreen;
 	import base.view.splash.*;
 	
 	
@@ -73,6 +74,7 @@ package base.setup
 			registerCommand("cli", "setalpha", "sta", SetConsoleAlphaCommand, "Sets the console transparency to a value between 0.0 and 1.0.");
 			registerCommand("cli", "setcolor", "stc", SetConsoleColorCommand, "Sets the console background color.");
 			registerCommand("cli", "appinfo", "ai", OutputAppInfoCommand, "Displays application information string.");
+			registerCommand("cli", "engineinfo", "ei", OutputEngineInfoCommand, "Displays version information about the engine.");
 			registerCommand("cli", "runtime", "rt", OutputRuntimeInfoCommand, "Displays information about the runtime.");
 			registerCommand("cli", "listscreens", "lsc", ListScreensCommand, "Lists all registered screens.");
 			registerCommand("cli", "liststates", "lss", ListStatesCommand, "Lists all registered states.");
@@ -144,6 +146,7 @@ package base.setup
 		override public function registerStates():void
 		{
 			registerState("splashState", SplashState);
+			registerState("dummyState", DummyState);
 		}
 		
 		
@@ -153,6 +156,7 @@ package base.setup
 		override public function registerScreens():void
 		{
 			registerScreen("splashScreen", SplashScreen);
+			registerScreen("dummyScreen", DummyScreen);
 		}
 	}
 }

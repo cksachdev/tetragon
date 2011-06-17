@@ -239,6 +239,16 @@ package base.state
 		}
 		
 		
+		/**
+		 * The number of resources that the state has registered for loading.
+		 */
+		public function get resourceCount():uint
+		{
+			if (!_resourceIDs) return 0;
+			return _resourceIDs.length;
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------

@@ -1,15 +1,14 @@
 package base.core.update
 {
-	import air.update.ApplicationUpdater;
-	import air.update.events.StatusUpdateErrorEvent;
-	import air.update.events.StatusUpdateEvent;
-	import air.update.events.UpdateEvent;
-
 	import base.AppInfo;
 	import base.core.debug.Log;
 	import base.data.Registry;
 
 	import com.hexagonstar.signals.Signal;
+	import com.hexagonstar.update.ApplicationUpdater;
+	import com.hexagonstar.update.events.StatusUpdateErrorEvent;
+	import com.hexagonstar.update.events.StatusUpdateEvent;
+	import com.hexagonstar.update.events.UpdateEvent;
 
 	import flash.events.Event;
 	
