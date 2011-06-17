@@ -37,7 +37,7 @@
 			compilerarguments="
 				-static-link-runtime-shared-libraries=true
 				-target-player=${fpv.version}
-				-library-path+='${FDTProjectSdkPath}/frameworks/locale/en_US'
+				-library-path+='${FDTProjectSdkPath}/frameworks/locale/${app.localestring}'
 				-locale=${app.localestring}
 				-default-frame-rate=${app.framerate}
 				-default-background-color=0x${app.bgcolor}
@@ -90,7 +90,7 @@
 			compilerarguments="
 				-static-link-runtime-shared-libraries=true
 				-target-player=${fpv.version}
-				-library-path+='${FDTProjectSdkPath}/frameworks/locale/en_US'
+				-library-path+='${FDTProjectSdkPath}/frameworks/locale/${app.localestring}'
 				-locale=${app.localestring}
 				-default-frame-rate=${app.framerate}
 				-default-background-color=0x${app.bgcolor}
@@ -111,10 +111,6 @@
 				-define=CONFIG::IS_MOBILE_BUILD,false
 				-define=CONFIG::IS_ANDROID_BUILD,false
 				-define=CONFIG::IS_IOS_BUILD,false
-				-define=CONFIG::EXTRA_GAME,${extra.game}
-				-define=CONFIG::EXTRA_RPG,${extra.rpg}
-				-define=CONFIG::EXTRA_TBS,${extra.tbs}
-				-define=CONFIG::EXTRA_DEMO,${extra.demo}
 				-define=CONFIG::USE_EMBEDDED_RESOURCES,${resource.useEmbed}
 				-title='${meta.title}'
 				-description='${meta.description}'
@@ -152,7 +148,7 @@
 			compilerarguments="
 				-static-link-runtime-shared-libraries=true
 				-target-player=${fpv.version}
-				-library-path+='${FDTProjectSdkPath}/frameworks/locale/en_US'
+				-library-path+='${FDTProjectSdkPath}/frameworks/locale/${app.localestring}'
 				-locale=${app.localestring}
 				-default-frame-rate=${app.framerate}
 				-default-background-color=0x${app.bgcolor}
@@ -173,10 +169,6 @@
 				-define=CONFIG::IS_MOBILE_BUILD,false
 				-define=CONFIG::IS_ANDROID_BUILD,false
 				-define=CONFIG::IS_IOS_BUILD,false
-				-define=CONFIG::EXTRA_GAME,${extra.game}
-				-define=CONFIG::EXTRA_RPG,${extra.rpg}
-				-define=CONFIG::EXTRA_TBS,${extra.tbs}
-				-define=CONFIG::EXTRA_DEMO,${extra.demo}
 				-define=CONFIG::USE_EMBEDDED_RESOURCES,${resource.useEmbed}
 				-title='${meta.title}'
 				-description='${meta.description}'
@@ -269,6 +261,9 @@
 						<token key="default_width"		value="${app.width}"/>
 						<token key="default_height"		value="${app.height}"/>
 						<token key="is_debug"			value="@{debug}"/>
+						<token key="engine_name"		value="${engine.name}"/>
+						<token key="engine_version"		value="${engine.version}"/>
+						<token key="engine_milestone"	value="${engine.milestone}"/>
 					</replacetokens>
 				</filterchain>
 			</copy>

@@ -13,10 +13,6 @@
 -->
 <project default=".Init" basedir=".." name="tetragon">
 	
-	<property name="engine.name"		value="tetragon engine"/>
-	<property name="engine.version"		value="1.1.0"/>
-	<property name="engine.milestone"	value="Centauri"/>
-	
 	<property file="bld/build.properties"/>
 	<property file="${env.properties}"/>
 	<taskdef resource="flexTasks.tasks" classpath="${flextasks.jar}"/>
@@ -558,7 +554,7 @@
 				<compiler.library-path dir="${FLEX_HOME}/frameworks/libs" append="false">
 					<include name="framework.swc"/>
 				</compiler.library-path>
-				<compiler.library-path dir="${FLEX_HOME}/frameworks/locale/en_US" append="false">
+				<compiler.library-path dir="${FLEX_HOME}/frameworks/locale/${app.localestring}" append="false">
 					<include name="*.swc"/>
 				</compiler.library-path>
 				
