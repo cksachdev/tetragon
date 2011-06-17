@@ -13,8 +13,9 @@
 -->
 <project default=".Init" basedir=".." name="tetragon">
 	
-	<property name="engine.version"		value="1.0.0"/>
-	<property name="engine.milestone"	value="Sol"/>
+	<property name="engine.name"		value="tetragon engine"/>
+	<property name="engine.version"		value="1.1.0"/>
+	<property name="engine.milestone"	value="Centauri"/>
 	
 	<property file="bld/build.properties"/>
 	<property file="${env.properties}"/>
@@ -37,7 +38,7 @@
 	
 	<target name=".Pack Project" description="Creates a zipped version of the whole project.">
 		<cleanAll/>
-		<zip destfile="dst/${app.shortname}_${app.version}.zip"
+		<zip destfile="dst/${app.shortname}_${engine.version}.zip"
 			basedir=""
 			includes="art/**/**,bin/,bld/**/**,doc/,pub/,src/**/**,README"
 			excludes="doc/tetragon/,**/.svn,bld/build.number,**/**.~$lock"
@@ -368,6 +369,9 @@
 						<token key="default_width"		value="${app.width}"/>
 						<token key="default_height"		value="${app.height}"/>
 						<token key="is_debug"			value="@{debug}"/>
+						<token key="engine_name"		value="${engine.name}"/>
+						<token key="engine_version"		value="${engine.version}"/>
+						<token key="engine_milestone"	value="${engine.milestone}"/>
 					</replacetokens>
 				</filterchain>
 			</copy>

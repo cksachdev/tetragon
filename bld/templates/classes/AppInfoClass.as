@@ -53,5 +53,8 @@ package @top_package@
 		public static const DEFAULT_WIDTH:int		= @default_width@;
 		public static const DEFAULT_HEIGHT:int		= @default_height@;
 		public static const IS_DEBUG:Boolean		= @is_debug@;
+		public static const ENGINE_NAME:String		= "@engine_name@";
+		public static const ENGINE_VERSION:String	= "@engine_version@";
+		public static const ENGINE_MILESTONE:String	= "@engine_milestone@";
 	}
 }
