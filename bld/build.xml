@@ -13,6 +13,9 @@
 -->
 <project default=".Init" basedir=".." name="tetragon">
 	
+	<property name="engine.version"		value="1.0.0"/>
+	<property name="engine.milestone"	value="Sol"/>
+	
 	<property file="bld/build.properties"/>
 	<property file="${env.properties}"/>
 	<taskdef resource="flexTasks.tasks" classpath="${flextasks.jar}"/>

@@ -27,8 +27,6 @@
  */
 package base.core.update
 {
-	import air.update.ui.UpdateUI;
-
 	import base.util.ui.createButton;
 	import base.util.ui.createLabel;
 	import base.util.ui.createProgressBar;
@@ -39,6 +37,7 @@ package base.core.update
 	import com.hexagonstar.ui.controls.Label;
 	import com.hexagonstar.ui.controls.ProgressBar;
 	import com.hexagonstar.ui.controls.TextArea;
+	import com.hexagonstar.update.ui.UpdateUI;
 
 	import flash.events.Event;
 	import flash.events.MouseEvent;

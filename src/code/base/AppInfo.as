@@ -37,8 +37,8 @@ package base
 		public static const NAME:String				= "Tetragon Demo Application";
 		public static const DESCRIPTION:String		= "Tetragon Demo Application Test Build";
 		public static const VERSION:String			= "1.0.0";
-		public static const BUILD:String			= "6702";
-		public static const BUILD_DATE:String		= "06-June-2011 16:36";
+		public static const BUILD:String			= "6707";
+		public static const BUILD_DATE:String		= "17-June-2011 14:48";
 		public static const MILESTONE:String		= "Sol";
 		public static const BUILD_TYPE:String		= "desktop";
 		public static const RELEASE_STAGE:String	= "beta";
@@ -52,6 +52,6 @@ package base
 		public static const FILENAME:String			= "tetragon";
 		public static const DEFAULT_WIDTH:int		= 1024;
 		public static const DEFAULT_HEIGHT:int		= 640;
-		public static const IS_DEBUG:Boolean		= false;
+		public static const IS_DEBUG:Boolean		= true;
 	}
 }
