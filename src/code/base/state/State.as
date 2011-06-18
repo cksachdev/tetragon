@@ -118,7 +118,7 @@ package base.state
 		 */
 		public function enter():void
 		{
-			load();
+			loadResources();
 		}
 		
 		
@@ -176,7 +176,7 @@ package base.state
 		{
 			stop();
 			removeListeners();
-			unload();
+			unloadResources();
 			dispose();
 			exitedSignal.dispatch();
 		}
@@ -203,6 +203,19 @@ package base.state
 		public function get loadProgressDisplay():LoadProgressDisplay
 		{
 			return new BasicLoadProgressDisplay();
+		}
+		
+		
+		/**
+		 * Determines whether the state will unload all it's loaded resources once it is
+		 * closed. You can override this getter and return false for states where you don't
+		 * want resources to be unloaded, .e.g. for a dedicated resource preload state.
+		 * 
+		 * @default true
+		 */
+		protected function get unload():Boolean
+		{
+			return true;
 		}
 		
 		
@@ -424,7 +437,7 @@ package base.state
 		 * 
 		 * @see registerResources
 		 */
-		protected function load():void
+		protected function loadResources():void
 		{
 			if (!_resourceIDs || _resourceIDs.length < 1)
 			{
@@ -541,9 +554,9 @@ package base.state
 		 * Used to unload any resources that have been loaded for the state. Called
 		 * automatically after a state has been exited.
 		 */
-		protected function unload():void
+		protected function unloadResources():void
 		{
-			if (!_resourceIDs || _resourceIDs.length < 1) return;
+			if (!unload || !_resourceIDs || _resourceIDs.length < 1) return;
 			resourceManager.unload(_resourceIDs);
 		}
 		
