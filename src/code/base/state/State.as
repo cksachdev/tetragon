@@ -30,6 +30,8 @@ package base.state
 	import base.Main;
 	import base.io.resource.Resource;
 	import base.io.resource.ResourceManager;
+	import base.signals.DisplaySignal;
+	import base.view.Display;
 	import base.view.Screen;
 	import base.view.ScreenManager;
 	import base.view.loadprogressbar.BasicLoadProgressDisplay;
@@ -39,6 +41,7 @@ package base.state
 	import com.hexagonstar.signals.Signal;
 	import com.hexagonstar.util.reflection.getClassName;
 
+	import flash.utils.describeType;
 	
 	
 	/**
@@ -299,6 +302,32 @@ package base.state
 		
 		
 		/**
+		 * Signal handler that is called after a screen has been initialized.
+		 * 
+		 * @param screen The screen that has been opened.
+		 */
+		protected function onScreenInit(screen:Screen):void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Signal handler that is called when a screen is being opened. This adds
+		 * signal listeners to any displays in the screen that have display signals.
+		 * 
+		 * You can the override the onDisplaySignal method in your state class and
+		 * check for any of the dispatched signals by their type and arguments.
+		 * 
+		 * @param screen The screen that is opening.
+		 */
+		protected function onScreenOpen(screen:Screen):void
+		{
+			addDisplayListeners(screen);
+		}
+		
+		
+		/**
 		 * Signal handler that is called if a screen has been opened after using the
 		 * <code>openScreen()</code> helper method.
 		 * 
@@ -314,6 +343,18 @@ package base.state
 		
 		
 		/**
+		 * Signal handler that is called when a screen is being closed. This removes
+		 * signal listeners from any displays in the screen that have display signals.
+		 * 
+		 * @param screen The screen that is opening.
+		 */
+		protected function onScreenClose(screen:Screen):void
+		{
+			removeDisplayListeners(screen);
+		}
+		
+		
+		/**
 		 * Signal handler that is called if a screen has been closed after opening
 		 * another screen by using the <code>openScreen()</code> helper method.
 		 * 
@@ -323,6 +364,16 @@ package base.state
 		 * @param screen The screen that has been closed.
 		 */
 		protected function onScreenClosed(screen:Screen):void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Can be used to handle signal disptaches from displays that are used by this
+		 * state.
+		 */
+		protected function onDisplaySignal(type:String, args:Array):void
 		{
 			/* Abstract method! */
 		}
@@ -432,6 +483,61 @@ package base.state
 		
 		
 		/**
+		 * Adds signal listeners to all displays that are part of the currently opened
+		 * screen and have a public DisplaySignal variable or accessor defined.
+		 */
+		protected function addDisplayListeners(screen:Screen):void
+		{
+			iterateDisplaySignals(screen, true);
+		}
+		
+		
+		/**
+		 * Removes signal listeners from all displays that are part of the currently opened
+		 * screen and have a public DisplaySignal variable or accessor defined.
+		 */
+		protected function removeDisplayListeners(screen:Screen):void
+		{
+			iterateDisplaySignals(screen, false);
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		protected function iterateDisplaySignals(screen:Screen, add:Boolean):void
+		{
+			if (!screen.displays) return;
+			for (var i:uint = 0; i < screen.displays.length; i++)
+			{
+				var d:Display = screen.displays[i];
+				var xml:XML = describeType(d);
+				var x:XML;
+				var s:DisplaySignal;
+				/* TODO Any better solution to check variables AND accessors in the same loop? */
+				for each (x in xml.variable.(@type == "base.signals::DisplaySignal"))
+				{
+					s = d[xml.variable.@name];
+					if (s)
+					{
+						if (add) s.add(onDisplaySignal);
+						else s.remove(onDisplaySignal);
+					}
+				}
+				for each (x in xml.accessor.(@type == "base.signals::DisplaySignal"))
+				{
+					s = d[xml.variable.@name];
+					if (s)
+					{
+						if (add) s.add(onDisplaySignal);
+						else s.remove(onDisplaySignal);
+					}
+				}
+			}
+		}
+		
+		
+		/**
 		 * Used to unload any resources that have been loaded for the state. Called
 		 * automatically after a state has been exited.
 		 */
@@ -478,7 +584,10 @@ package base.state
 		 */
 		protected function openScreen(screenID:String, fastTransition:Boolean = false):void
 		{
+			screenManager.screenInitSignal.addOnce(onScreenInit);
+			screenManager.screenOpenSignal.addOnce(onScreenOpen);
 			screenManager.screenOpenedSignal.addOnce(onScreenOpened);
+			screenManager.screenCloseSignal.addOnce(onScreenClose);
 			screenManager.screenClosedSignal.addOnce(onScreenClosed);
 			screenManager.openScreen(screenID, true, fastTransition);
 		}

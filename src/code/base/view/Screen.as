@@ -191,7 +191,7 @@ package base.view
 		/**
 		 * A vector containing all child displays that are registered in the screen.
 		 */
-		protected function get displays():Vector.<Display>
+		public function get displays():Vector.<Display>
 		{
 			return _displays;
 		}
@@ -334,7 +334,10 @@ package base.view
 		 */
 		protected final function registerDisplay(display:Display):void
 		{
-			if (!_displays) _displays = new Vector.<Display>();
+			if (!_displays)
+			{
+				_displays = new Vector.<Display>();
+			}
 			display.screen = this;
 			_displays.push(display);
 		}

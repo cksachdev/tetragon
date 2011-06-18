@@ -71,7 +71,10 @@ package base.view
 		// Signals
 		//-----------------------------------------------------------------------------------------
 		
+		public var screenInitSignal:Signal;
+		public var screenOpenSignal:Signal;
 		public var screenOpenedSignal:Signal;
+		public var screenCloseSignal:Signal;
 		public var screenClosedSignal:Signal;
 		
 		
@@ -93,7 +96,10 @@ package base.view
 			_screenContainer = new Sprite();
 			Main.instance.contextView.addChild(_screenContainer);
 			
+			screenInitSignal = new Signal();
+			screenOpenSignal = new Signal();
 			screenOpenedSignal = new Signal();
+			screenCloseSignal = new Signal();
 			screenClosedSignal = new Signal();
 		}
 		
@@ -153,6 +159,7 @@ package base.view
 				Log.debug("Initializing screen \"" + screenID + "\" ...", this);
 				var screen:Screen = Screen(s);
 				screen.init();
+				screenInitSignal.dispatch(screen);
 				
 				_isSwitching = true;
 				_isAutoStart = autoStart;
@@ -331,6 +338,8 @@ package base.view
 				return;
 			}
 			
+			screenOpenSignal.dispatch(_currentScreen);
+			
 			/* Disable screen display objects while fading in. */
 			_currentScreen.enabled = false;
 			
@@ -400,6 +409,7 @@ package base.view
 			if (_currentScreen)
 			{
 				_currentScreen.enabled = false;
+				screenCloseSignal.dispatch(_currentScreen);
 				
 				if (noTween)
 				{
