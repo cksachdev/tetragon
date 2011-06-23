@@ -77,7 +77,7 @@
 	<target name="FDT Debug">
 		<clean/>
 		<prepare buildType="desktop" debug="true" entryClassTemplate="EntryClassAIR.as"/>
-		<generateAIRDescriptor templatesfolder="${templates.air.desktop}"/>
+		<generateAIRDescriptor templatesfolder="${templates.desktop}"/>
 		<copyDesktopFiles/>
 		<packResources/>
 		<echo message="Debugging ${app.swfname.full} ..." level="info"/>
@@ -135,7 +135,7 @@
 	<target name="FDT Profile">
 		<clean/>
 		<prepare buildType="desktop" debug="true" entryClassTemplate="EntryClassAIR.as"/>
-		<generateAIRDescriptor templatesfolder="${templates.air.desktop}"/>
+		<generateAIRDescriptor templatesfolder="${templates.desktop}"/>
 		<copyDesktopFiles/>
 		<packResources/>
 		<echo message="Profiling ${app.swfname.full} ..." level="info"/>
@@ -334,9 +334,9 @@
 		<sequential>
 			<echo message="Copying desktop files ..." level="info"/>
 			<copy todir="${path.bin}/icons" verbose="off">
-				<fileset dir="${templates.air.shared}/icons" excludes="**/.svn"/>
+				<fileset dir="${templates.shared}/icons" excludes="**/.svn"/>
 			</copy>
-			<copy file="${templates.air.shared}/app_air.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true">
+			<copy file="${templates.shared}/app.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true">
 				<filterchain>
 					<replacetokens>
 						<token key="resource_folder" value="${resource.folder}"/>
@@ -344,6 +344,8 @@
 					</replacetokens>
 				</filterchain>
 			</copy>
+			<copy file="${templates.shared}/keybindings.ini" tofile="${path.bin}/keybindings.ini" overwrite="true"/>
+			<copy file="${templates.shared}/${updatenotes.file}" tofile="${path.bin}/${updatenotes.file}" overwrite="true"/>
 		</sequential>
 	</macrodef>
 	

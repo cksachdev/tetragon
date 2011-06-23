@@ -17,8 +17,8 @@
 	<property file="${env.properties}"/>
 	<taskdef resource="flexTasks.tasks" classpath="${flextasks.jar}"/>
 	
-	<loadresource property="air.desktop.updatenotes">
-		<file file="${templates.air.shared}/${air.desktop.updatenotes.file}"/>
+	<loadresource property="updatenotes">
+		<file file="${templates.shared}/${updatenotes.file}"/>
 	</loadresource>
 	
 	
@@ -220,7 +220,7 @@
 		<sequential>
 			<clean/>
 			<prepare buildType="desktop" debug="@{debug}" entryClassTemplate="EntryClassAIR.as"/>
-			<generateAIRDescriptor templatesfolder="${templates.air.desktop}"/>
+			<generateAIRDescriptor templatesfolder="${templates.desktop}"/>
 			<copyDesktopFiles/>
 			<packResources/>
 			<compile debug="@{debug}" config="air-config.xml" isWebBuild="false" isAIRBuild="true"
@@ -248,7 +248,7 @@
 		<sequential>
 			<clean/>
 			<prepare buildType="android" debug="@{debug}" entryClassTemplate="EntryClassAIR.as"/>
-			<generateAIRDescriptor templatesfolder="${templates.air.android}"/>
+			<generateAIRDescriptor templatesfolder="${templates.android}"/>
 			<copyAndroidFiles/>
 			<packResources/>
 			<compile debug="@{debug}" config="air-config.xml" isWebBuild="false" isAIRBuild="true"
@@ -276,7 +276,7 @@
 		<sequential>
 			<clean/>
 			<prepare buildType="ios" debug="@{debug}" entryClassTemplate="EntryClassAIR.as"/>
-			<generateAIRDescriptor templatesfolder="${templates.air.ios}"/>
+			<generateAIRDescriptor templatesfolder="${templates.ios}"/>
 			<copyIOSFiles/>
 			<packResources/>
 			<compile debug="@{debug}" config="air-config.xml" isWebBuild="false" isAIRBuild="true"
@@ -469,12 +469,12 @@
 	<macrodef name="generateAIRUpdateFile">
 		<sequential>
 			<echo message="Generating AIR update file ..." level="info"/>
-			<copy file="${templates.air.desktop}/airupdate.xml" tofile="${path.pub}/${app.shortname}_update.xml" overwrite="true">
+			<copy file="${templates.desktop}/airupdate.xml" tofile="${path.pub}/${app.shortname}_update.xml" overwrite="true">
 				<filterchain>
 					<replacetokens>
 						<token key="app_version"				value="${app.version}"/>
 						<token key="air_desktop_updateurl"		value="${air.desktop.updateurl}/${air.desktop.publishname}.air"/>
-						<token key="air_desktop_updatenotes"	value="${air.desktop.updatenotes}"/>
+						<token key="air_desktop_updatenotes"	value="${updatenotes}"/>
 					</replacetokens>
 				</filterchain>
 			</copy>
@@ -574,13 +574,15 @@
 			<copy todir="${path.bin}/js" verbose="off">
 				<fileset dir="${templates.web}/js" excludes="**/.svn"/>
 			</copy>
-			<copy file="${templates.web}/app_web.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true">
+			<copy file="${templates.shared}/app.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true">
 				<filterchain>
 					<replacetokens>
 						<token key="resource_folder" value="${resource.folder}"/>
 					</replacetokens>
 				</filterchain>
 			</copy>
+			<copy file="${templates.shared}/keybindings.ini" tofile="${path.bin}/keybindings.ini" overwrite="true"/>
+			<copy file="${templates.shared}/${updatenotes.file}" tofile="${path.bin}/${updatenotes.file}" overwrite="true"/>
 		</sequential>
 	</macrodef>
 	
@@ -589,9 +591,9 @@
 		<sequential>
 			<echo message="Copying desktop files ..." level="info"/>
 			<copy todir="${path.bin}/icons" verbose="off">
-				<fileset dir="${templates.air.shared}/icons" excludes="**/.svn"/>
+				<fileset dir="${templates.shared}/icons" excludes="**/.svn"/>
 			</copy>
-			<copy file="${templates.air.shared}/app_air.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true">
+			<copy file="${templates.shared}/app.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true">
 				<filterchain>
 					<replacetokens>
 						<token key="resource_folder" value="${resource.folder}"/>
@@ -599,6 +601,8 @@
 					</replacetokens>
 				</filterchain>
 			</copy>
+			<copy file="${templates.shared}/keybindings.ini" tofile="${path.bin}/keybindings.ini" overwrite="true"/>
+			<copy file="${templates.shared}/${updatenotes.file}" tofile="${path.bin}/${updatenotes.file}" overwrite="true"/>
 		</sequential>
 	</macrodef>
 	
@@ -607,15 +611,17 @@
 		<sequential>
 			<echo message="Copying android files ..." level="info"/>
 			<copy todir="${path.bin}/icons" verbose="off">
-				<fileset dir="${templates.air.shared}/icons" excludes="**/.svn"/>
+				<fileset dir="${templates.shared}/icons" excludes="**/.svn"/>
 			</copy>
-			<copy file="${templates.air.shared}/app_air.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true">
+			<copy file="${templates.shared}/app.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true">
 				<filterchain>
 					<replacetokens>
 						<token key="resource_folder" value="${resource.folder}"/>
 					</replacetokens>
 				</filterchain>
 			</copy>
+			<copy file="${templates.shared}/keybindings.ini" tofile="${path.bin}/keybindings.ini" overwrite="true"/>
+			<copy file="${templates.shared}/${updatenotes.file}" tofile="${path.bin}/${updatenotes.file}" overwrite="true"/>
 		</sequential>
 	</macrodef>
 	
@@ -624,15 +630,17 @@
 		<sequential>
 			<echo message="Copying iOS files ..." level="info"/>
 			<copy todir="${path.bin}/icons" verbose="off">
-				<fileset dir="${templates.air.shared}/icons" excludes="**/.svn"/>
+				<fileset dir="${templates.shared}/icons" excludes="**/.svn"/>
 			</copy>
-			<copy file="${templates.air.shared}/app_air.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true">
+			<copy file="${templates.shared}/app.ini" tofile="${path.bin}/${app.swfname}.ini" overwrite="true">
 				<filterchain>
 					<replacetokens>
 						<token key="resource_folder" value="${resource.folder}"/>
 					</replacetokens>
 				</filterchain>
 			</copy>
+			<copy file="${templates.shared}/keybindings.ini" tofile="${path.bin}/keybindings.ini" overwrite="true"/>
+			<copy file="${templates.shared}/${updatenotes.file}" tofile="${path.bin}/${updatenotes.file}" overwrite="true"/>
 		</sequential>
 	</macrodef>
 	
@@ -701,10 +709,13 @@
 				<arg value="${app.swfname}.ini"/>
 				<arg value="-C"/>
 				<arg value="${path.bin}"/>
-				<arg value="icons"/>
+				<arg value="keybindings.ini"/>
 				<arg value="-C"/>
-				<arg value="${templates.air.shared}"/>
-				<arg value="${air.desktop.updatenotes.file}"/>
+				<arg value="${path.bin}"/>
+				<arg value="${updatenotes.file}"/>
+				<arg value="-C"/>
+				<arg value="${path.bin}"/>
+				<arg value="icons"/>
 				<arg value="-C"/>
 				<arg value="${path.bin}"/>
 				<arg value="${resource.folder}"/>
@@ -733,6 +744,12 @@
 				<arg value="-C"/>
 				<arg value="${path.bin}"/>
 				<arg value="${app.swfname}.ini"/>
+				<arg value="-C"/>
+				<arg value="${path.bin}"/>
+				<arg value="keybindings.ini"/>
+				<arg value="-C"/>
+				<arg value="${path.bin}"/>
+				<arg value="${updatenotes.file}"/>
 				<arg value="-C"/>
 				<arg value="${path.bin}"/>
 				<arg value="icons"/>
@@ -781,13 +798,19 @@
 				<arg value="${app.swfname}.ini"/>
 				<arg value="-C"/>
 				<arg value="${path.bin}"/>
+				<arg value="keybindings.ini"/>
+				<arg value="-C"/>
+				<arg value="${path.bin}"/>
+				<arg value="${updatenotes.file}"/>
+				<arg value="-C"/>
+				<arg value="${path.bin}"/>
 				<arg value="icons"/>
 				<arg value="-C"/>
 				<arg value="${path.bin}"/>
 				<arg value="${resource.folder}"/>
 			</java>
 			<echo message="Creating iOS @{target} generation batch file ..." level="info"/>
-			<copy file="${templates.air.ios}/ios_create.bat" tofile="${path.pub}/${air.mobile.ios.publishname}_ios_create.bat" overwrite="true">
+			<copy file="${templates.ios}/ios_create.bat" tofile="${path.pub}/${air.mobile.ios.publishname}_ios_create.bat" overwrite="true">
 				<filterchain>
 					<replacetokens>
 						<token key="java_32bit"						value="${java.32bit}"/>
