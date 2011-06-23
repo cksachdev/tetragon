@@ -35,6 +35,7 @@ package base.command.env
 	import base.core.debug.Log;
 	import base.data.Registry;
 	import base.io.file.loaders.ConfigLoader;
+	import base.io.file.loaders.KeyBindingsLoader;
 	import base.io.resource.Resource;
 	import base.io.resource.ResourceIndex;
 	import base.io.resource.ResourceManager;
@@ -65,6 +66,7 @@ package base.command.env
 		//-----------------------------------------------------------------------------------------
 		
 		private var _configLoader:ConfigLoader;
+		private var _keyBindingsLoader:KeyBindingsLoader;
 		private var _setups:Vector.<Setup>;
 		private var _settingsFileIDs:Array;
 		
@@ -93,8 +95,10 @@ package base.command.env
 		override public function dispose():void
 		{
 			super.dispose();
-			_configLoader.dispose();
+			if (_configLoader) _configLoader.dispose();
+			if (_keyBindingsLoader) _keyBindingsLoader.dispose();
 			_configLoader = null;
+			_keyBindingsLoader = null;
 			_setups = null;
 		}
 		
@@ -130,10 +134,33 @@ package base.command.env
 		/**
 		 * @private
 		 */
-		private function onConfigLoadComplete():void 
+		private function onConfigLoadComplete():void
 		{
 			_configLoader.completeSignal.remove(onConfigLoadComplete);
 			_configLoader.errorSignal.remove(onConfigLoadError);
+			loadKeyBindings();
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		private function onConfigLoadError(message:String):void
+		{
+			Log.debug("Config file not loaded! (error was: " + message + ")", this);
+			_configLoader.completeSignal.remove(onConfigLoadComplete);
+			_configLoader.errorSignal.remove(onConfigLoadError);
+			loadKeyBindings();
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		private function onKeyBindingsLoadComplete():void
+		{
+			_keyBindingsLoader.completeSignal.remove(onKeyBindingsLoadComplete);
+			_keyBindingsLoader.errorSignal.remove(onKeyBindingsLoadError);
 			postConfigSetup();
 		}
 		
@@ -141,11 +168,11 @@ package base.command.env
 		/**
 		 * @private
 		 */
-		private function onConfigLoadError(message:String):void 
+		private function onKeyBindingsLoadError(message:String):void
 		{
-			Log.debug("Ini file not loaded! (error was: " + message + ")", this);
-			_configLoader.completeSignal.remove(onConfigLoadComplete);
-			_configLoader.errorSignal.remove(onConfigLoadError);
+			Log.debug("Keybindings file not loaded! (error was: " + message + ")", this);
+			_keyBindingsLoader.completeSignal.remove(onKeyBindingsLoadComplete);
+			_keyBindingsLoader.errorSignal.remove(onKeyBindingsLoadError);
 			postConfigSetup();
 		}
 		
@@ -153,7 +180,7 @@ package base.command.env
 		/**
 		 * @private
 		 */
-		private function onResourceManagerReady(e:Event):void 
+		private function onResourceManagerReady(e:Event):void
 		{
 			main.resourceManager.removeEventListener(e.type, onResourceManagerReady);
 			loadSettings();
@@ -253,7 +280,7 @@ package base.command.env
 			/* If config should not be loaded, carry on to the next step directly. */
 			if (Registry.params && Registry.params.ignoreIniFile)
 			{
-				postConfigSetup();
+				loadKeyBindings();
 			}
 			else
 			{
@@ -264,6 +291,27 @@ package base.command.env
 				_configLoader.errorSignal.addOnce(onConfigLoadError);
 				_configLoader.addFile(AppInfo.FILENAME + ".ini", "configFile");
 				_configLoader.load();
+			}
+		}
+		
+		
+		/**
+		 * Initiates the loading of the key bindings file (keybindings.ini).
+		 * @private
+		 */
+		private function loadKeyBindings():void
+		{
+			/* If key bindings should not be loaded, carry on to the next step directly. */
+			if (Registry.params && Registry.params.ignoreKeyBindingsFile)
+			{
+				postConfigSetup();
+			}
+			else
+			{
+				_keyBindingsLoader = new KeyBindingsLoader();
+				_keyBindingsLoader.completeSignal.addOnce(onKeyBindingsLoadComplete);
+				_keyBindingsLoader.errorSignal.addOnce(onKeyBindingsLoadError);
+				_keyBindingsLoader.load();
 			}
 		}
 		

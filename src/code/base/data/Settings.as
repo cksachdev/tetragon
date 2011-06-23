@@ -36,6 +36,22 @@ package base.data
 	public final class Settings
 	{
 		//-----------------------------------------------------------------------------------------
+		// Constants
+		//-----------------------------------------------------------------------------------------
+		
+		public static const USER_DATA_DIR:String			= "userDataDir";
+		public static const USER_SAVEGAMES_DIR:String		= "userSaveGamesDir";
+		public static const USER_SCREENSHOTS_DIR:String		= "userScreenshotsDir";
+		public static const USER_SETTINGS_DIR:String		= "userSettingsDir";
+		public static const USER_LOGS_DIR:String			= "userLogsDir";
+		public static const USER_PLUGINS_DIR:String			= "userPluginsDir";
+		
+		public static const USER_CONFIG_FILE:String			= "userConfigFile";
+		public static const USER_KEYBINDINGS_FILE:String	= "userKeyBindingsFile";
+		public static const USER_SETTINGS_FILE:String		= "userSettingsFile";
+		
+		
+		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
@@ -64,6 +80,7 @@ package base.data
 		 */
 		public function addSettings(key:String, value:Object):void
 		{
+			//Log.debug("Added settings key=" + key + ", value=" + value, this);
 			_map[key] = value;
 		}
 		
@@ -84,7 +101,7 @@ package base.data
 		 */
 		public function toString():String
 		{
-			return "[Settings]";
+			return "Settings";
 		}
 		
 		

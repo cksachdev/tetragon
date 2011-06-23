@@ -39,6 +39,7 @@ package base.data
 		
 		public var skipPreloader:Boolean;
 		public var ignoreIniFile:Boolean;
+		public var ignoreKeyBindingsFile:Boolean;
 		public var ignoreLocaleFile:Boolean;
 		
 		
@@ -66,6 +67,7 @@ package base.data
 		{
 			skipPreloader = false;
 			ignoreIniFile = false;
+			ignoreKeyBindingsFile = false;
 			ignoreLocaleFile = false;
 		}
 		
@@ -82,6 +84,10 @@ package base.data
 			if (params["ignoreIniFile"])
 			{
 				ignoreIniFile = String(params["ignoreIniFile"]).toLowerCase() == "true";
+			}
+			if (params["ignoreKeyBindingsFile"])
+			{
+				ignoreKeyBindingsFile = String(params["ignoreKeyBindingsFile"]).toLowerCase() == "true";
 			}
 			if (params["ignoreLocaleFile"])
 			{

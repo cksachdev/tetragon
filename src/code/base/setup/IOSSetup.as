@@ -48,6 +48,8 @@ package base.setup
 		{
 			/* set this to false, when we close the application we first do an update. */
 			NativeApplication.nativeApplication.autoExit = false;
+			
+			main.commandManager.execute(new CreateUserDataFoldersCommand());
 		}
 		
 		
@@ -56,7 +58,6 @@ package base.setup
 		 */
 		override public function postConfigSetup():void
 		{
-			main.commandManager.execute(new CreateUserDataFoldersCommand());
 		}
 		
 		

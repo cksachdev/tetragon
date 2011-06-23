@@ -88,6 +88,8 @@ package base.data
 		public var userLogsFolder:String;
 		public var userPluginsFolder:String;
 		
+		public var keyBindingsFileName:String;
+		
 		/* Update settings */
 		public var updateEnabled:Boolean;
 		public var updateURL:String;
@@ -167,6 +169,8 @@ package base.data
 			userSettingsFolder = "settings";
 			userLogsFolder = "logs";
 			userPluginsFolder = "plugins";
+			
+			keyBindingsFileName = "keybindings.ini";
 			
 			updateEnabled = true;
 			updateURL = "";

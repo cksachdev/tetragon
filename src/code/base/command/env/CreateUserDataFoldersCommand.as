@@ -31,6 +31,7 @@ package base.command.env
 	import base.command.CLICommand;
 	import base.core.debug.Log;
 	import base.data.Registry;
+	import base.data.Settings;
 
 	import flash.filesystem.File;
 
@@ -45,6 +46,7 @@ package base.command.env
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
+		private var _sep:String;
 		private var _userDataPath:File;
 		private var _failed:Boolean;
 		
@@ -58,66 +60,15 @@ package base.command.env
 		 */
 		override public function execute():void 
 		{
-			var sep:String = File.separator;
-			var path:String = Registry.config.userDataFolder.toLowerCase();
-			var parts:Array = path.split("\\").join("/").split("/");
-			path = "";
-			_failed = false;
+			_sep = File.separator;
 			
-			for (var i:uint = 0; i < parts.length; i++)
-			{
-				var part:String = parts[i];
-				if (part.length < 1)
-				{
-					continue;
-				}
-				else if (part == "%user_documents%")
-				{
-					path += File.documentsDirectory.nativePath;
-				}
-				else if (part == "%publisher%")
-				{
-					if (AppInfo.PUBLISHER && AppInfo.PUBLISHER.length > 0)
-						path += sep + AppInfo.PUBLISHER;
-					else if (AppInfo.CREATOR && AppInfo.CREATOR.length > 0)
-						path += sep + AppInfo.CREATOR;
-				}
-				else if (part == "%app_name%")
-				{
-					path += sep + AppInfo.NAME;
-				}
-				else
-				{
-					path += sep + part;
-				}
-			}
-			
-			_userDataPath = new File(path);
-			
-			/* Create user data folder if it doesn't exist already. */
-			if (!_userDataPath.exists)
-			{
-				Log.debug("Creating user data folder at \"" + _userDataPath.nativePath + "\" ...", this);
-				try
-				{
-					_userDataPath.createDirectory();
-				}
-				catch (err:Error)
-				{
-					fail(err.message);
-				}
-			}
-			
-			if (!_failed)
-			{
-				Registry.settings.addSettings("userDataFolder", _userDataPath.nativePath);
-			}
-			
-			createSubFolder("userSaveGamesFolder", Registry.config.userSaveGamesFolder);
-			createSubFolder("userScreenshotsFolder", Registry.config.userScreenshotsFolder);
-			createSubFolder("userSettingsFolder", Registry.config.userSettingsFolder);
-			createSubFolder("userLogsFolder", Registry.config.userLogsFolder);
-			createSubFolder("userPluginsFolder", Registry.config.userPluginsFolder);
+			createUserDataFolder();
+			createSubFolder(Settings.USER_LOGS_DIR, Registry.config.userLogsFolder);
+			createSubFolder(Settings.USER_SETTINGS_DIR, Registry.config.userSettingsFolder);
+			createSubFolder(Settings.USER_SAVEGAMES_DIR, Registry.config.userSaveGamesFolder);
+			createSubFolder(Settings.USER_SCREENSHOTS_DIR, Registry.config.userScreenshotsFolder);
+			createSubFolder(Settings.USER_PLUGINS_DIR, Registry.config.userPluginsFolder);
+			copyDefaultFiles();
 			
 			complete();
 		}
@@ -139,6 +90,64 @@ package base.command.env
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
+		
+		private function createUserDataFolder():void
+		{
+			var path:String = Registry.config.userDataFolder.toLowerCase();
+			var parts:Array = path.split("\\").join("/").split("/");
+			path = "";
+			_failed = false;
+			
+			for (var i:uint = 0; i < parts.length; i++)
+			{
+				var part:String = parts[i];
+				if (part.length < 1)
+				{
+					continue;
+				}
+				else if (part == "%user_documents%")
+				{
+					path += File.documentsDirectory.nativePath;
+				}
+				else if (part == "%publisher%")
+				{
+					if (AppInfo.PUBLISHER && AppInfo.PUBLISHER.length > 0)
+						path += _sep + AppInfo.PUBLISHER;
+					else if (AppInfo.CREATOR && AppInfo.CREATOR.length > 0)
+						path += _sep + AppInfo.CREATOR;
+				}
+				else if (part == "%app_name%")
+				{
+					path += _sep + AppInfo.NAME;
+				}
+				else
+				{
+					path += _sep + part;
+				}
+			}
+			
+			_userDataPath = new File(path);
+			
+			/* Create user data folder if it doesn't exist already. */
+			if (!_userDataPath.exists)
+			{
+				Log.debug("Creating user data folder at \"" + _userDataPath.nativePath + "\" ...", this);
+				try
+				{
+					_userDataPath.createDirectory();
+				}
+				catch (err:Error)
+				{
+					fail(err.message);
+				}
+			}
+			
+			if (!_failed)
+			{
+				Registry.settings.addSettings(Settings.USER_DATA_DIR, _userDataPath.nativePath);
+			}
+		}
+		
 		
 		private function createSubFolder(settingsKey:String, subFolderName:String):void
 		{
@@ -162,6 +171,43 @@ package base.command.env
 				{
 					Registry.settings.addSettings(settingsKey, f.nativePath);
 				}
+			}
+		}
+		
+		
+		private function copyDefaultFiles():void
+		{
+			var userSettingsFolder:String = Registry.settings.getSettings(Settings.USER_SETTINGS_DIR);
+			if (userSettingsFolder != null)
+			{
+				var appDir:String = File.applicationDirectory.nativePath;
+				var appCfg:String = AppInfo.FILENAME + ".ini";
+				copyFile(Settings.USER_CONFIG_FILE, appDir + _sep + appCfg, userSettingsFolder + _sep + appCfg);
+				var keyBindings:String = Registry.config.keyBindingsFileName;
+				copyFile(Settings.USER_KEYBINDINGS_FILE, appDir + _sep + keyBindings, userSettingsFolder + _sep + keyBindings);
+			}
+		}
+		
+		
+		private function copyFile(settingsKey:String, sourcePath:String, targetPath:String):void
+		{
+			var source:File = new File(sourcePath);
+			var target:File = new File(targetPath);
+			if (source.exists && !target.exists)
+			{
+				Log.debug("Copying \"" + sourcePath + "\" to \"" + targetPath + "\" ...", this);
+				try
+				{
+					source.copyTo(target, false);
+				}
+				catch (err:Error)
+				{
+					fail(err.message);
+				}
+			}
+			if (!_failed)
+			{
+				Registry.settings.addSettings(settingsKey, targetPath);
 			}
 		}
 		

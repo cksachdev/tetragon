@@ -54,6 +54,8 @@ package base.setup
 			/* set this to false, when we close the application we first do an update. */
 			NativeApplication.nativeApplication.autoExit = false;
 			
+			main.commandManager.execute(new CreateUserDataFoldersCommand());
+			
 			// TODO To be changed! Fullscreen state should not be stored in app.ini
 			// but in user settings file!
 			//main.config.useFullscreen = WindowBoundsManager.instance.fullscreen;
@@ -65,7 +67,6 @@ package base.setup
 		 */
 		override public function postConfigSetup():void
 		{
-			main.commandManager.execute(new CreateUserDataFoldersCommand());
 		}
 		
 		
