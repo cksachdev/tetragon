@@ -214,7 +214,7 @@ package base.view
 		 * The init method is called automatically by the screen manager right after the
 		 * screen has been instanciated.
 		 */
-		override internal final function init():void
+		override protected final function init():void
 		{
 			openedSignal = new Signal();
 			createChildren();
@@ -253,7 +253,7 @@ package base.view
 		
 		/**
 		 * Used to wait exatcly one frame after the display has been created and before
-		 * the loaded event is broadcasted. This is to prevent abrupt blend-ins.
+		 * the loaded event is broadcasted. This is used to prevent abrupt blend-ins.
 		 */
 		private function onFramePassed(e:Event):void
 		{
@@ -269,7 +269,7 @@ package base.view
 		
 		/**
 		 * Used to create all display children that are part of the screen. Called
-		 * right after the screen has been created.
+		 * right after the screen has been created and initialized.
 		 * 
 		 * <p>This is an abstract method. Override it in your sub-screen class and
 		 * instanciate any display child objects here that are part of the screen.</p>
@@ -344,6 +344,33 @@ package base.view
 		
 		
 		/**
+		 * Can be used to dispose a display if it's not needed anymore. This unregisters
+		 * the display, then removes it from the display list and then disposes it.
+		 * The display cannot be used anymore after it was disposed unless it is
+		 * instantiated again.
+		 * 
+		 * @param display The display to dispose.
+		 */
+		protected function disposeDisplay(display:Display):void
+		{
+			if (_displays)
+			{
+				for (var i:int = 0; i < _displays.length; i++)
+				{
+					if (_displays[i] == display)
+					{
+						_displays.splice(i, 1);
+						break;
+					}
+				}
+			}
+			if (contains(display)) removeChild(display);
+			display.dispose();
+			display = null;
+		}
+		
+		
+		/**
 		 * updateDisplayText is never used for screen classes! Put any display text
 		 * into child displays that are registered with the screen.
 		 */
@@ -367,16 +394,33 @@ package base.view
 			var len:uint = _displays.length;
 			for (var i:uint = 0; i < len; i++)
 			{
+				var d:Display = _displays[i];
 				switch (func)
 				{
-					case "init":	_displays[i].init(); break;
-					case "start":	_displays[i].start(); break;
-					case "update":	_displays[i].update(); break;
-					case "reset":	_displays[i].reset(); break;
-					case "stop":	_displays[i].stop(); break;
-					case "dispose":	_displays[i].dispose(); break;
-					case "enabled":	_displays[i].enabled = value; break;
-					case "paused":	_displays[i].paused = value; break;
+					case "init":
+						d.initDisplay();
+						break;
+					case "start":
+						if (d.autoStart) d.start();
+						break;
+					case "update":
+						d.update();
+						break;
+					case "reset":
+						d.reset();
+						break;
+					case "stop":
+						d.stop();
+						break;
+					case "dispose":
+						d.dispose();
+						break;
+					case "enabled":
+						d.enabled = value;
+						break;
+					case "paused":
+						d.paused = value;
+						break;
 				}
 			}
 		}
@@ -409,6 +453,24 @@ package base.view
 		protected static function getVerticalCenter(d:DisplayObject):int
 		{
 			return Math.round(StageReference.vCenter - (d.height * 0.5));
+		}
+		
+		
+		/**
+		 * Convenience method that can be used to center displays horizontally and/or
+		 * vertically on the screen.
+		 * 
+		 * @param display The Display to center.
+		 * @param h Whether to center the display horizontally or not.
+		 * @param v Whether to center the display vertically or not.
+		 * @param hOffset Optional offset for horizontal centering.
+		 * @param vOffset Optional offset for vertical centering.
+		 */
+		protected static function centerDisplay(display:Display, h:Boolean = true,
+			v:Boolean = true, hOffset:int = 0, vOffset:int = 0):void
+		{
+			if (h) display.x = Math.round(StageReference.hCenter - (display.width * 0.5)) + hOffset;
+			if (v) display.y = Math.round(StageReference.vCenter - (display.height * 0.5)) + vOffset;
 		}
 	}
 }

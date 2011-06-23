@@ -28,6 +28,7 @@
 package base.view
 {
 	import base.Main;
+	import base.data.Registry;
 	import base.io.resource.ResourceManager;
 
 	import com.hexagonstar.util.reflection.getClassName;
@@ -64,6 +65,7 @@ package base.view
 		public function Display()
 		{
 			_main = Main.instance;
+			init();
 		}
 		
 		
@@ -208,6 +210,21 @@ package base.view
 		
 		
 		/**
+		 * Determines whether the display is auto-started (i.e. it's start method called)
+		 * by the parent screen if the displayis registered with the screen. The default
+		 * is true. You can overwrite this getter and return false for display sub-classes
+		 * that should still be registered with the screen but whose start method should
+		 * not be called automtically when the screen has been opened.
+		 * 
+		 * @default true
+		 */
+		public function get autoStart():Boolean
+		{
+			return true;
+		}
+		
+		
+		/**
 		 * A reference to the display's parent screen, for use in sub-classes. This
 		 * property is set automatically by the display's parent screen when the display
 		 * is registered with the screen by using <code>registerDisplay()</code>.
@@ -250,7 +267,7 @@ package base.view
 		 * <p>You never have to call this method manually. Instead the parent screen
 		 * calls it automatically when the screen is being opened.</p>
 		 */
-		internal function init():void
+		internal function initDisplay():void
 		{
 			createChildren();
 			addChildren();
@@ -261,6 +278,22 @@ package base.view
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * Used to initialize class properties of the display. You can override this method
+		 * in your display subclass and assign initial values to any properties of the class.
+		 * To create display children use the <code>createChildren</code> method instead. This
+		 * method is only called once automatically right after the display has been
+		 * instatiated.
+		 * 
+		 * <p>This is an abstract method. Override it in your sub-display class and assign
+		 * any initial values to properties here that are part of the display.</p>
+		 */
+		protected function init():void
+		{
+			/* Abstract method! */
+		}
+		
 		
 		/**
 		 * Used to create any display children (and other objects) that the display might
@@ -443,6 +476,18 @@ package base.view
 		protected static function getString(stringID:String):String
 		{
 			return Main.instance.resourceManager.stringIndex.get(stringID);
+		}
+		
+		
+		/**
+		 * Helper method to get a settings value from the Settings map.
+		 * 
+		 * @param settingsID The ID of the settings property.
+		 * @return The settings' value.
+		 */
+		protected static function getSettings(settingsID:String):*
+		{
+			return Registry.settings.getSettings(settingsID);
 		}
 	}
 }

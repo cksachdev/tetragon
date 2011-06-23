@@ -85,6 +85,7 @@ package base.data
 		public var userSaveGamesFolder:String;
 		public var userScreenshotsFolder:String;
 		public var userSettingsFolder:String;
+		public var userLogsFolder:String;
 		public var userPluginsFolder:String;
 		
 		/* Update settings */
@@ -160,10 +161,11 @@ package base.data
 			
 			startWithFullscreen = false;
 			
-			userDataFolder = "%user_documents%/%meta_publisher%";
+			userDataFolder = "%user_documents%/%publisher%/%app_name%";
 			userSaveGamesFolder = "savegames";
 			userScreenshotsFolder = "screenshots";
 			userSettingsFolder = "settings";
+			userLogsFolder = "logs";
 			userPluginsFolder = "plugins";
 			
 			updateEnabled = true;

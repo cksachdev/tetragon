@@ -54,8 +54,31 @@ package base.assist
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
-		override public function executePostInitCommands():void
+		override public function setup():void
 		{
+			/* We listen to CLOSING from both the stage and the UI. If the user closes the
+			 * app through the taskbar, Event.CLOSING is emitted from the stage. Otherwise,
+			 * it could be emitted from TitleBarConrols. */
+			main.contextView.addEventListener(Event.CLOSING, onApplicationClosing);
+			
+			if (NativeWindow.isSupported)
+			{
+				stage.nativeWindow.addEventListener(Event.CLOSING, onApplicationClosing);
+				stage.nativeWindow.addEventListener(Event.CLOSE, onApplicationClose);
+				stage.nativeWindow.addEventListener(NativeWindowBoundsEvent.MOVE, onWindowBoundsChanged);
+				stage.nativeWindow.addEventListener(NativeWindowBoundsEvent.RESIZE, onWindowBoundsChanged);
+				stage.addEventListener(FullScreenEvent.FULL_SCREEN, onFullScreen);
+			}
+			
+			/* Check if application should use framerate throttling while the app
+			 * is unfocussed or minimized. */
+			if (Registry.config.backgroundFrameRate > -1)
+			{
+				_defaultFramerate = stage.frameRate;
+				var na:NativeApplication = NativeApplication.nativeApplication;
+				na.addEventListener(Event.DEACTIVATE, onDeactivate);
+				na.addEventListener(Event.ACTIVATE, onActivate);
+			}
 		}
 		
 		
@@ -114,46 +137,9 @@ package base.assist
 		// Accessors
 		//-----------------------------------------------------------------------------------------
 		
-		/**
-		 * Returns a reference to the nativeWindow if it's supported by the build type
-		 * or null if it's not supported.
-		 */
-		public function get nativeWindow():*
+		override public function get id():String
 		{
-			if (NativeWindow.isSupported) return stage.nativeWindow;
-			return main.contextView;
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
-		override protected function setup():void
-		{
-			/* We listen to CLOSING from both the stage and the UI. If the user closes the
-			 * app through the taskbar, Event.CLOSING is emitted from the stage. Otherwise,
-			 * it could be emitted from TitleBarConrols. */
-			main.contextView.addEventListener(Event.CLOSING, onApplicationClosing);
-			
-			if (NativeWindow.isSupported)
-			{
-				stage.nativeWindow.addEventListener(Event.CLOSING, onApplicationClosing);
-				stage.nativeWindow.addEventListener(Event.CLOSE, onApplicationClose);
-				stage.nativeWindow.addEventListener(NativeWindowBoundsEvent.MOVE, onWindowBoundsChanged);
-				stage.nativeWindow.addEventListener(NativeWindowBoundsEvent.RESIZE, onWindowBoundsChanged);
-				stage.addEventListener(FullScreenEvent.FULL_SCREEN, onFullScreen);
-			}
-			
-			/* Check if application should use framerate throttling while the app
-			 * is unfocussed or minimized. */
-			if (Registry.config.backgroundFrameRate > -1)
-			{
-				_defaultFramerate = stage.frameRate;
-				var na:NativeApplication = NativeApplication.nativeApplication;
-				na.addEventListener(Event.DEACTIVATE, onDeactivate);
-				na.addEventListener(Event.ACTIVATE, onActivate);
-			}
+			return "airDesktopAssistor";
 		}
 	}
 }

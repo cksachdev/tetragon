@@ -402,7 +402,8 @@ package base.io.file.loaders
 					/* If text entry for current locale is not available, use default locale! */
 					if (!path || path.length < 1)
 					{
-						s = x.locale.(@lang == _main.config.defaultLocale)[0];
+						var defLocale:String = Registry.config.defaultLocale;
+						s = x.locale.(@lang == defLocale)[0];
 					}
 					
 					s.@id = x.@id;

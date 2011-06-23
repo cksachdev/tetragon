@@ -27,6 +27,7 @@
  */
 package base.setup
 {
+	import base.assist.AIRDesktopAssistor;
 	import base.command.env.*;
 	import base.command.file.*;
 	
@@ -39,6 +40,15 @@ package base.setup
 		//-----------------------------------------------------------------------------------------
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registerAssistors():void
+		{
+			registerAssistor(AIRDesktopAssistor);
+		}
+		
 		
 		/**
 		 * Extra CLI commands which should only be available for desktop builds.

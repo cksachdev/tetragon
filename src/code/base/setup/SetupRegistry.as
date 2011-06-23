@@ -84,6 +84,7 @@ package base.setup
 		 */
 		public function execute():void
 		{
+			registerAssistors();
 			registerFonts();
 			if (_cli) registerCLICommands();
 			registerResourceFileTypes();
@@ -93,6 +94,15 @@ package base.setup
 			registerEntityComponents();
 			registerStates();
 			registerScreens();
+		}
+		
+		
+		/**
+		 * Used to register assistor classes.
+		 */
+		public function registerAssistors():void
+		{
+			/* Abstract method! */
 		}
 		
 		
@@ -230,6 +240,15 @@ package base.setup
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
+		
+		/**
+		 * @param assistorClass
+		 */
+		protected function registerAssistor(assistorClass:Class):void
+		{
+			Main.instance.addAssistor(assistorClass);
+		}
+		
 		
 		/**
 		 * @param fontClass

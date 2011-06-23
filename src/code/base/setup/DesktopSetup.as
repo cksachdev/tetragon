@@ -27,7 +27,7 @@
  */
 package base.setup
 {
-	import base.assist.AIRDesktopAssistor;
+	import base.command.env.CreateUserDataFoldersCommand;
 	import base.command.env.ToggleFullscreenCommand;
 	import base.core.desktop.WindowBoundsManager;
 	import base.data.Registry;
@@ -65,6 +65,7 @@ package base.setup
 		 */
 		override public function postConfigSetup():void
 		{
+			main.commandManager.execute(new CreateUserDataFoldersCommand());
 		}
 		
 		
@@ -82,12 +83,6 @@ package base.setup
 		override public function finalSetup():void
 		{
 			var stage:Stage = main.contextView.stage;
-			
-			/* Only create new assistor if it's not already existing! */
-			if (!main.assistor)
-			{
-				main.assistor = new AIRDesktopAssistor();
-			}
 			
 			/* Correct stage dimensions which might be wrong due to system chrome. */
 			windowBoundsManager.calculateWindowChromeExtra();

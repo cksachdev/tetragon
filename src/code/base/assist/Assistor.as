@@ -56,7 +56,6 @@ package base.assist
 		public function Assistor()
 		{
 			_main = Main.instance;
-			setup();
 		}
 		
 		
@@ -64,9 +63,9 @@ package base.assist
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
-		public function executePostInitCommands():void
+		public function setup():void
 		{
-			/* Abstract Method! */
+			/* Abstract method! */
 		}
 		
 		
@@ -86,6 +85,16 @@ package base.assist
 		//-----------------------------------------------------------------------------------------
 		
 		/**
+		 * Unique ID of the assistor.
+		 */
+		public function get id():String
+		{
+			/* Abstract method! */
+			return "assistor";
+		}
+		
+		
+		/**
 		 * Reference to main for use in sub classes.
 		 */
 		protected function get main():Main
@@ -100,19 +109,6 @@ package base.assist
 		public function get stage():Stage
 		{
 			return _main.contextView.stage;
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Private Methods
-		//-----------------------------------------------------------------------------------------
-		
-		/**
-		 * @private
-		 */
-		protected function setup():void
-		{
-			/* Abstract method! */
 		}
 	}
 }

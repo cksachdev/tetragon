@@ -55,6 +55,8 @@ package base.view
 		private var _currentScreen:Screen;
 		private var _nextScreen:DisplayObject;
 		
+		private var _background:DisplayObject;
+		
 		private var _screenOpenDelay:Number = 0.2;
 		private var _screenCloseDelay:Number = 0.2;
 		private var _tweenDuration:Number = 0.4;
@@ -158,7 +160,6 @@ package base.view
 			{
 				Log.debug("Initializing screen \"" + screenID + "\" ...", this);
 				var screen:Screen = Screen(s);
-				screen.init();
 				screenInitSignal.dispatch(screen);
 				
 				_isSwitching = true;
@@ -325,6 +326,36 @@ package base.view
 		}
 		
 		
+		/**
+		 * Allows to set a display object as a background that is used to underlay any
+		 * screens that are being opened. This property can be used to set an image
+		 * or any other display object as a backdrop which is shown behind screens.
+		 */
+		public function get background():DisplayObject
+		{
+			return _background;
+		}
+		public function set background(v:DisplayObject):void
+		{
+			if (v == _background) return;
+			if (!v || _background)
+			{
+				_screenContainer.removeChild(_background);
+				_background = null;
+			}
+			if (v)
+			{
+				_background = v;
+				_background.alpha = 0;
+				_screenContainer.addChild(_background);
+				if (_screenContainer.getChildAt(0) != _background)
+				{
+					_screenContainer.swapChildren(_background, _screenContainer.getChildAt(0));
+				}
+			}
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Callback Handlers
 		//-----------------------------------------------------------------------------------------
@@ -351,7 +382,8 @@ package base.view
 			
 			if (_tweenDuration > 0)
 			{
-				TweenLite.to(_currentScreen, _tweenDuration, {alpha: 1.0, onComplete: onTweenInComplete});
+				TweenLite.to(_currentScreen, _tweenDuration,
+					{alpha: 1.0, onUpdate: onTweenInUpdate, onComplete: onTweenInComplete});
 			}
 			else
 			{
@@ -360,8 +392,17 @@ package base.view
 		}
 		
 		
+		private function onTweenInUpdate():void
+		{
+			if (!_background || _background.alpha == 1.0) return;
+			_background.alpha = _currentScreen.alpha;
+		}
+		
+		
 		private function onTweenInComplete():void
 		{
+			if (_background) _background.alpha = 1.0;
+			
 			_tweenDuration = _backupDuration;
 			_screenOpenDelay = _backupOpenDelay;
 			_screenCloseDelay = _backupCloseDelay;

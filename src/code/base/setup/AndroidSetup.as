@@ -27,6 +27,8 @@
  */
 package base.setup
 {
+	import base.command.env.CreateUserDataFoldersCommand;
+
 	import flash.desktop.NativeApplication;
 	
 	
@@ -54,6 +56,7 @@ package base.setup
 		 */
 		override public function postConfigSetup():void
 		{
+			main.commandManager.execute(new CreateUserDataFoldersCommand());
 		}
 		
 		

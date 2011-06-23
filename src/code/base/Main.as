@@ -78,7 +78,7 @@ package base
 		private var _console:Console;
 		private var _fpsMonitor:FPSMonitor;
 		
-		private var _assistor:Assistor;
+		private var _assistors:Vector.<Assistor>;
 		private var _dataSupportManager:DataSupportManager;
 		private var _commandManager:CommandManager;
 		private var _resourceManager:ResourceManager;
@@ -109,6 +109,23 @@ package base
 		public function Main()
 		{
 			if (!_singletonLock) throw new SingletonException(this);
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		public function addAssistor(assistorClass:Class):void
+		{
+			var assistor:* = new assistorClass();
+			if (assistor is Assistor)
+			{
+				_assistors.push(assistor);
+			}
+			else
+			{
+				Log.fatal("Tried to add an assistor class that is not of type Assistor.", this);
+			}
 		}
 		
 		
@@ -177,7 +194,7 @@ package base
 		{
 			CONFIG::IS_DESKTOP_BUILD
 			{
-				return AIRDesktopAssistor(assistor).nativeWindow;
+				if (stage.nativeWindow) return stage.nativeWindow;
 			}
 			return contextView;
 		}
@@ -191,20 +208,6 @@ package base
 		{
 			return (contextView.stage.displayState == StageDisplayState["FULL_SCREEN_INTERACTIVE"]
 				|| contextView.stage.displayState == StageDisplayState.FULL_SCREEN);
-		}
-		
-		
-		/**
-		 * A reference to the persistent assistor, if the build-type type uses any.
-		 * Read-only access. Is only set once during app init phase.
-		 */
-		public function get assistor():Assistor
-		{
-			return _assistor;
-		}
-		public function set assistor(v:Assistor):void
-		{
-			_assistor = v;
 		}
 		
 		
@@ -309,6 +312,12 @@ package base
 		 */
 		private function onAppInitComplete(command:Command):void
 		{
+			/* Set up all mapped assistors. */
+			for (var i:uint = 0; i < _assistors.length; i++)
+			{
+				_assistors[i].setup();
+			}
+			
 			CONFIG::IS_DESKTOP_BUILD
 			{
 				if (Registry.config.updateEnabled && Registry.config.updateURL != null
@@ -410,6 +419,8 @@ package base
 			XML.ignoreWhitespace = true;
 			XML.ignoreProcessingInstructions = true;
 			XML.ignoreComments = true;
+			
+			_assistors = new Vector.<Assistor>();
 			
 			/* Init the data model registry. */
 			Registry.init();
