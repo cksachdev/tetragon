@@ -39,13 +39,6 @@ package base.io.file.loaders
 	public final class KeyBindingsLoader extends FileLoader
 	{
 		//-----------------------------------------------------------------------------------------
-		// Properties
-		//-----------------------------------------------------------------------------------------
-		
-		private var _keyManager:KeyManager;
-		
-		
-		//-----------------------------------------------------------------------------------------
 		// Constructor
 		//-----------------------------------------------------------------------------------------
 		
@@ -54,8 +47,6 @@ package base.io.file.loaders
 		 */
 		public function KeyBindingsLoader()
 		{
-			_keyManager = Main.instance.keyManager;
-			
 			var filePath:String;
 			var userKBPath:String = Registry.settings.getSettings(Settings.USER_KEYBINDINGS_FILE);
 			if (userKBPath != null) filePath = userKBPath;
@@ -114,6 +105,7 @@ package base.io.file.loaders
 		
 		private function parse(file:TextFile):void
 		{
+			var km:KeyManager = Main.instance.keyManager;
 			var text:String = file.contentAsString;
 			var lines:Array = text.match(/^.+$/gm);
 			var key:String;
@@ -129,19 +121,11 @@ package base.io.file.loaders
 					const pos:int = l.indexOf("=");
 					key = trim(l.substring(0, pos));
 					val = trim(l.substring(pos + 1, l.length));
-					parseBinding(key, val);
+					km.addKeyBinding(key, val);
 				}
 			}
 			
 			if (_completeSignal) _completeSignal.dispatch();
-		}
-		
-		
-		private function parseBinding(keyIdentifier:String, combinationString:String):void
-		{
-			var keyExists:Boolean = true;
-			var p:*;
-			// TODO Map key combinations in KeyManager under their keyIdentifier.
 		}
 	}
 }

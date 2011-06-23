@@ -138,6 +138,18 @@ package base.io.key
 		
 		
 		/**
+		 * Adds a new key binding.
+		 * 
+		 * @param identifier Key Binding identifier, e.g. toggleConsole
+		 * @param combinationString Key Binding combination string, e.g. SHIFT+F8
+		 */
+		public function addKeyBinding(identifier:String, combinationString:String):void
+		{
+			// TODO
+		}
+		
+		
+		/**
 		 * Assigns a keyboard key or key combination to a callback function. The specified
 		 * <code>keyValue</code> can be either a <code>String</code>, a <code>uint</code>,
 		 * a <code>KeyCombination</code> object or an <code>Array</code>.
