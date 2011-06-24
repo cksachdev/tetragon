@@ -30,7 +30,6 @@ package base.command.cli
 	import base.command.CLICommand;
 	import base.core.cli.CLICommandVO;
 	import base.core.debug.Console;
-	import base.data.Registry;
 
 	import com.hexagonstar.util.debug.LogLevel;
 	import com.hexagonstar.util.string.TabularText;
@@ -119,8 +118,14 @@ package base.command.cli
 			}
 			else
 			{
+				var defKey1:String = main.keyManager.getKeyBinding("toggleConsole");
+				var defKey2:String = main.keyManager.getKeyBinding("toggleFPSMonitor");
+				var defKey3:String = main.keyManager.getKeyBinding("toggleFPSMonitorPosition");
+				
 				var keyHelp:TabularText = new TabularText(2, true, "  ", null, "        ");
-				keyHelp.add(["<" + Registry.config.consoleKey + ">", "Toggle console"]);
+				if (defKey1) keyHelp.add(["<" + defKey1 + ">", "Toggle console"]);
+				if (defKey2) keyHelp.add(["<" + defKey2 + ">", "Toggle FPS monitor"]);
+				if (defKey3) keyHelp.add(["<" + defKey3 + ">", "Toggle FPS monitor position"]);
 				keyHelp.add(["<TAB>", "(When out of focus) Focusses the console input field"]);
 				keyHelp.add(["<TAB>", "(When in focus) Place cursor to end of current console input"]);
 				keyHelp.add(["<ENTER>", "Execute the current input"]);

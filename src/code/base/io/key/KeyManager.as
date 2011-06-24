@@ -29,7 +29,6 @@ package base.io.key
 {
 	import base.Main;
 	import base.core.debug.Log;
-	import base.data.Config;
 	import base.data.Registry;
 
 	import flash.display.Stage;
@@ -65,6 +64,7 @@ package base.io.key
 		//-----------------------------------------------------------------------------------------
 		
 		private var _stage:Stage;
+		private var _keyBindings:Object;
 		private var _assignments:Object;
 		private var _keysDown:Object;
 		private var _combinationsDown:Object;
@@ -107,6 +107,7 @@ package base.io.key
 		 */
 		public function init():void
 		{
+			clearBindings();
 			clearAssignments();
 		}
 		
@@ -141,11 +142,68 @@ package base.io.key
 		 * Adds a new key binding.
 		 * 
 		 * @param identifier Key Binding identifier, e.g. toggleConsole
-		 * @param combinationString Key Binding combination string, e.g. SHIFT+F8
+		 * @param keyString Key Binding combination string, e.g. SHIFT+F8
 		 */
-		public function addKeyBinding(identifier:String, combinationString:String):void
+		public function addKeyBinding(identifier:String, keyString:String):void
 		{
-			// TODO
+			var binding:String = _keyBindings[identifier];
+			if (binding)
+			{
+				Log.warn("Failed to map key binding <" + keyString + "> to identifier \""
+					+ identifier + "\" because another binding is already mapped to it ("
+					+ binding + ").", this);
+				return;
+			}
+			
+			/* Remove any occuring whitespace from the combination string. */
+			keyString = keyString.split(" ").join("");
+			
+			/* Make sure that the combination string contains valid keys. */
+			var a:Array = keyString.split(KEY_COMBINATION_DELIMITER);
+			for each (var s:String in a)
+			{
+				if (KeyCodes.getKeyCode(s) == -1)
+				{
+					Log.warn("Failed to map key binding <" + keyString + "> to identifier \""
+						+ identifier + "\" because it contains an invalid key definition ("
+						+ s + ").", this);
+					return;
+				}
+			}
+			
+			_keyBindings[identifier] = keyString;
+		}
+		
+		
+		/**
+		 * Returns the key string that is mapped with the specified identifier or
+		 * <code>null</code> if there is nothing mapped with it.
+		 * 
+		 * @param identifier The key binding identifier.
+		 * @return A String of the mapped key combination or <code>null</code>.
+		 */
+		public function getKeyBinding(identifier:String):String
+		{
+			return _keyBindings[identifier];
+		}
+		
+		
+		/**
+		 * Assigns several default key combinations that are used by the application to
+		 * make it possible to use the debug console, fps monitor etc.
+		 */
+		public function assignDefaults():void
+		{
+			var main:Main = Main.instance;
+			if (Registry.config.consoleEnabled)
+			{
+				_consoleKC = assign("toggleConsole", KeyMode.DOWN, main.console.toggle);
+			}
+			if (Registry.config.fpsMonitorEnabled)
+			{
+				_fpsMonKC = assign("toggleFPSMonitor", KeyMode.DOWN, main.fpsMonitor.toggle);
+				_fpsMonPosKC = assign("toggleFPSMonitorPosition", KeyMode.DOWN, main.fpsMonitor.togglePosition);
+			}
 		}
 		
 		
@@ -160,6 +218,18 @@ package base.io.key
 		 * are divided by the <code>KEY_COMBINATION_DELIMITER</code> constant (a plus sign
 		 * '+'), for example <code>F1</code>, <code>CTRL+A</code> or
 		 * <code>SHIFT+CTRL+1</code>.</p>
+		 * 
+		 * <p>A <code>String</code> keyValue can also be a key binding identifier which is
+		 * used to associate a specific key or key combination with the binding
+		 * identifier. This feature is used in particular in connection with the
+		 * keybindings.ini file. A key binding first needs to have been added to the key
+		 * manager with the <code>addKeyBinding()</code> method. If the specified keyValue
+		 * reflects any mapped key binding identifier the key combination string that is
+		 * mapped with the identifier is used in place for it.</p>
+		 * 
+		 * <p>If the specified mode is <code>KeyMode.SEQ</code> the key string is
+		 * interpreted as being a sequence of characters that need to be entered to
+		 * trigger the callback.</p>
 		 * 
 		 * <p>By specifying a <code>uint</code> you can assign one key by it's key code
 		 * directly. With this you can also use the numeric contants from ActionScript's
@@ -252,6 +322,15 @@ package base.io.key
 		
 		
 		/**
+		 * Clears all mapped key bindings.
+		 */
+		public function clearBindings():void
+		{
+			_keyBindings = {};
+		}
+		
+		
+		/**
 		 * Clears all key assignments from the key manager.
 		 */
 		public function clearAssignments():void
@@ -263,7 +342,6 @@ package base.io.key
 			_combinationsDown = {};
 			_keysTyped = new Vector.<uint>();
 			_longestCombination = 0;
-			assignDefaults();
 			if (wasActive) activate();
 		}
 		
@@ -494,11 +572,19 @@ package base.io.key
 		{
 			var combination:KeyCombination;
 			if (keyValue is String)
+			{
+				var binding:String = getKeyBinding(keyValue);
+				if (binding) keyValue = binding;
 				combination = createKeyCombination(keyValue, (mode == KeyMode.SEQ ? TYPE_KEYSEQ : TYPE_KEYSTRING));
+			}
 			else if (keyValue is uint)
+			{
 				combination = createKeyCombination(String(keyValue), TYPE_KEYCODE);
+			}
 			else if (keyValue is KeyCombination)
+			{
 				combination = keyValue;
+			}
 			else if (keyValue is Array)
 			{
 				var a:Array = keyValue;
@@ -543,27 +629,6 @@ package base.io.key
 			_longestCombination = Math.max(_longestCombination, combination.codes.length);
 			Log.debug("Assigned key codes <" + keyValue + "> (mode: " + mode + ").", this);
 			return combination;
-		}
-		
-		
-		/**
-		 * Assigns several default key combinations that are used by the application to
-		 * make it possible to use the debug console, fps monitor etc.
-		 */
-		private function assignDefaults():void
-		{
-			var main:Main = Main.instance;
-			var cfg:Config = Registry.config;
-			if (Registry.config.consoleEnabled)
-			{
-				_consoleKC = assign(cfg.consoleKey, KeyMode.DOWN, main.console.toggle);
-			}
-			
-			if (Registry.config.fpsMonitorEnabled)
-			{
-				_fpsMonKC = assign(cfg.fpsMonitorKey, KeyMode.DOWN, main.fpsMonitor.toggle);
-				_fpsMonPosKC = assign(cfg.fpsMonitorPositionKey, KeyMode.DOWN, main.fpsMonitor.togglePosition);
-			}
 		}
 		
 		

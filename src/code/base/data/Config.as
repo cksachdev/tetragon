@@ -27,6 +27,7 @@
  */
 package base.data
 {
+	import base.AppInfo;
 	/**
 	 * The application's global config model. Access this object via Registry!
 	 */
@@ -45,7 +46,6 @@ package base.data
 		public var consoleAutoOpen:Boolean;
 		public var consoleTween:Boolean;
 		public var consoleMonochrome:Boolean;
-		public var consoleKey:String;
 		public var consoleSize:int;
 		public var consoleTransparency:Number;
 		public var consoleFontSize:int;
@@ -57,14 +57,15 @@ package base.data
 		public var fpsMonitorEnabled:Boolean;
 		public var fpsMonitorAutoOpen:Boolean;
 		public var fpsMonitorPollInterval:Number;
-		public var fpsMonitorKey:String;
-		public var fpsMonitorPositionKey:String;
 		public var fpsMonitorPosition:String;
 		public var fpsMonitorColors:Array;
 		
 		/* Locale settings */
 		public var defaultLocale:String;
 		public var currentLocale:String;
+		
+		public var appConfigFileName:String;
+		public var keyBindingsFileName:String;
 		
 		/* Resource-related settings */
 		public var resourceFolder:String;
@@ -87,8 +88,6 @@ package base.data
 		public var userSettingsFolder:String;
 		public var userLogsFolder:String;
 		public var userPluginsFolder:String;
-		
-		public var keyBindingsFileName:String;
 		
 		/* Update settings */
 		public var updateEnabled:Boolean;
@@ -134,7 +133,6 @@ package base.data
 			consoleAutoOpen = false;
 			consoleTween = true;
 			consoleMonochrome = false;
-			consoleKey = "F8";
 			consoleSize = 2;
 			consoleTransparency = 1.0;
 			consoleFontSize = 11;
@@ -145,12 +143,13 @@ package base.data
 			fpsMonitorEnabled = true;
 			fpsMonitorAutoOpen = false;
 			fpsMonitorPollInterval = 0.5;
-			fpsMonitorKey = "F9";
-			fpsMonitorPositionKey = "F11";
 			fpsMonitorPosition = "TR";
 			fpsMonitorColors = ["111111", "FFFFFF", "55D4FF", "FFCC00", "FF6600"];
 			
 			defaultLocale = "en";
+			
+			appConfigFileName = AppInfo.FILENAME + ".ini";
+			keyBindingsFileName = "keybindings.ini";
 			
 			resourceFolder = "resources";
 			resourceIndexFile ="resources.xml";
@@ -169,8 +168,6 @@ package base.data
 			userSettingsFolder = "settings";
 			userLogsFolder = "logs";
 			userPluginsFolder = "plugins";
-			
-			keyBindingsFileName = "keybindings.ini";
 			
 			updateEnabled = true;
 			updateURL = "";
