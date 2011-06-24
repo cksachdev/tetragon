@@ -31,15 +31,15 @@ package base.command.env
 
 	
 	/**
-	 * CLI command to open a screen.
+	 * CLI command to enter a specific state.
 	 */
-	public class OpenScreenCommand extends CLICommand
+	public class EnterStateCommand extends CLICommand
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
-		private var _screenID:String;
+		private var _stateID:String;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -51,7 +51,7 @@ package base.command.env
 		 */
 		override public function execute():void 
 		{
-			main.screenManager.openScreen(_screenID, true);
+			main.stateManager.enterState(_stateID);
 			complete();
 		}
 		
@@ -65,7 +65,7 @@ package base.command.env
 		 */
 		override public function get name():String 
 		{
-			return "openscreen";
+			return "enterstate";
 		}
 		
 		
@@ -74,7 +74,7 @@ package base.command.env
 		 */
 		override public function get signature():Array
 		{
-			return ["screenID:String"];
+			return ["stateID:String"];
 		}
 		
 		
@@ -83,7 +83,7 @@ package base.command.env
 		 */
 		override public function get example():String
 		{
-			return "openscreen \"screenID\"";
+			return "enterstate \"stateID\"";
 		}
 		
 		
@@ -91,9 +91,9 @@ package base.command.env
 		// CLI Command Signature Arguments
 		//-----------------------------------------------------------------------------------------
 		
-		public function set screenID(v:String):void
+		public function set stateID(v:String):void
 		{
-			_screenID = v;
+			_stateID = v;
 		}
 	}
 }

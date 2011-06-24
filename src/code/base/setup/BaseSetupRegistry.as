@@ -88,6 +88,7 @@ package base.setup
 			registerCommand("env", "fpspos", "fpp", ToggleFPSMonitorPosCommand, "Switches between different FPS Monitor positions.");
 			registerCommand("env", "init", null, AppInitCommand, "Initializes the application.");
 			registerCommand("env", "openscreen", "ops", OpenScreenCommand, "Opens the screen that is registered with the specified screen ID.");
+			registerCommand("env", "enterstate", "est", EnterStateCommand, "Enters the state that is registered with the specified state ID.");
 			
 			registerCommand("file", "liststrings", "str", ListStringsCommand, "Outputs a list of all mapped strings.");
 			registerCommand("file", "listresources", "res", ListResourcesCommand, "Outputs a list of all mapped resources.");
