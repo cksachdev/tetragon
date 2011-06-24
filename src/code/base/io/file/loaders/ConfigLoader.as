@@ -30,6 +30,7 @@ package base.io.file.loaders
 	import base.core.debug.Log;
 	import base.data.Config;
 	import base.data.Registry;
+	import base.data.Settings;
 
 	import com.hexagonstar.file.types.IFile;
 	import com.hexagonstar.file.types.TextFile;
@@ -50,6 +51,7 @@ package base.io.file.loaders
 		//-----------------------------------------------------------------------------------------
 		
 		private var _config:Config;
+		private var _useDefaultFilePath:Boolean;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -62,6 +64,10 @@ package base.io.file.loaders
 		public function ConfigLoader()
 		{
 			_config = Registry.config;
+			
+			_useDefaultFilePath = false;
+			var userConfigFile:String = Registry.settings.getSettings(Settings.USER_CONFIG_FILE);
+			addFile(userConfigFile, "configFile");
 		}
 		
 		
@@ -122,6 +128,23 @@ package base.io.file.loaders
 		}
 		
 		
+		override public function onFileIOError(file:IFile):void
+		{
+			if (!_useDefaultFilePath)
+			{
+				Log.debug("Couldn't load config file from user folder. Trying default path ...", this);
+				_useDefaultFilePath = true;
+				_loader.reset();
+				addFile(Registry.config.appConfigFileName, "configFile");
+				load();
+			}
+			else
+			{
+				notifyLoadError(file);
+			}
+		}
+		
+		
 		//-----------------------------------------------------------------------------------------
 		// Private Methods
 		//-----------------------------------------------------------------------------------------
@@ -129,7 +152,7 @@ package base.io.file.loaders
 		/**
 		 * Parses text from a text-based ini file.
 		 */
-		protected function parse(file:TextFile):void
+		private function parse(file:TextFile):void
 		{
 			var text:String = file.contentAsString;
 			var lines:Array = text.match(/^.+$/gm);
@@ -157,7 +180,7 @@ package base.io.file.loaders
 		/**
 		 * Tries to parse the specified key and value pair into the Config Model.
 		 */
-		protected function parseProperty(key:String, val:String):void
+		private function parseProperty(key:String, val:String):void
 		{
 			var keyExists:Boolean = true;
 			var p:*;

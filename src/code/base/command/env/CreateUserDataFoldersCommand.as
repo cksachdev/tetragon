@@ -181,7 +181,7 @@ package base.command.env
 			if (userSettingsFolder != null)
 			{
 				var appDir:String = File.applicationDirectory.nativePath;
-				var appCfg:String = AppInfo.FILENAME + ".ini";
+				var appCfg:String = Registry.config.appConfigFileName;
 				copyFile(Settings.USER_CONFIG_FILE, appDir + _sep + appCfg, userSettingsFolder + _sep + appCfg);
 				var keyBindings:String = Registry.config.keyBindingsFileName;
 				copyFile(Settings.USER_KEYBINDINGS_FILE, appDir + _sep + keyBindings, userSettingsFolder + _sep + keyBindings);

@@ -289,7 +289,6 @@ package base.command.env
 				_configLoader = new ConfigLoader();
 				_configLoader.completeSignal.addOnce(onConfigLoadComplete);
 				_configLoader.errorSignal.addOnce(onConfigLoadError);
-				_configLoader.addFile(AppInfo.FILENAME + ".ini", "configFile");
 				_configLoader.load();
 			}
 		}
