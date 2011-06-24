@@ -30,6 +30,7 @@ package base.command.cli
 	import base.command.CLICommand;
 	import base.io.key.KeyCodes;
 	import base.io.key.KeyCombination;
+	import base.io.key.KeyManager;
 	import base.io.key.KeyMode;
 
 	import com.hexagonstar.util.debug.LogLevel;
@@ -47,10 +48,11 @@ package base.command.cli
 		 */
 		override public function execute():void 
 		{
-			var assignments:Object = main.keyManager.assignments;
+			var km:KeyManager = main.keyManager;
+			var assignments:Object = km.assignments;
 			var count:int = 0;
-			var t:TabularText = new TabularText(7, true, "  ", null, "  ", 40,
-				["KEY(S)", "CODE(S)", "LENGTH", "MODE", "LOCATION", "ID", "PARAMS"]);
+			var t:TabularText = new TabularText(8, true, "  ", null, "  ", 40,
+				["KEY(S)", "CODE(S)", "LENGTH", "MODE", "LOCATION", "ID", "BINDING IDENTIFIER", "PARAMS"]);
 			
 			for (var id:String in assignments)
 			{
@@ -85,7 +87,10 @@ package base.command.cli
 				var loc:String = "s" + kc.shiftKeyLocation + " c" + kc.ctrlKeyLocation
 					+ " a" + kc.altKeyLocation;
 				
-				t.add([string, code, kc.codes.length, mode, loc, id, p]);
+				var binding:String = km.getBindingIdentifier(string);
+				if (!binding) binding = "";
+				
+				t.add([string, code, kc.codes.length, mode, loc, id, binding, p]);
 				count++;
 			}
 			

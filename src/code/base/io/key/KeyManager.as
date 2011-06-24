@@ -189,6 +189,23 @@ package base.io.key
 		
 		
 		/**
+		 * Returns the key binding identifier that is used to map the specified keyString
+		 * or <code>null</code> if the keyString isn't mapped.
+		 * 
+		 * @param keyString The key string.
+		 * @return A String of the key identifier or <code>null</code>.
+		 */
+		public function getBindingIdentifier(keyString:String):String
+		{
+			for (var s:String in _keyBindings)
+			{
+				if (_keyBindings[s] == keyString) return s;
+			}
+			return null;
+		}
+		
+		
+		/**
 		 * Assigns several default key combinations that are used by the application to
 		 * make it possible to use the debug console, fps monitor etc.
 		 */

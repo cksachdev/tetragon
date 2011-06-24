@@ -76,7 +76,11 @@ package base.data
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Adds a settings key-value pair to the settings map.
+		 * Adds a settings key-value pair to the settings map. If a setting is already
+		 * mapped with the given key it will be overwritten.
+		 * 
+		 * @param key
+		 * @param value
 		 */
 		public function addSettings(key:String, value:Object):void
 		{
