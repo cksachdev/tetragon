@@ -171,6 +171,8 @@ package base.io.key
 				}
 			}
 			
+			Log.debug("Mapped key binding with identifier \"" + identifier + "\" to <"
+				+ keyString + ">.", this);
 			_keyBindings[identifier] = keyString;
 		}
 		
@@ -303,9 +305,15 @@ package base.io.key
 			var kc:KeyCombination;
 			
 			if (keyValue is String)
+			{
+				var binding:String = getKeyBinding(keyValue);
+				if (binding) keyValue = binding;
 				vo = createKeyCodes(keyValue, (mode == KeyMode.SEQ ? TYPE_KEYSEQ : TYPE_KEYSTRING));
+			}
 			else if (keyValue is uint)
+			{
 				vo = createKeyCodes(keyValue, TYPE_KEYCODE);
+			}
 			else if (keyValue is KeyCombination)
 			{
 				vo = new KeyCodesVO();
