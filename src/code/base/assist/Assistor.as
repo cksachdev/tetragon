@@ -36,6 +36,9 @@ package base.assist
 	
 	/**
 	 * Abstract base class for build-specific persistent assist classes.
+	 * 
+	 * <p>An assistor is a helper class for Main that may contain persistent instructions
+	 * for a specific application build type.</p>
 	 */
 	public class Assistor
 	{
@@ -44,6 +47,8 @@ package base.assist
 		//-----------------------------------------------------------------------------------------
 		
 		private var _main:Main;
+		private var _id:String;
+		private var _priority:int;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -63,7 +68,20 @@ package base.assist
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
-		public function setup():void
+		/**
+		 * Initializes the assistor. Called automatically by main after app init phase
+		 * is finished.
+		 */
+		public function init():void
+		{
+			/* Abstract method! */
+		}
+		
+		
+		/**
+		 * Disposes the class.
+		 */
+		public function dispose():void
 		{
 			/* Abstract method! */
 		}
@@ -85,12 +103,31 @@ package base.assist
 		//-----------------------------------------------------------------------------------------
 		
 		/**
-		 * Unique ID of the assistor.
+		 * Unique ID of the assistor. Automatically set when registering assistor classes.
+		 * Can only be set once!
 		 */
 		public function get id():String
 		{
-			/* Abstract method! */
-			return "assistor";
+			return _id;
+		}
+		public function set id(v:String):void
+		{
+			if (_id != null) return;
+			_id = v;
+		}
+		
+		
+		/**
+		 * Used internally to prioritize in which order assistor classes are initlialized.
+		 * @private
+		 */
+		public function get priority():int
+		{
+			return _priority;
+		}
+		public function set priority(v:int):void
+		{
+			_priority = v;
 		}
 		
 		
@@ -106,7 +143,7 @@ package base.assist
 		/**
 		 * Reference to the main stage for use in sub classes.
 		 */
-		public function get stage():Stage
+		protected function get stage():Stage
 		{
 			return _main.contextView.stage;
 		}

@@ -46,7 +46,7 @@ package base.setup
 		 */
 		override public function registerAssistors():void
 		{
-			registerAssistor(AIRDesktopAssistor);
+			registerAssistor("airDesktopAssistor", AIRDesktopAssistor);
 		}
 		
 		

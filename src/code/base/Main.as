@@ -78,7 +78,7 @@ package base
 		private var _console:Console;
 		private var _fpsMonitor:FPSMonitor;
 		
-		private var _assistors:Vector.<Assistor>;
+		private var _assistors:Object;
 		private var _dataSupportManager:DataSupportManager;
 		private var _commandManager:CommandManager;
 		private var _resourceManager:ResourceManager;
@@ -113,19 +113,43 @@ package base
 		
 		
 		/**
-		 * @private
+		 * Used by the SetupRegistry to add assistors.
 		 */
-		public function addAssistor(assistorClass:Class):void
+		public function addAssistor(assistor:Assistor):void
 		{
-			var assistor:* = new assistorClass();
-			if (assistor is Assistor)
+			if (_assistors[assistor.id] == null)
 			{
-				_assistors.push(assistor);
+				_assistors[assistor.id] = assistor;
 			}
 			else
 			{
-				Log.fatal("Tried to add an assistor class that is not of type Assistor.", this);
+				Log.fatal("Could not add assistor! An assistor with ID \"" + assistor.id
+					+ "\" has already been mapped.", this);
 			}
+		}
+		
+		
+		/**
+		 * Returns the assistor that is mapped with the specified assistorID or null if
+		 * no assistor was mapped with that ID.
+		 * 
+		 * @param assistorID
+		 * @return An Assistor object or null.
+		 */
+		public function getAssistor(assistorID:String):Assistor
+		{
+			return _assistors[assistorID];
+		}
+		
+		
+		/**
+		 * Returns a String Representation of the class.
+		 * 
+		 * @return A String Representation of the class.
+		 */
+		public function toString():String
+		{
+			return "Main";
 		}
 		
 		
@@ -312,29 +336,15 @@ package base
 		 */
 		private function onAppInitComplete(command:Command):void
 		{
-			/* Set up all mapped assistors. */
-			for (var i:uint = 0; i < _assistors.length; i++)
-			{
-				_assistors[i].setup();
-			}
-			
-			CONFIG::IS_DESKTOP_BUILD
-			{
-				if (Registry.config.updateEnabled && Registry.config.updateURL != null
-					&& Registry.config.updateURL.length > 0)
-				{
-					commandManager.execute(new CheckUpdateCommand(), onCheckUpdateComplete);
-					return;
-				}
-			}
-			onCheckUpdateComplete(null);
+			initAssistors();
+			checkForUpdate();
 		}
 		
 		
 		/**
 		 * Invoked once the update check has completed.
 		 */
-		private function onCheckUpdateComplete(command:Command):void
+		private function onUpdateCheckComplete(command:Command):void
 		{
 			/* Time to open the initial application state. */
 			stateManager.start();
@@ -420,7 +430,7 @@ package base
 			XML.ignoreProcessingInstructions = true;
 			XML.ignoreComments = true;
 			
-			_assistors = new Vector.<Assistor>();
+			_assistors = {};
 			
 			/* Init the data model registry. */
 			Registry.init();
@@ -477,6 +487,46 @@ package base
 				}
 				_fpsMonitor = new FPSMonitor(_utilityContainer);
 			}
+		}
+		
+		
+		/**
+		 * Initializes all registered assistor classes in the same order they were added.
+		 */
+		private function initAssistors():void
+		{
+			var sortArray:Array = [];
+			var a:Assistor;
+			for each (a in _assistors)
+			{
+				sortArray.push(a);
+			}
+			sortArray.sortOn("priority", Array.NUMERIC);
+			for (var i:uint = 0; i < sortArray.length; i++)
+			{
+				a = sortArray[i];
+				Log.debug("Initializing assistor \"" + a.id + "\" (Priority: " + a.priority
+					+ ") ...", this);
+				a.init();
+			}
+		}
+		
+		
+		/**
+		 * Checks for application updates (only for AIR-Desktop builds).
+		 */
+		private function checkForUpdate():void
+		{
+			CONFIG::IS_DESKTOP_BUILD
+			{
+				if (Registry.config.updateEnabled && Registry.config.updateURL != null
+					&& Registry.config.updateURL.length > 0)
+				{
+					commandManager.execute(new CheckUpdateCommand(), onUpdateCheckComplete);
+					return;
+				}
+			}
+			onUpdateCheckComplete(null);
 		}
 	}
 }

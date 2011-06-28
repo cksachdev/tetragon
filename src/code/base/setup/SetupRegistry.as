@@ -28,6 +28,7 @@
 package base.setup
 {
 	import base.Main;
+	import base.assist.Assistor;
 	import base.core.cli.CLI;
 	import base.core.debug.Console;
 	import base.core.debug.Log;
@@ -50,11 +51,14 @@ package base.setup
 		// Properties
 		//-----------------------------------------------------------------------------------------
 		
+		private var _main:Main;
 		private var _cli:CLI;
 		private var _stateManager:StateManager;
 		private var _screenManager:ScreenManager;
 		private var _entitySystemManager:EntitySystemManager;
 		private var _dsm:DataSupportManager;
+		
+		private var _assistorPriority:int;
 		
 		
 		//-----------------------------------------------------------------------------------------
@@ -66,12 +70,15 @@ package base.setup
 		 */
 		public function SetupRegistry()
 		{
-			var console:Console = Main.instance.console;
+			_main = Main.instance;
+			var console:Console = _main.console;
 			if (console) _cli = console.cli;
-			_stateManager = Main.instance.stateManager;
-			_screenManager = Main.instance.screenManager;
-			_entitySystemManager = Main.instance.entitySystemManager;
-			_dsm = Main.instance.dataSupportManager;
+			_stateManager = _main.stateManager;
+			_screenManager = _main.screenManager;
+			_entitySystemManager = _main.entitySystemManager;
+			_dsm = _main.dataSupportManager;
+			
+			_assistorPriority = 0;
 		}
 		
 		
@@ -242,11 +249,26 @@ package base.setup
 		//-----------------------------------------------------------------------------------------
 		
 		/**
+		 * @param assistorID
 		 * @param assistorClass
 		 */
-		protected function registerAssistor(assistorClass:Class):void
+		protected function registerAssistor(assistorID:String, assistorClass:Class):void
 		{
-			Main.instance.addAssistor(assistorClass);
+			var obj:* = new assistorClass();
+			if (obj is Assistor)
+			{
+				var assistor:Assistor = obj;
+				assistor.id = assistorID;
+				assistor.priority = _assistorPriority;
+				_main.addAssistor(assistor);
+				Log.debug("Registered assistor [" + assistor.toString() + "] with ID \""
+					+ assistorID + "\".", this);
+				_assistorPriority++;
+			}
+			else
+			{
+				Log.fatal("Tried to register an assistor class that is not of type Assistor.", this);
+			}
 		}
 		
 		
@@ -256,6 +278,7 @@ package base.setup
 		protected function registerFont(fontClass:Class):void
 		{
 			Font.registerFont(fontClass);
+			Log.debug("Registered font " + fontClass + ".", this);
 		}
 		
 		

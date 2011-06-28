@@ -41,7 +41,7 @@ package base.assist
 	/**
 	 * Persistent assist class for AIR desktop builds.
 	 */
-	public class AIRDesktopAssistor extends Assistor
+	public final class AIRDesktopAssistor extends Assistor
 	{
 		//-----------------------------------------------------------------------------------------
 		// Properties
@@ -54,7 +54,10 @@ package base.assist
 		// Public Methods
 		//-----------------------------------------------------------------------------------------
 		
-		override public function setup():void
+		/**
+		 * @inheritDoc
+		 */
+		override public function init():void
 		{
 			/* We listen to CLOSING from both the stage and the UI. If the user closes the
 			 * app through the taskbar, Event.CLOSING is emitted from the stage. Otherwise,
@@ -130,16 +133,6 @@ package base.assist
 		private function onActivate(e:Event):void 
 		{
 			stage.frameRate = _defaultFramerate;
-		}
-		
-		
-		//-----------------------------------------------------------------------------------------
-		// Accessors
-		//-----------------------------------------------------------------------------------------
-		
-		override public function get id():String
-		{
-			return "airDesktopAssistor";
 		}
 	}
 }

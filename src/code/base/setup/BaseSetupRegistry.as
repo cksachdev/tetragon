@@ -45,6 +45,17 @@ package base.setup
 		//-----------------------------------------------------------------------------------------
 		
 		
+		/**
+		 * @inheritDoc
+		 */
+		override public function registerAssistors():void
+		{
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
 		override public function registerFonts():void
 		{
 			registerFont(TerminalscopeFont);
